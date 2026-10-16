@@ -1,4 +1,4 @@
-﻿// Installed name: MAIN - Build Choir Service
+// Installed name: MAIN - Build Choir Service
 // Purpose: Start the interactive Nextcloud/iCloud/forScore service workflow.
 // Role: Main; specification revision 2; interface 1.0.
 // Input: None consumed. Direct launch only; ignores any incoming content.

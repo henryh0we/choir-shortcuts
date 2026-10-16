@@ -1,13 +1,13 @@
-﻿// Installed name: UTIL - Archive Choir PDF
+// Installed name: UTIL - Archive Choir PDF
 // Purpose: Generated archive helper; complete CFG slots after importing.
-// Role: Reusable; specification revision 4; completed interface 1.0.
+// Role: Reusable; specification revision 5; completed interface 1.0.
 // Input: One native PDF File. Missing/multiple/non-PDF inputs stop without saving.
 // Output after assembly: One native File, or empty output after validation alerts.
 // Direct/called: May ask for a type folder when absent; no unattended mode.
 // Side effects after assembly: Save a canonical clean PDF; never overwrite.
 // Dependency: UTIL - Canonical Choir Name interface 1.0, util-canonical-choir-name.jelly.
 // Target: iPadOS 26.6, Jellycuts 2026.6.4; selected iCloud archive folder permission.
-// Stage: Drafted, source-checked against pinned compiler, not compiled/device tested.
+// Stage: Drafted; local docs/source reviewed, not compiled/device tested.
 // Assembly and tests: ../../docs/choir-service-assembly.md; ../../tests/choir-service.md
 
 import Shortcuts
@@ -50,6 +50,11 @@ if canonicalStem == nil {
 nothing() >> archiveRoot
 
 getFolderContents(folder: archiveRoot, recursive: true) >> archiveContents
+// A named variable survives the loop without capturing Repeat Results.
+// Keep the native File when exactly one canonical match exists.
+// UNVERIFIED: Check both If inputs and CFG03 use the named variable after export.
+nothing() >> noArchiveMatch
+var existingCleanFile = noArchiveMatch
 repeatEach archiveContents {
     fileDetail(input: RepeatItem, property: File Extension) >> archiveExtension
     changeCase(text: "${archiveExtension}", case: lowercase) >> archiveExtensionLower
@@ -57,28 +62,20 @@ repeatEach archiveContents {
         fileDetail(input: RepeatItem, property: Name) >> archiveName
         runShortcut(name: "UTIL - Canonical Choir Name", input: archiveName, show: false) >> archiveStem
         if archiveStem == "${canonicalStem}" {
-            getItemFromList(list: RepeatItem, type: Item at Index, index: "1", startIndex: "", endIndex: "")
-        } else {
-            nothing()
+            if existingCleanFile != nil {
+                alert(alert: "Resolve duplicate canonical PDFs in iCloud before retrying.", title: "Multiple clean copies", cancel: false)
+                output(result: "", noResultBehavior: Respond, response: "")
+            }
+            existingCleanFile = RepeatItem
         }
-    } else {
-        nothing()
     }
-} >> archiveMatches
+}
 
-if archiveMatches != nil {
-    count(type: Items, input: archiveMatches) >> matchCount
-    text(text: "${matchCount}") >> matchCountText
-    if matchCountText == "1" {
-        getItemFromList(list: archiveMatches, type: Item at Index, index: "1", startIndex: "", endIndex: "") >> existingCleanFile
-        /* CFG03 EXISTING FILE RETURN. In the next Stop and Output,
-           replace its EMPTY result field with native existingCleanFile,
-           the Get Item from List immediately above. No Text conversion. */
-        output(result: "", noResultBehavior: Respond, response: "")
-    } else {
-        alert(alert: "Resolve duplicate canonical PDFs in iCloud before retrying.", title: "Multiple clean copies", cancel: false)
-        output(result: "", noResultBehavior: Respond, response: "")
-    }
+if existingCleanFile != nil {
+    /* CFG03 EXISTING FILE RETURN. In the next Stop and Output,
+       replace its EMPTY result field with the named existingCleanFile
+       variable (Set Variable in the search loop). No Text conversion. */
+    output(result: "", noResultBehavior: Respond, response: "")
 }
 
 getFolderContents(folder: archiveRoot, recursive: false) >> typeFolders

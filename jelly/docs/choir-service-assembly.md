@@ -31,12 +31,12 @@ For an action whose result is unused, insert/configure the native action and rem
 | --- | --- | --- |
 | CFG01 | Replace Nothing with **Folder**, selecting existing iCloud `Choir Music/Library` | Reconnect both Get Contents of Folder inputs to that Folder output; it is the sole root configuration |
 | CFG02 | Edit the generated **Save File**: Ask Where to Save Off, Destination = chosen type folder, Overwrite Off | Keep input from Set Name. Destination comes from the preceding Choose from List, not the archive root |
-| CFG03 | Edit the following **Stop and Output** result | Select the native File from Get First Item immediately above; keep Do Nothing for no recipient |
+| CFG03 | Edit the following **Stop and Output** result | Select the named `existingCleanFile` variable populated by Set Variable inside the search loop; keep Do Nothing for no recipient |
 | CFG04 | Edit the final **Stop and Output** result | Select the native Saved File from Save File; keep Do Nothing for no recipient |
 
 CFG03 and CFG04 start with empty result fields. Do not fill them with interpolated Text. After configuration, remove only the **first** Stop and Output under ASSEMBLY GUARD. Keep every validation/return action farther down the helper.
 
-The library root should contain music-type folders. Existing archive matches are returned directly; new PDFs ask for one of those folders. Verify Set Name produces exactly one `.pdf` suffix when building. Empty loop results, recursive cloud files and native File return still need the integrated device run; no local compiler pass is claimed.
+The library root should contain music-type folders. Archive revision 5 initializes the named `existingCleanFile` variable from Nothing, sets it to the native Repeat Item on the first canonical match, and stops if another match appears. It does not capture a Repeat Results variable. In the exported editor, confirm both presence checks, the Set Variable target and CFG03 use the **named variable**, not the initial Nothing output or a missing Magic Variable. This matters because the older inspected compiler's variable-reference encoding is not established as matching this app. New PDFs ask for a type folder. Verify Set Name produces exactly one `.pdf` suffix. Recursive cloud files and native File return still need the integrated device run; no compiler pass is claimed.
 
 ## forScore actions in the service helper
 
@@ -60,7 +60,9 @@ Labels below use the supplied action inventory; the expanded wording may differ.
 
 All File, Score, Composer and Setlist inputs above are native tokens. The title/composer prompts and canonical lookup stem are Text. The Get First Item actions after FS01/FS03 operate on the individual lookup results, never on a whole library.
 
-Check that FS11 uses Repeat Item from the final writing loop, not the preparation loop. Check that the preparation loop's last Get First Item still yields workingScore; its Repeat Results become preparedScores. The ordering loop ends with Choose from List so its Repeat Results are native Files. Keep comments above their slots, not after those final output actions.
+The source uses **Get Item from List: Item at Index, 1** wherever these instructions refer to Get First Item. It uses the documented `File Extension` enum throughout. Running-order filenames are joined with ` | ` using Custom, avoiding the unmatched `NewLines` enum spelling; multiline alerts/reports use documented triple-quoted strings.
+
+Check that FS11 uses Repeat Item from the final writing loop, not the preparation loop. Check that the preparation loop's last Get Item from List still yields workingScore; its Repeat Results become preparedScores. The ordering loop ends with Choose from List so its Repeat Results are native Files. Keep comments above their slots, not after those final output actions. These remaining loop/If result captures are compiler-source-backed candidates, not device-confirmed. The optional repeat-capture probe isolates their syntax if the app reports another out-of-scope result.
 
 After filling all 13 slots and completing the archive helper, remove only the **first** Stop and Output under the service ASSEMBLY GUARD. Leave the guard Comment as the checklist locator. Then run the main with one complete service as described in [the build guide](choir-service-build.md).
 

@@ -1,6 +1,6 @@
 # Build the choir service workflow
 
-Implementation release 1, assembly revision 2, 16 October 2026. Generate all four Shortcuts in Jellycuts, then insert the native forScore actions at their Comment markers. Build the whole workflow and resolve remaining differences during its first service run. No further isolated action experiments are prerequisites. The sources are Drafted, not compiled or installed by this workspace.
+Implementation release 1, assembly revision 3, 16 October 2026. Current source revisions: canonical 2, archive 5, assembly 3, main 2; completed interfaces remain 1.0. Generate all four Shortcuts in Jellycuts, then insert native forScore actions at their Comment markers. Build the whole workflow and resolve remaining differences during its first service run. No further isolated action experiments are prerequisites. The sources are Drafted, not compiled or installed by this workspace.
 
 ## Install these four Shortcuts
 
@@ -23,7 +23,7 @@ Use one working forScore collection and search using Get score named Name. The u
 
 ## Run a service
 
-Launch MAIN - Build Choir Service. In the Files picker, browse the signed-in Nextcloud location and select the PDFs for one service. Confirm the running order using the sequential picker, enter a dated service name, and review the filename list before any archive/import writes. This makes order explicit rather than relying on Files selection order or lexical sorting of Sun2/Sun10.
+Launch MAIN - Build Choir Service. In the Files picker, browse the signed-in Nextcloud location and select the PDFs for one service. Confirm the running order using the sequential picker, enter a dated service name, and review the filename list (joined with ` | `) before any archive/import writes. This makes order explicit rather than relying on Files selection order or lexical sorting of Sun2/Sun10.
 
 The workflow then saves/reuses each clean iCloud PDF, retrieves its canonical score, imports missing working copies, and offers readable title/composer metadata. Existing scores default to being preserved; choose Review metadata to finish an interrupted import or edit a score deliberately.
 
@@ -46,3 +46,9 @@ Compile/import and complete the marked native insertions once, then use two disp
 Keep the historical [import diagnostic](../../manual%20creation/shortcuts/main/test-forscore-import-and-lookup.md) for reference. Its single-score/First Item logic is not used by production.
 
 Sources: [Jelly Run Shortcut](https://docs.jellycuts.com/Documentation/Shortcuts/runShortcut.html), [Jelly Replace Text](https://docs.jellycuts.com/Documentation/Shortcuts/replaceText.html), [existing compiler reference](jellycuts-reference.md), [forScore evidence](../../forscore-action-evidence.md). Source review does not establish compilation or operation on the device.
+
+## Update from earlier exports
+
+Preserve completed installed copies of Archive Choir PDF and Assemble Choir Service, then recompile source revisions 5 and 3 respectively. Reapply CFG01-CFG04 and FS01-FS13 to fresh exports before removing their guards. CFG03 now returns the named `existingCleanFile` variable; it no longer points to a Get First Item action. Verify its presence checks and native File value in the editor. Installed names and completed interfaces have not changed, so canonical revision 2 and main revision 2 can stay installed if already compiled/imported. Recheck the main's Run Shortcut selection and run the integrated cases, including duplicate archives and existing-file reuse.
+
+Sibling `.txt` files are byte-identical transfer copies of the `.jelly` source for on-device use. Edit `.jelly` as authoritative, then refresh its matching `.txt`; do not use an older transfer copy.

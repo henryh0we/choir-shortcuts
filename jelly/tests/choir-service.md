@@ -34,3 +34,19 @@ Static review on 16 October 2026: all four generated sources' call names and req
 16 October 2026, user-reported compilation: archive helper fails at each DoNothing identifier with an out-of-scope error. Archive revision 3 replaces these seven enum arguments with Respond pending manual no-recipient configuration to Do Nothing after export. Corrected build/import/run: Not run.
 
 Archive revision 4, 16 October 2026: user reports out-of-scope FileExtension, FirstItem and archiveMatches. Updated archive to the official documentation's spaced enum forms: property File Extension, type Item at Index with index 1 (equivalent to first item). References: https://docs.jellycuts.com/Documentation/Shortcuts/fileDetail.html and https://docs.jellycuts.com/Documentation/Shortcuts/getItemFromList.html . Leave repeat-result capture unchanged pending recompilation: archiveMatches may be a cascading diagnostic from errors inside its loop. Corrected compilation remains unverified.
+
+## Local documentation review, 16 October 2026
+
+Current sources: canonical revision 2, archive revision 5, assembly revision 3, main revision 2; completed interfaces 1.0. Historical records above remain tied to their earlier revisions. The new snapshot identifies the spaced enums still missing from assembly; those are corrected. Archive no longer captures `archiveMatches`: it uses a named native File and stops on a second canonical match. CFG03 must return this named variable after export. Assembly uses Custom with ` | ` for running-order text and documented triple-quoted strings for multiline UI. No compiler/export/import/runtime pass is claimed.
+
+| Regression case | Steps / expected observation | Actual result |
+| --- | --- | --- |
+| Archive reuse after a match | Existing clean PDF matches source stem. Complete CFG03 with named `existingCleanFile`; File returned, no save/type-folder prompt. Inspect presence checks use that named variable. | Not run |
+| Archive miss after previous invocation | Invoke helper for another identity with no archive match. Initial Nothing resets named variable, so choose type folder and save one clean PDF. No stale File reused. | Not run |
+| Duplicate canonical archive | Two disposable archived PDFs canonicalize to the same stem. Second match alerts and stops, returns no File, does not save/import or change setlist. | Not run |
+| Source enum regression | Compile assembly 3: `File Extension` and all three `Item at Index` calls accepted; each index is `"1"`. Archive 5 has no `archiveMatches` use. | Not run |
+| Running-order review | Pick B then A. Confirmation and report show B then A separated by ` | `; multiline UI contains actual line breaks. Confirm native preparedScores order and forScore readback too. | Not run |
+
+Migration: preserve completed installed helpers, re-export archive 5 and assembly 3, reapply native CFG/FS insertions, repair/check named-variable references if necessary, then remove guards. Names and caller contracts are unchanged. Main and canonical were reviewed without source changes. Matching `.txt` transfer copies are refreshed with source. Continue with the whole-service, repeat/repair and cancellation cases above; optional probes are available only for diagnosing a specific compiler/wiring error.
+
+Static validation for this review: 99 action calls across all four sources matched local documentation parameter-slot sets, with the recorded compiler-backed Output exception. Delimiters balanced outside comments/strings, rejected enum spellings were absent from executable production code, all four `.txt` copies matched source hashes, eight canonical-name regex cases passed using extracted source patterns, and 35 local documentation links resolved. `git diff --check` passed. No `jelly`, `jellycuts`, `jellyc` or Swift executable was found on PATH; no compilation, artifact, import or runtime result was produced.

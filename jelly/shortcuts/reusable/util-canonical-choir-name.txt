@@ -1,4 +1,4 @@
-﻿// Installed name: UTIL - Canonical Choir Name
+// Installed name: UTIL - Canonical Choir Name
 // Purpose: Remove a terminal PDF extension and recognised service prefix.
 // Role: Reusable; specification revision 2; interface 1.0.
 // Input: One nonempty filename Text, with or without .pdf. No paths or Files.

@@ -9,9 +9,10 @@ Documentation snapshot: `19306be1dd30c20e12058ebe144dd8342e64ca39`; navigate thr
 | Feature | Existing evidence, 16 October 2026 | Current candidate and next check |
 | --- | --- | --- |
 | Empty Stop and Output | User reported out-of-scope `DoNothing` in archive helper | Production uses `Respond` as an export workaround, with manual no-recipient repair. Test output probe before claiming acceptance. |
-| File extension enum | User reported out-of-scope `FileExtension` | Official docs use `File Extension`; archive revision 4 uses it. Test file extension probe. |
-| List item enum | User reported out-of-scope `FirstItem` | Official docs use `Item at Index`; archive revision 4 selects index `"1"`. Test list item probe. |
-| Repeat result capture | User reported out-of-scope `archiveMatches` in larger helper | A cascading error is only a hypothesis. Test repeat capture probe independently. |
+| File extension enum | User reported out-of-scope `FileExtension` | Official docs use `File Extension`; archive 5 and assembly 3 use it. Test file extension probe if needed. |
+| List item enum | User reported out-of-scope `FirstItem` | Official docs use `Item at Index`; assembly 3 selects index `"1"`. Archive 5 no longer needs a list-item action. |
+| Repeat result capture | User reported out-of-scope `archiveMatches` in larger helper | Archive 5 removes that capture using a named File variable and duplicate check. Other source-backed captures remain in assembly. Optional repeat probe isolates those. |
+| Mutable File variable | Local variables guide documents assignment from native globals/Magic Variables; inspected older compiler has unresolved named-variable encoding | Archive 5 uses documented assignment. Inspect named-variable references after export and exercise first-match, no-match and duplicate paths. Optional native File variable probe isolates this. |
 | Output signature | Web docs show `notes`/`folder`; inspected compiler reads `result`/`noResultBehavior`/`response` | Probe compiler-backed candidate; do not combine signatures or treat either as device-tested. |
 | List literal example | Upstream `list.html` has incomplete example (`list(items: [\)`) | Probe existing project/source-backed string-array form; upstream example remains unchanged. |
 | Repeat variables | Language guide uses spaced globals; inspected compiler tests use unspaced names | Repeat probe uses production candidate `RepeatItem`; confirm compiler acceptance and exported wiring. |
@@ -28,8 +29,9 @@ Each source is one optional diagnostic Shortcut, revision 1, interface 1.0, with
 | [probe-file-extension.jelly](probe-file-extension.jelly) / TEST - Jelly File Extension | Supply one synthetic PDF File named `probe.pdf` via a temporary Run Shortcut action. Inspect Get File Details output: `pdf`. Missing/non-File input is outside contract. | Drafted / Not run |
 | [probe-list-item.jelly](probe-list-item.jelly) / TEST - Jelly List Item | Run directly, inspect List and Get Item from List. Result should be Text `Alpha`, selected from two items. Input ignored. | Drafted / Not run |
 | [probe-repeat-capture.jelly](probe-repeat-capture.jelly) / TEST - Jelly Repeat Capture | Run directly, inspect Repeat with Each and captured result: two Text items `Alpha`, `Beta` in order. Input ignored. | Drafted / Not run |
+| [probe-native-file-variable.jelly](probe-native-file-variable.jelly) / TEST - Jelly Native File Variable | Supply one synthetic PDF via temporary caller. Inspect Set Variable and Quick Look: the same native PDF should appear, with no Text conversion. Check the consumer selects named `selectedFile`, not initial Nothing. | Drafted / Not run |
 
-These probes do not save, delete, transmit or modify files. The last three omit display/output actions to isolate compilation; inspect results in the Shortcuts editor. If temporary Quick Look actions are needed, record them as post-import test edits, separate from source compilation. The output probe alone tests explicit return behavior. Compile, inspect exported wiring, then run; successful parsing alone does not prove native types or runtime output.
+These probes do not save, delete, transmit or modify files. The file-extension, list-item and repeat-capture probes omit display/output actions to isolate compilation; inspect results in the Shortcuts editor. If temporary Quick Look actions are needed, record them as post-import test edits, separate from source compilation. The output probe alone tests explicit return behavior. Compile, inspect exported wiring, then run; successful parsing alone does not prove native types or runtime output. Probes are optional diagnostics; they do not replace or block the integrated service run.
 
 ## Record a result
 

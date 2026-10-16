@@ -1,6 +1,6 @@
 // Installed name: UTIL - Assemble Choir Service
 // Purpose: Generate standard actions; insert forScore actions at FS01-FS13.
-// Role: Reusable; specification revision 2; completed interface 1.0.
+// Role: Reusable; specification revision 3; completed interface 1.0.
 // Input: Text interactive. Other/missing input returns instructions; direct no-input unsupported.
 // Output: One service-report Text if native actions/navigation complete.
 // Side effects after assembly: File selection, clean archive/import, metadata, setlist writes.
@@ -8,7 +8,7 @@
 // Dependencies: UTIL - Canonical Choir Name and UTIL - Archive Choir PDF, interface 1.0.
 // Sources: util-canonical-choir-name.jelly and util-archive-choir-pdf.jelly.
 // Target: iPadOS 26.6, forScore 15.2.5, Jellycuts 2026.6.4; Files/app permissions.
-// Stage: Drafted, source-checked against pinned compiler, not compiled/device tested.
+// Stage: Drafted; local docs/source reviewed, not compiled/device tested.
 // Assembly: ../../docs/choir-service-assembly.md; tests: ../../tests/choir-service.md
 
 import Shortcuts
@@ -31,20 +31,26 @@ repeatEach selectedFiles {
 } >> orderedFiles
 
 repeatEach orderedFiles {
-    fileDetail(input: RepeatItem, property: FileExtension) >> sourceExtension
+    fileDetail(input: RepeatItem, property: File Extension) >> sourceExtension
     changeCase(text: "${sourceExtension}", case: lowercase) >> lowerExtension
     if lowerExtension != "pdf" {
         output(result: "A selected item is not a PDF. No changes made.", noResultBehavior: Respond, response: "Select PDFs only.")
     }
     fileDetail(input: RepeatItem, property: Name)
 } >> orderedNames
-combineText(text: [orderedNames], combine: NewLines, separator: "") >> runningOrder
+combineText(text: [orderedNames], combine: Custom, separator: " | ") >> runningOrder
 askForInput(prompt: "Service name including date, for example 2026-10-18 - Evensong", type: Text, default: "", allowDecimal: false, allowNegative: false) >> enteredServiceName
 replaceText(input: "${enteredServiceName}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> serviceName
 if serviceName == nil {
     output(result: "A service name is required. No changes made.", noResultBehavior: Respond, response: "A service name is required.")
 }
-alert(alert: "${serviceName}\n\n${runningOrder}\n\nContinue to save clean PDFs and prepare scores. Check omissions/repetitions now. Setlist entries change only after every score is ready.", title: "Confirm service", cancel: true)
+alert(alert: """
+${serviceName}
+
+${runningOrder}
+
+Continue to save clean PDFs and prepare scores. Check omissions/repetitions now. Setlist entries change only after every score is ready.
+""", title: "Confirm service", cancel: true)
 
 repeatEach orderedFiles {
     fileDetail(input: RepeatItem, property: Name) >> sourceName
@@ -59,12 +65,12 @@ repeatEach orderedFiles {
 
     /* FS01 LOOKUP. Replace next Nothing with Get score named canonicalStem.
        Continue if not found ON; category filters unset; Reference empty.
-       Reconnect the following existingScore If inputs and First Item input
+       Reconnect the following existingScore If inputs and Item at Index input
        to THIS Get score output. Never use the first score of the whole library. */
     nothing() >> existingScore
 
     if existingScore != nil {
-        getItemFromList(list: existingScore, type: FirstItem, index: "", startIndex: "", endIndex: "")
+        getItemFromList(list: existingScore, type: Item at Index, index: "1", startIndex: "", endIndex: "")
     } else {
         /* FS02 IMPORT. Replace next Nothing with the import action that
            worked in the device diagnostic. Files=cleanFile native File;
@@ -72,13 +78,13 @@ repeatEach orderedFiles {
         nothing()
         /* FS03 LOOKUP AFTER IMPORT. Replace next Nothing with Get score
            named canonicalStem, Continue if not found ON, other filters unset.
-           Reconnect the following importedScore If and First Item inputs
+           Reconnect the following importedScore If and Item at Index inputs
            to this lookup's native Score output. */
         nothing() >> importedScore
         if importedScore == nil {
             output(result: "Import unconfirmed for ${canonicalStem}. Inspect forScore before retrying. Setlist entries have not been replaced.", noResultBehavior: Respond, response: "Import unconfirmed.")
         }
-        getItemFromList(list: importedScore, type: FirstItem, index: "", startIndex: "", endIndex: "")
+        getItemFromList(list: importedScore, type: Item at Index, index: "1", startIndex: "", endIndex: "")
     } >> workingScore
 
     if existingScore != nil {
@@ -135,7 +141,7 @@ repeatEach orderedFiles {
             }
         }
     }
-    getItemFromList(list: workingScore, type: FirstItem, index: "", startIndex: "", endIndex: "")
+    getItemFromList(list: workingScore, type: Item at Index, index: "1", startIndex: "", endIndex: "")
 } >> preparedScores
 
 list(items: ["Create new", "Replace existing"]) >> setlistChoices
@@ -150,7 +156,11 @@ if setlistMode == "Create new" {
    Reconnect the following Choose from List input to its Setlists output. */
 nothing() >> availableSetlists
 choose(list: availableSetlists, prompt: "Select the new service, or the existing service to replace.", multiple: false, all: false) >> targetSetlist
-alert(alert: "${runningOrder}\n\nApply this running order to the setlist you selected? Replace existing clears its entries first; scores and clean PDFs remain.", title: "Apply running order", cancel: true)
+alert(alert: """
+${runningOrder}
+
+Apply this running order to the setlist you selected? Replace existing clears its entries first; scores and clean PDFs remain.
+""", title: "Apply running order", cancel: true)
 if setlistMode == "Replace existing" {
     /* FS10 CLEAR ONLY THE SELECTED SETLIST. Replace next Nothing with
        Remove all setlist entries. Setlist=targetSetlist native Chosen Item.
@@ -170,7 +180,13 @@ repeatEach preparedScores {
 nothing() >> actualEntries
 count(type: Items, input: actualEntries) >> actualCount
 count(type: Items, input: preparedScores) >> requestedCount
-text(text: "${serviceName}\n${runningOrder}\nRequested entries: ${requestedCount}\nReadback entries: ${actualCount}\nRunning order submitted to selected setlist. Check Manual order and metadata; count equality alone is not identity/order verification.") >> serviceReport
+text(text: """
+${serviceName}
+${runningOrder}
+Requested entries: ${requestedCount}
+Readback entries: ${actualCount}
+Running order submitted to selected setlist. Check Manual order and metadata; count equality alone is not identity/order verification.
+""") >> serviceReport
 quicklook(input: actualEntries)
 /* FS13 OPEN SERVICE. Replace next Nothing with open setlist.
    Setlist=targetSetlist. Do not supply serviceName Text instead of the object.

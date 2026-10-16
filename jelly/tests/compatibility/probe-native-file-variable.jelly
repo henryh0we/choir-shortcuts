@@ -1,0 +1,19 @@
+// Installed name: TEST - Jelly Native File Variable
+// Purpose/role: Isolate native File assignment across a loop; diagnostic.
+// Specification revision: 1; interface: 1.0.
+// Input: Exactly one synthetic PDF File; absent/multiple input unsupported.
+// Output: Quick Look should display that PDF; no explicit return contract.
+// Direct/called: Supply File via temporary caller; same assignment behavior.
+// Side effects: Preview only. Dependencies: None. File access supplied by caller.
+// Target: iPadOS 26.6, Jellycuts 2026.6.4; bundled compiler unknown.
+// Evidence: Local variables guide; older compiler encoding is unresolved.
+// Stage: Drafted. Tests and evidence: README.md; not compiled/imported/run.
+
+import Shortcuts
+
+nothing() >> emptyFile
+var selectedFile = emptyFile
+repeatEach ShortcutInput {
+    selectedFile = RepeatItem
+}
+quicklook(input: selectedFile)
