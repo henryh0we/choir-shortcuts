@@ -1,6 +1,6 @@
 // Installed name: UTIL - Archive Choir PDF
 // Purpose: Generated archive helper; complete CFG slots after importing.
-// Role: Reusable; specification revision 5; completed interface 1.0.
+// Role: Reusable; specification revision 6; completed interface 1.0.
 // Input: One native PDF File. Missing/multiple/non-PDF inputs stop without saving.
 // Output after assembly: One native File, or empty output after validation alerts.
 // Direct/called: May ask for a type folder when absent; no unattended mode.
@@ -20,25 +20,25 @@ import Shortcuts
    are complete. Then remove only the Stop and Output immediately below. */
 output(result: "Archive helper needs its CFG assembly slots completed.", noResultBehavior: Respond, response: "Complete archive assembly first.")
 
-if ShortcutInput == nil {
+if(ShortcutInput == nil) {
     alert(alert: "Supply one PDF File.", title: "No source PDF", cancel: false)
     output(result: "", noResultBehavior: Respond, response: "")
 }
 count(type: Items, input: ShortcutInput) >> inputCount
 text(text: "${inputCount}") >> inputCountText
-if inputCountText != "1" {
+if(inputCountText != "1") {
     alert(alert: "Supply exactly one PDF File.", title: "One PDF required", cancel: false)
     output(result: "", noResultBehavior: Respond, response: "")
 }
 fileDetail(input: ShortcutInput, property: File Extension) >> sourceExtension
 changeCase(text: "${sourceExtension}", case: lowercase) >> lowerExtension
-if lowerExtension != "pdf" {
+if(lowerExtension != "pdf") {
     alert(alert: "No file saved. Select a PDF.", title: "PDF required", cancel: false)
     output(result: "", noResultBehavior: Respond, response: "")
 }
 fileDetail(input: ShortcutInput, property: Name) >> sourceName
 runShortcut(name: "UTIL - Canonical Choir Name", input: sourceName, show: false) >> canonicalStem
-if canonicalStem == nil {
+if(canonicalStem == nil) {
     alert(alert: "A file named only .pdf is not supported.", title: "Empty music identity", cancel: false)
     output(result: "", noResultBehavior: Respond, response: "")
 }
@@ -55,14 +55,14 @@ getFolderContents(folder: archiveRoot, recursive: true) >> archiveContents
 // UNVERIFIED: Check both If inputs and CFG03 use the named variable after export.
 nothing() >> noArchiveMatch
 var existingCleanFile = noArchiveMatch
-repeatEach archiveContents {
+repeatEach(archiveContents) {
     fileDetail(input: RepeatItem, property: File Extension) >> archiveExtension
     changeCase(text: "${archiveExtension}", case: lowercase) >> archiveExtensionLower
-    if archiveExtensionLower == "pdf" {
+    if(archiveExtensionLower == "pdf") {
         fileDetail(input: RepeatItem, property: Name) >> archiveName
         runShortcut(name: "UTIL - Canonical Choir Name", input: archiveName, show: false) >> archiveStem
-        if archiveStem == "${canonicalStem}" {
-            if existingCleanFile != nil {
+        if(archiveStem == "${canonicalStem}") {
+            if(existingCleanFile != nil) {
                 alert(alert: "Resolve duplicate canonical PDFs in iCloud before retrying.", title: "Multiple clean copies", cancel: false)
                 output(result: "", noResultBehavior: Respond, response: "")
             }
@@ -71,7 +71,7 @@ repeatEach archiveContents {
     }
 }
 
-if existingCleanFile != nil {
+if(existingCleanFile != nil) {
     /* CFG03 EXISTING FILE RETURN. In the next Stop and Output,
        replace its EMPTY result field with the named existingCleanFile
        variable (Set Variable in the search loop). No Text conversion. */

@@ -150,6 +150,8 @@ Archive revision 4, 16 October 2026: user reports out-of-scope FileExtension, Fi
 
 ### Local-doc review corrections (16 October 2026)
 
+Current block syntax candidate after repeated missing-wrapper reports: use `if(condition) {` and `repeatEach(items) {`, exactly as documented in the local If/Else and Repeat guides. Archive 6 and assembly 4 adopt these forms. Earlier unparenthesized compiler-source examples in this record are historical evidence for a different candidate toolchain, not the current installed-app recommendation. Parser cause and corrected native structure remain unverified until the user re-exports and inspects the blocks.
+
 Latest device evidence: canonical revision 3's generated empty-input Stop and Output has no enclosing If and runs unconditionally. Revision 4 removes the guard; only two replacements and the final output remain. This establishes a generated-control-flow discrepancy in that project, not its compiler/parser cause. Do not treat other If/Repeat structures as faithfully exported without inspecting their native markers. Runtime acceptance of revision 4 is pending.
 
 Later device evidence supersedes the earlier canonical review below: canonical revision 2's If-result capture leaves `sourceName` out of scope at line 21. Revision 3 removes that capture, uses an early empty-input return and passes ShortcutInput directly to Replace Text. No mutable variable is introduced. Filename patterns and interface remain unchanged; corrected app compilation is pending. Remaining assembly If/Repeat captures are not established as compatible merely because the older inspected compiler implements them.

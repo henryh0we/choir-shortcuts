@@ -6,6 +6,8 @@ The pinned compiler converts both line and block comments into native Comment ac
 
 ## Install in dependency order
 
+Current control-flow correction: archive revision 6 and service revision 4 use the local documentation's parenthesized If and Repeat Each syntax. Recompile/export fresh copies and inspect the generated blocks before reapplying slots. The first Stop and Output under ASSEMBLY GUARD is intentionally unconditional; the subsequent No source PDF alert and empty Stop and Output must be enclosed by an If checking that Shortcut Input has no value. Do not remove validation stops to compensate for missing wrappers. This correction is awaiting device confirmation.
+
 1. [UTIL - Canonical Choir Name](../shortcuts/reusable/util-canonical-choir-name.jelly).
 2. [UTIL - Archive Choir PDF](../shortcuts/reusable/util-archive-choir-pdf.jelly).
 3. [UTIL - Assemble Choir Service](../shortcuts/reusable/util-assemble-choir-service.jelly).

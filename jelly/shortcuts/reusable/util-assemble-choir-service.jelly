@@ -1,6 +1,6 @@
 // Installed name: UTIL - Assemble Choir Service
 // Purpose: Generate standard actions; insert forScore actions at FS01-FS13.
-// Role: Reusable; specification revision 3; completed interface 1.0.
+// Role: Reusable; specification revision 4; completed interface 1.0.
 // Input: Text interactive. Other/missing input returns instructions; direct no-input unsupported.
 // Output: One service-report Text if native actions/navigation complete.
 // Side effects after assembly: File selection, clean archive/import, metadata, setlist writes.
@@ -18,22 +18,22 @@ import Shortcuts
    CFG slots complete. Then remove only this first Stop and Output. */
 output(result: "Service helper needs its forScore assembly slots completed.", noResultBehavior: Respond, response: "Complete forScore assembly first.")
 
-if ShortcutInput != "interactive" {
+if(ShortcutInput != "interactive") {
     output(result: "Launch MAIN - Build Choir Service.", noResultBehavior: Respond, response: "Launch MAIN - Build Choir Service.")
 }
 selectFile(type: Files, multiple: true) >> selectedFiles
-if selectedFiles == nil {
+if(selectedFiles == nil) {
     output(result: "No files selected. No changes made.", noResultBehavior: Respond, response: "No files selected.")
 }
 count(type: Items, input: selectedFiles) >> pieceCount
-repeatEach selectedFiles {
+repeatEach(selectedFiles) {
     choose(list: selectedFiles, prompt: "Choose piece ${RepeatIndex} of ${pieceCount} in running order.", multiple: false, all: false)
 } >> orderedFiles
 
-repeatEach orderedFiles {
+repeatEach(orderedFiles) {
     fileDetail(input: RepeatItem, property: File Extension) >> sourceExtension
     changeCase(text: "${sourceExtension}", case: lowercase) >> lowerExtension
-    if lowerExtension != "pdf" {
+    if(lowerExtension != "pdf") {
         output(result: "A selected item is not a PDF. No changes made.", noResultBehavior: Respond, response: "Select PDFs only.")
     }
     fileDetail(input: RepeatItem, property: Name)
@@ -41,7 +41,7 @@ repeatEach orderedFiles {
 combineText(text: [orderedNames], combine: Custom, separator: " | ") >> runningOrder
 askForInput(prompt: "Service name including date, for example 2026-10-18 - Evensong", type: Text, default: "", allowDecimal: false, allowNegative: false) >> enteredServiceName
 replaceText(input: "${enteredServiceName}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> serviceName
-if serviceName == nil {
+if(serviceName == nil) {
     output(result: "A service name is required. No changes made.", noResultBehavior: Respond, response: "A service name is required.")
 }
 alert(alert: """
@@ -52,14 +52,14 @@ ${runningOrder}
 Continue to save clean PDFs and prepare scores. Check omissions/repetitions now. Setlist entries change only after every score is ready.
 """, title: "Confirm service", cancel: true)
 
-repeatEach orderedFiles {
+repeatEach(orderedFiles) {
     fileDetail(input: RepeatItem, property: Name) >> sourceName
     runShortcut(name: "UTIL - Canonical Choir Name", input: sourceName, show: false) >> canonicalStem
-    if canonicalStem == nil {
+    if(canonicalStem == nil) {
         output(result: "Empty music identity. Earlier pieces may already be prepared.", noResultBehavior: Respond, response: "Service incomplete.")
     }
     runShortcut(name: "UTIL - Archive Choir PDF", input: RepeatItem, show: false) >> cleanFile
-    if cleanFile == nil {
+    if(cleanFile == nil) {
         output(result: "No clean PDF returned for ${canonicalStem}. Inspect archive before retrying.", noResultBehavior: Respond, response: "Service incomplete.")
     }
 
@@ -69,7 +69,7 @@ repeatEach orderedFiles {
        to THIS Get score output. Never use the first score of the whole library. */
     nothing() >> existingScore
 
-    if existingScore != nil {
+    if(existingScore != nil) {
         getItemFromList(list: existingScore, type: Item at Index, index: "1", startIndex: "", endIndex: "")
     } else {
         /* FS02 IMPORT. Replace next Nothing with the import action that
@@ -81,27 +81,27 @@ repeatEach orderedFiles {
            Reconnect the following importedScore If and Item at Index inputs
            to this lookup's native Score output. */
         nothing() >> importedScore
-        if importedScore == nil {
+        if(importedScore == nil) {
             output(result: "Import unconfirmed for ${canonicalStem}. Inspect forScore before retrying. Setlist entries have not been replaced.", noResultBehavior: Respond, response: "Import unconfirmed.")
         }
         getItemFromList(list: importedScore, type: Item at Index, index: "1", startIndex: "", endIndex: "")
     } >> workingScore
 
-    if existingScore != nil {
+    if(existingScore != nil) {
         list(items: ["Reuse unchanged", "Review metadata"]) >> metadataChoices
         choose(list: metadataChoices, prompt: "Existing score: preserve or review metadata?", multiple: false, all: false)
     } else {
         text(text: "Review metadata")
     } >> metadataMode
 
-    if metadataMode == "Review metadata" {
+    if(metadataMode == "Review metadata") {
         matchText(text: "${canonicalStem}", regex: "^(?!(?:NEH[0-9]|Ps[0-9]|OH[0-9]|[0-9]|Hy-|RSC-))(?!.*-Hebdom)[^-]+-.+$", caseSensitive: false) >> composerTitleMatch
-        if composerTitleMatch != nil {
+        if(composerTitleMatch != nil) {
             replaceText(input: "${canonicalStem}", find: "^([^-]+)-(.+)$", replace: "$1", isRegex: true, caseSensitive: true)
         } else {
             text(text: "-")
         } >> composerSuggestion
-        if composerTitleMatch != nil {
+        if(composerTitleMatch != nil) {
             replaceText(input: "${canonicalStem}", find: "^([^-]+)-(.+)$", replace: "$2", isRegex: true, caseSensitive: true)
         } else {
             text(text: "${canonicalStem}")
@@ -110,7 +110,7 @@ repeatEach orderedFiles {
         replaceText(input: "${spacedTitle}", find: "-", replace: " - ", isRegex: false, caseSensitive: true) >> readableTitle
         askForInput(prompt: "Confirm title, retaining movement and variant details.", type: Text, default: "${readableTitle}", allowDecimal: false, allowNegative: false) >> enteredTitle
         replaceText(input: "${enteredTitle}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> displayTitle
-        if displayTitle == nil {
+        if(displayTitle == nil) {
             output(result: "Empty title. Rerun and choose Review metadata to finish any imported score.", noResultBehavior: Respond, response: "Metadata incomplete.")
         }
         askForInput(prompt: "Confirm composer; a single hyphen means unknown/not applicable.", type: Text, default: "${composerSuggestion}", allowDecimal: false, allowNegative: false) >> enteredComposer
@@ -120,14 +120,14 @@ repeatEach orderedFiles {
            Scores=workingScore native If Result, Name=displayTitle Text.
            No output from Rename is consumed; workingScore stays native. */
         nothing()
-        if composerName != nil {
-            if composerName != "-" {
+        if(composerName != nil) {
+            if(composerName != "-") {
                 /* FS05 COMPOSER LOOKUP. Replace next Nothing with Find composer
                    (expanded Get composer named Name). Name=composerName;
                    Continue if not found ON. Reconnect the following If
                    input to its Composer output, and use that output in FS06. */
                 nothing() >> existingComposer
-                if existingComposer != nil {
+                if(existingComposer != nil) {
                     /* FS06 ASSIGN EXISTING COMPOSER. Replace next Nothing
                        with Add metadata. Score=workingScore; Composers=
                        FS05 Composer output; Bookmarks empty; other categories unset. */
@@ -146,7 +146,7 @@ repeatEach orderedFiles {
 
 list(items: ["Create new", "Replace existing"]) >> setlistChoices
 choose(list: setlistChoices, prompt: "Create an unused service name, or replace an existing service?", multiple: false, all: false) >> setlistMode
-if setlistMode == "Create new" {
+if(setlistMode == "Create new") {
     /* FS08 CREATE SETLIST. Replace next Nothing with new setlist
        (expanded Create Setlist Name). Name=serviceName; Folder unset.
        Use an unused name. Creation's return is not consumed. */
@@ -161,13 +161,13 @@ ${runningOrder}
 
 Apply this running order to the setlist you selected? Replace existing clears its entries first; scores and clean PDFs remain.
 """, title: "Apply running order", cancel: true)
-if setlistMode == "Replace existing" {
+if(setlistMode == "Replace existing") {
     /* FS10 CLEAR ONLY THE SELECTED SETLIST. Replace next Nothing with
        Remove all setlist entries. Setlist=targetSetlist native Chosen Item.
        This is inside Replace existing and after all scores are prepared. */
     nothing()
 }
-repeatEach preparedScores {
+repeatEach(preparedScores) {
     /* FS11 ADD ONE SCORE. Replace next Nothing with add scores to setlist.
        Scores=Repeat Item from THIS writing loop; Setlist=targetSetlist;
        Skip if already added OFF to retain deliberate repetitions.
