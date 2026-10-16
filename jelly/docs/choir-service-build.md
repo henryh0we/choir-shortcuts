@@ -1,6 +1,6 @@
 # Build the choir service workflow
 
-Implementation release 1, assembly revision 3, 16 October 2026. Current source revisions: canonical 2, archive 5, assembly 3, main 2; completed interfaces remain 1.0. Generate all four Shortcuts in Jellycuts, then insert native forScore actions at their Comment markers. Build the whole workflow and resolve remaining differences during its first service run. No further isolated action experiments are prerequisites. The sources are Drafted, not compiled or installed by this workspace.
+Implementation release 1, assembly revision 3, 16 October 2026. Current source revisions: canonical 3, archive 5, assembly 3, main 2; completed interfaces remain 1.0. Generate all four Shortcuts in Jellycuts, then insert native forScore actions at their Comment markers. Build the whole workflow and resolve remaining differences during its first service run. No further isolated action experiments are prerequisites. The sources are Drafted, not compiled or installed by this workspace.
 
 ## Install these four Shortcuts
 
@@ -49,6 +49,6 @@ Sources: [Jelly Run Shortcut](https://docs.jellycuts.com/Documentation/Shortcuts
 
 ## Update from earlier exports
 
-Preserve completed installed copies of Archive Choir PDF and Assemble Choir Service, then recompile source revisions 5 and 3 respectively. Reapply CFG01-CFG04 and FS01-FS13 to fresh exports before removing their guards. CFG03 now returns the named `existingCleanFile` variable; it no longer points to a Get First Item action. Verify its presence checks and native File value in the editor. Installed names and completed interfaces have not changed, so canonical revision 2 and main revision 2 can stay installed if already compiled/imported. Recheck the main's Run Shortcut selection and run the integrated cases, including duplicate archives and existing-file reuse.
+Preserve completed installed copies of Archive Choir PDF and Assemble Choir Service, then recompile source revisions 5 and 3 respectively. Reapply CFG01-CFG04 and FS01-FS13 to fresh exports before removing their guards. CFG03 now returns the named `existingCleanFile` variable; it no longer points to a Get First Item action. Verify its presence checks and native File value in the editor. Installed names and completed interfaces have not changed, so main revision 2 can stay installed if already compiled/imported. Canonical revision 3 must replace revision 2 to remove the device-rejected If-result capture. Recheck the main's Run Shortcut selection and run the integrated cases, including duplicate archives and existing-file reuse.
 
 Sibling `.txt` files are byte-identical transfer copies of the `.jelly` source for on-device use. Edit `.jelly` as authoritative, then refresh its matching `.txt`; do not use an older transfer copy.

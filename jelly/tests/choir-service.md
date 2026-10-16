@@ -37,6 +37,8 @@ Archive revision 4, 16 October 2026: user reports out-of-scope FileExtension, Fi
 
 ## Local documentation review, 16 October 2026
 
+Later device report: canonical revision 2 fails at line 21 with `sourceName` not in scope. Revision 3 removes `} >> sourceName`, returns empty output immediately for missing input, and feeds ShortcutInput directly to Replace Text. Interface 1.0 and filename patterns are unchanged. Earlier static review did not establish acceptance of block captures in this app. Revision 3 compilation/import/execution: Not run. Recompile/import this utility under the same exact installed name before testing the archive helper. Check `Fri1-Walsh-Responses.pdf` returns `Walsh-Responses`, `Jackson-InGminor.pdf` returns `Jackson-InGminor`, and absent input returns no usable value without running replacements. Archive revision 5 generation is separately user-reported as successful; its configured runtime behavior remains unverified.
+
 Current sources: canonical revision 2, archive revision 5, assembly revision 3, main revision 2; completed interfaces 1.0. Historical records above remain tied to their earlier revisions. The new snapshot identifies the spaced enums still missing from assembly; those are corrected. Archive no longer captures `archiveMatches`: it uses a named native File and stops on a second canonical match. CFG03 must return this named variable after export. Assembly uses Custom with ` | ` for running-order text and documented triple-quoted strings for multiline UI. No compiler/export/import/runtime pass is claimed.
 
 | Regression case | Steps / expected observation | Actual result |
