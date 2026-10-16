@@ -1,0 +1,21 @@
+Source: https://github.com/Jellycuts/docs.jellycuts.com/blob/19306be1dd30c20e12058ebe144dd8342e64ca39/Documentation/Shortcuts/debugShortcut.html
+
+# Debug Content Attribution
+
+iOS 14 +
+
+## Notes
+
+A weird debug action.
+
+## Syntax
+
+~~~~text
+debugShortcut()
+~~~~
+
+## Example
+
+~~~~text
+debugShortcut()
+~~~~

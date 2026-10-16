@@ -1,0 +1,16 @@
+// Installed name: TEST - Jelly Repeat Capture
+// Purpose/role: Isolate production repeat-result capture candidate; diagnostic.
+// Specification revision: 1; interface: 1.0.
+// Input: Ignored, including absent input. Output: Inspect Alpha/Beta list in editor.
+// Direct/called: Same two iterations; no explicit return contract or prompts.
+// Side effects: None. Dependencies: None. No permissions/provider apps.
+// Target: iPadOS 26.6, Jellycuts 2026.6.4; bundled compiler unknown.
+// Evidence: Pinned compiler/project candidate; legacy guide differs.
+// Stage: Drafted. Tests and evidence: README.md; not compiled/imported/run.
+
+import Shortcuts
+
+list(items: ["Alpha", "Beta"]) >> options
+repeatEach options {
+    text(text: "${RepeatItem}")
+} >> capturedItems

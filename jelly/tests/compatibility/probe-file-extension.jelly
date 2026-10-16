@@ -1,0 +1,14 @@
+// Installed name: TEST - Jelly File Extension
+// Purpose/role: Isolate documented spaced File Extension enum; diagnostic.
+// Specification revision: 1; interface: 1.0.
+// Input: Exactly one File, probe.pdf; missing/non-File input unsupported.
+// Output: Inspect one Text extension in editor; no explicit return contract.
+// Direct/called: Supply File through temporary caller. No prompts by design.
+// Side effects: None. Dependencies: None. File access supplied by caller.
+// Target: iPadOS 26.6, Jellycuts 2026.6.4; bundled compiler unknown.
+// Evidence: Local Documentation/Shortcuts/fileDetail.md. Stage: Drafted.
+// Tests and evidence: README.md; not compiled, imported or run.
+
+import Shortcuts
+
+fileDetail(input: ShortcutInput, property: File Extension) >> extension

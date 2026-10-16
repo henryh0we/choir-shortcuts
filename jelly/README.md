@@ -13,7 +13,9 @@ Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/
 | [tests/examples.md](tests/examples.md) | Expected results and actual validation record |
 | `build/` | Future generated exports; create when exporting |
 
-The examples use signatures checked against Open-Jellycore source at revision `e1ec31c2ee192c8721749f9eb3b50108e38891cf`. They have **not been compiled, imported, or run**. No Jelly compiler was found on PATH in this Windows workspace on 2026-10-14. The installed Jellycuts app version and actual iOS device version are unknown.
+The examples use signatures checked against Open-Jellycore source at revision `e1ec31c2ee192c8721749f9eb3b50108e38891cf`. They have **not been compiled, imported, or run**. No Jelly compiler was found on PATH in this Windows workspace on 2026-10-14. The user-reported device profile is Jellycuts 2026.6.4 on iPadOS 26.6, with forScore 15.2.5. Bundled compiler and action-library revisions remain unknown; the inspected compiler is not a confirmed match.
+
+Before editing syntax, use the [local official documentation index](docs/jellycuts-docs-index.md) and [device compatibility evidence and small probes](tests/compatibility/README.md). The [pinned snapshot](vendor/jellycuts-docs/README.md) includes original HTML, searchable Markdown, provenance and a repeatable refresh script. Documentation review does not establish successful app compilation.
 
 Build/import the [utility](examples/util-jelly-format-greeting.jelly) first, then the [main](examples/main-jelly-greeting-demo.jelly). Use the Jellycuts iOS app's onboarding and export flow or a compatible Open-Jellycore CLI on a supported host. The reference explains compiler commands, known documentation discrepancies, export/signing checks, and installed-name verification.
 

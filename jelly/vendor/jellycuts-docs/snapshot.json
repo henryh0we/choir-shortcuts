@@ -1,0 +1,1240 @@
+{
+    "repository":  "https://github.com/Jellycuts/docs.jellycuts.com",
+    "branch":  "gh-pages",
+    "commit":  "19306be1dd30c20e12058ebe144dd8342e64ca39",
+    "retrievedUtc":  "2026-10-16T17:42:12.4799773Z",
+    "scope":  [
+                  "Language_Guide/*.html",
+                  "Getting_Started/*.html",
+                  "Documentation/Shortcuts/*.html",
+                  "README.md",
+                  "root license/notice files if present"
+              ],
+    "license":  "No license declaration found in repository metadata or root at initial retrieval; no additional rights granted.",
+    "files":  [
+                  {
+                      "path":  "Documentation/Shortcuts/addFrameToGIF.html",
+                      "sha256":  "36077697231b3ef15a56f1aea1ca6772d7a79673bfec1ee82f3006ab848f6373"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/addNewCalendar.html",
+                      "sha256":  "3993d1153e0adb1b582eafbe4e86452bef38008de5338718346cc8ac025ed27e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/addToPlaylist.html",
+                      "sha256":  "47f0733b9b78f3d87f3e775fbbbe8027ed2abec2937ef0afe2f558e34e185e52"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/addToReadingList.html",
+                      "sha256":  "1ac061c2954cae3ea76080b1ddfb3db91c2390af3c0b1e0eed279aba9ac25873"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/addUpNext.html",
+                      "sha256":  "e6364dab54c82a1cff4b59d3af273d01e121556d65ce08053ff9b76d01f5269e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/adjustDate.html",
+                      "sha256":  "3d67455ee35d40aacfcc45e12c9d618d1bd220d89055e178c480ad800ed510d6"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/airdrop.html",
+                      "sha256":  "cc053208c4fe6d8f6e12405128603a74de6a499a9d21b3f4bc99f335777774c2"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/alert.html",
+                      "sha256":  "4a6495d62661a75708f6e688446c42c35a69a427a2a0d722ed475907d29b98d1"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/appDetail.html",
+                      "sha256":  "b9dbed66ceb8defafd5a88894406e1c83c7e6d81b8b0ff863427136b65f7ddbf"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/appearanceDetail.html",
+                      "sha256":  "e6c955afcd242890d4158c3116dec60d63d1462fc7960d0c4083cbbff689832b"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/appendFile.html",
+                      "sha256":  "2882c6df323d1b32e9804fef49cd3426dbaafb7de6919b61f94b2c43885c5c26"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/appendNote.html",
+                      "sha256":  "39b5edff92c6bb2faaec6aaed92230e742b613f8d5b31f13725102626dc0245e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/articleDetail.html",
+                      "sha256":  "07e6e1ab34d7af06e6b4ffcd5211ae3bc0540551c0f9762ecdd5ee0629a1fbff"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/artistDetail.html",
+                      "sha256":  "7f5bb2610e93be9d2ec0101ede65172e73449b9778f41e9b9b1922e71022b7e8"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/askForInput.html",
+                      "sha256":  "908914adc5023b9ad6ea578ff0a9c283bc3866a435e0f1fe17d2ead076d63c05"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/attendeeDetail.html",
+                      "sha256":  "2d46ed963ed5f4998d96f25f4173642493691ab7fb7a334bd2369b14d7b18e04"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/batteryLevel.html",
+                      "sha256":  "6cdde4b115f8a619d75e2fb234d744c09045b01463f5c2d7d24ae183d07e5297"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/calculate.html",
+                      "sha256":  "37b5b009a431ea74fc61ef4cc9372f53faa12388e165a475d5e58e8a9d535113"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/call.html",
+                      "sha256":  "aa1b86ae568dab60f9e44937bbfd3ccb015d94acdd6d72f9e1a6132e020b9e28"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/cellularDetails.html",
+                      "sha256":  "91003cc70e02bf76530b81fa40974e00d214e0f153bca4d6ba3a8c8faa9800a3"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/changeCase.html",
+                      "sha256":  "3142e68a908db9598945482b3519d22a6c699bbd81adb7e8be9747d19e53a2a7"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/changeWallpaper.html",
+                      "sha256":  "737edea7f0a7856a0fc26945fdb1fe995a62442048448fcd80c9dae350e3371e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/choose.html",
+                      "sha256":  "9c3a5e6b39658c1b7af9f2a774ab9fbd9d304491ef2adbce523cb304024042ea"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/clearUpNext.html",
+                      "sha256":  "66a61a8f09558d10f7338adc8d4f433292659bcbb068d867657fa10fed399b52"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/combineImage.html",
+                      "sha256":  "a1265369f8d98bfb333c4e66ac35635ea2975e35f7e3b0029d8dd5bfee3bb89f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/combineText.html",
+                      "sha256":  "e0af67eab0490a00c598d6765b4c301962e822a39cae29d983bd7e65c5f38030"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/conditionDetail.html",
+                      "sha256":  "402d480fea6b15dd18d29a8a7c42d928824a725abfd986d939b7b05aa13ce459"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/connectToServers.html",
+                      "sha256":  "3c8dd21dee57de375b832ce448ab6cd0f6cf1ac5d194f3673237192a7477c739"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/contactDetail.html",
+                      "sha256":  "676c068f14df1b75e60b38db68fc8beef0d33bcb33d38d6167dc4b592d7c4c78"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/contentGraph.html",
+                      "sha256":  "1598a0121082cad11c36a7ec84a4bfceb7f8741d8ad543e2cf8ec572319f6977"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/continueInShortcuts.html",
+                      "sha256":  "64dbb7e0ca68acdff883759a41e0e911460fb4ada411832109a0694bdfd29cf0"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/convertImage.html",
+                      "sha256":  "3a10fa8b6fbdfa9d8f6b121b959382ec6d263960bb55fbe63acd0a763d628be2"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/convertImageFinder.html",
+                      "sha256":  "6561f508ea10a994899ab01913ffe1dd00ac4d407a8f96973e831c45fa589f08"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/correctSpelling.html",
+                      "sha256":  "2738c56744fbf7f46640af244f8991b6ee8f47378a09a24920f525c4f4ddb18b"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/count.html",
+                      "sha256":  "9735f5e5990298389a8c3740143fbee17159da3265affe8cd7bfac0def49cddd"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/createAlbum.html",
+                      "sha256":  "d1e4d4e8504bfae875981df21eb7e7638f1a67d52c5c42a5f7e04e9a42055808"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/createFolder.html",
+                      "sha256":  "e79997622d5f2f2cce2b0300b63fe1d16deff6209d44d765a71c59719901a39f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/createNote.html",
+                      "sha256":  "0e184e7f5f7a12788818189ce37b3ecace98c701f3208c7fb83ec318dba1da5b"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/createPDF.html",
+                      "sha256":  "cb9e696ada4a62f5c8b156713e3dde6c65d522d322d83dfc5def7bfdd197ea30"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/createPlaylist.html",
+                      "sha256":  "9997c75529e6cff292bc8b13b8571f5727c3c989efd097cad4f9fdb495d8b308"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/createQR.html",
+                      "sha256":  "9677bcfb20fe31a8ae973ba925ce338c1bdb54c50bae1abb8f4d5fc0ee57bda2"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/cropImage.html",
+                      "sha256":  "9f17dc758c90df608ca6b93cb6499ad680e82232aaed9eba75b3a26b86c89c2f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/date.html",
+                      "sha256":  "65f8f76e91939f44a34b34188060bd81c86c9fc9619359f6acb297db76a2ae91"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/debugShortcut.html",
+                      "sha256":  "bbf729abfb77393c4f253aa0cd977f320c27de01a2e084d8b32ff5d69fe304af"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/decode.html",
+                      "sha256":  "686164ec7d06259e55ee9a54cf30b5ca87e23cf58b6ee06a3485fd568721b8f6"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/decodeURL.html",
+                      "sha256":  "ff3fbd8300eb7ea3f1942b752d27dd8684c2d6eebd61484ea56a1f51a36b3f8b"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/deleteFile.html",
+                      "sha256":  "15db0950a2a3f4cf6eed459990bf9221ad5f894330ba1e7f4196ffdd6cc32a23"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/deletePhotos.html",
+                      "sha256":  "de8437bef530ca692552760e2f4dad451471e0e4812a3321ba7eb26f1302ee78"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/detectLanguage.html",
+                      "sha256":  "5fcffc43013bb99f14fb8e84310e4fd53ae8d3d2ffb8d2596e1c6dab2901c5f0"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/deviceDetails.html",
+                      "sha256":  "e1a4ba2356c64441258552a1f2a38037c8c733c44d081580c383f3fa8fe9ba45"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/dictateText.html",
+                      "sha256":  "a08f637473b7af26b002aa61de1b2ef7432174c788195b5e8506bbd44618afeb"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/dictionary.html",
+                      "sha256":  "e8eaf7e099ca30bdbf546f07e8f771481370239497a69540a866f14461024c0f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/downloadURL.html",
+                      "sha256":  "3553363826da101ce36868d20b97882683c0d49979ffbafbaddbac5a95946d8c"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/ejectDisk.html",
+                      "sha256":  "8ebc45fe474a9fe56d68cb269ab2b9148dff730c102a498fabc1e959efe1a6f2"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/emojiName.html",
+                      "sha256":  "397e1b3648c90a0cec40da348182dff9335ada3d7ca32cc9e303c6409ad85f4d"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/encode.html",
+                      "sha256":  "ef9a3462139871cbd642bdc4c97d2a9cd033bf6a88b4bc020b6a37a077c54e31"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/encodeAudio.html",
+                      "sha256":  "a7ff6ead89f43f505d1f25d49065342bf8a3f5f0a88ee0d2e6932f4d563ad331"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/encodeMedia.html",
+                      "sha256":  "dcec3b8b5147dc44742fc59bf8c193ed2e08555fe9ee2dffebc9f95e1787e190"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/encodeURL.html",
+                      "sha256":  "1dad3dd1931ec2e84a78d133654e2ec860eefe12a7a006923873b2f7a715f986"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/eventDetail.html",
+                      "sha256":  "4bed30ac0f14ce7cd4f64cfdcf3ba6fb3e9b4823201017d1a05ff05350dce5ad"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/exit.html",
+                      "sha256":  "29af17467fe0af342e4d6216258ab519307e8e00a8db3aaca52a0d6172c0595e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/expandURL.html",
+                      "sha256":  "e335aeda882dd654dfda161541270501c1aa88ed53302e65a41e5f1835b98a54"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/extractArchive.html",
+                      "sha256":  "ccb8e7e4439cd54592a00e40d2a97e00d40a90924f3fabad9a8e9d9faa038023"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/extractTextFromImage.html",
+                      "sha256":  "1553f89697ae33f47ba9fc5bff6509a768d2fa30c645277f2bde4771209e1257"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/facetime.html",
+                      "sha256":  "fb36ea9652cfdd71b5f554d15dd892d6487430b21d1575a8f593341f3c5876b9"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/file.html",
+                      "sha256":  "ef401dced45f5cde6dec8970e859c56b13b5ab6351baa24670d9bf7898b36071"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/fileDetail.html",
+                      "sha256":  "d9369fc0066577eea8020cf9c9fa7420f00c6602688c7f8036295e936cf24a03"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/filterArticles.html",
+                      "sha256":  "aea6c2fec0f4c5dbad8c5d0039b78a00b71fb7a114bcc86ecf5d044a2353e565"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/filterAttendees.html",
+                      "sha256":  "e57670f5eafafeda87351d4e107cb0dc6f72779bb9ff82a1c5e5f09f26a6454c"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/filterCalendar.html",
+                      "sha256":  "0102e43c75b73cce75497b3890ffd98b0436ab688f20e752b34714443ba4940a"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/filterContacts.html",
+                      "sha256":  "055c9b0a3aad5429aa7ae1bc9088c099702ea2fdde8f6f90b5ef6961affa39b6"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/filterFiles.html",
+                      "sha256":  "7dc586ec82304777842fc0529456f56604766f302ff45a5b5a99d0b34757bef6"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/filterImages.html",
+                      "sha256":  "c0d72c5e397f65ed7ad2a44fefef724d7ed3b2cf5e0a7099136ad96e744219b4"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/filterLocations.html",
+                      "sha256":  "e3858714cfa696ee214e8a09ff00c1d014b36859bcec39cb01ac6a51a9b2359e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/filterMusic.html",
+                      "sha256":  "94805e7872d1da4cd9a53422fb7865359341d6cd5bfbf3d855930357331834fc"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/filterNotes.html",
+                      "sha256":  "0d7bd9295343d39ff9f81920c9abf645e910f79575953b6b31d5c0437de205be"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/filterPhotos.html",
+                      "sha256":  "1ed39b1d3282c282d83d9f75cb0c7d552846270dbc30c8cec194aa76cce75b65"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/filterReminders.html",
+                      "sha256":  "f973311f812bf3976a2301075a1282b7841cbdc24b75df34182cb785c4e0fcaa"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/findWindows.html",
+                      "sha256":  "9ea3cf14c580a1939c25b40e497d1cc32493f30308afc902b1a290906ad183fe"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/flipImage.html",
+                      "sha256":  "79e8d3624fdaa59221d1e9929dab87d243e7609e7a7de2ebb6d0e0b296dc406d"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/formatDate.html",
+                      "sha256":  "dce94513a48f43d5a0f605998a0139f0a15f820aea868b02bb9b0122cd6ef98e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/formatNumber.html",
+                      "sha256":  "0f59437aabef2275ccfb8fb65c841c756852e2a93640b9db1d9ae8c1a92f3bf4"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/formatSize.html",
+                      "sha256":  "c0a645d093319afccd988a26e1998914b7cb327f4b9c5992fbcb214b08ee6ebd"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getAddressFrom.html",
+                      "sha256":  "2ad1726676d816bada6d967f07899bac0e3cf3dd904391253e424d00bda7b961"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getallalarms.html",
+                      "sha256":  "0028d47191ed02cbd3ce6ebd838e73d071a109c0c54958b6aff42de2f7c556f1"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getArticle.html",
+                      "sha256":  "e52df9799d730757290b2158eeac6b818ba8fd9c23bd2f4e973887d6e042852e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getClass.html",
+                      "sha256":  "02853ebc2e9d9db614684403c88363a7a1e7dd4d66d5621a40d838e2141e5dc9"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getClipboard.html",
+                      "sha256":  "c5fff332b352db5944946badf61d9486da8213ac99ec84759e2be88c9b77c981"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getContactsFrom.html",
+                      "sha256":  "3490fde60be535faa0c5e557b56debca75d09d7f0b02a2af3ebea63f9d029eb8"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getCurrentConditions.html",
+                      "sha256":  "e94b50cf58fc8481bfc23123eeeeb43e986373c9af1edfb56c1ccc06995324ad"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getCurrentSong.html",
+                      "sha256":  "e79b9c59d91c557745ace6a9234684fec59d6aa3e5f1b14ad4af9d4191429617"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getDateFrom.html",
+                      "sha256":  "4be9fac168ecc0d1710f08220bb24ad01200db90d0ab2fb37d82f83d7c7a1518"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getDictionaryFrom.html",
+                      "sha256":  "6e6c6ef2222fc4aebcec06e410a8331a29da01c27baf308816da28b7c3e2f38d"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getEmailFrom.html",
+                      "sha256":  "b0addb68bd55ee2c0395e9d5ed9490958fce5b964032b8ac0cb65c9b9aa0fde1"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getFile.html",
+                      "sha256":  "1b44577bedd6741f72487be246d80a7625889335f86e1d03ef565c5157a02084"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getFileLink.html",
+                      "sha256":  "af94dd279bfdc7cd4eec3ca4d6ab792daa2a04ae8060832d9939eeaf377faead"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getFileOfType.html",
+                      "sha256":  "6930a10c98b25f58595f4dd0928e5c84fa9283457c1ef7a0eb5fcb3e1695ecb3"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getFolderContents.html",
+                      "sha256":  "3583f72ce2d0de9cb4f4ad9676c4a9d2bde3c58b02eb236d50172e5a082eeb38"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getForecast.html",
+                      "sha256":  "7af434818b732b632b0bde0e6215f285f3d6708147c155319b21917e0a5da41f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getFrames.html",
+                      "sha256":  "58d3ca7d54f2d7c11aa0e736c15028f54715d651c72f8877f492df5448cde5a7"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getHeaders.html",
+                      "sha256":  "9b57de7bd455eeb303e586bdae4e77721e47c6b21d1cbeb7fd42650679da0102"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getImagesFrom.html",
+                      "sha256":  "7e3da2ce830db6765bd0392631e8b901dc0d3ce5448a1da63e48fcce63fc23fb"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getIP.html",
+                      "sha256":  "abb99d06b2c291eb8591704157ade50c863b4edf2343cf440ca6893b7354f728"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getItemFromList.html",
+                      "sha256":  "7aa221195070efd76086bd8b544e98a418b8adfee5cdda74545fd7a858405209"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getLastBurst.html",
+                      "sha256":  "25e52922cc4306cb0135051e7f56928d2935c95234ae675fc728f90f6bee6ad7"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getLastImport.html",
+                      "sha256":  "2a198cd9254ecccb6adcdb7228948ef062ccc5c678d7a4f03e1d67f3d063de7c"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getLastLivePhoto.html",
+                      "sha256":  "e4d0bd12e37fd1dd08392fbc3d96e1dde1dc1d4ebaa7d5e0c2e6fb92df5f334e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getLastPhoto.html",
+                      "sha256":  "a2a74047717dfcd050fb3a5c5f5cfa095cd64ddda58552707b9272f4f26b9f63"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getLastScreenshot.html",
+                      "sha256":  "7efb48b7323541b3aa756bd1de2d0766ad315aacda499c4515344537c9c41508"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getLastVideo.html",
+                      "sha256":  "e6bd1f6e83c76e083833ef4f605feff0481bc1a9eb30ccaf064fe45fd0f01601"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getLocation.html",
+                      "sha256":  "cef28642bd1bf1340e8563c3383288971dc8d6fd2d3087c16d68c0923237c25f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getMatchGroup.html",
+                      "sha256":  "e034938168feedc68fb3c1d379208a167fbb9903a0e81afe13de7f0d1a102886"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getName.html",
+                      "sha256":  "9619e06ea97f129b85de939d45ee76042aeb1229b8e8e4f009bc667269b6b669"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getNumbersFrom.html",
+                      "sha256":  "d249a71ac2b33bfa6104a677791427a3d0a2eb918ed935df6e150ca980c8edaf"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getPageRSS.html",
+                      "sha256":  "7037f3efedefd1eb6bcc13bac56f4cc3f1809568356c36ef6442bd21663e1049"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getParentDirectory.html",
+                      "sha256":  "488a3c6a87322c515bab65cf7baea5247a5602d16173b427daf37cba015cf072"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getPhonesFrom.html",
+                      "sha256":  "14c0c1037c997acc5ba576636678bf551e9c901512c9b96efe3f27eb7a7560d8"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getPlaylist.html",
+                      "sha256":  "910466bc3e0b7de044208b7ce5ad9609be1c7d102dfbe5e986c730aa90e45ca3"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getPodcastEpisodes.html",
+                      "sha256":  "486f30ab44c074e322aa296f06c0af3779354f295dd6a714d8fcb2d4e7723c85"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getPodcasts.html",
+                      "sha256":  "3c7946570c0d35de11273da69ff10402597fe86ccee6c6975d6f1113c13d0203"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getRSSItems.html",
+                      "sha256":  "a662349b03ce2fa9a53355f5a0ff0b235fe5e7081321acdd735ccd878492ab03"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getScreenContext.html",
+                      "sha256":  "299300d98ba80a8a7a23e7785e857f469ddb4783b71cf20943096d1ca80b7861"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getSelectedFiles.html",
+                      "sha256":  "ff4fece613dcd22a81b3d9cd9f24080d1866ae7f58d6885343d29beac2aa81d3"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getShortcuts.html",
+                      "sha256":  "47fad2c727b8714d567752ed8e12e278f50c1d040dded66cafe326ee5cb06332"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getTextFrom.html",
+                      "sha256":  "72d59d3d2a149833dcd6353ffd54d16342d25d08ff8fc35b99dcd978f75a6173"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getTextFromPDF.html",
+                      "sha256":  "62851ffa7048bfa5215db854e2290811305827b89e6b92f6374ccbe986286e3f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getTimeBetween.html",
+                      "sha256":  "1706d351a85da896456f5e9792f66364fc2b91cd957fdd2481c3a18d9ac12780"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getType.html",
+                      "sha256":  "8e1cb66d2cf918f824dab277b428617229be1b39fe011a9e4dc3aff0ac9c04b5"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getUpcomingReminders.html",
+                      "sha256":  "c68f106c0c25bf7378b253055d9d272c39b6ff1f09c2686e254a17a1519131d9"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getURL.html",
+                      "sha256":  "762958e0ae0e10150d2576e6593fd692cf3961d7017bfa47093f14c64df0a822"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/getURLSFromInput.html",
+                      "sha256":  "19bd761d00966bb01a653c97a714968665dfe700a005aae0289a48ea9aff47a5"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/grabJellycut.html",
+                      "sha256":  "b50cdd2c4859d96b36b5ac47c8542225ab71015ed5762ed85b9965a03cc5376f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/handoffPlayback.html",
+                      "sha256":  "429fec618972bec3648882510b2aade4deba9fbedc136c8b42fcd5f31490a148"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/hash.html",
+                      "sha256":  "d10209e0991a4b6085d885c749f8cfc22cd3570a686750b5c41268aba69e5635"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/hideAllApps.html",
+                      "sha256":  "e3d65ebdc63752e8c93f0731e2cdd83aadc482054f5988b765be69524e97c3f9"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/hideApp.html",
+                      "sha256":  "4f34aa512c790b1ef1e2b33ab63ad16c43c50548494edee1d0922c4e44818449"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/htmlFromRichText.html",
+                      "sha256":  "d31967b245b62d4674e2b20a8c2bb555df6d3725bbb3b8e6a72dd13555731700"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/imageDetail.html",
+                      "sha256":  "d68f5d0c60880ec3fde1b61441e1646c8af59fbf93913abbd3ffed9cc6b898d2"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/imageFromPDF.html",
+                      "sha256":  "5e9313d3cbedbcb6d92a42c15fb39740359043b6a31bb0b8eaa02a095d98f239"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/importAudioFiles.html",
+                      "sha256":  "e092cfdd2e571076eecec8df29e4e5dc1b79114664c4cc0b39aa5ea563053c70"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/importShortcut.html",
+                      "sha256":  "dfaa0faed9d78b8f8a68a609c5f2caa3b772597ab132125aa18089e144b0675b"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/javascriptForAutomation.html",
+                      "sha256":  "fbe4de8ec47107544450eb266549aab7fb9cc22a7948eee50a67e87d4a23556b"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/keysFrom.html",
+                      "sha256":  "8adff9542c1d41870273954ac6d145e7b01e3d7871ced03d73e94f9ffc89ee8f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/labelFile.html",
+                      "sha256":  "65315e8857b56576c3296dafe6d2985cf8c301d9e781cd32e43b1c575a74aa53"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/list.html",
+                      "sha256":  "f421850bf324207485f41adf4cae1b3f2b232162c2ec20e2c231a7abe83c713f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/locationDetail.html",
+                      "sha256":  "96ad2cce537cc8f818a07e6465fef674b0bdc1d36aad870749cb4997edf0c47e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/logWorkout.html",
+                      "sha256":  "1e56206a21e396285443780b6d5f1399164b06b4eb7e449a4b9a7b291dcbe1c9"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/lowPowerMode.html",
+                      "sha256":  "a814509be43ae7eaf1d09af8955545f9359dbe4ad5779bcc19e5d611a1fa75b7"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/makeArchive.html",
+                      "sha256":  "6cb016113040609418b1a4d02c632a6649dd94ac186f7c5f8387c4ffdbfcfa20"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/makeDiskImage.html",
+                      "sha256":  "bdc145e5bfe0ef42a3ac5a79d79eefb7c1d6a3a2264ab890a2e0426db100308c"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/makeGIF.html",
+                      "sha256":  "ee2b4444be46e0e3ac5f025824cd3042005719df7a9f94dbb433036f7053bd6c"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/markdownFromRich.html",
+                      "sha256":  "f6fe7acb9aaa7169db0872038b0eee30898bfcc3e6bc75ac2744de6209ba90a2"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/markup.html",
+                      "sha256":  "e19b323fa452700fd0238636616d5d310a901dd25558cbe36f4ebffd02c7d41e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/maskImage.html",
+                      "sha256":  "068bea651472288bbc35a15bb9c783d2ee080ec2b1bd5fdd8186c010e8497c27"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/matchText.html",
+                      "sha256":  "3aeda3d0b3836fad16daa9b99c66ef5996ed374207c5ec28146ca93ce1099428"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/math.html",
+                      "sha256":  "125ca57266783959fd4e413a0004d18cbe7cf453e00473e497a9fcab82b8318d"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/mountDiskImage.html",
+                      "sha256":  "d3eaf8bf3f1322fb0048662ec2355a3cb764998fc0f13ed43240e8c724ccd555"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/moveFile.html",
+                      "sha256":  "508acdcf3f8e045607e9d401e093d854b72d8b939b605e92f0c968c04352b37a"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/moveWindow.html",
+                      "sha256":  "5f600e8b1e62a67bfed1582111011cd76137e17140deaf1dbb5d26a7f7f82d38"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/musicDetail.html",
+                      "sha256":  "387949836d285061dc7029e5c661c45ee30c4fa92dde42cadceea755c7f03b50"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/noteDetail.html",
+                      "sha256":  "b12c30c86f37204afb133949ea39eae1e20ed08c302890822b427b7dc942eda0"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/nothing.html",
+                      "sha256":  "c4a7d58441b7807c616c066502558d9e43aa710a755010de362ff5d6b4c10e21"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/number.html",
+                      "sha256":  "4c843c954e2129335f83896e980bea5cfedb4bccd6d88af7e3fe6f0ae393281f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/openApp.html",
+                      "sha256":  "0ba2b60f52c00f4cc428649e248eb7e2204b2af94adb1ed85b0ece7fcdbe5626"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/openIn.html",
+                      "sha256":  "bcb90591a905c4dbd3bcd6af8dc983d0408b74faf24f77d666a8af781b6c8a4b"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/openShortcut.html",
+                      "sha256":  "0b9d04ae30594485ee9ae9b93d6429f5639ea6aedf4c22ed2b9f64231f3c78f5"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/openURL.html",
+                      "sha256":  "d82715b0c4626c5c845d0cefeebbd9a1b02f3c05a3619cbf06e331478efa3b38"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/output.html",
+                      "sha256":  "7f42e1f582089a8b58cbaa465419ae9968e634f12070727720feaabd10c9879d"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/overlayImage.html",
+                      "sha256":  "d5b139ca5dfe02d8d4cfba04c1592719fd82d2923460a555293cfd8acca86382"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/overlayText.html",
+                      "sha256":  "8bbee722932500b13407fd08ddcb6d4890caa1a406dace3ea68ad952473360fe"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/pageDetail.html",
+                      "sha256":  "8dcf3fccad06a98eb70676f878760fdfb470551d551ee8d77182d68de59b34c2"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/play.html",
+                      "sha256":  "1d13f35335b83384fb7aa9c46ee05a0a3d78d633eadcec89d2d1aab4734eee85"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/playMusic.html",
+                      "sha256":  "1b9db659bd46723ac6e4613de79d0be80a58bf07366a8bd7a56f7a94456648e1"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/playPodcast.html",
+                      "sha256":  "d56d53b827a6d2ae1d35f06a253c517ce4318eec088eeed6996f9f0940be872f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/playSound.html",
+                      "sha256":  "89fc01d7efa53238fb8dadafb4975da23d170eedef52ae61fbb807aef36dfbcf"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/podcastDetail.html",
+                      "sha256":  "e3b911af0105933d8586267062b05b3ae45cb60cd72b8a691ad4e85c935d2623"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/podcastEpisodeDetail.html",
+                      "sha256":  "49137805b0d222123c3a3da648faf959e34a86f587281a43ff089686739d6f59"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/prependFile.html",
+                      "sha256":  "d66e94173ca5996ddba5e35bfedf088dfdb10466dbba3b9f4c646b32fde43fa3"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/printDocument.html",
+                      "sha256":  "755cfb2eafde0572a0f8de2b1ca4dd938bf3816bc80c7ef2ae398929069eb666"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/productDetail.html",
+                      "sha256":  "00954579277b879d598fe00cdde7c59884838eb828c20ce96820feceec1f35a4"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/quicklook.html",
+                      "sha256":  "23e299521627a407545dad544643e65829316d8facdcf21bc0c3b3e35a5ccffd"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/quitAllApps.html",
+                      "sha256":  "8bccff92251b8c3d396d4c8f193aa4693c652584e2a624f435dbc633d1c45d58"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/quitApp.html",
+                      "sha256":  "2343e3f47ecc56996bd3ea42295b29b747a1cffa55d3b88a34cd9af5b1894e9a"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/randomNumber.html",
+                      "sha256":  "026ed7cd87753d7c4be456d9b79b9db193380c0dcd502106972da99e2ac89ca6"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/recordAudio.html",
+                      "sha256":  "d5145a5a5aa3a20dfe44a893096e51d9ad9df47b8a2db84a897e04de45aea179"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/reminderDetail.html",
+                      "sha256":  "6407ecf84228229644fa08804028e0eb5663dd1b2a7a2e52871e9324c2ae00da"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/removeEvents.html",
+                      "sha256":  "d6265fcd3bfb3c2a917f73475f79acfd8bf82e48db9b33e9dc8e1b71619c968e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/removeFromAlbum.html",
+                      "sha256":  "21d13f114e8d6f955bdb9f9680176b8c2d2045f1315dcc7cf9aef10d33efa5a7"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/removeReminders.html",
+                      "sha256":  "76cd8bcbed3919a555b6b077340c9f72b6c2677ec77eef0b4a586433ba46c137"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/renameFile.html",
+                      "sha256":  "c6caa8e164b273a8d828449d932eaff48ba817f34954bd623888aab3b9faf593"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/replaceText.html",
+                      "sha256":  "2f2422549fa44696f9cff9bbd9d39e4e65e330ad8f7aa99f00f6baef7a615432"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/resizeImage.html",
+                      "sha256":  "05eb2c364292e94bcf1e65d0cb8e5ee9321ab76a543369c20b64a3f602f9a091"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/resizeWindow.html",
+                      "sha256":  "62af1aab19f6a0eeb8e75e7f3320dddebea16eee4ca9737eda41663079df9476"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/revealFile.html",
+                      "sha256":  "88a50c7c4b4a67b8dfcd28609b6766ebf10a2d6e93bca5e92bef3e6056e821a0"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/richTextFromHTML.html",
+                      "sha256":  "736e3206844d3ddee261d8519d752578733c7665a1a5b29aa0035236f7a6131f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/richTextFromMarkdown.html",
+                      "sha256":  "2951720eb23fb8dfb9d100d7c53526461b848b917b93fa1a255847c8667ef03a"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/rotateImage.html",
+                      "sha256":  "77d7806ab4645d0ec45b69c13859cacfdebc83e81cf155b07adf1d08881b1705"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/round.html",
+                      "sha256":  "6f8ec4a6782ea568d467c9c25822795b68e2bd4e57a1df1150c13d87b6686fe4"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/runAppleScript.html",
+                      "sha256":  "dbbf59ff60b3a93576f18d5c21847ce952a92c3d3df0eb668131ccd9fd5aa911"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/runJavascriptOnWebpage.html",
+                      "sha256":  "dd0c50b5621f37507906cb59c61496dba325052b394d1d7182a34f05ed7d0773"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/runShellScript.html",
+                      "sha256":  "9aacdbae060dce6fc36eb230a04902cf5161cc74428c36da5f0fa05496998203"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/runShortcut.html",
+                      "sha256":  "f8a39f3d6b104462f943c77efe94c856daa75b058e7fabcd1278afb35d1c1f7c"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/runSSH.html",
+                      "sha256":  "e92ba1732e4de8667a5d5192a5aef5c33056855bd74d85192694f283643d58f9"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/sampleDetail.html",
+                      "sha256":  "9ea58b2eacf976baad572e2b044b3981d3ddd3211ef04cc674fdbf853d6cddc6"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/saveFile.html",
+                      "sha256":  "478a98d99d6016f81f6839934e957908761adf29807542fb3c5b4d8e32a396ef"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/saveFileDropbox.html",
+                      "sha256":  "0202276a6062d2456015b91b9afeb80c09b74c5ba1e885752105e2ac2fa2aaa5"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/saveToCameraRoll.html",
+                      "sha256":  "0fb8d0c94eea2ecc3938c88c845b38ede4f5c74061c4366043230fbbba81e41c"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/scanQR.html",
+                      "sha256":  "e829103e94c5b2c4e81943ea1d0af62a13f1117ee97dc4d642e390477fcc6c65"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/searchAppStore.html",
+                      "sha256":  "2898f0541ad27c6e3f390b4f6abf2497eff3136d403f28d594b247b9bfceb9a3"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/searchItunes.html",
+                      "sha256":  "57a34668aa0f1ad9e4e5d0ee43237fe714c1e15e12fd6dc83ab3b28252352c4a"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/searchPodcasts.html",
+                      "sha256":  "2fba2988b7bf64988b4c76beb126937a4ddea8d60c4ae1ecae7b94bc281237b3"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/searchWeb.html",
+                      "sha256":  "42ae4f37781892d5d4cb48d9ad3d63fbd430262c5e0b7cb19af9e55ee1be084d"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/seek.html",
+                      "sha256":  "dcad824d11ed4fe70d11a52f287e465806644ba1d35c693cbcaf5c4d6ef30d08"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/selectContact.html",
+                      "sha256":  "c725a135c639c2362920bae4eba535a31aec6d5a7d7cb20209aada3ee9ee9840"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/selectedEmail.html",
+                      "sha256":  "8f696c0d268ac195ece8d5a56cf513596e9d22a2505e6fbd92992b023b8ccdae"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/selectFile.html",
+                      "sha256":  "9d832dddc1ac3bc3d78fdec3c71714854319aab59c81f71f8ca50a32509cb890"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/selectPhone.html",
+                      "sha256":  "7f0414d5c068813cf4ba4edbad78f7d691600d345ea529e6369ab26d9f944577"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/selectPhoto.html",
+                      "sha256":  "093e0963ec6428e33e2067adf55a328247d1f5da103396f14945aa923349cb06"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/selectSong.html",
+                      "sha256":  "46e3fd46559b7a0f052bb51ce6c4f9a747a77ac78c3a03bea06cbf974db3e279"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/sendMessage.html",
+                      "sha256":  "e6965104c5d8707947263a2976d5df3d442723e2f4d9b28967391dbad1a76e2a"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/sendNotification.html",
+                      "sha256":  "ed4b3319657eefda9ae50fb2c14cf1b9032b457b411ce1af76d160a869f32f5a"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setAirplaneMode.html",
+                      "sha256":  "1359aca7dad56f128c45fb9b35e691cdb54f216cee38f9feb78eb568d013f6a4"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setAppearance.html",
+                      "sha256":  "28390d945c262765d467153bc021d73ea080d299edf8e3a34a05a6305546b865"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setBluetooth.html",
+                      "sha256":  "37214f24385cec054a287fb9665120a5eeed3c8c19e8a3210b057806d2f67728"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setBrightness.html",
+                      "sha256":  "b47f143fe52e445b3ede01daea91c37a7f6013389350ec9978dfce51984dc24b"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setCellular.html",
+                      "sha256":  "89be888e1324605111531077ca3a892c243ec5836b5c30d556ee6bcc6bd57d18"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setClipboard.html",
+                      "sha256":  "68daaf3f313d633cd510e8403c6f2a7348d98d77a48074ab8e4d820428dab6f5"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setDND.html",
+                      "sha256":  "aa5c6c819d36150fa159fa4d211ce7cdb6e7f70b63796e369a1374c1f89d97e4"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setFlashlight.html",
+                      "sha256":  "bde55a72647346b4228b3d7ca722a9ff2d8a0f47de484840804b6b30815d43b9"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setMediaDestination.html",
+                      "sha256":  "4d92a90f2b3c612775bab35d04c48bc79afad039ad89cf845c8dba8cd926ef9e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setName.html",
+                      "sha256":  "60cd149ce9f1163077c6a94e3824f54cbfaf60bd478099d0fecb76fbbe03928a"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setOrientationLock.html",
+                      "sha256":  "bc8732983bc127f1485fd598e50111903e4b34a25333599ac7a206d27516a508"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setValue.html",
+                      "sha256":  "e7e37173ac9916a91ff3ba31eb45c6ef3394d17cd6f3a31874f1c8bf1ec0d626"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setVoiceData.html",
+                      "sha256":  "7b54cb9f0bc0ae43e9d3a9e35d9b2f9109d2250363b73578f35b9da9d8846694"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setVolume.html",
+                      "sha256":  "718ca2c1049f01231afdf45c15ccf6909cde07c3f3317679e3d15aeb61322905"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/setWiFi.html",
+                      "sha256":  "96572e0bf6b2d13c304662a4451a681b641710e71fa0c4b3fce589a933f2f586"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/share.html",
+                      "sha256":  "e7f50f85be1dd7c46fbf7b1dfee530e04b48766ef53c3eb88f06e7fa0e6ac690"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/shareEXT.html",
+                      "sha256":  "3e435a88188993579773d6dee34d44ed154082cca447b8179b8f4e202448e44c"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/shazamDetail.html",
+                      "sha256":  "81201336612ec196fa74ce6e76c2f0ca591cca5908e1bb268294d72823890c76"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/shazamIt.html",
+                      "sha256":  "117d2ed61f4c0e447d049492a8d997743d5c2786c216f8e15c6f37bbf154a95d"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/shortcutDetail.html",
+                      "sha256":  "4a47721301a198ad273614486b38382fbb8fb84d68976bf19c8f34e546ccf7df"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/showDefinition.html",
+                      "sha256":  "baf13da0006a37327ce1c81460db1e7d23704d361f1dbb0d7f5b5805d88564ae"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/showInCalendar.html",
+                      "sha256":  "f5655827d80bfe1591fb9fc3e02bbbb71550232afbf3afd87768e6c242d6c6e2"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/showInStore.html",
+                      "sha256":  "1501f7500371112af90481a2076c39c0d013c5c4aaa2a1b2f4b9debadda1913d"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/showNote.html",
+                      "sha256":  "e274473a2f35ec30b90c0a40b13480354b289b51b1bdba28dc4aed9f44293608"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/showReminderList.html",
+                      "sha256":  "3a1b4391af8fbac45d44a313df90196fe4fe233e035d2a8eca40838a78fec435"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/showResult.html",
+                      "sha256":  "2ab20e92b661980ba42061a51471b8c5d2a57592d110d88de5bcad8350521902"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/showWebPage.html",
+                      "sha256":  "c903bc703f70b96517493107ada7f710a2d14bb2f5c095fd3a14c11d30c80627"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/siriDonation.html",
+                      "sha256":  "050cf9b75b25b993063e0e180d7e7a01f883391850e67761c0652750079e7cf3"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/skipBack.html",
+                      "sha256":  "4caa6940e5a8320ef2666d903daadf26917e5aa7283224d7cb4e731cddef179b"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/skipForward.html",
+                      "sha256":  "7b8c028acc4914309ae8e686b6f4d131c458aecfd8f3885c80351e535df8b3b5"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/speakText.html",
+                      "sha256":  "70aa3f73d1ee7fe6d541c2542e08c7c135d5c9fd1e3e6e4367f5724c154f2dbe"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/splitPDF.html",
+                      "sha256":  "c30196cb327e2648ea33a2851642dd91b70949bdcc6f27db4e4faef87e18aa23"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/splitScreen.html",
+                      "sha256":  "a1eef123b6efe68f677ef428cbe4d7db4d60e8b2769a59ea3107a576aa9ce6a2"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/splitText.html",
+                      "sha256":  "65bfb2b7ee409a205a69de6e3231ba828562e3a8316b804bb48d3fea56b4b7f5"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/spokenAudioFromText.html",
+                      "sha256":  "932fdfe855c80b484a70ef128ce1686dfa8f4e8e7de088cf0a96d115fd0f829a"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/startScreensaver.html",
+                      "sha256":  "b2cec5ad2bd316d6ebd3ab5274e2da6477235f04efd2c5d9c802a8012882fcfd"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/startWorkout.html",
+                      "sha256":  "b52895ef14adfe8dfe3fed8142807055b989958a74f392d13cd81f98d5b72e15"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/statistic.html",
+                      "sha256":  "2b5390a1927f918e96757de43c12598a248ac174d6e6a035c5e1aee4b76e9b16"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/stockDetail.html",
+                      "sha256":  "b72e8d1763052f2e38c430f3a4bcfc9f70b6014a2aedc3e46cee89351b24ed2f"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/stockQuote.html",
+                      "sha256":  "896fbebabc93f29ec1746503b17e7359a7f3c5a6703c1bf21b4b45954df40426"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/subscribeToPodcast.html",
+                      "sha256":  "f67dc80cc51813236d126b7926e1dabcb015259f79ac76bad2549e0a80a42106"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/takePhoto.html",
+                      "sha256":  "b5e7e70f8ac4624669c60f33f43583f10d4e6f61006acd78d7d182a80645946d"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/takeScreenshot.html",
+                      "sha256":  "af300d287e292553ca5f599df93235065279c400e61f8b29f2f4f505664ba281"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/takeVideo.html",
+                      "sha256":  "d7dba2d55c4182e0c7694009a294ea372a0e5fa29ab3e1317bc697ec56899857"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/text.html",
+                      "sha256":  "735098d7637240dcef0a9590c9af00b01a6d5bb14b3f0ca7a63b9fffa09a4e81"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/timer.html",
+                      "sha256":  "205be2e34945c88a5c63a5a60750605dc3ff955d39602ba4ef1d088663e52a41"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/toggleAirplaneMode.html",
+                      "sha256":  "e45125877ee96dc841298b0b80a0d43d63204feb50772c00dfbf48bdcf0fb0b9"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/toggleAppearance.html",
+                      "sha256":  "6827a93bff2cf40ff0c918e40a40f34ef42ce1880c21f420aa27c911708ae4dd"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/toggleFlashlight.html",
+                      "sha256":  "b69a47f02c95daad9a3cda7af689b4ef62bd48076571cbea4a436397ef561707"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/toggleLowPowerMode.html",
+                      "sha256":  "a07d04c52ffbbdbb9b49041d53df23e09c93e45344f45c7b7eeb103d8f5b9e44"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/toggleOrientationLock.html",
+                      "sha256":  "65bb18dff958a3caf77fccddc0d00d75bb5b47d1c2935b1d64eef938cafe2ce5"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/translateText.html",
+                      "sha256":  "2311d9ba37ceac31a03f5503ecfb818e1c3cde65d518eeb5a157516a11a9cad6"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/trimVideo.html",
+                      "sha256":  "25586629b12368a05b148d5db21eada1f746f5f106d4d31a5b880f9dbdf2ffaa"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/uploadPhotos.html",
+                      "sha256":  "3af692343ecaa8242cb0a828116f9f0d378e41c4ef68703e10e7fd88975ea377"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/url.html",
+                      "sha256":  "32a4720dda5a1c28371db24b6efc21c864f0d9fc0f723045fa9a73ecb50a2edc"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/urlComponent.html",
+                      "sha256":  "f3e725b474fc3435232ca300a44611cd4e58d664d8dfb11033be2a405a9c2bec"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/urlContents.html",
+                      "sha256":  "6b1c5a08d819c1d49a55536205a2e2a965a794fa011fa2426c9f0c75b521d9aa"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/userActivity.html",
+                      "sha256":  "ce3ee4ca9ae3d83169cb76aa66598bdb30313c2c25e1b998ddc06beb32132b91"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/valueFor.html",
+                      "sha256":  "355322389a967763b6baac6ae95d3d55baea9377076fe04b2228d9b1ffb0cae5"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/valuesFrom.html",
+                      "sha256":  "c8ea35f8d49838b79ef7653d33735d256f8073096e554bd47c7b13f85a3ae0b8"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/vibrate.html",
+                      "sha256":  "63e645926359487088ce2bcaf80d3c15c12cc66c05acbd6e7b8b191eb351947e"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/videoFromGif.html",
+                      "sha256":  "ef1f03b42dd20916394cdd0509bd130ab8d6594c1fd6d7c246ed9876d8d0b3f8"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/wait.html",
+                      "sha256":  "a72f3837b559bd9951129758d5fded8726b1d2a3a14c726af7f67d54e5bfc1b4"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/waitToReturn.html",
+                      "sha256":  "a5031a6af0baa9a8108a8daf8549e987f58410a6cbf4b4bfdf93fe24e4ea7b7c"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/watchMeDo.html",
+                      "sha256":  "db03444d37e6d577a30d3508b5f8d3a4e3e859622cb3193bb56488bc45a5adbb"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/wifiDetails.html",
+                      "sha256":  "ec500482b1b19c5a050ac599426f752579eacd2ea334b2b098cf8ef2b556fd7a"
+                  },
+                  {
+                      "path":  "Documentation/Shortcuts/xCallbackURL.html",
+                      "sha256":  "f5f2b609a8469f0d7525c55076c02aa70e07cfe42f8cd48a65eb3a475c11edd1"
+                  },
+                  {
+                      "path":  "Getting_Started/language_overview.html",
+                      "sha256":  "dfc12639faee56058ee3638f4b7b64a8f79f4f034f1bf0c14bbd0ddf1c2440e4"
+                  },
+                  {
+                      "path":  "Getting_Started/setting_up_jellycuts.html",
+                      "sha256":  "39e0a036f2a37c9cef0bc9783e86aa4c3366d299c2a4068630ed7ef042dd01e7"
+                  },
+                  {
+                      "path":  "Getting_Started/writing_first_script.html",
+                      "sha256":  "1747b2412ef199089dcf6edc604e54a5d54f940beb6dda8c6e12f667f8d3720d"
+                  },
+                  {
+                      "path":  "Language_Guide/basics.html",
+                      "sha256":  "e2ee6f022c92f3889becbb9f8542ccc3f689a39508aba8c839fbb86daa7e2b5e"
+                  },
+                  {
+                      "path":  "Language_Guide/functions_macros.html",
+                      "sha256":  "425a4d5b323a20aab7087577ff1a5ffce49d6fdb42aa8f422533ac2d122a84d0"
+                  },
+                  {
+                      "path":  "Language_Guide/global.html",
+                      "sha256":  "7f68d47d9d001626f82b4540124d38a2ecc497de40ac5c397782aca6a6c50c6f"
+                  },
+                  {
+                      "path":  "Language_Guide/if_else.html",
+                      "sha256":  "b1a3160815efa601c4a400cc563788abd4f682b5ab421797cd68522eea55f10c"
+                  },
+                  {
+                      "path":  "Language_Guide/importing.html",
+                      "sha256":  "04a313dfcfe3ade3ccbc8675d4c728f60a4cc557333e2782b43b497b547cb6d3"
+                  },
+                  {
+                      "path":  "Language_Guide/key.html",
+                      "sha256":  "3a4f728ef0d6621c6e7dc69fb391e72e322b8f3c1f88c79987d139c8e62e3c3a"
+                  },
+                  {
+                      "path":  "Language_Guide/magic_variables.html",
+                      "sha256":  "007fadb3146639299fa44afa60bc4673bbf543649d762810c62c027b35b3fedd"
+                  },
+                  {
+                      "path":  "Language_Guide/menus.html",
+                      "sha256":  "d4900e7efb46f85286acf25939f2afe370b87d8aa726f97b821bdc064e673516"
+                  },
+                  {
+                      "path":  "Language_Guide/metadata.html",
+                      "sha256":  "4bf992628a54d5526805dca1ad551e9556eb1bfae3c4bc0adcad84874748339e"
+                  },
+                  {
+                      "path":  "Language_Guide/property.html",
+                      "sha256":  "a93996b827c3a960b18d077d17fba5b8769ba4386ba7006cfa9a265ff01a8d8f"
+                  },
+                  {
+                      "path":  "Language_Guide/repeat.html",
+                      "sha256":  "2c4e22937b677535515b2565525f4bb28a28593e45ab30ac4c4ba4d8bb7ac11a"
+                  },
+                  {
+                      "path":  "Language_Guide/strings.html",
+                      "sha256":  "133ccc6f98e2b427b7e3882fefc86b8fce39321f84977f4784fde5ccfea92fbf"
+                  },
+                  {
+                      "path":  "Language_Guide/type.html",
+                      "sha256":  "84b98559f1ce8398569b4f66d81e5fb1ceabbcfe0ea72d04ec6124d693b0b80d"
+                  },
+                  {
+                      "path":  "Language_Guide/variables.html",
+                      "sha256":  "01fb218eca1e6d449a23a38485ab88810e024b1ac533fb0cb30274fbe0cffd74"
+                  },
+                  {
+                      "path":  "README.md",
+                      "sha256":  "e7b651158bd7d998e3f91f1dcd02275f4cb1cbe17d7549e2147c161132c0778a"
+                  }
+              ]
+}

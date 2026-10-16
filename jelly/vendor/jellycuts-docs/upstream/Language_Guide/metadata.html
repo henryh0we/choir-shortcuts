@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Jelly Documentation</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../script.js"></script>
+</head>
+
+<body>
+    <div class="MiniBar" id="MiniBar">
+        <a id="MenuButton" href="javascript:void(0)" class="MenuButton" onclick="handleNav()">&times;</a>
+    </div>
+    <div class="SideBar" id="SideBar">
+        <a href="../index.html" class="SidebarItem">
+            <div class="HStack VerticalyCentered">
+                <img class="Logo" src="/assets/logo.png" width="50" height="50" />
+                <h1 class="LogoHeader">Jelly</h1>
+            </div>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="../Getting_Started/language_overview.html">
+            <h1 class="SidebarItemHeader">Getting Started</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="./basics.html">
+            <h1 class="SidebarItemHeader">Language Guide</h1>
+        </a>
+        <ol>
+            <a href="./basics.html">
+                <p>The Basics</p>
+            </a>
+            <a href="./importing.html">
+                <p>Importing Libraries</p>
+            </a>
+            <a href="./variables.html">
+                <p>Traditional Variables</p>
+            </a>
+            <a href="./magic_variables.html">
+                <p>Magic Variables</p>
+            </a>
+            <a href="./global.html">
+                <p>Global Variables</p>
+            </a>
+            <a href="./strings.html">
+                <p>Strings</p>
+            </a>
+            <a href="./metadata.html">
+                <p><b>Declared Metadata</b></p>
+            </a>
+            <a href="./property.html">
+                <p>Property Modifier</p>
+            </a>
+            <a href="./key.html">
+                <p>Key Modifier</p>
+            </a>
+            <a href="./type.html">
+                <p>Type Casting</p>
+            </a>
+            <a href="./if_else.html">
+                <p>If & Else Statments</p>
+            </a>
+            <a href="./repeat.html">
+                <p>Repeat & Repeat Each</p>
+            </a>
+            <a href="./functions_macros.html">
+                <p>Functions & Macros</p>
+            </a>
+            <a href="./menus.html">
+                <p>Menus</p>
+            </a>
+
+        </ol>
+
+        <hr>
+        <a class="SidebarItem" href="/Shortcuts_Standard/index.html">
+            <h1 class="SidebarItemHeader">Shortcuts Standard</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/Actions/index.html">
+            <h1 class="SidebarItemHeader">Actions</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/Apollo/index.html">
+            <h1 class="SidebarItemHeader">Apollo</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/a-Shell/index.html">
+            <h1 class="SidebarItemHeader">a-Shell</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/a-Shell_Mini/index.html">
+            <h1 class="SidebarItemHeader">a-Shell Mini</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/CARROT_Weather/index.html">
+            <h1 class="SidebarItemHeader">CARROT Weather</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/Data_Jar/index.html">
+            <h1 class="SidebarItemHeader">Data Jar</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/Drafts/index.html">
+            <h1 class="SidebarItemHeader">Drafts</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/Focused_Work/index.html">
+            <h1 class="SidebarItemHeader">Focused Work</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/GizmoPack/index.html">
+            <h1 class="SidebarItemHeader">GizmoPack</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/Jellycuts/index.html">
+            <h1 class="SidebarItemHeader">Jellycuts</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/LinkBin/index.html">
+            <h1 class="SidebarItemHeader">LinkBin</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/Nudget/index.html">
+            <h1 class="SidebarItemHeader">Nudget</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/Progress/index.html">
+            <h1 class="SidebarItemHeader">Progress</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/Recurrence/index.html">
+            <h1 class="SidebarItemHeader">Recurrence</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/RoutineHub_Ads/index.html">
+            <h1 class="SidebarItemHeader">RoutineHub Ads</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/Rubyist/index.html">
+            <h1 class="SidebarItemHeader">Rubyist</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/Scriptable/index.html">
+            <h1 class="SidebarItemHeader">Scriptable</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/The_Wallpaper_App/index.html">
+            <h1 class="SidebarItemHeader">The Wallpaper App</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/Toolbox_Pro/index.html">
+            <h1 class="SidebarItemHeader">Toolbox Pro</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="/WidgetPack/index.html">
+            <h1 class="SidebarItemHeader">WidgetPack</h1>
+        </a>
+        <hr>
+<!-- <a class="SidebarItem" href="../Jellycuts_Library/index.html">
+            <h1 class="SidebarItemHeader">Jellycuts Library</h1>
+        </a>
+        <hr>
+        <a class="SidebarItem" href="../The_Wallpaper_App_Library/index.html">
+            <h1 class="SidebarItemHeader">The Wallpaper App Library</h1>
+        </a>
+        <hr> -->
+
+        <div class="HStack VerticalyCentered" style="margin-top: 10px;">
+            <a class="SidebarItem" href="https://jellycuts.com">
+                <h1 class="SidebarButton" style="width: 20px;height: 20px; font-size: 14px;">🏠</h1>
+            </a>
+            <a class="SidebarItem" href="javascript:void(0)" onclick="handleNav()">
+                <h1 class="SidebarButton" style="width: 125px;height: 20px;">Close Sidebar</h1>
+            </a>
+        </div>
+        <div style="margin-bottom: 40px;">
+        </div>
+    </div>
+    <div class="Main" id="Main">
+        <h1>Declared Metadata</h1>
+        <p>Metadata is important for the functioning of the Jellycuts app. It is not needed for the functioning of the Jelly language.
+        </p>
+        <p>The currently supported Metadata is Color and Icon. These two values tell the Jellycuts app the icon that you want your Jellycut to export with. Metadata is declared using a # followed by the metadata&#39;s tag. </p>
+        <h2>Color</h2>
+        <pre><code>#Color: Red</code></pre>
+        <h3>Available Colors</h3>
+        <img class="bulletImage" src="/assets/icons/4282601983.png" alt="" /> → red<br>
+        <img class="bulletImage" src="/assets/icons/4251333119.png" alt="" /> → orange<br>
+        <img class="bulletImage" src="/assets/icons/4271458815.png" alt="" /> → tangerine<br>
+        <img class="bulletImage" src="/assets/icons/4274264319.png" alt="" /> → yellow<br>
+        <img class="bulletImage" src="/assets/icons/4292093695.png" alt="" /> → green<br>
+        <img class="bulletImage" src="/assets/icons/431817727.png" alt="" /> → teal<br>
+        <img class="bulletImage" src="/assets/icons/1440408063.png" alt="" /> → lightblue<br>
+        <img class="bulletImage" src="/assets/icons/463140863.png" alt="" /> → blue<br>
+        <img class="bulletImage" src="/assets/icons/946986751.png" alt="" /> → navy<br>
+        <img class="bulletImage" src="/assets/icons/2071128575.png" alt="" /> → grape<br>
+        <img class="bulletImage" src="/assets/icons/3679049983.png" alt="" /> → purple<br>
+        <img class="bulletImage" src="/assets/icons/3980825855.png" alt="" /> → pink<br>
+        <img class="bulletImage" src="/assets/icons/255.png" alt="" /> → grayblue<br>
+        <img class="bulletImage" src="/assets/icons/3031607807.png" alt="" /> → graygreen<br>
+        <img class="bulletImage" src="/assets/icons/2846468607.png" alt="" /> → graybrown<br>
+        <h2>Icon</h2>
+        <pre><code>#Icon: Shortcuts</code></pre>
+        <h3>Available Icons</h3>
+        <div class="bulletDiv">
+            <img class="bulletImage" src="/assets/icons/59452.png" alt="" /> → car<br>
+            <img class="bulletImage" src="/assets/icons/61446.png" alt="" /> → carmultiple<br>
+            <img class="bulletImage" src="/assets/icons/61447.png" alt="" /> → electriccar<br>
+            <img class="bulletImage" src="/assets/icons/59678.png" alt="" /> → bus<br>
+            <img class="bulletImage" src="/assets/icons/61448.png" alt="" /> → busdouble<br>
+            <img class="bulletImage" src="/assets/icons/61449.png" alt="" /> → tram<br>
+            <img class="bulletImage" src="/assets/icons/61450.png" alt="" /> → tramtunnel<br>
+            <img class="bulletImage" src="/assets/icons/59858.png" alt="" /> → train<br>
+            <img class="bulletImage" src="/assets/icons/59668.png" alt="" /> → bike<br>
+            <img class="bulletImage" src="/assets/icons/59783.png" alt="" /> → motorcycle<br>
+            <img class="bulletImage" src="/assets/icons/59652.png" alt="" /> → ambulance<br>
+            <img class="bulletImage" src="/assets/icons/59648.png" alt="" /> → airplane<br>
+            <img class="bulletImage" src="/assets/icons/59823.png" alt="" /> → sailboat<br>
+            <img class="bulletImage" src="/assets/icons/59755.png" alt="" /> → house<br>
+            <img class="bulletImage" src="/assets/icons/59688.png" alt="" /> → church<br>
+            <img class="bulletImage" src="/assets/icons/59677.png" alt="" /> → buildings<br>
+            <img class="bulletImage" src="/assets/icons/59828.png" alt="" /> → shoppingcart<br>
+            <img class="bulletImage" src="/assets/icons/59750.png" alt="" /> → handbag<br>
+            <img class="bulletImage" src="/assets/icons/59747.png" alt="" /> → grocerystore<br>
+            <img class="bulletImage" src="/assets/icons/59863.png" alt="" /> → utensils<br>
+            <img class="bulletImage" src="/assets/icons/59741.png" alt="" /> → fuelstation<br>
+            <img class="bulletImage" src="/assets/icons/59854.png" alt="" /> → thermometer<br>
+            <img class="bulletImage" src="/assets/icons/59845.png" alt="" /> → sun<br>
+            <img class="bulletImage" src="/assets/icons/59782.png" alt="" /> → moon<br>
+            <img class="bulletImage" src="/assets/icons/61517.png" alt="" /> → mooncircle<br>
+            <img class="bulletImage" src="/assets/icons/59835.png" alt="" /> → snowflake<br>
+            <img class="bulletImage" src="/assets/icons/59714.png" alt="" /> → cloud<br>
+            <img class="bulletImage" src="/assets/icons/59715.png" alt="" /> → raincloud<br>
+            <img class="bulletImage" src="/assets/icons/59861.png" alt="" /> → umbrella<br>
+            <img class="bulletImage" src="/assets/icons/59731.png" alt="" /> → pinetree<br>
+            <img class="bulletImage" src="/assets/icons/59468.png" alt="" /> → flower<br>
+            <img class="bulletImage" src="/assets/icons/59734.png" alt="" /> → fire<br>
+            <img class="bulletImage" src="/assets/icons/59738.png" alt="" /> → footprints<br>
+            <img class="bulletImage" src="/assets/icons/59724.png" alt="" /> → signs<br>
+            <img class="bulletImage" src="/assets/icons/59669.png" alt="" /> → binoculars<br>
+            <img class="bulletImage" src="/assets/icons/59717.png" alt="" /> → compass<br>
+            <img class="bulletImage" src="/assets/icons/59412.png" alt="" /> → globe<br>
+            <img class="bulletImage" src="/assets/icons/59785.png" alt="" /> → mountain<br>
+            <img class="bulletImage" src="/assets/icons/59784.png" alt="" /> → picture<br>
+            <img class="bulletImage" src="/assets/icons/59733.png" alt="" /> → filmstrip<br>
+            <img class="bulletImage" src="/assets/icons/59682.png" alt="" /> → camera<br>
+            <img class="bulletImage" src="/assets/icons/59402.png" alt="" /> → moviecamera<br>
+            <img class="bulletImage" src="/assets/icons/59780.png" alt="" /> → microphone<br>
+            <img class="bulletImage" src="/assets/icons/59787.png" alt="" /> → clapboard<br>
+            <img class="bulletImage" src="/assets/icons/59864.png" alt="" /> → videosymbol<br>
+            <img class="bulletImage" src="/assets/icons/59711.png" alt="" /> → clipboard<br>
+            <img class="bulletImage" src="/assets/icons/59681.png" alt="" /> → calendar<br>
+            <img class="bulletImage" src="/assets/icons/59414.png" alt="" /> → chatbubble<br>
+            <img class="bulletImage" src="/assets/icons/59403.png" alt="" /> → messagebubbles<br>
+            <img class="bulletImage" src="/assets/icons/59779.png" alt="" /> → textbubble<br>
+            <img class="bulletImage" src="/assets/icons/59773.png" alt="" /> → envelope<br>
+            <img class="bulletImage" src="/assets/icons/59774.png" alt="" /> → envelopeopen<br>
+            <img class="bulletImage" src="/assets/icons/59836.png" alt="" /> → paperairplane<br>
+            <img class="bulletImage" src="/assets/icons/61462.png" alt="" /> → paperairplanecircle<br>
+            <img class="bulletImage" src="/assets/icons/59676.png" alt="" /> → briefcase<br>
+            <img class="bulletImage" src="/assets/icons/59737.png" alt="" /> → folder<br>
+            <img class="bulletImage" src="/assets/icons/59719.png" alt="" /> → creditcard<br>
+            <img class="bulletImage" src="/assets/icons/59865.png" alt="" /> → watch<br>
+            <img class="bulletImage" src="/assets/icons/59814.png" alt="" /> → phone<br>
+            <img class="bulletImage" src="/assets/icons/59436.png" alt="" /> → laptop<br>
+            <img class="bulletImage" src="/assets/icons/59446.png" alt="" /> → keyboard<br>
+            <img class="bulletImage" src="/assets/icons/59494.png" alt="" /> → keyboardalt<br>
+            <img class="bulletImage" src="/assets/icons/59680.png" alt="" /> → calculator<br>
+            <img class="bulletImage" src="/assets/icons/59662.png" alt="" /> → bargraph<br>
+            <img class="bulletImage" src="/assets/icons/59817.png" alt="" /> → printer<br>
+            <img class="bulletImage" src="/assets/icons/59752.png" alt="" /> → harddrive<br>
+            <img class="bulletImage" src="/assets/icons/59722.png" alt="" /> → server<br>
+            <img class="bulletImage" src="/assets/icons/59519.png" alt="" /> → database<br>
+            <img class="bulletImage" src="/assets/icons/59826.png" alt="" /> → networkstorage<br>
+            <img class="bulletImage" src="/assets/icons/59653.png" alt="" /> → archive<br>
+            <img class="bulletImage" src="/assets/icons/59721.png" alt="" /> → cube<br>
+            <img class="bulletImage" src="/assets/icons/59851.png" alt="" /> → tv<br>
+            <img class="bulletImage" src="/assets/icons/59742.png" alt="" /> → gamecontroller<br>
+            <img class="bulletImage" src="/assets/icons/59818.png" alt="" /> → puzzlepiece<br>
+            <img class="bulletImage" src="/assets/icons/59753.png" alt="" /> → headphones<br>
+            <img class="bulletImage" src="/assets/icons/61479.png" alt="" /> → headphonescircle<br>
+            <img class="bulletImage" src="/assets/icons/61481.png" alt="" /> → ear<br>
+            <img class="bulletImage" src="/assets/icons/59790.png" alt="" /> → musicnote<br>
+            <img class="bulletImage" src="/assets/icons/59839.png" alt="" /> → speakerwave1<br>
+            <img class="bulletImage" src="/assets/icons/59502.png" alt="" /> → speakerwave1alt<br>
+            <img class="bulletImage" src="/assets/icons/61470.png" alt="" /> → speakerwave2<br>
+            <img class="bulletImage" src="/assets/icons/61471.png" alt="" /> → speakerwave3<br>
+            <img class="bulletImage" src="/assets/icons/61472.png" alt="" /> → mute<br>
+            <img class="bulletImage" src="/assets/icons/61473.png" alt="" /> → speaker<br>
+            <img class="bulletImage" src="/assets/icons/61478.png" alt="" /> → hifispeaker<br>
+            <img class="bulletImage" src="/assets/icons/61474.png" alt="" /> → desktopspeaker<br>
+            <img class="bulletImage" src="/assets/icons/59671.png" alt="" /> → bookshelf<br>
+            <img class="bulletImage" src="/assets/icons/59465.png" alt="" /> → openbook<br>
+            <img class="bulletImage" src="/assets/icons/59672.png" alt="" /> → sashbook<br>
+            <img class="bulletImage" src="/assets/icons/61442.png" alt="" /> → closedbook<br>
+            <img class="bulletImage" src="/assets/icons/59745.png" alt="" /> → glasses<br>
+            <img class="bulletImage" src="/assets/icons/59777.png" alt="" /> → mask<br>
+            <img class="bulletImage" src="/assets/icons/59788.png" alt="" /> → ticket<br>
+            <img class="bulletImage" src="/assets/icons/59730.png" alt="" /> → dramamask<br>
+            <img class="bulletImage" src="/assets/icons/59723.png" alt="" /> → dice<br>
+            <img class="bulletImage" src="/assets/icons/59663.png" alt="" /> → baseball<br>
+            <img class="bulletImage" src="/assets/icons/59664.png" alt="" /> → basketball<br>
+            <img class="bulletImage" src="/assets/icons/59837.png" alt="" /> → soccerball<br>
+            <img class="bulletImage" src="/assets/icons/59852.png" alt="" /> → tennisball<br>
+            <img class="bulletImage" src="/assets/icons/59456.png" alt="" /> → football<br>
+            <img class="bulletImage" src="/assets/icons/59762.png" alt="" /> → lifepreserver<br>
+            <img class="bulletImage" src="/assets/icons/59850.png" alt="" /> → telescope<br>
+            <img class="bulletImage" src="/assets/icons/59781.png" alt="" /> → microscope<br>
+            <img class="bulletImage" src="/assets/icons/59756.png" alt="" /> → horse<br>
+            <img class="bulletImage" src="/assets/icons/59712.png" alt="" /> → clock<br>
+            <img class="bulletImage" src="/assets/icons/59649.png" alt="" /> → alarmclock<br>
+            <img class="bulletImage" src="/assets/icons/59844.png" alt="" /> → stopwatch<br>
+            <img class="bulletImage" src="/assets/icons/59667.png" alt="" /> → bell<br>
+            <img class="bulletImage" src="/assets/icons/59838.png" alt="" /> → sparklingbell<br>
+            <img class="bulletImage" src="/assets/icons/59754.png" alt="" /> → heart<br>
+            <img class="bulletImage" src="/assets/icons/59841.png" alt="" /> → star<br>
+            <img class="bulletImage" src="/assets/icons/59860.png" alt="" /> → trophy<br>
+            <img class="bulletImage" src="/assets/icons/59763.png" alt="" /> → lightbulb<br>
+            <img class="bulletImage" src="/assets/icons/59764.png" alt="" /> → lightningbolt<br>
+            <img class="bulletImage" src="/assets/icons/59736.png" alt="" /> → flag<br>
+            <img class="bulletImage" src="/assets/icons/59848.png" alt="" /> → tag<br>
+            <img class="bulletImage" src="/assets/icons/59760.png" alt="" /> → key<br>
+            <img class="bulletImage" src="/assets/icons/59757.png" alt="" /> → hourglass<br>
+            <img class="bulletImage" src="/assets/icons/59770.png" alt="" /> → lock<br>
+            <img class="bulletImage" src="/assets/icons/59862.png" alt="" /> → unlockbutton<br>
+            <img class="bulletImage" src="/assets/icons/59489.png" alt="" /> → battery<br>
+            <img class="bulletImage" src="/assets/icons/59511.png" alt="" /> → magicwand<br>
+            <img class="bulletImage" src="/assets/icons/59771.png" alt="" /> → magicwandalt<br>
+            <img class="bulletImage" src="/assets/icons/59793.png" alt="" /> → paintbrush<br>
+            <img class="bulletImage" src="/assets/icons/59798.png" alt="" /> → pencil<br>
+            <img class="bulletImage" src="/assets/icons/59794.png" alt="" /> → paperclip<br>
+            <img class="bulletImage" src="/assets/icons/59824.png" alt="" /> → scissors<br>
+            <img class="bulletImage" src="/assets/icons/59772.png" alt="" /> → magnifyingglass<br>
+            <img class="bulletImage" src="/assets/icons/59685.png" alt="" /> → chainlink<br>
+            <img class="bulletImage" src="/assets/icons/59716.png" alt="" /> → eyedropper<br>
+            <img class="bulletImage" src="/assets/icons/59748.png" alt="" /> → hammer<br>
+            <img class="bulletImage" src="/assets/icons/59870.png" alt="" /> → wrench<br>
+            <img class="bulletImage" src="/assets/icons/59749.png" alt="" /> → tools<br>
+            <img class="bulletImage" src="/assets/icons/59743.png" alt="" /> → gear<br>
+            <img class="bulletImage" src="/assets/icons/59473.png" alt="" /> → hammeralt<br>
+            <img class="bulletImage" src="/assets/icons/59825.png" alt="" /> → screwdriver<br>
+            <img class="bulletImage" src="/assets/icons/59751.png" alt="" /> → hand<br>
+            <img class="bulletImage" src="/assets/icons/59859.png" alt="" /> → trashcan<br>
+            <img class="bulletImage" src="/assets/icons/59866.png" alt="" /> → waterdrop<br>
+            <img class="bulletImage" src="/assets/icons/59789.png" alt="" /> → mug<br>
+            <img class="bulletImage" src="/assets/icons/59842.png" alt="" /> → steamingbowl<br>
+            <img class="bulletImage" src="/assets/icons/59740.png" alt="" /> → apple<br>
+            <img class="bulletImage" src="/assets/icons/59683.png" alt="" /> → carrot<br>
+            <img class="bulletImage" src="/assets/icons/59735.png" alt="" /> → fish<br>
+            <img class="bulletImage" src="/assets/icons/59679.png" alt="" /> → cake<br>
+            <img class="bulletImage" src="/assets/icons/59868.png" alt="" /> → winebottle<br>
+            <img class="bulletImage" src="/assets/icons/59776.png" alt="" /> → martini<br>
+            <img class="bulletImage" src="/assets/icons/59713.png" alt="" /> → clotheshanger<br>
+            <img class="bulletImage" src="/assets/icons/59761.png" alt="" /> → laundrymachine<br>
+            <img class="bulletImage" src="/assets/icons/59792.png" alt="" /> → oven<br>
+            <img class="bulletImage" src="/assets/icons/59827.png" alt="" /> → shirt<br>
+            <img class="bulletImage" src="/assets/icons/59665.png" alt="" /> → bathtub<br>
+            <img class="bulletImage" src="/assets/icons/59829.png" alt="" /> → shower<br>
+            <img class="bulletImage" src="/assets/icons/59461.png" alt="" /> → pill<br>
+            <img class="bulletImage" src="/assets/icons/59815.png" alt="" /> → medicine<br>
+            <img class="bulletImage" src="/assets/icons/59778.png" alt="" /> → medicinebottle<br>
+            <img class="bulletImage" src="/assets/icons/59660.png" alt="" /> → bandage<br>
+            <img class="bulletImage" src="/assets/icons/59759.png" alt="" /> → inhaler<br>
+            <img class="bulletImage" src="/assets/icons/59843.png" alt="" /> → stethoscope<br>
+            <img class="bulletImage" src="/assets/icons/59847.png" alt="" /> → syringe<br>
+            <img class="bulletImage" src="/assets/icons/59657.png" alt="" /> → atom<br>
+            <img class="bulletImage" src="/assets/icons/59686.png" alt="" /> → chemical<br>
+            <img class="bulletImage" src="/assets/icons/59684.png" alt="" /> → cat<br>
+            <img class="bulletImage" src="/assets/icons/59728.png" alt="" /> → dog<br>
+            <img class="bulletImage" src="/assets/icons/59796.png" alt="" /> → pawprint<br>
+            <img class="bulletImage" src="/assets/icons/59857.png" alt="" /> → thumbsup<br>
+            <img class="bulletImage" src="/assets/icons/59746.png" alt="" /> → graduate<br>
+            <img class="bulletImage" src="/assets/icons/59744.png" alt="" /> → gift<br>
+            <img class="bulletImage" src="/assets/icons/59651.png" alt="" /> → alien<br>
+            <img class="bulletImage" src="/assets/icons/59666.png" alt="" /> → bed<br>
+            <img class="bulletImage" src="/assets/icons/59840.png" alt="" /> → stairs<br>
+            <img class="bulletImage" src="/assets/icons/59822.png" alt="" /> → rocket<br>
+            <img class="bulletImage" src="/assets/icons/61444.png" alt="" /> → map<br>
+            <img class="bulletImage" src="/assets/icons/61452.png" alt="" /> → gauge<br>
+            <img class="bulletImage" src="/assets/icons/61453.png" alt="" /> → speedometer<br>
+            <img class="bulletImage" src="/assets/icons/61454.png" alt="" /> → barometer<br>
+            <img class="bulletImage" src="/assets/icons/61455.png" alt="" /> → network<br>
+            <img class="bulletImage" src="/assets/icons/61456.png" alt="" /> → rectanglestack<br>
+            <img class="bulletImage" src="/assets/icons/61457.png" alt="" /> → sqaurestack<br>
+            <img class="bulletImage" src="/assets/icons/61458.png" alt="" /> → 3dsqaurestack<br>
+            <img class="bulletImage" src="/assets/icons/61459.png" alt="" /> → photostack<br>
+            <img class="bulletImage" src="/assets/icons/61460.png" alt="" /> → photostackalt<br>
+            <img class="bulletImage" src="/assets/icons/61461.png" alt="" /> → aperture<br>
+            <img class="bulletImage" src="/assets/icons/61464.png" alt="" /> → note<br>
+            <img class="bulletImage" src="/assets/icons/61465.png" alt="" /> → notetext<br>
+            <img class="bulletImage" src="/assets/icons/61466.png" alt="" /> → notetextplus<br>
+            <img class="bulletImage" src="/assets/icons/61467.png" alt="" /> → sendmessage<br>
+            <img class="bulletImage" src="/assets/icons/61468.png" alt="" /> → addmessage<br>
+            <img class="bulletImage" src="/assets/icons/61475.png" alt="" /> → earpods<br>
+            <img class="bulletImage" src="/assets/icons/61476.png" alt="" /> → airpods<br>
+            <img class="bulletImage" src="/assets/icons/61477.png" alt="" /> → airpodspro<br>
+            <img class="bulletImage" src="/assets/icons/61480.png" alt="" /> → radio<br>
+            <img class="bulletImage" src="/assets/icons/61482.png" alt="" /> → appletv<br>
+            <img class="bulletImage" src="/assets/icons/61483.png" alt="" /> → homepod<br>
+            <img class="bulletImage" src="/assets/icons/61484.png" alt="" /> → applewatchwaves<br>
+            <img class="bulletImage" src="/assets/icons/61486.png" alt="" /> → iphone<br>
+            <img class="bulletImage" src="/assets/icons/61487.png" alt="" /> → iphonewave<br>
+            <img class="bulletImage" src="/assets/icons/61488.png" alt="" /> → iphoneapps<br>
+            <img class="bulletImage" src="/assets/icons/61489.png" alt="" /> → ipad<br>
+            <img class="bulletImage" src="/assets/icons/61490.png" alt="" /> → ipadalt<br>
+            <img class="bulletImage" src="/assets/icons/61491.png" alt="" /> → ipod<br>
+            <img class="bulletImage" src="/assets/icons/59658.png" alt="" /> → babygirl<br>
+            <img class="bulletImage" src="/assets/icons/59659.png" alt="" /> → babyboy<br>
+            <img class="bulletImage" src="/assets/icons/59687.png" alt="" /> → child<br>
+            <img class="bulletImage" src="/assets/icons/59775.png" alt="" /> → man<br>
+            <img class="bulletImage" src="/assets/icons/59869.png" alt="" /> → woman<br>
+            <img class="bulletImage" src="/assets/icons/59806.png" alt="" /> → wheelchair<br>
+            <img class="bulletImage" src="/assets/icons/59801.png" alt="" /> → person<br>
+            <img class="bulletImage" src="/assets/icons/59800.png" alt="" /> → people2<br>
+            <img class="bulletImage" src="/assets/icons/59799.png" alt="" /> → people3<br>
+            <img class="bulletImage" src="/assets/icons/59437.png" alt="" /> → person2alt<br>
+            <img class="bulletImage" src="/assets/icons/59802.png" alt="" /> → personalter<br>
+            <img class="bulletImage" src="/assets/icons/59804.png" alt="" /> → personspeech<br>
+            <img class="bulletImage" src="/assets/icons/59803.png" alt="" /> → persondancer<br>
+            <img class="bulletImage" src="/assets/icons/59807.png" alt="" /> → personlifting<br>
+            <img class="bulletImage" src="/assets/icons/59809.png" alt="" /> → personskiing<br>
+            <img class="bulletImage" src="/assets/icons/59810.png" alt="" /> → personsnowboarding<br>
+            <img class="bulletImage" src="/assets/icons/59811.png" alt="" /> → personswimming<br>
+            <img class="bulletImage" src="/assets/icons/59805.png" alt="" /> → personhiking<br>
+            <img class="bulletImage" src="/assets/icons/59812.png" alt="" /> → personwalking<br>
+            <img class="bulletImage" src="/assets/icons/59813.png" alt="" /> → personwalkingcane<br>
+            <img class="bulletImage" src="/assets/icons/59808.png" alt="" /> → personrunning<br>
+            <img class="bulletImage" src="/assets/icons/61493.png" alt="" /> → personrunningcircle<br>
+            <img class="bulletImage" src="/assets/icons/61494.png" alt="" /> → personsprinting<br>
+            <img class="bulletImage" src="/assets/icons/61495.png" alt="" /> → personclose<br>
+            <img class="bulletImage" src="/assets/icons/61496.png" alt="" /> → personopen<br>
+            <img class="bulletImage" src="/assets/icons/61440.png" alt="" /> → shortcuts<br>
+            <img class="bulletImage" src="/assets/icons/59650.png" alt="" /> → alerttriangle<br>
+            <img class="bulletImage" src="/assets/icons/59654.png" alt="" /> → arrowcurvedleft<br>
+            <img class="bulletImage" src="/assets/icons/59655.png" alt="" /> → arrowcurvedright<br>
+            <img class="bulletImage" src="/assets/icons/59670.png" alt="" /> → bookmark<br>
+            <img class="bulletImage" src="/assets/icons/59661.png" alt="" /> → barcode<br>
+            <img class="bulletImage" src="/assets/icons/59819.png" alt="" /> → qrcode<br>
+            <img class="bulletImage" src="/assets/icons/59508.png" alt="" /> → play<br>
+            <img class="bulletImage" src="/assets/icons/59673.png" alt="" /> → boxfilled<br>
+            <img class="bulletImage" src="/assets/icons/59674.png" alt="" /> → boxoutline<br>
+            <img class="bulletImage" src="/assets/icons/59675.png" alt="" /> → braille<br>
+            <img class="bulletImage" src="/assets/icons/59696.png" alt="" /> → circleleftarrow<br>
+            <img class="bulletImage" src="/assets/icons/59705.png" alt="" /> → circlrightarrow<br>
+            <img class="bulletImage" src="/assets/icons/59693.png" alt="" /> → downloadArrow<br>
+            <img class="bulletImage" src="/assets/icons/59707.png" alt="" /> → circleduparrow<br>
+            <img class="bulletImage" src="/assets/icons/59692.png" alt="" /> → cicircleddownarrow<br>
+            <img class="bulletImage" src="/assets/icons/59708.png" alt="" /> → uploadArrow<br>
+            <img class="bulletImage" src="/assets/icons/59699.png" alt="" /> → circledplay<br>
+            <img class="bulletImage" src="/assets/icons/59704.png" alt="" /> → circledrewind<br>
+            <img class="bulletImage" src="/assets/icons/59702.png" alt="" /> → power<br>
+            <img class="bulletImage" src="/assets/icons/59706.png" alt="" /> → circledstop<br>
+            <img class="bulletImage" src="/assets/icons/59695.png" alt="" /> → fastfoward<br>
+            <img class="bulletImage" src="/assets/icons/59703.png" alt="" /> → circledquestionmark<br>
+            <img class="bulletImage" src="/assets/icons/59690.png" alt="" /> → circledcheckmark<br>
+            <img class="bulletImage" src="/assets/icons/59700.png" alt="" /> → circledplus<br>
+            <img class="bulletImage" src="/assets/icons/59709.png" alt="" /> → circledx<br>
+            <img class="bulletImage" src="/assets/icons/59698.png" alt="" /> → circledpi<br>
+            <img class="bulletImage" src="/assets/icons/59697.png" alt="" /> → circledi<br>
+            <img class="bulletImage" src="/assets/icons/59834.png" alt="" /> → smileyface<br>
+            <img class="bulletImage" src="/assets/icons/59725.png" alt="" /> → documentcss<br>
+            <img class="bulletImage" src="/assets/icons/59395.png" alt="" /> → dollarsign<br>
+            <img class="bulletImage" src="/assets/icons/59448.png" alt="" /> → poundsign<br>
+            <img class="bulletImage" src="/assets/icons/59701.png" alt="" /> → circlepound<br>
+            <img class="bulletImage" src="/assets/icons/59512.png" alt="" /> → eurosign<br>
+            <img class="bulletImage" src="/assets/icons/59694.png" alt="" /> → circledeuro<br>
+            <img class="bulletImage" src="/assets/icons/59514.png" alt="" /> → yensign<br>
+            <img class="bulletImage" src="/assets/icons/59710.png" alt="" /> → circledyen<br>
+            <img class="bulletImage" src="/assets/icons/59515.png" alt="" /> → bitcoin<br>
+            <img class="bulletImage" src="/assets/icons/59689.png" alt="" /> → circledbitcoin<br>
+            <img class="bulletImage" src="/assets/icons/59656.png" alt="" /> → asterisk<br>
+            <img class="bulletImage" src="/assets/icons/59726.png" alt="" /> → documentfilled<br>
+            <img class="bulletImage" src="/assets/icons/59727.png" alt="" /> → documentoutline<br>
+            <img class="bulletImage" src="/assets/icons/59791.png" alt="" /> → newsarticle<br>
+            <img class="bulletImage" src="/assets/icons/59739.png" alt="" /> → foursquares<br>
+            <img class="bulletImage" src="/assets/icons/59392.png" alt="" /> → ellipsis<br>
+            <img class="bulletImage" src="/assets/icons/59445.png" alt="" /> → list<br>
+            <img class="bulletImage" src="/assets/icons/59765.png" alt="" /> → paperlist<br>
+            <img class="bulletImage" src="/assets/icons/59766.png" alt="" /> → curvedpaperlist<br>
+            <img class="bulletImage" src="/assets/icons/59405.png" alt="" /> → twelvesquars<br>
+            <img class="bulletImage" src="/assets/icons/59718.png" alt="" /> → Connected<br>
+            <img class="bulletImage" src="/assets/icons/59758.png" alt="" /> → infinity<br>
+            <img class="bulletImage" src="/assets/icons/59820.png" alt="" /> → recycle<br>
+            <img class="bulletImage" src="/assets/icons/59767.png" alt="" /> → loadingindicator<br>
+            <img class="bulletImage" src="/assets/icons/59516.png" alt="" /> → loadingindicatoralt<br>
+            <img class="bulletImage" src="/assets/icons/59849.png" alt="" /> → Target<br>
+            <img class="bulletImage" src="/assets/icons/59816.png" alt="" /> → podcasts<br>
+            <img class="bulletImage" src="/assets/icons/59454.png" alt="" /> → targetalt<br>
+            <img class="bulletImage" src="/assets/icons/59768.png" alt="" /> → locationarrow<br>
+            <img class="bulletImage" src="/assets/icons/59769.png" alt="" /> → locationpin<br>
+            <img class="bulletImage" src="/assets/icons/59795.png" alt="" /> → parking<br>
+            <img class="bulletImage" src="/assets/icons/59720.png" alt="" /> → crop<br>
+            <img class="bulletImage" src="/assets/icons/59830.png" alt="" /> → shrinkarrow<br>
+            <img class="bulletImage" src="/assets/icons/59831.png" alt="" /> → mergearrow<br>
+            <img class="bulletImage" src="/assets/icons/59786.png" alt="" /> → movearrow<br>
+            <img class="bulletImage" src="/assets/icons/59821.png" alt="" /> → repostarrows<br>
+            <img class="bulletImage" src="/assets/icons/59846.png" alt="" /> → syncarrows<br>
+            <img class="bulletImage" src="/assets/icons/59832.png" alt="" /> → shufflearrows<br>
+            <img class="bulletImage" src="/assets/icons/59833.png" alt="" /> → sliders<br>
+            <img class="bulletImage" src="/assets/icons/59729.png" alt="" /> → doubleqoute<br>
+            <img class="bulletImage" src="/assets/icons/59797.png" alt="" /> → peacesign<br>
+            <img class="bulletImage" src="/assets/icons/59856.png" alt="" /> → threecircles<br>
+            <img class="bulletImage" src="/assets/icons/59853.png" alt="" /> → textsymbol<br>
+            <img class="bulletImage" src="/assets/icons/59732.png" alt="" /> → feedRight<br>
+            <img class="bulletImage" src="/assets/icons/59497.png" alt="" /> → feed<br>
+            <img class="bulletImage" src="/assets/icons/59867.png" alt="" /> → wifi<br>
+            <img class="bulletImage" src="/assets/icons/61501.png" alt="" /> → airdrop<br>
+            <img class="bulletImage" src="/assets/icons/61497.png" alt="" /> → arrowdiamond<br>
+            <img class="bulletImage" src="/assets/icons/61498.png" alt="" /> → directionsright<br>
+            <img class="bulletImage" src="/assets/icons/61499.png" alt="" /> → airplayaudio<br>
+            <img class="bulletImage" src="/assets/icons/61500.png" alt="" /> → airplayvideo<br>
+            <img class="bulletImage" src="/assets/icons/61502.png" alt="" /> → musicnotelist<br>
+            <img class="bulletImage" src="/assets/icons/61503.png" alt="" /> → musicnotealt<br>
+            <img class="bulletImage" src="/assets/icons/61504.png" alt="" /> → musicsqaurestack<br>
+            <img class="bulletImage" src="/assets/icons/61505.png" alt="" /> → musicwaveform<br>
+            <img class="bulletImage" src="/assets/icons/61506.png" alt="" /> → liveplay<br>
+            <img class="bulletImage" src="/assets/icons/61507.png" alt="" /> → livephoto<br>
+            <img class="bulletImage" src="/assets/icons/61508.png" alt="" /> → slomo<br>
+            <img class="bulletImage" src="/assets/icons/61509.png" alt="" /> → timelapse<br>
+            <img class="bulletImage" src="/assets/icons/61510.png" alt="" /> → calendarplus<br>
+            <img class="bulletImage" src="/assets/icons/61511.png" alt="" /> → calendarexclamation<br>
+            <img class="bulletImage" src="/assets/icons/61512.png" alt="" /> → timer<br>
+            <img class="bulletImage" src="/assets/icons/61513.png" alt="" /> → timersqauare<br>
+            <img class="bulletImage" src="/assets/icons/61514.png" alt="" /> → compose<br>
+            <img class="bulletImage" src="/assets/icons/61515.png" alt="" /> → duplicate<br>
+            <img class="bulletImage" src="/assets/icons/61518.png" alt="" /> → nigthshift<br>
+            <img class="bulletImage" src="/assets/icons/61519.png" alt="" /> → truetone<br>
+            <img class="bulletImage" src="/assets/icons/61520.png" alt="" /> → dialmin<br>
+            <img class="bulletImage" src="/assets/icons/61521.png" alt="" /> → dialmax<br>
+            <img class="bulletImage" src="/assets/icons/61522.png" alt="" /> → qrviewfinder<br>
+            <img class="bulletImage" src="/assets/icons/61523.png" alt="" /> → cameraviewfinder<br>
+            <img class="bulletImage" src="/assets/icons/61524.png" alt="" /> → walletpass<br>
+            <img class="bulletImage" src="/assets/icons/61525.png" alt="" /> → appearance<br>
+            <img class="bulletImage" src="/assets/icons/61528.png" alt="" /> → nosign<br>
+            <img class="bulletImage" src="/assets/icons/61529.png" alt="" /> → command<br>
+            <img class="bulletImage" src="/assets/icons/61530.png" alt="" /> → commandcircle<br>
+            <img class="bulletImage" src="/assets/icons/61531.png" alt="" /> → commandsqaure<br>
+            <img class="bulletImage" src="/assets/icons/59433.png" alt="" /> → bumps<br>
+            <img class="bulletImage" src="/assets/icons/59455.png" alt="" /> → stripe<br>
+            <img class="bulletImage" src="/assets/icons/59583.png" alt="" /> → facetime<br>
+            <img class="bulletImage" src="/assets/icons/59542.png" alt="" /> → circledHeart<br>
+            <img class="bulletImage" src="/assets/icons/59496.png" alt="" /> → documentOutlineAlt<br>
+            <img class="bulletImage" src="/assets/icons/59520.png" alt="" /> → circledA<br>
+            <img class="bulletImage" src="" alt="" /> → blank<br>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+// Installed name: TEST - Jelly List Item
+// Purpose/role: Isolate documented spaced Item at Index enum; diagnostic.
+// Specification revision: 1; interface: 1.0.
+// Input: Ignored, including absent input. Output: Inspect Alpha in editor.
+// Direct/called: Same fixed two-item list; no explicit return contract.
+// Side effects: None. Dependencies: None. No prompts, permissions/provider apps.
+// Target: iPadOS 26.6, Jellycuts 2026.6.4; bundled compiler unknown.
+// Evidence: Local getItemFromList.md; list literal from project/source candidate.
+// Stage: Drafted. Tests and evidence: README.md; not compiled/imported/run.
+
+import Shortcuts
+
+list(items: ["Alpha", "Beta"]) >> options
+getItemFromList(list: options, type: Item at Index, index: "1", startIndex: "", endIndex: "") >> firstValue

@@ -1,0 +1,5 @@
+# Preserve exact downloaded bytes so snapshot SHA-256 checks survive checkout.
+upstream/** -text
+markdown/** text eol=lf
+snapshot.json text eol=lf
+README.md text eol=lf

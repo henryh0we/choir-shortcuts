@@ -1,8 +1,10 @@
 # Jelly language and toolchain reference
 
-Reviewed 2026-10-14. This is a repository-specific evidence record, not a complete language specification. **Source-backed** means checked in official documentation or upstream code; **compiled** requires actually running the chosen compiler. No compilation, import, or iPhone execution was performed for this workspace.
+Reviewed 2026-10-14; documentation integration updated 2026-10-16. This is a repository-specific evidence record, not a complete language specification. **Source-backed** means checked in official documentation or upstream code; **compiled** requires actually running the chosen compiler. No successful compilation, import or device execution is recorded here; device-reported compilation failures are preserved below and in the compatibility record.
 
-The candidate source profile is Open-Jellycore commit `e1ec31c2ee192c8721749f9eb3b50108e38891cf`, inspected through the official GitHub repository/API. The user's Jellycuts app version, installed compiler version, and bundled action-library version are unknown. Examples must be compiled against the actual toolchain before compatibility is claimed. Provisional device target: iOS 26, English editor.
+The candidate source profile is Open-Jellycore commit `e1ec31c2ee192c8721749f9eb3b50108e38891cf`, inspected through the official GitHub repository/API. The user-reported profile is Jellycuts 2026.6.4, iPadOS 26.6 and forScore 15.2.5. Bundled compiler and action-library revisions remain unknown; the candidate source revision is not an established app match. Examples must be compiled against the actual toolchain before compatibility is claimed. English editor conventions are used here.
+
+Use the [local documentation index](jellycuts-docs-index.md), pinned at docs commit `19306be1dd30c20e12058ebe144dd8342e64ca39`, and [compatibility evidence and probes](../tests/compatibility/README.md) before changing syntax. Exact device-tested forms take precedence for the recorded profile. The [vendor README](../vendor/jellycuts-docs/README.md) records provenance, licensing status and refresh instructions. No successful probe results have been recorded.
 
 ## Primary sources
 
@@ -134,7 +136,7 @@ Additional pinned-source inspection on 2026-10-16 supports generating the archiv
 
 The [Shortcuts lookup table](https://github.com/OpenJelly/Open-Jellycore/blob/e1ec31c2ee192c8721749f9eb3b50108e38891cf/Sources/Open-Jellycore/Core/Compiler/Lookup%20Tables/Apps/Shortcuts/ShortcutsLookupTable.swift), associated Parameter files, and enum definitions were read for every new binding: `selectFile(type, multiple)`, `count(type, input)`, `choose(list, prompt, multiple, all)`, `fileDetail(input, property)`, `changeCase(text, case)`, `getFolderContents(folder, recursive)`, `getItemFromList(list, type, index, startIndex, endIndex)`, `setName(input, name, dontIncludeExtension)`, `saveFile(input, ask, path, overwrite)`, `askForInput(prompt, type, default, allowDecimal, allowNegative)`, `list(items)`, `combineText(text, combine, separator)`, `nothing()`, `alert(alert, title, cancel)` and `quicklook(input)`. All required slots are supplied. Array arguments contain native references or literal Text entries according to JellyArray serialization; actual list flattening/collection and native types remain device integration checks.
 
-Used enum spellings include Files, Items, FileExtension, Name, lowercase, FirstItem, Text and NewLines. No forScore binding is claimed. The first Stop and Output in each new helper is an assembly guard; remove it only after completing every applicable slot in [the assembly guide](choir-service-assembly.md).
+Historical pinned-source enum spellings included Files, Items, FileExtension, Name, lowercase, FirstItem, Text and NewLines. Device reports below reject FileExtension and FirstItem; archive revision 4 uses documented spaced alternatives pending recompilation. These historical spellings are not an app compatibility guarantee. No forScore binding is claimed. The first Stop and Output in each new helper is an assembly guard; remove it only after completing every applicable slot in [the assembly guide](choir-service-assembly.md).
 
 ### Remaining validation
 

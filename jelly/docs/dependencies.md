@@ -11,7 +11,7 @@ Source headers own contracts and direct dependency details. This table is the na
 | [UTIL - Assemble Choir Service](../shortcuts/reusable/util-assemble-choir-service.jelly) | Generated service helper with forScore insertion slots | UTIL - Canonical Choir Name; UTIL - Archive Choir PDF, interfaces 1.0 | 1.0 | Drafted |
 | [MAIN - Build Choir Service](../shortcuts/main/main-build-choir-service.jelly) | Generated interactive production entry point | UTIL - Assemble Choir Service, interface 1.0 | 1.0 | Drafted |
 
-External provider apps/services: None for the example actions. Jellycuts or a compatible compiler is a build tool; Apple Shortcuts is the runtime. Target iOS 26 is provisional, not a confirmed device configuration.
+External provider apps/services: None for the example actions. Jellycuts or a compatible compiler is a build tool; Apple Shortcuts is the runtime. Current user-reported target: Jellycuts 2026.6.4 on iPadOS 26.6; no successful compilation or runtime validation is recorded for these sources.
 
 1. Compile/export the utility, inspect generated actions, import it, and confirm its installed name is exactly `UTIL - Jelly Format Greeting`.
 2. Run the utility's direct test. Record results without claiming the complete integration is verified yet.
@@ -20,7 +20,9 @@ External provider apps/services: None for the example actions. Jellycuts or a co
 
 There is no cycle: main depends on utility; utility does not depend on main. Using the main to test the utility does not create a utility runtime dependency.
 
-Compiler/app versions and installed source revisions have not been confirmed. Dependency comments and interface versions do not enforce runtime compatibility. Missing or renamed utilities may halt Run Shortcut rather than return a recoverable error. Check exact names and contracts before launch; do not claim a runtime catch is implemented.
+The app version is user-reported; bundled compiler/library revisions and installed source revisions remain unconfirmed. Dependency comments and interface versions do not enforce runtime compatibility. Missing or renamed utilities may halt Run Shortcut rather than return a recoverable error. Check exact names and contracts before launch; do not claim a runtime catch is implemented.
+
+Optional independent diagnostic Shortcuts are inventoried in [compatibility tests](../tests/compatibility/README.md). They are not dependencies of examples or production sources.
 
 ## Choir service installation order
 

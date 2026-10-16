@@ -9,12 +9,13 @@ Reviewed date: 2026-10-14
 Stage: Syntax reviewed
 Candidate compiler source: Open-Jellycore
 Candidate revision: e1ec31c2ee192c8721749f9eb3b50108e38891cf
-Installed compiler/app/library version: Unknown
+Installed app profile (user-reported 2026-10-16): Jellycuts 2026.6.4; iPadOS 26.6
+Bundled compiler/library revision: Unknown; examples still uncompiled
 Compilation command actually run: None
 Compiler diagnostics/artifacts: None; not compiled
 Imported device / exact iOS / date: None; not imported
 Execution reports: None; not run
-Provisional design target: iOS 26, English
+Current device target: iPadOS 26.6, English editor conventions
 ```
 
 Syntax reviewed means checked against cited material, not accepted by an executed compiler. The presence condition combines language-guide semantics and compiler-test brace/global conventions; actual parser acceptance and empty-input runtime behaviour remain unverified.

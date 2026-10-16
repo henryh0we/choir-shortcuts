@@ -1,0 +1,13 @@
+// Installed name: TEST - Jelly Output Respond
+// Purpose/role: Isolate compiler-backed Stop and Output signature; diagnostic.
+// Specification revision: 1; interface: 1.0.
+// Input: Ignored, including absent input. Output: One constant Text.
+// Direct: Respond should display Text. Called: Return Text to recipient.
+// Side effects: Display only. Dependencies: None. No permissions/provider apps.
+// Target: iPadOS 26.6, Jellycuts 2026.6.4; bundled compiler unknown.
+// Evidence: Pinned compiler candidate; web signature conflicts. Stage: Drafted.
+// Tests and evidence: README.md; not compiled, imported or run.
+
+import Shortcuts
+
+output(result: "Jelly output probe", noResultBehavior: Respond, response: "Jelly output probe")
