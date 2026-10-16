@@ -1,0 +1,27 @@
+// Installed Shortcut name: UTIL - Jelly Format Greeting
+// Purpose: Format one name as greeting Text; default to Friend without input.
+// Role: Example reusable utility
+// Specification revision: 1 | Interface version: 1.0
+// Input: Optional single Text; missing/empty uses Friend; whitespace preserved.
+// Output: One Text value, Hello, <name>!, with no added newline.
+// Direct execution: Default greeting via no-recipient Respond; no input prompt.
+// Called execution: Returns greeting to Run Shortcut; no intended extra display.
+// Errors: No type validation/catch; action failure or cancellation may halt.
+// Unsupported: Lists/non-Text; Share Sheet/Siri/background contexts not specified.
+// Dependencies: None | External apps/services: None
+// Side effects: Respond when no recipient; no files/network/clipboard changes.
+// Permissions: No protected data access required by these actions.
+// Target: iOS 26 provisional; actual device and Jellycuts app version unknown.
+// Candidate compiler: Open-Jellycore e1ec31c2ee192c8721749f9eb3b50108e38891cf
+// Evidence: Syntax reviewed against docs/source; not compiled/imported/tested.
+// References: ../docs/jellycuts-reference.md | Tests: ../tests/examples.md
+
+import Shortcuts
+
+var name = "Friend"
+if ShortcutInput != nil {
+    name = ShortcutInput
+}
+
+text(text: "Hello, ${name}!") >> greeting
+output(result: "${greeting}", noResultBehavior: Respond, response: "${greeting}")

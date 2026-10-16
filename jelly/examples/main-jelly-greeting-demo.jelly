@@ -1,0 +1,24 @@
+// Installed Shortcut name: MAIN - Jelly Greeting Demo
+// Purpose: Demonstrate an explicit input/result call to the reusable formatter.
+// Role: Example main workflow
+// Specification revision: 1 | Interface version: 1.0
+// Input: Incoming content ignored; supplies literal Henry as one Text value.
+// Output: One greeting Text from utility, expected Hello, Henry!.
+// Direct execution: No prompt; no-recipient Respond displays final greeting.
+// Called execution: Returns greeting; no intended extra display.
+// Errors: Missing/incompatible utility or action failure may halt; no catch.
+// Dependencies: UTIL - Jelly Format Greeting, interface 1.0,
+//               util-jelly-format-greeting.jelly (same directory).
+// External apps/services: None
+// Side effects: Respond when no recipient; no files/network/clipboard changes.
+// Permissions: No protected data access required by these actions.
+// Target: iOS 26 provisional; Share Sheet/Siri/background contexts not specified.
+// Candidate compiler: Open-Jellycore e1ec31c2ee192c8721749f9eb3b50108e38891cf
+// Evidence: Syntax reviewed against docs/source; not compiled/imported/tested.
+// References: ../docs/jellycuts-reference.md | Tests: ../tests/examples.md
+
+import Shortcuts
+
+var name = "Henry"
+runShortcut(name: "UTIL - Jelly Format Greeting", input: name, show: false) >> greeting
+output(result: "${greeting}", noResultBehavior: Respond, response: "${greeting}")
