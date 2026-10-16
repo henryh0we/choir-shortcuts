@@ -1,6 +1,6 @@
 // Installed name: UTIL - Canonical Choir Name
 // Purpose: Remove a terminal PDF extension and recognised service prefix.
-// Role: Reusable; specification revision 3; interface 1.0.
+// Role: Reusable; specification revision 4; interface 1.0.
 // Input: One nonempty filename Text, with or without .pdf. No paths or Files.
 // Output: One Text stem. Empty input outputs empty Text; caller must reject it.
 // Side effects: None. Direct and called execution have no prompts.
@@ -11,10 +11,6 @@
 // Contract/tests/install: ../../docs/choir-service-build.md; ../../tests/choir-service.md
 
 import Shortcuts
-
-if ShortcutInput == nil {
-    output(result: "", noResultBehavior: Respond, response: "")
-}
 
 replaceText(input: "${ShortcutInput}", find: "[.]pdf$", replace: "", isRegex: true, caseSensitive: false) >> filenameStem
 replaceText(input: "${filenameStem}", find: "^(Mon|Tue|Wed|Thu(r|rs)?|Fri|Sat|Sun)(am|pm)?[0-9]+-", replace: "", isRegex: true, caseSensitive: false) >> canonicalName

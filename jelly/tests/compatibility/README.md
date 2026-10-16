@@ -6,6 +6,10 @@ Documentation snapshot: `19306be1dd30c20e12058ebe144dd8342e64ca39`; navigate thr
 
 ## Known discrepancies
 
+User-confirmed runtime fixture: the manually adjusted canonical helper returned the expected name for `Fri1-Walsh-Responses.pdf` after removal of the unconditional early stop and native input/result wiring corrections. Its receiving configuration is Text, with an error message on missing input. This is one installed-fixture pass, not verification of unmodified exports or the larger helpers. Preserve these receiving/wiring settings on regeneration.
+
+Latest device observation: canonical revision 3 compiled/generated, but its first empty Stop and Output was in the regular flow with no surrounding If action. Supplied filename input is confirmed; successful filename transformation/return is not yet confirmed. Canonical revision 4 removes this guard entirely and retains only the two replacements and final return. The cause of the missing If is not established. Inspect generated If/Otherwise/End If structure in archive and assembly before enabling their writes; compilation alone has not established faithful control-flow generation.
+
 | Feature | Existing evidence, 16 October 2026 | Current candidate and next check |
 | --- | --- | --- |
 | Empty Stop and Output | User reported out-of-scope `DoNothing` in archive helper | Production uses `Respond` as an export workaround, with manual no-recipient repair. Test output probe before claiming acceptance. |

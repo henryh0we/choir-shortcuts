@@ -1,6 +1,6 @@
 # Build the choir service workflow
 
-Implementation release 1, assembly revision 3, 16 October 2026. Current source revisions: canonical 3, archive 5, assembly 3, main 2; completed interfaces remain 1.0. Generate all four Shortcuts in Jellycuts, then insert native forScore actions at their Comment markers. Build the whole workflow and resolve remaining differences during its first service run. No further isolated action experiments are prerequisites. The sources are Drafted, not compiled or installed by this workspace.
+Implementation release 1, assembly revision 3, 16 October 2026. Current source revisions: canonical 4, archive 5, assembly 3, main 2; completed interfaces remain 1.0. Generate all four Shortcuts in Jellycuts, then insert native forScore actions at their Comment markers. Build the whole workflow and resolve remaining differences during its first service run. No further isolated action experiments are prerequisites. The sources are Drafted, not compiled or installed by this workspace.
 
 ## Install these four Shortcuts
 
@@ -16,6 +16,10 @@ Use Jellycuts 2026.6.4 on the iPad for all four source files. Follow [the Commen
 The generated main is deliberately small. File selection, ordering, metadata prompts, branching and loops are generated inside the assembly helper. Only the native forScore action slots need insertion. The archive helper is generated too; four CFG markers cover a saved Folder reference, native save destination and two native File returns that the reviewed bindings cannot fully express. Native Scores and Setlists remain inside the assembly helper; the main passes/receives Text. Source comments become actual Comment actions, and temporary Nothing actions mark result-producing slots. After replacing an action, reconnect its downstream outputs as listed in the assembly guide.
 
 ## Configure the archive once
+
+Canonical helper device setup: user-confirmed working for `Fri1-Walsh-Responses.pdf` after native variable wiring corrections and removal of the unconditional initial Stop and Output. Configure received input as Text and show an error if no input is supplied, matching the user's installed setup. Keep the final return connected to the second Replace Text result. These on-device changes must be checked/reapplied on re-export; they are not all encoded by the source. This fixture passed; other filename variants and archive integration still need testing.
+
+Before configuring/running the archive, inspect its generated native If/End If and Repeat markers. The earlier canonical export omitted an If wrapper, so do not assume compilation preserved control flow. In particular, the archive's No source PDF alert and following empty Stop and Output must be inside an If testing that Shortcut Input has no value. Its other validation stops must also remain inside their conditions. Keep the initial ASSEMBLY GUARD until CFG01-CFG04 and these structure checks are complete.
 
 At CFG01 in the generated Archive Choir PDF, insert a Folder action and select the existing iCloud `Choir Music/Library` folder. Keep its immediate children as the music-type folders. This is the only archive-root setting. The workflow selects one of those folders when saving a new clean PDF; it does not recreate your old folder-setup Shortcut.
 
@@ -49,6 +53,6 @@ Sources: [Jelly Run Shortcut](https://docs.jellycuts.com/Documentation/Shortcuts
 
 ## Update from earlier exports
 
-Preserve completed installed copies of Archive Choir PDF and Assemble Choir Service, then recompile source revisions 5 and 3 respectively. Reapply CFG01-CFG04 and FS01-FS13 to fresh exports before removing their guards. CFG03 now returns the named `existingCleanFile` variable; it no longer points to a Get First Item action. Verify its presence checks and native File value in the editor. Installed names and completed interfaces have not changed, so main revision 2 can stay installed if already compiled/imported. Canonical revision 3 must replace revision 2 to remove the device-rejected If-result capture. Recheck the main's Run Shortcut selection and run the integrated cases, including duplicate archives and existing-file reuse.
+Preserve completed installed copies of Archive Choir PDF and Assemble Choir Service, then recompile source revisions 5 and 3 respectively. Reapply CFG01-CFG04 and FS01-FS13 to fresh exports before removing their guards. CFG03 now returns the named `existingCleanFile` variable; it no longer points to a Get First Item action. Verify its presence checks and native File value in the editor. Installed names and completed interfaces have not changed, so main revision 2 can stay installed if already compiled/imported. Canonical revision 4 must replace earlier revisions: it removes both the rejected If-result capture and the guard whose generated If wrapper was missing. Recheck the main's Run Shortcut selection and run the integrated cases, including duplicate archives and existing-file reuse.
 
 Sibling `.txt` files are byte-identical transfer copies of the `.jelly` source for on-device use. Edit `.jelly` as authoritative, then refresh its matching `.txt`; do not use an older transfer copy.
