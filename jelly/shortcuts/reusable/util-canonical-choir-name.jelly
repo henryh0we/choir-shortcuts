@@ -1,0 +1,23 @@
+// Installed name: UTIL - Canonical Choir Name
+// Purpose: Remove a terminal PDF extension and recognised service prefix.
+// Role: Reusable; specification revision 2; interface 1.0.
+// Input: One nonempty filename Text, with or without .pdf. No paths or Files.
+// Output: One Text stem. Empty input outputs empty Text; caller must reject it.
+// Side effects: None. Direct and called execution have no prompts.
+// Dependencies: None.
+// Target: iPadOS 26.6; Jellycuts 2026.6.4 reported, bundled compiler unknown.
+// Profile: Existing Open-Jellycore candidate; replaceText from official docs.
+// Stage: Drafted, not compiled/imported/device tested.
+// Contract/tests/install: ../../docs/choir-service-build.md; ../../tests/choir-service.md
+
+import Shortcuts
+
+if ShortcutInput != nil {
+    text(text: "${ShortcutInput}")
+} else {
+    text(text: "")
+} >> sourceName
+
+replaceText(input: "${sourceName}", find: "[.]pdf$", replace: "", isRegex: true, caseSensitive: false) >> filenameStem
+replaceText(input: "${filenameStem}", find: "^(Mon|Tue|Wed|Thu(r|rs)?|Fri|Sat|Sun)(am|pm)?[0-9]+-", replace: "", isRegex: true, caseSensitive: false) >> canonicalName
+output(result: "${canonicalName}", noResultBehavior: Respond, response: "${canonicalName}")

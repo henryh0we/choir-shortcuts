@@ -1,0 +1,148 @@
+.nextcloudsync.log
+.sync_d0c7abb06a3c.db
+.sync_d0c7abb06a3c.db-shm
+.sync_d0c7abb06a3c.db-wal
+Ave Maria elgar.pdf
+Compline Booklet.pdf
+Desktop.ini
+InstantUpload\
+InstantUpload\St John Passion (Barenrheiter).pdf
+KS-Lullaby.pdf
+Other Concerts\
+Other Concerts\Follow-That-Star.pdf
+Other Concerts\Its-the-most-wonderful-time-of-the-year.pdf
+Other Concerts\Marys-Boy-Child.pdf
+Other Concerts\November 2024.pdf
+Postman-Pat.pdf
+ScannedChoirMusic\
+ScannedChoirMusic\.pdf
+ScannedChoirMusic\2027-2032FutureMusicDepartmentConcertDates.pdf
+ScannedChoirMusic\72 Autumn 2026 with music.pdf
+ScannedChoirMusic\ExtraServices\
+ScannedChoirMusic\ExtraServices\Fri9Oct,11am-ChristopherDayRIP\
+ScannedChoirMusic\ExtraServices\Fri9Oct,11am-ChristopherDayRIP\NEH262-WePloughTheFields.pdf
+ScannedChoirMusic\ExtraServices\Fri9Oct,11am-ChristopherDayRIP\NEH353-DearLordAndFatherOfMankind.pdf
+ScannedChoirMusic\ExtraServices\Fri9Oct,11am-ChristopherDayRIP\NEH368-GuideMeOThouGreatRedeemer-AP.pdf
+ScannedChoirMusic\ExtraServices\Fri9Oct,11am-ChristopherDayRIP\Rutter-LookAtTheWorld.pdf
+ScannedChoirMusic\ExtraServices\Fri9Oct,11am-ChristopherDayRIP\Rutter-TheLordBlessYouAndKeepYou.pdf
+ScannedChoirMusic\ExtraServices\Sat17Oct,11am-Wedding-BruceHargrave&Irene\
+ScannedChoirMusic\ExtraServices\Sat17Oct,11am-Wedding-BruceHargrave&Irene\Hy-HighOverLonelyHills.pdf
+ScannedChoirMusic\ExtraServices\Sat17Oct,11am-Wedding-BruceHargrave&Irene\NEH488-AndDidThoseFeetInAncientTime.pdf
+ScannedChoirMusic\ExtraServices\Sat17Oct,11am-Wedding-BruceHargrave&Irene\Parry-IWasGlad.pdf
+ScannedChoirMusic\ExtraServices\Sat17Oct,11am-Wedding-BruceHargrave&Irene\Wedding Running Order - Second Draft.pdf
+ScannedChoirMusic\FOct5-11\
+ScannedChoirMusic\FOct5-11\Fri1-Ireland-VesperHymn.pdf
+ScannedChoirMusic\FOct5-11\Fri2-Walsh-Responses.pdf
+ScannedChoirMusic\FOct5-11\Fri3-NEH221-OGodThyLovingCareForMan.pdf
+ScannedChoirMusic\FOct5-11\Fri4-Ps016.pdf
+ScannedChoirMusic\FOct5-11\Fri5-Leighton-TheSecondService.pdf
+ScannedChoirMusic\FOct5-11\Fri6-Joubert-OLordeTheMakerOfAlThing.pdf
+ScannedChoirMusic\FOct5-11\Fri7-NEH205-ChristIsMadeTheSureFoundation-AP.pdf
+ScannedChoirMusic\FOct5-11\Sun1-SiIniquitatesObservaverisDomine-HebdomXXVIII.pdf
+ScannedChoirMusic\FOct5-11\Sun10-NEH282-FaithfulShepherdFeedMe.pdf
+ScannedChoirMusic\FOct5-11\Sun11-Ps150-Talbot.pdf
+ScannedChoirMusic\FOct5-11\Sun2-NEH443-RejoiceTheLordIsKing.pdf
+ScannedChoirMusic\FOct5-11\Sun3-Briggs-TruroEucharist-Gloria.pdf
+ScannedChoirMusic\FOct5-11\Sun4-Ps023.pdf
+ScannedChoirMusic\FOct5-11\Sun5-59.Proper23.pdf
+ScannedChoirMusic\FOct5-11\Sun6-NEH381-JerusalemTheGolden.pdf
+ScannedChoirMusic\FOct5-11\Sun7-Briggs-TruroEucharist-SanctusBenedictus.pdf
+ScannedChoirMusic\FOct5-11\Sun8-Briggs-TruroEucharist-AgnusDei.pdf
+ScannedChoirMusic\FOct5-11\Sun9-Allain-Cana'sGuest.pdf
+ScannedChoirMusic\FOct5-11\Sunam1-Walsh-Responses.pdf
+ScannedChoirMusic\FOct5-11\Sunam2-Ps095.pdf
+ScannedChoirMusic\FOct5-11\Sunam3-Ps138and141.pdf
+ScannedChoirMusic\FOct5-11\Sunam4-Howells-CollegiumRegale-TeDeum.pdf
+ScannedChoirMusic\FOct5-11\Sunam5-Howells-CollegiumRegale-Jubilate.pdf
+ScannedChoirMusic\FOct5-11\Sunam6-Robinson-JesuGrantMeThisIPray.pdf
+ScannedChoirMusic\FOct5-11\Sunpm1-NEH259-ComeYeThankfulPeopleCome.pdf
+ScannedChoirMusic\FOct5-11\Sunpm2-Greene-ThouVisitestTheEarth.pdf
+ScannedChoirMusic\FOct5-11\Sunpm3-Ps126.pdf
+ScannedChoirMusic\FOct5-11\Sunpm4-NEH262-WePloughTheFields.pdf
+ScannedChoirMusic\FOct5-11\Sunpm5-Wood-SummerEnded.pdf
+ScannedChoirMusic\FOct5-11\Sunpm6-NEH261-ToTheeOLordOurHeartsWeRaise.pdf
+ScannedChoirMusic\FOct5-11\Thur1-Radcliffe-Responses.pdf
+ScannedChoirMusic\FOct5-11\Thur2-OH06.pdf
+ScannedChoirMusic\FOct5-11\Thur3-Ps088.pdf
+ScannedChoirMusic\FOct5-11\Thur4-Walmisley-InDminor.pdf
+ScannedChoirMusic\FOct5-11\Thur5-Wilby-BreatheOnMeBreathOfGod.pdf
+ScannedChoirMusic\FOct5-11\Thur6-NEH372-HeWhoWouldValiantBe.pdf
+ScannedChoirMusic\FOct5-11(ATB)\
+ScannedChoirMusic\FOct5-11(ATB)\Sat1-Millington-Responses.pdf
+ScannedChoirMusic\FOct5-11(ATB)\Sat2-OH01.pdf
+ScannedChoirMusic\FOct5-11(ATB)\Sat3-Ps89vv30-50(Plainsong).pdf
+ScannedChoirMusic\FOct5-11(ATB)\Sat4-Cruft-CollegiumRegale.pdf
+ScannedChoirMusic\FOct5-11(ATB)\Sat5-Purcell-HearMeOLordTheGreatSupport.pdf
+ScannedChoirMusic\FOct5-11(ATB)\Sat6-NEH446-SingAlleluyaForth.pdf
+ScannedChoirMusic\GOct12-18\
+ScannedChoirMusic\GOct12-18\Fri1-Walsh-Responses.pdf
+ScannedChoirMusic\GOct12-18\Fri3-Ps097.pdf
+ScannedChoirMusic\GOct12-18\Fri4-Byrd-TheVerseService.pdf
+ScannedChoirMusic\GOct12-18\Fri5-Tallis-TeLucisAnteTerminum.pdf
+ScannedChoirMusic\GOct12-18\Mon1-Prentice-Responses.pdf
+ScannedChoirMusic\GOct12-18\Mon3-Ps091.pdf
+ScannedChoirMusic\GOct12-18\Mon4-Long-InF.pdf
+ScannedChoirMusic\GOct12-18\Mon5-Dyson-IWillWorship.pdf
+ScannedChoirMusic\GOct12-18\Sun11-Ps150-Talbot.pdf
+ScannedChoirMusic\GOct12-18\Sun3-Palestrina-MissaBrevis-Gloria.pdf
+ScannedChoirMusic\GOct12-18\Sun4-Ps147vv1-7.pdf
+ScannedChoirMusic\GOct12-18\Sun5-60.Proper24.pdf
+ScannedChoirMusic\GOct12-18\Sun7-Palestrina-MissaBrevis-SanctusBenedictus.pdf
+ScannedChoirMusic\GOct12-18\Sun8-Palestrina-MissaBrevis-AgnusDei1and2.pdf
+ScannedChoirMusic\GOct12-18\Sun9-deSeverac-TantumErgo.pdf
+ScannedChoirMusic\GOct12-18\Sunpm1-Tallis-CandidiFactiSunt.pdf
+ScannedChoirMusic\GOct12-18\Sunpm2-Walsh-Responses.pdf
+ScannedChoirMusic\GOct12-18\Sunpm4-Ps103.pdf
+ScannedChoirMusic\GOct12-18\Sunpm5-Dyson-InD.pdf
+ScannedChoirMusic\GOct12-18\Sunpm6-Harris-StrengthenYeTheWeakHands.pdf
+ScannedChoirMusic\GOct12-18\Thur1-Radcliffe-Responses.pdf
+ScannedChoirMusic\GOct12-18\Thur3-Ps095and096.pdf
+ScannedChoirMusic\GOct12-18\Thur4-Wood-InEflat-No2.pdf
+ScannedChoirMusic\GOct12-18\Thur5-Purcell-ThouKnowestLord.pdf
+ScannedChoirMusic\GOct12-18\Tue1-Walsh-Responses.pdf
+ScannedChoirMusic\GOct12-18\Tue3-Ps092and093.pdf
+ScannedChoirMusic\GOct12-18\Tue4-Jackson-InGminor.pdf
+ScannedChoirMusic\GOct12-18\Tue5-Lloyd-FillThouMyLife.pdf
+ScannedChoirMusic\Jesus Walking On The Waves.pdf
+ScannedChoirMusic\NewMusic\
+ScannedChoirMusic\NewMusic\Fawcett-GainsboroughResponses.pdf
+ScannedChoirMusic\NewMusic\Harris-StrengthenYeTheWeakHands.pdf
+ScannedChoirMusic\NewMusic\Jackson-InGminor.pdf
+ScannedChoirMusic\NewMusic\Stanford-BeatiQuorumVia.pdf
+ScannedChoirMusic\ReadySteadyChoir!\
+ScannedChoirMusic\ReadySteadyChoir!\1.RSC-ATallStory.pdf
+ScannedChoirMusic\ReadySteadyChoir!\2.RSC-OverTheRainbow.pdf
+ScannedChoirMusic\ReadySteadyChoir!\3.RSC-Wesley-LeadmeLord.pdf
+ScannedChoirMusic\ReadySteadyChoir!\4.RSC-TheLittleSpanishTown.pdf
+ScannedChoirMusic\ReadySteadyChoir!\Plumstead-AGratefulHeart.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-AGaelicBlessing.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-AmazingGrace!.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-Edelweiss.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-LightOfTheWorld.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-MakeMeAChannel.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-MyFavouriteThings.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-NowTheSunIsShining.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-OWhenTheSaints.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-Plumstead-AGratefulHeart.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-SingOfTheLord'sGoodness.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-TheOwls.pdf
+ScannedChoirMusic\TermDates2026-28.pdf
+ScannedChoirMusic\Theory\
+ScannedChoirMusic\Theory\TG006509e Theory of Music Workbook Grade 1.pdf
+ScannedChoirMusic\Theory\TG006516e Theory of Music Workbook Grade 2.pdf
+ScannedChoirMusic\Theory\TG006516e Theory of Music Workbook Grade 3.pdf
+ScannedChoirMusic\Theory\TG006523e Theory of Music Workbook Grade 3.pdf
+ScannedChoirMusic\Theory\TG006530e Theory of Music Workbook Grade 4.pdf
+ScannedChoirMusic\Theory\TG006547e Theory of Music Workbook Grade 5.pdf
+ScannedChoirMusic\Theory\TheoryGrade1.pdf
+ScannedChoirMusic\Theory\TheoryGrade2.pdf
+ScannedChoirMusic\YouthChoir\
+ScannedChoirMusic\YouthChoir\Handel-ZadokThePriest.pdf
+ScannedChoirMusic\YouthChoir\Parry-IWasGlad.pdf
+ScannedChoirMusic\YouthChoir\Sat1-Martin-Responses.pdf
+ScannedChoirMusic\YouthChoir\Sat2-Hy-GodInSuchLoveForUs-Epiphany.pdf
+ScannedChoirMusic\YouthChoir\Sat3-Ps024.pdf
+ScannedChoirMusic\YouthChoir\Sat4-Murrill-InE.pdf
+ScannedChoirMusic\YouthChoir\Sat5-Rutter-ForTheBeautyOfTheEarth.pdf
+ScannedChoirMusic\YouthChoir\Sun7-NEH263-AllCreaturesOfOurGodAndKing-AP.pdf
+Song for athene.pdf

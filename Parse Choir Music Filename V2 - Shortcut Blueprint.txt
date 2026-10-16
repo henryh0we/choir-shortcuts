@@ -1,0 +1,551 @@
+PARSE CHOIR MUSIC FILENAME V2
+=============================
+
+Shortcut name:
+Parse Choir Music Filename V2
+
+Purpose:
+Receives one service-prefixed choir music PDF, extracts its service information and permanent Payload, calls "Parse Choir Music Payload", then returns one combined Dictionary.
+
+Input: File
+Output: Dictionary
+
+
+[Shortcut Input]
+Type expected: File
+
+
+========================
+INPUT CHECK
+========================
+
+[If]
+Input: Shortcut Input
+Condition: has any value
+
+    [Get Details of Files]
+    Detail: Name
+    File: Shortcut Input
+
+    [Set Variable]
+    Variable: OriginalFilename
+    Input: Name
+
+    [Get Details of Files]
+    Detail: File Extension
+    File: Shortcut Input
+
+    [Set Variable]
+    Variable: FileExtension
+    Input: File Extension
+
+
+    ========================
+    REMOVE .PDF
+    ========================
+
+    [Replace Text]
+    Find Text: (?i)\.pdf$
+    Replace With: [leave empty]
+    Input: OriginalFilename
+    Regular Expression: On
+
+    [Set Variable]
+    Variable: FilenameStem
+    Input: Updated Text
+
+
+    ========================
+    DEFAULT VALUES
+    ========================
+
+    [Text]
+    None
+    [Set Variable] NoneValue = Text
+
+    [Text]
+    2.0
+    [Set Variable] ParseVersion = Text
+
+    [Boolean]
+    False
+    [Set Variable] ParseOK = Boolean
+
+    [Set Variable] PrefixRaw = NoneValue
+    [Set Variable] DayRaw = NoneValue
+    [Set Variable] Day = NoneValue
+    [Set Variable] Session = NoneValue
+
+    [Number]
+    0
+    [Set Variable] Position = Number
+
+    [Set Variable] Payload = NoneValue
+    [Set Variable] CanonicalFilename = NoneValue
+
+    [Text]
+    Unknown
+    [Set Variable] PatternKind = Text
+
+    [Set Variable] Composer = NoneValue
+    [Set Variable] TitleRaw = NoneValue
+    [Set Variable] Source = NoneValue
+    [Set Variable] CatalogueNumber = NoneValue
+    [Set Variable] Variant = NoneValue
+    [Set Variable] PsalmReference = NoneValue
+
+    [Number]
+    0
+    [Set Variable] PsalmIsExtract = Number
+
+    [Set Variable] ProperSheet = NoneValue
+    [Set Variable] ProperNumber = NoneValue
+    [Set Variable] LiturgicalReference = NoneValue
+    [Set Variable] Warning = NoneValue
+
+
+    ========================
+    PARSE SERVICE PREFIX
+    ========================
+
+    [Match Text]
+    Pattern: ^((Mon|Tue|Wed|Thu(?:r|rs)?|Fri|Sat|Sun)(am|pm)?([0-9]+))-(.+)$
+    Input: FilenameStem
+
+    [Set Variable]
+    Variable: ServiceMatch
+    Input: Matched Text
+
+
+    [If]
+    Input: ServiceMatch
+    Condition: has any value
+
+        [Boolean]
+        True
+        [Set Variable] ParseOK = Boolean
+
+
+        --- PREFIX ---
+
+        [Get Group from Matched Text]
+        Group: 1
+        Input: ServiceMatch
+        [Set Variable] PrefixRaw = Group from Matched Text
+
+
+        --- DAY ---
+
+        [Get Group from Matched Text]
+        Group: 2
+        Input: ServiceMatch
+        [Set Variable] DayRaw = Group from Matched Text
+
+
+        --- SESSION ---
+
+        NOTE:
+        Do not retrieve optional regex Group 3. We discovered during
+        Psalm testing that Shortcuts can terminate an execution path
+        when "Get Group from Matched Text" asks for an optional group
+        which did not participate in the match.
+
+        Determine Session from PrefixRaw instead.
+
+        [If]
+        Input: PrefixRaw
+        Condition: contains
+        Value: am
+
+            [Text]
+            am
+            [Set Variable] Session = Text
+
+        [Otherwise]
+
+            [If]
+            Input: PrefixRaw
+            Condition: contains
+            Value: pm
+
+                [Text]
+                pm
+                [Set Variable] Session = Text
+
+            [End If]
+
+        [End If]
+
+
+        --- POSITION ---
+
+        [Get Group from Matched Text]
+        Group: 4
+        Input: ServiceMatch
+
+        [Get Numbers from Input]
+        Input: Group from Matched Text
+
+        [Set Variable]
+        Variable: Position
+        Input: Numbers
+
+
+        --- PAYLOAD ---
+
+        [Get Group from Matched Text]
+        Group: 5
+        Input: ServiceMatch
+
+        [Set Variable]
+        Variable: Payload
+        Input: Group from Matched Text
+
+
+        ========================
+        NORMALISE THURSDAY
+        ========================
+
+        [If]
+        Input: DayRaw
+        Condition: begins with
+        Value: Thu
+
+            [Text]
+            Thu
+            [Set Variable] Day = Text
+
+        [Otherwise]
+
+            [Set Variable]
+            Variable: Day
+            Input: DayRaw
+
+        [End If]
+
+
+        ========================
+        CANONICAL FILENAME
+        ========================
+
+        [Text]
+        [Payload].pdf
+
+        NOTE:
+        Insert Payload as a magic variable, followed by literal ".pdf".
+
+        [Set Variable]
+        Variable: CanonicalFilename
+        Input: Text
+
+
+        ========================
+        CALL PAYLOAD PARSER
+        ========================
+
+        [Run Shortcut]
+        Shortcut: Parse Choir Music Payload
+        Input: Payload
+
+        [Set Variable]
+        Variable: PayloadResult
+        Input: Shortcut Result
+
+
+        ========================
+        READ PAYLOAD RESULT
+        ========================
+
+        [Get Dictionary Value]
+        Key: PatternKind
+        Dictionary: PayloadResult
+        [Set Variable] PatternKind = Dictionary Value
+
+        [Get Dictionary Value]
+        Key: Composer
+        Dictionary: PayloadResult
+        [Set Variable] Composer = Dictionary Value
+
+        [Get Dictionary Value]
+        Key: TitleRaw
+        Dictionary: PayloadResult
+        [Set Variable] TitleRaw = Dictionary Value
+
+        [Get Dictionary Value]
+        Key: Source
+        Dictionary: PayloadResult
+        [Set Variable] Source = Dictionary Value
+
+        [Get Dictionary Value]
+        Key: CatalogueNumber
+        Dictionary: PayloadResult
+        [Set Variable] CatalogueNumber = Dictionary Value
+
+        [Get Dictionary Value]
+        Key: Variant
+        Dictionary: PayloadResult
+        [Set Variable] Variant = Dictionary Value
+
+        [Get Dictionary Value]
+        Key: PsalmReference
+        Dictionary: PayloadResult
+        [Set Variable] PsalmReference = Dictionary Value
+
+        [Get Dictionary Value]
+        Key: PsalmIsExtract
+        Dictionary: PayloadResult
+        [Set Variable] PsalmIsExtract = Dictionary Value
+
+        [Get Dictionary Value]
+        Key: ProperSheet
+        Dictionary: PayloadResult
+        [Set Variable] ProperSheet = Dictionary Value
+
+        [Get Dictionary Value]
+        Key: ProperNumber
+        Dictionary: PayloadResult
+        [Set Variable] ProperNumber = Dictionary Value
+
+        [Get Dictionary Value]
+        Key: LiturgicalReference
+        Dictionary: PayloadResult
+        [Set Variable] LiturgicalReference = Dictionary Value
+
+        [Get Dictionary Value]
+        Key: Warning
+        Dictionary: PayloadResult
+        [Set Variable] Warning = Dictionary Value
+
+
+    [Otherwise]
+
+        ========================
+        UNRECOGNISED SERVICE FILENAME
+        ========================
+
+        ParseOK remains False.
+        PatternKind remains Unknown.
+
+        [Text]
+        Filename does not match recognised service pattern: [FilenameStem]
+
+        NOTE:
+        Insert FilenameStem as a magic variable after the colon.
+
+        [Set Variable]
+        Variable: Warning
+        Input: Text
+
+    [End If]
+
+
+    ========================
+    FINAL RESULT DICTIONARY
+    ========================
+
+    [Dictionary]
+
+    ParseOK = ParseOK
+    ParseVersion = ParseVersion
+    OriginalFilename = OriginalFilename
+    FileExtension = FileExtension
+    PrefixRaw = PrefixRaw
+    DayRaw = DayRaw
+    Day = Day
+    Session = Session
+    Position = Position
+    Payload = Payload
+    CanonicalFilename = CanonicalFilename
+    PatternKind = PatternKind
+    Composer = Composer
+    TitleRaw = TitleRaw
+    Source = Source
+    CatalogueNumber = CatalogueNumber
+    Variant = Variant
+    PsalmReference = PsalmReference
+    PsalmIsExtract = PsalmIsExtract
+    ProperSheet = ProperSheet
+    ProperNumber = ProperNumber
+    LiturgicalReference = LiturgicalReference
+    Warning = Warning
+
+    [Set Variable]
+    Variable: ParserResult
+    Input: Dictionary
+
+    [Stop and Output]
+    Output: ParserResult
+
+
+[Otherwise]
+
+    ========================
+    NO INPUT
+    ========================
+
+    [Boolean]
+    False
+    [Set Variable] ParseOK = Boolean
+
+    [Text]
+    2.0
+    [Set Variable] ParseVersion = Text
+
+    [Text]
+    Unknown
+    [Set Variable] PatternKind = Text
+
+    [Text]
+    No input file was supplied
+    [Set Variable] Warning = Text
+
+    [Dictionary]
+    ParseOK = ParseOK
+    ParseVersion = ParseVersion
+    PatternKind = PatternKind
+    Warning = Warning
+
+    [Set Variable]
+    Variable: ParserResult
+    Input: Dictionary
+
+    [Stop and Output]
+    Output: ParserResult
+
+[End If]
+
+
+========================
+EXPECTED TEST RESULTS
+========================
+
+Fri1-Ireland-VesperHymn.pdf
+-> ParseOK True
+-> PrefixRaw Fri1
+-> Day Fri
+-> Session None
+-> Position 1
+-> Payload Ireland-VesperHymn
+-> CanonicalFilename Ireland-VesperHymn.pdf
+-> PatternKind ComposerTitle
+-> Composer Ireland
+-> TitleRaw VesperHymn
+
+Fri3-NEH221-OGodThyLovingCareForMan.pdf
+-> ParseOK True
+-> Position 3
+-> Payload NEH221-OGodThyLovingCareForMan
+-> CanonicalFilename NEH221-OGodThyLovingCareForMan.pdf
+-> PatternKind NEHHymn
+-> Source NEH
+-> CatalogueNumber 221
+-> TitleRaw OGodThyLovingCareForMan
+
+Sunam4-Howells-CollegiumRegale-TeDeum.pdf
+-> ParseOK True
+-> PrefixRaw Sunam4
+-> Day Sun
+-> Session am
+-> Position 4
+-> Payload Howells-CollegiumRegale-TeDeum
+-> CanonicalFilename Howells-CollegiumRegale-TeDeum.pdf
+-> PatternKind ComposerTitle
+-> Composer Howells
+-> TitleRaw CollegiumRegale-TeDeum
+
+Thur2-OH06.pdf
+-> ParseOK True
+-> DayRaw Thur
+-> Day Thu
+-> Session None
+-> Position 2
+-> Payload OH06
+-> CanonicalFilename OH06.pdf
+-> PatternKind OfficeHymn
+-> Source OH
+-> CatalogueNumber 06
+
+Sun11-Ps150-Talbot.pdf
+-> ParseOK True
+-> Position 11
+-> Payload Ps150-Talbot
+-> CanonicalFilename Ps150-Talbot.pdf
+-> PatternKind Psalm
+-> PsalmReference 150
+-> PsalmIsExtract 0
+-> Composer None
+
+Sat3-Ps89vv30-50(Plainsong).pdf
+-> ParseOK True
+-> Position 3
+-> Payload Ps89vv30-50(Plainsong)
+-> CanonicalFilename Ps89vv30-50(Plainsong).pdf
+-> PatternKind Psalm
+-> PsalmReference 89vv30-50(Plainsong)
+-> PsalmIsExtract 1
+
+Sun5-60.Proper24.pdf
+-> PatternKind Proper
+-> ProperSheet 60
+-> ProperNumber 24
+
+Sun1-SiIniquitatesObservaverisDomine-HebdomXXVIII.pdf
+-> PatternKind Hebdom
+-> TitleRaw SiIniquitatesObservaverisDomine
+-> LiturgicalReference XXVIII
+
+
+========================
+BUILD NOTES
+========================
+
+1. This shortcut owns SERVICE information. "Parse Choir Music Payload"
+   owns PIECE information.
+
+2. Do not duplicate the NEH, Psalm, Office Hymn, Proper, Hebdom, or
+   ComposerTitle recognition blocks here.
+
+3. [Run Shortcut] must pass Payload to "Parse Choir Music Payload".
+
+4. Save the Run Shortcut output as PayloadResult before using
+   [Get Dictionary Value]. This reduces ambiguous magic-variable links.
+
+5. All None-initialised variables must explicitly use NoneValue.
+   Do not leave automatic Set Variable chaining in place.
+
+6. CanonicalFilename is always the COMPLETE Payload + ".pdf".
+   Never strip verse ranges, "(Plainsong)", variants, or movements.
+
+7. Psalm composer extraction is intentionally omitted. For
+   Ps150-Talbot, Talbot remains part of Payload and CanonicalFilename,
+   but Composer remains None.
+
+8. Psalm extracts remain exact identities. For example,
+   Ps89vv30-50(Plainsong).pdf must later be reused only as that exact
+   score; a full Ps89 score must not be substituted.
+
+9. ParseOK means the service filename structure was understood.
+   A payload can therefore be Unknown while ParseOK remains True.
+
+10. A non-service-prefixed file such as Stanford-BeatiQuorumVia.pdf
+    is expected to fail this parent parser. Its payload can later be
+    sent directly to "Parse Choir Music Payload" in the single-piece
+    workflow.
+
+11. The Session handling deliberately avoids optional capture Group 3.
+    This follows the behaviour found while testing the Psalm parser:
+    retrieving a capture group which did not participate in a match can
+    cause Shortcuts to produce no downstream output.
+
+12. Recommended test set:
+    Fri1-Ireland-VesperHymn.pdf
+    Fri3-NEH221-OGodThyLovingCareForMan.pdf
+    Fri7-NEH205-ChristIsMadeTheSureFoundation-AP.pdf
+    Sun11-Ps150-Talbot.pdf
+    Sunam3-Ps138and141.pdf
+    Sat3-Ps89vv30-50(Plainsong).pdf
+    Thur2-OH06.pdf
+    Sun5-60.Proper24.pdf
+    Sun1-SiIniquitatesObservaverisDomine-HebdomXXVIII.pdf
+    Sun3-Briggs-TruroEucharist-Gloria.pdf
+    Sunam4-Howells-CollegiumRegale-TeDeum.pdf
