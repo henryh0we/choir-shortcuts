@@ -1,6 +1,6 @@
 # Config-based choir workflow
 
-17 October 2026. Current revisions: canonical **5 / interface 2.0**, archive **8 / completed interface 2.0**, assembly **6 / completed interface 1.1**, main **3 / interface 1.0**. Current sources are Drafted; config parsing, native context transfer and updated exports have not been tested on the iPad. Earlier successful naming/save fixtures apply to manually adjusted older versions, not these revisions.
+17 October 2026. Current revisions: canonical **8 / interface 2.0**, archive **8 / completed interface 2.0**, assembly **6 / completed interface 1.1**, main **3 / interface 1.0**. Current sources are Drafted; config parsing, native context transfer and updated exports have not been tested on the iPad. Earlier successful naming/save fixtures apply to manually adjusted older versions, not these revisions.
 
 ## Configuration location and keys
 
@@ -43,6 +43,8 @@ Do not configure the new naming helper to receive Text only or the archive to re
 The assembly helper reads `config.json` once before PDF selection and all writes, resolves Library once, then passes that same native Dictionary/Folder to every archive call. The archive still scans Library for each PDF. A once-per-service recursive index is a separate optimization, not implemented here. Config is reread on the next service run; it is not reread midway through a run.
 
 ## Install and complete slots
+
+The naming helper now also requires **NAME01** and **NAME02** after export. The installed compiler rejected the reviewed getItemFromList selector forms, so the source contains Nothing placeholders instead of guessing another spelling. Replace NAME01's Nothing with native Get Item from List: List = Shortcut Input, Item at Index = 1. Replace NAME02's Nothing with the same native action at index 2. Reconnect the filename presence If and first Replace Text input to NAME01's output; reconnect the prefixRegex presence If and second Replace Text Find field to NAME02's output. Use native tokens, then delete each unused Nothing. Keep the first Nothing producing noNameResult for empty validation exits. There is no extra assembly-guard stop in this helper; uncompleted placeholders yield no usable name. Compile/export of the new skeleton and its Exit action still need confirmation.
 
 Preserve renamed copies of your working installed shortcuts and their native edits. Compile/import in order: naming, archive, assembly, main. Keep exact installed names, reselect them in Run Shortcut actions and update all four as a set. Refreshing from `.jelly` reinstates guards and slots; `.txt` files are byte-identical transfer copies.
 

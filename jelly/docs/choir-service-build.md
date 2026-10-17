@@ -1,6 +1,6 @@
 # Build the choir service workflow
 
-17 October 2026. Current source revisions: canonical 5 (interface 2.0), archive 8 (completed interface 2.0), assembly 6 (completed interface 1.1), main 3 (interface 1.0). These config-based revisions are Drafted, not compiled or device-tested. Earlier manually adjusted naming/save fixtures remain historical evidence.
+17 October 2026. Current source revisions: canonical 8 (interface 2.0), archive 8 (completed interface 2.0), assembly 6 (completed interface 1.1), main 3 (interface 1.0). These config-based revisions are Drafted, not compiled or device-tested. Earlier manually adjusted naming/save fixtures remain historical evidence.
 
 Start with [config integration and migration](config-integration.md), which owns the current input contracts and config slots. The existing [forScore assembly table](choir-service-assembly.md) still owns FS01-FS13. This release retains the user's generated-source plus native-insertion workflow.
 
@@ -8,7 +8,7 @@ Start with [config integration and migration](config-integration.md), which owns
 
 | Order | Installed name | Completion |
 | --- | --- | --- |
-| 1 | [UTIL - Canonical Choir Name](../shortcuts/reusable/util-canonical-choir-name.jelly) | Compile/import; receiving configuration must allow the two-item native List. |
+| 1 | [UTIL - Canonical Choir Name](../shortcuts/reusable/util-canonical-choir-name.jelly) | Compile/import; complete NAME01/NAME02 and allow the two-item native List. |
 | 2 | [UTIL - Archive Choir PDF](../shortcuts/reusable/util-archive-choir-pdf.jelly) | Compile/import; three-item native context input; complete CFG02-CFG04. |
 | 3 | [UTIL - Assemble Choir Service](../shortcuts/reusable/util-assemble-choir-service.jelly) | Compile/import; complete CONF01-CONF02 and FS01-FS13. |
 | 4 | [MAIN - Build Choir Service](../shortcuts/main/main-build-choir-service.jelly) | Compile/import and reselect the completed assembly helper. |

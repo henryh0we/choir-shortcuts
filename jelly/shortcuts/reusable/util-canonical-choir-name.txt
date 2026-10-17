@@ -1,32 +1,35 @@
 // Installed name: UTIL - Canonical Choir Name
 // Purpose: Remove a terminal PDF extension and recognised service prefix.
-// Role: Reusable; specification revision 5; interface 2.0.
+// Role: Reusable; specification revision 8; completed interface 2.0.
 // Input: Native List of exactly two Text items: filename, config.prefixRegex.
 // Output: One Text stem, or empty output after invalid input. Caller rejects empty.
-// Side effects: None. Direct and called execution have no prompts.
+// Side effects: Validation alerts only; no file/account writes. Direct/called use the same List contract.
 // Dependencies: None.
 // Target: iPadOS 26.6; Jellycuts 2026.6.4 reported, bundled compiler unknown.
-// Profile: Existing Open-Jellycore candidate; replaceText from official docs.
+// Profile: Native NAME01/NAME02 extraction required; installed app rejects the reviewed list-item selector forms.
 // Stage: Drafted, not compiled/imported/device tested.
 // Contract/tests/install: ../../docs/config-integration.md; ../../tests/config-integration.md
 
 import Shortcuts
 
+nothing() >> noNameResult
 count(type: Items, input: ShortcutInput) >> argumentCount
 text(text: "${argumentCount}") >> argumentCountText
 if(argumentCountText != "2") {
     alert(alert: "Supply a List containing filename Text and config.prefixRegex Text.", title: "Naming input needs updating", cancel: false)
-    output(result: "", noResultBehavior: Respond, response: "")
+    exit(var: noNameResult)
 }
-getItemFromList(list: ShortcutInput, type: Item at Index, index: "1", startIndex: "", endIndex: "") >> filename
-getItemFromList(list: ShortcutInput, type: Item at Index, index: "2", startIndex: "", endIndex: "") >> prefixRegex
+// NAME01 FILENAME: replace next Nothing with native Get Item from List, List=Shortcut Input, Item at Index=1. Reconnect filename in its presence If and the first Replace Text input to that native result before deleting Nothing.
+nothing() >> filename
+// NAME02 PREFIX PATTERN: replace next Nothing with native Get Item from List, List=Shortcut Input, Item at Index=2. Reconnect prefixRegex in its presence If and the second Replace Text Find field to that native result before deleting Nothing.
+nothing() >> prefixRegex
 if(filename == nil) {
-    output(result: "", noResultBehavior: Respond, response: "")
+    exit(var: noNameResult)
 }
 if(prefixRegex == nil) {
     alert(alert: "Set a nonempty prefixRegex in config.json.", title: "Missing prefix pattern", cancel: false)
-    output(result: "", noResultBehavior: Respond, response: "")
+    exit(var: noNameResult)
 }
 replaceText(input: "${filename}", find: "[.]pdf$", replace: "", isRegex: true, caseSensitive: false) >> filenameStem
 replaceText(input: "${filenameStem}", find: "${prefixRegex}", replace: "", isRegex: true, caseSensitive: false) >> canonicalName
-output(result: "${canonicalName}", noResultBehavior: Respond, response: "${canonicalName}")
+exit(var: canonicalName)
