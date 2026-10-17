@@ -1,11 +1,11 @@
 // Installed name: MAIN - Build Choir Service
 // Purpose: Start the interactive Nextcloud/iCloud/forScore service workflow.
-// Role: Main; specification revision 2; interface 1.0.
+// Role: Main; specification revision 3; interface 1.0.
 // Input: None consumed. Direct launch only; ignores any incoming content.
 // Output: One diagnostic service-report Text if the helper completes.
 // Side effects: Selection UI, clean archive saves, imports/metadata/setlist writes.
 // Native failures/cancellation can stop execution with partial writes and no report.
-// Dependency: UTIL - Assemble Choir Service, interface 1.0, completed generated helper.
+// Dependency: UTIL - Assemble Choir Service, interface 1.1, config/forScore slots completed.
 // Source: ../reusable/util-assemble-choir-service.jelly
 // Native insertion guide: ../../docs/choir-service-assembly.md
 // Install order: Canonical Choir Name, completed Archive Choir PDF, completed Assemble Choir Service, main.

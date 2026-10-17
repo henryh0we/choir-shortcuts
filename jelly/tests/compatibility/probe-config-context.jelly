@@ -1,0 +1,27 @@
+// Installed name: TEST - Jelly Config Context
+// Purpose/role: Read-only native List/config boundary probe; diagnostic.
+// Specification revision: 1; interface 1.0; dependencies: None.
+// Input: Native List [one synthetic PDF File, Library Folder, parsed config Dictionary].
+// Output: Displays extracted filename, Folder name, version and category count.
+// Side effects: Display and read Folder children only; no writes/imports/forScore actions.
+// Target: iPadOS 26.6, Jellycuts 2026.6.4; exact native List behavior unverified.
+// Stage: Drafted, not compiled/imported/run. Tests: ../config-integration.md.
+
+import Shortcuts
+
+count(type: Items, input: ShortcutInput) >> contextCount
+text(text: "${contextCount}") >> contextCountText
+if(contextCountText != "3") {
+    output(result: "Expected exactly three native context items.", noResultBehavior: Respond, response: "Context count mismatch.")
+}
+getItemFromList(list: ShortcutInput, type: Item at Index, index: "1", startIndex: "", endIndex: "") >> pdfFile
+getItemFromList(list: ShortcutInput, type: Item at Index, index: "2", startIndex: "", endIndex: "") >> libraryRoot
+getItemFromList(list: ShortcutInput, type: Item at Index, index: "3", startIndex: "", endIndex: "") >> config
+fileDetail(input: pdfFile, property: Name) >> pdfName
+fileDetail(input: pdfFile, property: File Extension) >> pdfExtension
+fileDetail(input: libraryRoot, property: Name) >> folderName
+getFolderContents(folder: libraryRoot, recursive: false) >> children
+valueFor(key: "version", dictionary: config) >> version
+valueFor(key: "categories", dictionary: config) >> categories
+count(type: Items, input: categories) >> categoryCount
+output(result: "PDF: ${pdfName}; extension: ${pdfExtension}; Folder: ${folderName}; version: ${version}; categories: ${categoryCount}", noResultBehavior: Respond, response: "PDF: ${pdfName}; extension: ${pdfExtension}; Folder: ${folderName}; version: ${version}; categories: ${categoryCount}")

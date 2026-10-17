@@ -1,5 +1,7 @@
 # Choir service integration record
 
+Current config-based revisions (17 October 2026) are recorded separately in [config integration tests](config-integration.md): canonical 5/interface 2.0, archive 7/interface 2.0, assembly 5/interface 1.1, main 3/interface 1.0. The historical records below do not validate the changed input contracts. The user confirmed a correctly named PDF saved to the selected test category and a usable returned filename in the earlier manually configured archive; a subsequent Quick Look action failed with a UI-context error. No config-based runtime pass is recorded.
+
 Release 1, 15 October 2026. Current stage: Drafted. Native helpers: Designed. Target reported by user: iPadOS 26.6, forScore 15.2.5, Jellycuts 2026.6.4. Actual compiler/import results for these new files: Not run.
 
 Build using [the installation guide](../docs/choir-service-build.md). Record compiler messages and any action-setting differences here during construction; those are integration fixes, not a prerequisite test campaign.

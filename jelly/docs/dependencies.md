@@ -6,10 +6,10 @@ Source headers own contracts and direct dependency details. This table is the na
 | --- | --- | --- | --- | --- |
 | [UTIL - Jelly Format Greeting](../examples/util-jelly-format-greeting.jelly) | Example reusable utility: format one name, default to Friend | None | 1.0 | Syntax reviewed |
 | [MAIN - Jelly Greeting Demo](../examples/main-jelly-greeting-demo.jelly) | Example main: pass Henry to utility and return its result | UTIL - Jelly Format Greeting, interface 1.0 | 1.0 | Syntax reviewed |
-| [UTIL - Canonical Choir Name](../shortcuts/reusable/util-canonical-choir-name.jelly) | Canonical lookup stem from a choir filename | None | 1.0 | Drafted |
-| [UTIL - Archive Choir PDF](../shortcuts/reusable/util-archive-choir-pdf.jelly) | Generated archive helper with CFG completion slots | UTIL - Canonical Choir Name, interface 1.0 | 1.0 | Drafted |
-| [UTIL - Assemble Choir Service](../shortcuts/reusable/util-assemble-choir-service.jelly) | Generated service helper with forScore insertion slots | UTIL - Canonical Choir Name; UTIL - Archive Choir PDF, interfaces 1.0 | 1.0 | Drafted |
-| [MAIN - Build Choir Service](../shortcuts/main/main-build-choir-service.jelly) | Generated interactive production entry point | UTIL - Assemble Choir Service, interface 1.0 | 1.0 | Drafted |
+| [UTIL - Canonical Choir Name](../shortcuts/reusable/util-canonical-choir-name.jelly) | Configured canonical name from a two-Text List | None | 2.0 | Drafted |
+| [UTIL - Archive Choir PDF](../shortcuts/reusable/util-archive-choir-pdf.jelly) | Config-based archive with native context List and CFG slots | UTIL - Canonical Choir Name, interface 2.0 | 2.0 | Drafted |
+| [UTIL - Assemble Choir Service](../shortcuts/reusable/util-assemble-choir-service.jelly) | Load config once, prepare service; CONF/FS slots | UTIL - Canonical Choir Name; UTIL - Archive Choir PDF, interfaces 2.0 | 1.1 | Drafted |
+| [MAIN - Build Choir Service](../shortcuts/main/main-build-choir-service.jelly) | Generated interactive production entry point | UTIL - Assemble Choir Service, interface 1.1 | 1.0 | Drafted |
 
 External provider apps/services: None for the example actions. Jellycuts or a compatible compiler is a build tool; Apple Shortcuts is the runtime. Current user-reported target: Jellycuts 2026.6.4 on iPadOS 26.6; no successful compilation or runtime validation is recorded for these sources.
 
@@ -26,6 +26,6 @@ Optional independent diagnostic Shortcuts are inventoried in [compatibility test
 
 ## Choir service installation order
 
-The [production build guide](choir-service-build.md) owns configuration, scope and the complete install sequence: canonical naming utility, archive helper, assembly helper, main. All four now have Jelly source. Complete the archive CFG slots and service FS slots using [the assembly guide](choir-service-assembly.md) before removing the two initial guards. No cycle: main calls assembly, assembly calls archive and canonical, archive calls canonical. Examples and the old diagnostic are not dependencies.
+The [production build guide](choir-service-build.md) owns configuration, scope and the complete install sequence: canonical naming utility, archive helper, assembly helper, main. All four now have Jelly source. Use the current [config contracts](config-integration.md); complete archive CFG02-CFG04 and service CONF01-CONF02/FS01-FS13 using [the assembly guide](choir-service-assembly.md) before removing the two initial guards. No cycle: main calls assembly, assembly calls archive and canonical, archive calls canonical. Examples and the old diagnostic are not dependencies.
 
 Production target reported by the user: iPadOS 26.6, forScore 15.2.5, Jellycuts 2026.6.4. Bundled compiler/action-library versions and all new export/import/device results remain unverified. Configure the signed-in Nextcloud Files location and existing iCloud archive root; permissions are requested by native actions. Record the single integrated run in [choir-service tests](../tests/choir-service.md).

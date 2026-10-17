@@ -1,53 +1,85 @@
 // Installed name: UTIL - Archive Choir PDF
 // Purpose: Generated archive helper; complete CFG slots after importing.
-// Role: Reusable; specification revision 6; completed interface 1.0.
-// Input: One native PDF File. Missing/multiple/non-PDF inputs stop without saving.
+// Role: Reusable; specification revision 7; completed interface 2.0.
+// Input: Native List: one PDF File, native Library Folder, parsed config Dictionary.
 // Output after assembly: One native File, or empty output after validation alerts.
 // Direct/called: May ask for a type folder when absent; no unattended mode.
 // Side effects after assembly: Save a canonical clean PDF; never overwrite.
-// Dependency: UTIL - Canonical Choir Name interface 1.0, util-canonical-choir-name.jelly.
+// Dependency: UTIL - Canonical Choir Name interface 2.0, util-canonical-choir-name.jelly.
 // Target: iPadOS 26.6, Jellycuts 2026.6.4; selected iCloud archive folder permission.
 // Stage: Drafted; local docs/source reviewed, not compiled/device tested.
-// Assembly and tests: ../../docs/choir-service-assembly.md; ../../tests/choir-service.md
+// Assembly and tests: ../../docs/config-integration.md; ../../tests/config-integration.md
 
 import Shortcuts
 
-// COMPATIBILITY: After export, set all seven empty-result Stop and Output
+// COMPATIBILITY: After export, set all empty-result Stop and Output
 // actions to Do Nothing when there is no recipient. Respond is a temporary
 // export workaround for the app rejecting the DoNothing enum identifier.
 
-/* ASSEMBLY GUARD: Keep this first Stop and Output until CFG01-CFG04
-   are complete. Then remove only the Stop and Output immediately below. */
+// ASSEMBLY GUARD: Keep this first Stop and Output until CFG02-CFG04 and native context inputs
+// are complete. Then remove only the Stop and Output immediately below.
 output(result: "Archive helper needs its CFG assembly slots completed.", noResultBehavior: Respond, response: "Complete archive assembly first.")
 
-if(ShortcutInput == nil) {
+count(type: Items, input: ShortcutInput) >> contextCount
+text(text: "${contextCount}") >> contextCountText
+if(contextCountText != "3") {
+    alert(alert: "Supply a native List: one PDF File, Library Folder, parsed config Dictionary.", title: "Archive input needs updating", cancel: false)
+    output(result: "", noResultBehavior: Respond, response: "")
+}
+getItemFromList(list: ShortcutInput, type: Item at Index, index: "1", startIndex: "", endIndex: "") >> sourceFile
+getItemFromList(list: ShortcutInput, type: Item at Index, index: "2", startIndex: "", endIndex: "") >> archiveRoot
+getItemFromList(list: ShortcutInput, type: Item at Index, index: "3", startIndex: "", endIndex: "") >> workflowConfig
+valueFor(key: "version", dictionary: workflowConfig) >> configVersion
+text(text: "${configVersion}") >> configVersionText
+if(configVersionText != "1") {
+    alert(alert: "Only config version 1 is supported.", title: "Unsupported config", cancel: false)
+    output(result: "", noResultBehavior: Respond, response: "")
+}
+valueFor(key: "prefixRegex", dictionary: workflowConfig) >> prefixRegex
+valueFor(key: "categories", dictionary: workflowConfig) >> categories
+valueFor(key: "libraryFolder", dictionary: workflowConfig) >> libraryFolderName
+if(libraryFolderName == nil) {
+    alert(alert: "Set libraryFolder in config.json.", title: "Missing Library name", cancel: false)
+    output(result: "", noResultBehavior: Respond, response: "")
+}
+fileDetail(input: archiveRoot, property: Name) >> actualLibraryName
+if(actualLibraryName != "${libraryFolderName}") {
+    alert(alert: "Input item 2 must be the native ${libraryFolderName} Folder beneath Choir Music.", title: "Wrong Library Folder", cancel: false)
+    output(result: "", noResultBehavior: Respond, response: "")
+}
+if(prefixRegex == nil) {
+    alert(alert: "Set prefixRegex in config.json.", title: "Missing prefix pattern", cancel: false)
+    output(result: "", noResultBehavior: Respond, response: "")
+}
+if(categories == nil) {
+    alert(alert: "Set a nonempty categories array in config.json.", title: "Missing categories", cancel: false)
+    output(result: "", noResultBehavior: Respond, response: "")
+}
+if(sourceFile == nil) {
     alert(alert: "Supply one PDF File.", title: "No source PDF", cancel: false)
     output(result: "", noResultBehavior: Respond, response: "")
 }
-count(type: Items, input: ShortcutInput) >> inputCount
+count(type: Items, input: sourceFile) >> inputCount
 text(text: "${inputCount}") >> inputCountText
 if(inputCountText != "1") {
     alert(alert: "Supply exactly one PDF File.", title: "One PDF required", cancel: false)
     output(result: "", noResultBehavior: Respond, response: "")
 }
-fileDetail(input: ShortcutInput, property: File Extension) >> sourceExtension
+fileDetail(input: sourceFile, property: File Extension) >> sourceExtension
 changeCase(text: "${sourceExtension}", case: lowercase) >> lowerExtension
 if(lowerExtension != "pdf") {
     alert(alert: "No file saved. Select a PDF.", title: "PDF required", cancel: false)
     output(result: "", noResultBehavior: Respond, response: "")
 }
-fileDetail(input: ShortcutInput, property: Name) >> sourceName
-runShortcut(name: "UTIL - Canonical Choir Name", input: sourceName, show: false) >> canonicalStem
+fileDetail(input: sourceFile, property: Name) >> sourceName
+list(items: [sourceName, prefixRegex]) >> sourceNameInput
+runShortcut(name: "UTIL - Canonical Choir Name", input: sourceNameInput, show: false) >> canonicalStem
 if(canonicalStem == nil) {
     alert(alert: "A file named only .pdf is not supported.", title: "Empty music identity", cancel: false)
     output(result: "", noResultBehavior: Respond, response: "")
 }
 
-/* CFG01 ARCHIVE ROOT. Replace the next Nothing with a native Folder
-   action. Select the existing iCloud Choir Music/Library folder once.
-   Reconnect BOTH Get Contents of Folder actions to that native Folder
-   output (source variable archiveRoot). Do not use a Text path. */
-nothing() >> archiveRoot
+// Old CFG01 is retired: archiveRoot is the native Library Folder from context item 2.
 
 getFolderContents(folder: archiveRoot, recursive: true) >> archiveContents
 // A named variable survives the loop without capturing Repeat Results.
@@ -60,7 +92,8 @@ repeatEach(archiveContents) {
     changeCase(text: "${archiveExtension}", case: lowercase) >> archiveExtensionLower
     if(archiveExtensionLower == "pdf") {
         fileDetail(input: RepeatItem, property: Name) >> archiveName
-        runShortcut(name: "UTIL - Canonical Choir Name", input: archiveName, show: false) >> archiveStem
+        list(items: [archiveName, prefixRegex]) >> archiveNameInput
+        runShortcut(name: "UTIL - Canonical Choir Name", input: archiveNameInput, show: false) >> archiveStem
         if(archiveStem == "${canonicalStem}") {
             if(existingCleanFile != nil) {
                 alert(alert: "Resolve duplicate canonical PDFs in iCloud before retrying.", title: "Multiple clean copies", cancel: false)
@@ -72,21 +105,43 @@ repeatEach(archiveContents) {
 }
 
 if(existingCleanFile != nil) {
-    /* CFG03 EXISTING FILE RETURN. In the next Stop and Output,
-       replace its EMPTY result field with the named existingCleanFile
-       variable (Set Variable in the search loop). No Text conversion. */
+    // CFG03 EXISTING FILE RETURN. In the next Stop and Output,
+    // replace its EMPTY result field with the named existingCleanFile
+    // variable (Set Variable in the search loop). No Text conversion.
     output(result: "", noResultBehavior: Respond, response: "")
 }
 
-getFolderContents(folder: archiveRoot, recursive: false) >> typeFolders
-choose(list: typeFolders, prompt: "Choose an existing music-type folder for this PDF.", multiple: false, all: false) >> typeFolder
-setName(input: ShortcutInput, name: "${canonicalStem}.pdf", dontIncludeExtension: false) >> renamedFile
-/* CFG02 SAVE DESTINATION. The next Save File is generated with its picker
-   enabled because the reviewed binding cannot encode a Folder destination.
-   Set Ask Where to Save OFF and Destination to native typeFolder from
-   Choose from List above. Keep Overwrite OFF and the native renamedFile input. */
+choose(list: categories, prompt: "Choose the music category from config.json.", multiple: false, all: false) >> chosenCategory
+if(chosenCategory == nil) {
+    output(result: "", noResultBehavior: Respond, response: "")
+}
+// Resolve category Text to an immediate native Library Folder; never use Text as a save destination.
+getFolderContents(folder: archiveRoot, recursive: false) >> libraryChildren
+nothing() >> noCategoryFolder
+var typeFolder = noCategoryFolder
+repeatEach(libraryChildren) {
+    fileDetail(input: RepeatItem, property: Name) >> childName
+    if(childName == "${chosenCategory}") {
+        if(typeFolder != nil) {
+            alert(alert: "Multiple Library children match the selected category.", title: "Ambiguous category", cancel: false)
+            output(result: "", noResultBehavior: Respond, response: "")
+        }
+        typeFolder = RepeatItem
+    }
+}
+if(typeFolder == nil) {
+    alert(alert: "Library has no folder named ${chosenCategory}. Fix config.json or the folders.", title: "Category folder missing", cancel: false)
+    output(result: "", noResultBehavior: Respond, response: "")
+}
+// Folder preflight must succeed before Set Name or Save File.
+getFolderContents(folder: typeFolder, recursive: false) >> categoryContents
+setName(input: sourceFile, name: "${canonicalStem}.pdf", dontIncludeExtension: false) >> renamedFile
+// CFG02 SAVE DESTINATION. The next Save File is generated with its picker
+// enabled because the reviewed binding cannot encode a Folder destination.
+// Set Ask Where to Save OFF and Destination to the named native typeFolder variable.
+// Keep Overwrite OFF and the native renamedFile input.
 saveFile(input: renamedFile, ask: true, path: "", overwrite: false) >> savedCleanFile
-/* CFG04 NEW FILE RETURN. In the next Stop and Output, replace its EMPTY
-   result field with native savedCleanFile from Save File above.
-   Do not interpolate it into Text or use its filename property. */
+// CFG04 NEW FILE RETURN. In the next Stop and Output, replace its EMPTY
+// result field with native savedCleanFile from Save File above.
+// Do not interpolate it into Text or use its filename property.
 output(result: "", noResultBehavior: Respond, response: "")

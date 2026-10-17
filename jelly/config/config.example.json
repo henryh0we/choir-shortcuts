@@ -1,0 +1,12 @@
+{
+  "prefixRegex": "^(Mon|Tue|Wed|Thur|Fri|Sat|Sun)(am|pm)?[0-9]+-",
+  "categories": [
+    "Introits", "Responses", "Hymns", "Psalms", "Canticles", "Anthems",
+    "Kyrie", "Gloria", "SanctusBenedictus", "AgnusDei", "TeDeum", "Jubilate", "Other"
+  ],
+  "serviceType": ["Evensong", "Eucharist", "Matins", "Other"],
+  "version": 1,
+  "libraryFolder": "Library",
+  "servicesFolder": "Services",
+  "manifestFilename": "_service-manifest.json"
+}

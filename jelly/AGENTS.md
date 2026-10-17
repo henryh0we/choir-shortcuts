@@ -71,6 +71,8 @@ Do not install a guessed package or run a guessed compilation command. Detect th
 
 ## Source standards and required header
 
+For the user's Jellycuts 2026.6.4 build, use only `//` line comments. The user reports that each commented source line becomes one separate native Comment block; `/* ... */` block comments do not work. Put each instruction on its own `//` line and do not assume consecutive lines merge into one Comment action. This device report takes precedence over older compiler-source claims of block-comment support. Existing block comments need conversion when the affected source is next revised.
+
 Use UTF-8, four spaces per indentation level, one action call per line, and blank lines between coherent phases. Match verified case-sensitive function and parameter names. Use descriptive lowerCamelCase variables without spaces. Prefer captured action outputs for values not reassigned; use mutable `var` values where branch assignments or repeated changes are needed. Comments should explain responsibility, non-obvious behaviour, or compatibility constraints rather than narrating every line.
 
 Each source begins with ordinary `//` comments identifying:

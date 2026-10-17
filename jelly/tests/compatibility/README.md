@@ -6,6 +6,10 @@ Documentation snapshot: `19306be1dd30c20e12058ebe144dd8342e64ca39`; navigate thr
 
 ## Known discrepancies
 
+17 October 2026 config update: native transport is a three-item List (PDF File, Library Folder, parsed config Dictionary), not a JSON Dictionary containing File paths. The inspected Dictionary writer lacks interpolation support; native object construction via it is not established. Use [probe-config-context.jelly](probe-config-context.jelly) and [config acceptance checks](../config-integration.md) to check extraction and types before writes. New config-based sources are uncompiled/untested; user-confirmed save/name behavior belongs to earlier manually completed versions. All revised production comments are now `//` only.
+
+User-reported comment behavior in the installed Jellycuts 2026.6.4 build: `/* ... */` block comments do not work. Only `//` line comments work, with one source line producing one separate native Comment block. Use line comments for future source changes; do not infer block-comment support from the older inspected compiler. This note does not claim that existing source block comments have been converted.
+
 Archive revision 5 also has a user-reported missing first If wrapper in the generated Shortcut. Archive 6 and assembly 4 now use the local guide's parenthesized `if(condition) {` and `repeatEach(items) {` forms throughout. Previous unparenthesized forms came from unmatched compiler-source examples. Parentheses are a documentation-backed correction to test, not a confirmed diagnosis or device pass. Inspect generated control-flow markers before execution. The initial ASSEMBLY GUARD Stop and Output is intentionally unconditional and must be distinguished from the missing-input validation stop.
 
 User-confirmed runtime fixture: the manually adjusted canonical helper returned the expected name for `Fri1-Walsh-Responses.pdf` after removal of the unconditional early stop and native input/result wiring corrections. Its receiving configuration is Text, with an error message on missing input. This is one installed-fixture pass, not verification of unmodified exports or the larger helpers. Preserve these receiving/wiring settings on regeneration.
@@ -32,6 +36,7 @@ Each source is one optional diagnostic Shortcut, revision 1, interface 1.0, with
 
 | Source / installed name | Runtime steps and expected result | Stage / actual result |
 | --- | --- | --- |
+| [probe-config-context.jelly](probe-config-context.jelly) / TEST - Jelly Config Context | Supply native [PDF, Library Folder, parsed config Dictionary]. Displays correct filename/extension, Folder name, version 1 and 13 categories; Folder enumeration must succeed. See [config tests](../config-integration.md). | Drafted / Not run |
 | [probe-output-respond.jelly](probe-output-respond.jelly) / TEST - Jelly Output Respond | Run directly: shows `Jelly output probe`. When called with a result recipient, returns that Text. Inspect generated Stop and Output fields. | Drafted / Not run |
 | [probe-file-extension.jelly](probe-file-extension.jelly) / TEST - Jelly File Extension | Supply one synthetic PDF File named `probe.pdf` via a temporary Run Shortcut action. Inspect Get File Details output: `pdf`. Missing/non-File input is outside contract. | Drafted / Not run |
 | [probe-list-item.jelly](probe-list-item.jelly) / TEST - Jelly List Item | Run directly, inspect List and Get Item from List. Result should be Text `Alpha`, selected from two items. Input ignored. | Drafted / Not run |

@@ -25,4 +25,6 @@ For new work, inspect existing components, define contracts, create one `.jelly`
 
 ## Build a choir service
 
+Current config-based revisions (17 October 2026): read [config setup and changed input contracts](docs/config-integration.md) first. Naming and archive now use interface 2.0 native List inputs. Assembly loads the existing `Choir Music/config.json` once and requires CONF01-CONF02 plus the existing FS slots; archive keeps CFG02-CFG04. Preserve working installed copies before updating all callers. These new revisions are Drafted and need device validation.
+
 Start with [the choir service build guide](docs/choir-service-build.md). It provides the implementation scope and dependency-first order for all four Jelly sources. Standard actions are generated; [Comment slots](docs/choir-service-assembly.md) identify forScore insertions and archive configuration. Complete those slots after export, then check one service run. Sources are Drafted, not compiled, installed or working. The older manual blueprints remain reference material.
