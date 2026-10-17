@@ -1,6 +1,6 @@
 # Config-based choir workflow
 
-17 October 2026. Current revisions: canonical **5 / interface 2.0**, archive **7 / completed interface 2.0**, assembly **5 / completed interface 1.1**, main **3 / interface 1.0**. Current sources are Drafted; config parsing, native context transfer and updated exports have not been tested on the iPad. Earlier successful naming/save fixtures apply to manually adjusted older versions, not these revisions.
+17 October 2026. Current revisions: canonical **5 / interface 2.0**, archive **8 / completed interface 2.0**, assembly **6 / completed interface 1.1**, main **3 / interface 1.0**. Current sources are Drafted; config parsing, native context transfer and updated exports have not been tested on the iPad. Earlier successful naming/save fixtures apply to manually adjusted older versions, not these revisions.
 
 ## Configuration location and keys
 

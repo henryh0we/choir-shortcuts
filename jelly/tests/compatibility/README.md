@@ -6,6 +6,8 @@ Documentation snapshot: `19306be1dd30c20e12058ebe144dd8342e64ca39`; navigate thr
 
 ## Known discrepancies
 
+Comment grouping clarification: one intended native Comment block must be written as one physical `//` source line, even when it contains several sentences. Consecutive `//` lines create separate Comment actions. Archive revision 8 and assembly revision 6 join each related assembly instruction group onto one line; individual header fields remain intentionally separate. This is a comment-formatting change only; interfaces and executable statements are unchanged.
+
 17 October 2026 config update: native transport is a three-item List (PDF File, Library Folder, parsed config Dictionary), not a JSON Dictionary containing File paths. The inspected Dictionary writer lacks interpolation support; native object construction via it is not established. Use [probe-config-context.jelly](probe-config-context.jelly) and [config acceptance checks](../config-integration.md) to check extraction and types before writes. New config-based sources are uncompiled/untested; user-confirmed save/name behavior belongs to earlier manually completed versions. All revised production comments are now `//` only.
 
 User-reported comment behavior in the installed Jellycuts 2026.6.4 build: `/* ... */` block comments do not work. Only `//` line comments work, with one source line producing one separate native Comment block. Use line comments for future source changes; do not infer block-comment support from the older inspected compiler. This note does not claim that existing source block comments have been converted.

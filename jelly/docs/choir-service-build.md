@@ -1,6 +1,6 @@
 # Build the choir service workflow
 
-17 October 2026. Current source revisions: canonical 5 (interface 2.0), archive 7 (completed interface 2.0), assembly 5 (completed interface 1.1), main 3 (interface 1.0). These config-based revisions are Drafted, not compiled or device-tested. Earlier manually adjusted naming/save fixtures remain historical evidence.
+17 October 2026. Current source revisions: canonical 5 (interface 2.0), archive 8 (completed interface 2.0), assembly 6 (completed interface 1.1), main 3 (interface 1.0). These config-based revisions are Drafted, not compiled or device-tested. Earlier manually adjusted naming/save fixtures remain historical evidence.
 
 Start with [config integration and migration](config-integration.md), which owns the current input contracts and config slots. The existing [forScore assembly table](choir-service-assembly.md) still owns FS01-FS13. This release retains the user's generated-source plus native-insertion workflow.
 

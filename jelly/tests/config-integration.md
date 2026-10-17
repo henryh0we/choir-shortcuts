@@ -1,6 +1,6 @@
 # Config integration acceptance checks
 
-17 October 2026. Canonical 5/interface 2.0; archive 7/completed interface 2.0; assembly 5/completed interface 1.1; main 3/interface 1.0. All new source revisions: Drafted. Compiler, native input types, config parsing, export/import and runtime results: **Not run**. Earlier manually completed naming/archive saves are historical fixtures; the new interfaces invalidate those results for this revision.
+17 October 2026. Canonical 5/interface 2.0; archive 8/completed interface 2.0; assembly 6/completed interface 1.1; main 3/interface 1.0. All new source revisions: Drafted. Compiler, native input types, config parsing, export/import and runtime results: **Not run**. Earlier manually completed naming/archive saves are historical fixtures; the new interfaces invalidate those results for this revision.
 
 Follow [setup and contracts](../docs/config-integration.md). Use a disposable Choir Music root with the supplied config and matching category folders. Preserve your production installed copies. Compile on the recorded Jellycuts app, inspect complete native control flow/variable wiring, fill slots and retain the guards until ready. Do not equate a static schema/source check with device execution.
 

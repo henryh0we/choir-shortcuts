@@ -1,6 +1,6 @@
 // Installed name: UTIL - Archive Choir PDF
 // Purpose: Generated archive helper; complete CFG slots after importing.
-// Role: Reusable; specification revision 7; completed interface 2.0.
+// Role: Reusable; specification revision 8; completed interface 2.0.
 // Input: Native List: one PDF File, native Library Folder, parsed config Dictionary.
 // Output after assembly: One native File, or empty output after validation alerts.
 // Direct/called: May ask for a type folder when absent; no unattended mode.
@@ -12,12 +12,9 @@
 
 import Shortcuts
 
-// COMPATIBILITY: After export, set all empty-result Stop and Output
-// actions to Do Nothing when there is no recipient. Respond is a temporary
-// export workaround for the app rejecting the DoNothing enum identifier.
+// COMPATIBILITY: After export, set all empty-result Stop and Output actions to Do Nothing when there is no recipient. Respond is a temporary export workaround for the app rejecting the DoNothing enum identifier.
 
-// ASSEMBLY GUARD: Keep this first Stop and Output until CFG02-CFG04 and native context inputs
-// are complete. Then remove only the Stop and Output immediately below.
+// ASSEMBLY GUARD: Keep this first Stop and Output until CFG02-CFG04 and native context inputs are complete. Then remove only the Stop and Output immediately below.
 output(result: "Archive helper needs its CFG assembly slots completed.", noResultBehavior: Respond, response: "Complete archive assembly first.")
 
 count(type: Items, input: ShortcutInput) >> contextCount
@@ -82,9 +79,7 @@ if(canonicalStem == nil) {
 // Old CFG01 is retired: archiveRoot is the native Library Folder from context item 2.
 
 getFolderContents(folder: archiveRoot, recursive: true) >> archiveContents
-// A named variable survives the loop without capturing Repeat Results.
-// Keep the native File when exactly one canonical match exists.
-// UNVERIFIED: Check both If inputs and CFG03 use the named variable after export.
+// A named variable survives the loop without capturing Repeat Results. Keep the native File when exactly one canonical match exists. UNVERIFIED: Check both If inputs and CFG03 use the named variable after export.
 nothing() >> noArchiveMatch
 var existingCleanFile = noArchiveMatch
 repeatEach(archiveContents) {
@@ -105,9 +100,7 @@ repeatEach(archiveContents) {
 }
 
 if(existingCleanFile != nil) {
-    // CFG03 EXISTING FILE RETURN. In the next Stop and Output,
-    // replace its EMPTY result field with the named existingCleanFile
-    // variable (Set Variable in the search loop). No Text conversion.
+    // CFG03 EXISTING FILE RETURN. In the next Stop and Output, replace its EMPTY result field with the named existingCleanFile variable (Set Variable in the search loop). No Text conversion.
     output(result: "", noResultBehavior: Respond, response: "")
 }
 
@@ -136,12 +129,7 @@ if(typeFolder == nil) {
 // Folder preflight must succeed before Set Name or Save File.
 getFolderContents(folder: typeFolder, recursive: false) >> categoryContents
 setName(input: sourceFile, name: "${canonicalStem}.pdf", dontIncludeExtension: false) >> renamedFile
-// CFG02 SAVE DESTINATION. The next Save File is generated with its picker
-// enabled because the reviewed binding cannot encode a Folder destination.
-// Set Ask Where to Save OFF and Destination to the named native typeFolder variable.
-// Keep Overwrite OFF and the native renamedFile input.
+// CFG02 SAVE DESTINATION. The next Save File is generated with its picker enabled because the reviewed binding cannot encode a Folder destination. Set Ask Where to Save OFF and Destination to the named native typeFolder variable. Keep Overwrite OFF and the native renamedFile input.
 saveFile(input: renamedFile, ask: true, path: "", overwrite: false) >> savedCleanFile
-// CFG04 NEW FILE RETURN. In the next Stop and Output, replace its EMPTY
-// result field with native savedCleanFile from Save File above.
-// Do not interpolate it into Text or use its filename property.
+// CFG04 NEW FILE RETURN. In the next Stop and Output, replace its EMPTY result field with native savedCleanFile from Save File above. Do not interpolate it into Text or use its filename property.
 output(result: "", noResultBehavior: Respond, response: "")
