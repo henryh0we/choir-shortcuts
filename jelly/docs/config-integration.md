@@ -1,6 +1,12 @@
 # Config-based choir workflow
 
-17 October 2026. Current revisions: canonical **9 / interface 2.0**, archive **10 / completed interface 2.0**, assembly **7 / completed interface 1.1**, main **3 / interface 1.0**. Current sources are Drafted; config parsing, native context transfer and updated exports have not been tested on the iPad. Earlier successful naming/save fixtures apply to manually adjusted older versions, not these revisions.
+**Current Archive 12 / Assembly 9:** use [native validation block instructions](native-validation-blocks.md). All affected whole If blocks and generated stop/return calls are now native insertion slots. Add AGUARD/SGUARD as real native stops immediately after import; the placeholder is not an execution guard. Older generated Exit/Output/validation instructions below are superseded.
+
+
+Current correction: archive **11** / assembly **8** replace failed Exit generation with the local documented `output(notes: ...)`, omitting optional `folder`. This is an **unverified compiler candidate**, not a working-signature claim. Inspect every exported validation If: Alert/Text and Stop and Output must be inside it. CFG03/CFG04 now intentionally export empty output fields: manually select native existingCleanFile/savedCleanFile. Do not use interpolated Text for File returns. Keep/inspect the initial guard until completion. Older Exit-return instructions below are superseded.
+
+
+17 October 2026. Current revisions: canonical **9 / interface 2.0**, archive **11 / completed interface 2.0**, assembly **8 / completed interface 1.1**, main **3 / interface 1.0**. Current sources are Drafted; config parsing, native context transfer and updated exports have not been tested on the iPad. Earlier successful naming/save fixtures apply to manually adjusted older versions, not these revisions.
 
 For current archive/assembly source, follow the [18 October compatibility checklist](helper-compatibility-update.md). It supersedes older Output-field, selector and Repeat Results instructions below.
 

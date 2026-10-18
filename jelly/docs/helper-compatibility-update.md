@@ -1,6 +1,12 @@
 # Archive and assembly compatibility update
 
-18 October 2026. Archive revision 10 / completed interface 2.0; assembly revision 7 / completed interface 1.1. These sources are Drafted: no new iPad compiler/export/runtime pass is claimed. This checklist supersedes older instructions to repair empty Output fields or capture Repeat Results for these two revisions. Input contracts and config keys are unchanged.
+**Current Archive 12 / Assembly 9:** use [native validation block instructions](native-validation-blocks.md). All affected whole If blocks and generated stop/return calls are now native insertion slots. Add AGUARD/SGUARD as real native stops immediately after import; the placeholder is not an execution guard. Older generated Exit/Output/validation instructions below are superseded.
+
+
+Current correction: archive **11** / assembly **8** replace failed Exit generation with the local documented `output(notes: ...)`, omitting optional `folder`. This is an **unverified compiler candidate**, not a working-signature claim. Inspect every exported validation If: Alert/Text and Stop and Output must be inside it. CFG03/CFG04 now intentionally export empty output fields: manually select native existingCleanFile/savedCleanFile. Do not use interpolated Text for File returns. Keep/inspect the initial guard until completion. Older Exit-return instructions below are superseded.
+
+
+18 October 2026. Archive revision 11 / completed interface 2.0; assembly revision 8 / completed interface 1.1. These sources are Drafted: no new iPad compiler/export/runtime pass is claimed. This checklist supersedes older instructions to repair empty Output fields or capture Repeat Results for these two revisions. Input contracts and config keys are unchanged.
 
 ## What changed
 
@@ -54,3 +60,7 @@ Source basis: local documented [Exit](../vendor/jellycuts-docs/markdown/Document
 ## Archive loop-condition scope correction, revision 10
 
 User reports revision 9 errors at archiveExtensionLower (94), archiveStem (98) and childName (123). These are If inputs captured inside Repeat bodies. Revision 10 declares the three comparison variables before their loops, captures each native action output under a distinct Result name, and assigns it to the declared variable immediately before the corresponding If. This uses the local traditional-variables guide's Magic Variable assignment pattern; it is a candidate workaround, not a confirmed compiler diagnosis. Preserve existingCleanFile/typeFolder File references, guards, config contracts and manual slots. After export, check all three If inputs use the named variables and their Set Variable actions consume the immediately preceding correct action results. Corrected app compilation/export/runtime: Not run. Source and .txt copy are byte-identical.
+
+## Exported archive validation defect (user report)
+
+Archive revision 10 compiled and imported on the user's iPad, but the user now reports an empty native If body for missing prefixRegex, with no effective stop. Compilation/import therefore do not establish faithful branch generation. Source contains both an Alert and exit(var: noArchiveResult) inside that If; the report alone does not establish whether Exit, Alert or branch placement caused the omission. Treat current archive runtime as defective until repaired. Do not remove the initial guard or rely on it without inspecting the actual native stop action. In the installed shortcut, put Show Alert and Stop This Shortcut (or Stop and Output with no output) INSIDE the missing-prefixRegex If before End If. Inspect and repair every other validation branch similarly, preserving the CFG03/CFG04 native File returns. Assembly uses the same Exit pattern and needs the same native inspection. The correct installed-app Output call signature is still unresolved; request the exact working output line before substituting another guessed signature. No successful runtime pass is claimed.

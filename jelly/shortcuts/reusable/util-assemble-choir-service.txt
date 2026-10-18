@@ -1,6 +1,6 @@
 // Installed name: UTIL - Assemble Choir Service
 // Purpose: Generate standard actions; insert forScore actions at FS01-FS13.
-// Role: Reusable; specification revision 7; completed interface 1.1.
+// Role: Reusable; specification revision 9; completed interface 1.1.
 // Input: Text interactive. Other/missing input returns instructions; direct no-input unsupported.
 // Output: One service-report Text if native actions/navigation complete.
 // Side effects after assembly: File selection, clean archive/import, metadata, setlist writes.
@@ -13,16 +13,14 @@
 
 import Shortcuts
 
-// RECEIVING: Set input to Text for interactive mode. Keep native File/Folder/Dictionary tokens inside archiveInput and both Text items inside sourceNameInput. Final exit returns the serviceReport token.
+// RECEIVING: Text interactive. Preserve native archiveInput context and the two separate Text naming inputs. SV validation slots and SRETURN must be completed in Shortcuts; no generated stop/return binding remains.
 
-// ASSEMBLY GUARD: Keep the first Stop and Output below until all CONF01-CONF02, COL01-COL03, SCORE01-SCORE02 and FS01-FS13 slots are complete, native outputs reconnected, and archive CFG02-CFG04 complete. Then remove only this first Stop and Output.
-text(text: "Service helper needs its forScore assembly slots completed.") >> stopMessage1
-exit(var: stopMessage1)
+// ASSEMBLY GUARD: The next guard slot requires a native stop action after import. Do not run this template before adding it; retain it until every validation/return and existing native slot is complete.
+// SGUARD REQUIRED IMPORT GUARD: Before running this imported template, replace next Nothing with native Show Alert (Helper needs manual completion), then native Stop This Shortcut. Retain until ALL validation, return and existing action slots are complete. Nothing itself does not stop execution.
+nothing()
 
-if(ShortcutInput != "interactive") {
-    text(text: "Launch MAIN - Build Choir Service.") >> stopMessage2
-    exit(var: stopMessage2)
-}
+// SV01 NATIVE IF BLOCK: Replace next Nothing with a complete native If (ShortcutInput != "interactive"), Show Alert (title="Service stopped", message="Launch MAIN - Build Choir Service.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+nothing()
 // CONF01 CHOIR MUSIC ROOT: replace next Nothing with Folder selecting Choir Music, NOT Library. Reconnect Get Contents of Folder(root) below and CONF02 to that native Folder output.
 nothing() >> choirRoot
 // CONF02 CONFIG FILE: replace next Nothing with native Get File from Folder; Folder=choirRoot, path=config.json, error if absent ON. Reconnect Get Dictionary from Input below to the actual config File. Do not select a separate unrelated config file.
@@ -31,25 +29,17 @@ nothing() >> configFile
 getDictionaryFrom(input: configFile) >> workflowConfig
 valueFor(key: "version", dictionary: workflowConfig) >> configVersion
 text(text: "${configVersion}") >> configVersionText
-if(configVersionText != "1") {
-    text(text: "Only config.json version 1 is supported. No changes made.") >> stopMessage3
-    exit(var: stopMessage3)
-}
+// SV02 NATIVE IF BLOCK: Replace next Nothing with a complete native If (configVersionText != "1"), Show Alert (title="Service stopped", message="Only config.json version 1 is supported. No changes made.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+nothing()
 valueFor(key: "prefixRegex", dictionary: workflowConfig) >> prefixRegex
 valueFor(key: "categories", dictionary: workflowConfig) >> categories
 valueFor(key: "libraryFolder", dictionary: workflowConfig) >> libraryFolderName
-if(prefixRegex == nil) {
-    text(text: "config.json needs a nonempty prefixRegex. No changes made.") >> stopMessage4
-    exit(var: stopMessage4)
-}
-if(categories == nil) {
-    text(text: "config.json needs a nonempty categories array. No changes made.") >> stopMessage5
-    exit(var: stopMessage5)
-}
-if(libraryFolderName == nil) {
-    text(text: "config.json needs libraryFolder. No changes made.") >> stopMessage6
-    exit(var: stopMessage6)
-}
+// SV03 NATIVE IF BLOCK: Replace next Nothing with a complete native If (prefixRegex == nil), Show Alert (title="Service stopped", message="config.json needs a nonempty prefixRegex. No changes made.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+nothing()
+// SV04 NATIVE IF BLOCK: Replace next Nothing with a complete native If (categories == nil), Show Alert (title="Service stopped", message="config.json needs a nonempty categories array. No changes made.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+nothing()
+// SV05 NATIVE IF BLOCK: Replace next Nothing with a complete native If (libraryFolderName == nil), Show Alert (title="Service stopped", message="config.json needs libraryFolder. No changes made.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+nothing()
 // Validate regex syntax before any writes; a malformed expression halts this action.
 replaceText(input: "ConfigValidation.pdf", find: "${prefixRegex}", replace: "", isRegex: true, caseSensitive: false) >> regexValidation
 getFolderContents(folder: choirRoot, recursive: false) >> rootChildren
@@ -58,35 +48,27 @@ var libraryRoot = noLibraryFolder
 repeatEach(rootChildren) {
     fileDetail(input: RepeatItem, property: Name) >> rootChildName
     if(rootChildName == "${libraryFolderName}") {
-        if(libraryRoot != nil) {
-            text(text: "Multiple root children match libraryFolder. No changes made.") >> stopMessage7
-            exit(var: stopMessage7)
-        }
+        // SV06 NATIVE IF BLOCK: Replace next Nothing with a complete native If (libraryRoot != nil), Show Alert (title="Service stopped", message="Multiple root children match libraryFolder. No changes made.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+        nothing()
         libraryRoot = RepeatItem
     }
 }
-if(libraryRoot == nil) {
-    text(text: "Choir Music has no folder named ${libraryFolderName}. No changes made.") >> stopMessage8
-    exit(var: stopMessage8)
-}
+// SV07 NATIVE IF BLOCK: Replace next Nothing with a complete native If (libraryRoot == nil), Show Alert (title="Service stopped", message="Choir Music has no folder named ${libraryFolderName}. No changes made.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+nothing()
 // Resolve a native Folder before allowing archive/import operations. Never concatenate a provider path.
 getFolderContents(folder: libraryRoot, recursive: false) >> libraryPreflight
 valueFor(key: "serviceType", dictionary: workflowConfig) >> serviceTypes
 var selectedServiceType = "Other"
 if(serviceTypes != nil) {
     choose(list: serviceTypes, prompt: "Choose the service type from config.json.", multiple: false, all: false) >> chosenServiceType
-    if(chosenServiceType == nil) {
-        text(text: "No service type selected. No changes made.") >> stopMessage9
-        exit(var: stopMessage9)
-    }
+    // SV08 NATIVE IF BLOCK: Replace next Nothing with a complete native If (chosenServiceType == nil), Show Alert (title="Service stopped", message="No service type selected. No changes made.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+    nothing()
     selectedServiceType = chosenServiceType
 }
 // servicesFolder and manifestFilename are reserved; this release creates no manifest or service-folder copies.
 selectFile(type: Files, multiple: true) >> selectedFiles
-if(selectedFiles == nil) {
-    text(text: "No files selected. No changes made.") >> stopMessage10
-    exit(var: stopMessage10)
-}
+// SV09 NATIVE IF BLOCK: Replace next Nothing with a complete native If (selectedFiles == nil), Show Alert (title="Service stopped", message="No files selected. No changes made.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+nothing()
 count(type: Items, input: selectedFiles) >> pieceCount
 nothing() >> emptyOrderedFiles
 var orderedFiles = emptyOrderedFiles
@@ -101,10 +83,8 @@ var orderedNames = emptyOrderedNames
 repeatEach(orderedFiles) {
     fileDetail(input: RepeatItem, property: File Extension) >> sourceExtension
     changeCase(text: "${sourceExtension}", case: lowercase) >> lowerExtension
-    if(lowerExtension != "pdf") {
-        text(text: "A selected item is not a PDF. No changes made.") >> stopMessage11
-        exit(var: stopMessage11)
-    }
+    // SV10 NATIVE IF BLOCK: Replace next Nothing with a complete native If (lowerExtension != "pdf"), Show Alert (title="Service stopped", message="A selected item is not a PDF. No changes made.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+    nothing()
     fileDetail(input: RepeatItem, property: Name) >> orderedName
     // COL02 ORDERED NAMES: Replace next Nothing with native Add to Variable, input=orderedName, variable=orderedNames. Append the filename Text in this validation loop.
     nothing()
@@ -112,10 +92,8 @@ repeatEach(orderedFiles) {
 combineText(text: [orderedNames], combine: Custom, separator: " | ") >> runningOrder
 askForInput(prompt: "Service name including date, for example 2026-10-18 - Evensong", type: Text, default: "", allowDecimal: false, allowNegative: false) >> enteredServiceName
 replaceText(input: "${enteredServiceName}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> serviceName
-if(serviceName == nil) {
-    text(text: "A service name is required. No changes made.") >> stopMessage12
-    exit(var: stopMessage12)
-}
+// SV11 NATIVE IF BLOCK: Replace next Nothing with a complete native If (serviceName == nil), Show Alert (title="Service stopped", message="A service name is required. No changes made.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+nothing()
 alert(alert: """
 ${serviceName}
 Service type: ${selectedServiceType}
@@ -131,17 +109,13 @@ repeatEach(orderedFiles) {
     fileDetail(input: RepeatItem, property: Name) >> sourceName
     list(items: [sourceName, prefixRegex]) >> sourceNameInput
     runShortcut(name: "UTIL - Canonical Choir Name", input: sourceNameInput, show: false) >> canonicalStem
-    if(canonicalStem == nil) {
-        text(text: "Empty music identity. Earlier pieces may already be prepared.") >> stopMessage13
-        exit(var: stopMessage13)
-    }
+    // SV12 NATIVE IF BLOCK: Replace next Nothing with a complete native If (canonicalStem == nil), Show Alert (title="Service stopped", message="Empty music identity. Earlier pieces may already be prepared.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+    nothing()
     // Native context List: keep File, Folder and Dictionary as whole variable tokens; no Text/JSON conversion.
     list(items: [RepeatItem, libraryRoot, workflowConfig]) >> archiveInput
     runShortcut(name: "UTIL - Archive Choir PDF", input: archiveInput, show: false) >> cleanFile
-    if(cleanFile == nil) {
-        text(text: "No clean PDF returned for ${canonicalStem}. Inspect archive before retrying.") >> stopMessage14
-        exit(var: stopMessage14)
-    }
+    // SV13 NATIVE IF BLOCK: Replace next Nothing with a complete native If (cleanFile == nil), Show Alert (title="Service stopped", message="No clean PDF returned for ${canonicalStem}. Inspect archive before retrying.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+    nothing()
 
     // FS01 LOOKUP. Replace next Nothing with Get score named canonicalStem. Continue if not found ON; category filters unset; Reference empty. Reconnect the following existingScore presence If and SCORE01 list input to THIS Get score output. Never use the first score of the whole library.
     nothing() >> existingScore
@@ -157,10 +131,8 @@ repeatEach(orderedFiles) {
         nothing()
         // FS03 LOOKUP AFTER IMPORT. Replace next Nothing with Get score named canonicalStem, Continue if not found ON, other filters unset. Reconnect the following importedScore presence If and SCORE02 list input to this lookup's native Score output.
         nothing() >> importedScore
-        if(importedScore == nil) {
-            text(text: "Import unconfirmed for ${canonicalStem}. Inspect forScore before retrying. Setlist entries have not been replaced.") >> stopMessage15
-            exit(var: stopMessage15)
-        }
+        // SV14 NATIVE IF BLOCK: Replace next Nothing with a complete native If (importedScore == nil), Show Alert (title="Service stopped", message="Import unconfirmed for ${canonicalStem}. Inspect forScore before retrying. Setlist entries have not been replaced.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+        nothing()
         // SCORE02 SCORE RESULT: Replace next Nothing with native Get Item from List, List=importedScore from its individual lookup, Item at Index=1. Reconnect the following Set Variable workingScore input to this native Score before deleting Nothing.
         nothing() >> importedWorkingScore
         workingScore = importedWorkingScore
@@ -187,10 +159,8 @@ repeatEach(orderedFiles) {
         replaceText(input: "${spacedTitle}", find: "-", replace: " - ", isRegex: false, caseSensitive: true) >> readableTitle
         askForInput(prompt: "Confirm title, retaining movement and variant details.", type: Text, default: "${readableTitle}", allowDecimal: false, allowNegative: false) >> enteredTitle
         replaceText(input: "${enteredTitle}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> displayTitle
-        if(displayTitle == nil) {
-            text(text: "Empty title. Rerun and choose Review metadata to finish any imported score.") >> stopMessage16
-            exit(var: stopMessage16)
-        }
+        // SV15 NATIVE IF BLOCK: Replace next Nothing with a complete native If (displayTitle == nil), Show Alert (title="Service stopped", message="Empty title. Rerun and choose Review metadata to finish any imported score.") and Stop and Output (same explanatory Text) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
+        nothing()
         askForInput(prompt: "Confirm composer; a single hyphen means unknown/not applicable.", type: Text, default: "${composerSuggestion}", allowDecimal: false, allowNegative: false) >> enteredComposer
         replaceText(input: "${enteredComposer}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> composerName
 
@@ -248,6 +218,7 @@ Requested entries: ${requestedCount}
 Readback entries: ${actualCount}
 Running order submitted to selected setlist. Check Manual order and metadata; count equality alone is not identity/order verification.
 """) >> serviceReport
-// FS13 OPEN SERVICE. Replace next Nothing with open setlist. Setlist=targetSetlist. Do not supply serviceName Text instead of the object. Keep the following Stop and Output connected to serviceReport.
+// FS13 OPEN SERVICE. Replace next Nothing with open setlist. Setlist=targetSetlist. Do not supply serviceName Text instead of the object. Keep the following Stop and Output connected to serviceReport Text.
 nothing()
-exit(var: serviceReport)
+// SRETURN NATIVE REPORT RETURN: Replace next Nothing with native Stop and Output, result=serviceReport Text from the report Text action.
+nothing()

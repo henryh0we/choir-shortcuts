@@ -1,5 +1,8 @@
 # Complete the generated choir Shortcuts
 
+**Current Archive 12 / Assembly 9:** use [native validation block instructions](native-validation-blocks.md). All affected whole If blocks and generated stop/return calls are now native insertion slots. Add AGUARD/SGUARD as real native stops immediately after import; the placeholder is not an execution guard. Older generated Exit/Output/validation instructions below are superseded.
+
+
 Current archive 9 / assembly 7: follow the [18 October compatibility checklist](helper-compatibility-update.md). Its native selector/collection slots and Exit returns supersede older selector, Output-field and Repeat Results instructions on this page.
 
 17 October 2026. Config-based source revisions: canonical 8, archive 8, assembly 6, main 3. Read [config integration](config-integration.md) for current contracts and setup. Compile all four Jelly files, then finish the marked fields/actions in Apple Shortcuts. Comments explain the required work; Nothing actions are temporary result placeholders. This is a generated template requiring manual completion, not a fully generated forScore integration.
