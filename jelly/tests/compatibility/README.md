@@ -74,3 +74,5 @@ Execution: Not run / Pass / Fail
 Post-import edits, if any:
 Conclusion and next change:
 ```
+
+18 October 2026, canonical revision 9/interface 2.0: user reports manual repairs to receiving type (Text) and final output (canonicalName). Source now explicitly converts extracted filename to Text and documents post-import receiving/output wiring. Final exit(var: canonicalName) was already present and is retained; its exported native token must be checked. Caller still supplies two Text items via List; receiving Text must preserve their separate extraction. Regenerated revision compilation and runtime: Not run. See config-integration setup notes for the repair checklist.
