@@ -1,6 +1,6 @@
 // Installed name: UTIL - Archive Choir PDF
 // Purpose: Generated archive helper; complete CFG slots after importing.
-// Role: Reusable; specification revision 9; completed interface 2.0.
+// Role: Reusable; specification revision 10; completed interface 2.0.
 // Input: Native List: one PDF File, native Library Folder, parsed config Dictionary.
 // Output after assembly: One native File, or empty output after validation alerts.
 // Direct/called: May ask for a type folder when absent; no unattended mode.
@@ -87,14 +87,19 @@ if(canonicalStem == nil) {
 getFolderContents(folder: archiveRoot, recursive: true) >> archiveContents
 // A named variable survives the loop without capturing Repeat Results. Keep the native File when exactly one canonical match exists. UNVERIFIED: Check both If inputs and CFG03 use the named variable after export.
 nothing() >> noArchiveMatch
+// LOOP SCOPE: Declare comparison variables before Repeat; assign captured outputs before each If. Inspect the named-variable tokens after export.
+var archiveExtensionLower = ""
+var archiveStem = ""
 var existingCleanFile = noArchiveMatch
 repeatEach(archiveContents) {
     fileDetail(input: RepeatItem, property: File Extension) >> archiveExtension
-    changeCase(text: "${archiveExtension}", case: lowercase) >> archiveExtensionLower
+    changeCase(text: "${archiveExtension}", case: lowercase) >> archiveExtensionLowerResult
+    archiveExtensionLower = archiveExtensionLowerResult
     if(archiveExtensionLower == "pdf") {
         fileDetail(input: RepeatItem, property: Name) >> archiveName
         list(items: [archiveName, prefixRegex]) >> archiveNameInput
-        runShortcut(name: "UTIL - Canonical Choir Name", input: archiveNameInput, show: false) >> archiveStem
+        runShortcut(name: "UTIL - Canonical Choir Name", input: archiveNameInput, show: false) >> archiveStemResult
+        archiveStem = archiveStemResult
         if(archiveStem == "${canonicalStem}") {
             if(existingCleanFile != nil) {
                 alert(alert: "Resolve duplicate canonical PDFs in iCloud before retrying.", title: "Multiple clean copies", cancel: false)
@@ -117,9 +122,11 @@ if(chosenCategory == nil) {
 // Resolve category Text to an immediate native Library Folder; never use Text as a save destination.
 getFolderContents(folder: archiveRoot, recursive: false) >> libraryChildren
 nothing() >> noCategoryFolder
+var childName = ""
 var typeFolder = noCategoryFolder
 repeatEach(libraryChildren) {
-    fileDetail(input: RepeatItem, property: Name) >> childName
+    fileDetail(input: RepeatItem, property: Name) >> childNameResult
+    childName = childNameResult
     if(childName == "${chosenCategory}") {
         if(typeFolder != nil) {
             alert(alert: "Multiple Library children match the selected category.", title: "Ambiguous category", cancel: false)

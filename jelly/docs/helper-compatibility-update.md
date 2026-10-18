@@ -1,6 +1,6 @@
 # Archive and assembly compatibility update
 
-18 October 2026. Archive revision 9 / completed interface 2.0; assembly revision 7 / completed interface 1.1. These sources are Drafted: no new iPad compiler/export/runtime pass is claimed. This checklist supersedes older instructions to repair empty Output fields or capture Repeat Results for these two revisions. Input contracts and config keys are unchanged.
+18 October 2026. Archive revision 10 / completed interface 2.0; assembly revision 7 / completed interface 1.1. These sources are Drafted: no new iPad compiler/export/runtime pass is claimed. This checklist supersedes older instructions to repair empty Output fields or capture Repeat Results for these two revisions. Input contracts and config keys are unchanged.
 
 ## What changed
 
@@ -50,3 +50,7 @@ After all native slots and the archive helper are complete, remove only each hel
 Inspect exported control-flow markers and named-variable wiring, then use a disposable config and Library. Confirm orderedFiles, orderedNames and preparedScores each accumulate one intended item per iteration; no leading empty item, Text-converted native object or lost repetition. Check ARC indexes return File/Folder/Dictionary respectively. Verify new archive save and existing-file reuse return a native File, category names resolve to native folders, and config edits affect the next run. Finish with two scores and a repeat setlist replacement; review Manual order. Record actual compiler/device outcomes in config-integration tests. No new isolated probe campaign is required.
 
 Source basis: local documented [Exit](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/exit.md) variable returns and [traditional variables](../vendor/jellycuts-docs/markdown/Language_Guide/variables.md). Native action slots deliberately avoid guessing another Jelly selector or append binding.
+
+## Archive loop-condition scope correction, revision 10
+
+User reports revision 9 errors at archiveExtensionLower (94), archiveStem (98) and childName (123). These are If inputs captured inside Repeat bodies. Revision 10 declares the three comparison variables before their loops, captures each native action output under a distinct Result name, and assigns it to the declared variable immediately before the corresponding If. This uses the local traditional-variables guide's Magic Variable assignment pattern; it is a candidate workaround, not a confirmed compiler diagnosis. Preserve existingCleanFile/typeFolder File references, guards, config contracts and manual slots. After export, check all three If inputs use the named variables and their Set Variable actions consume the immediately preceding correct action results. Corrected app compilation/export/runtime: Not run. Source and .txt copy are byte-identical.
