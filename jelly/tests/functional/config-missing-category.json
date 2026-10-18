@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "prefixRegex": "^(Mon|Tue|Wed|Thu(?:rs|r)?|Fri|Sat|Sun)(am|pm)?[0-9]+-",
+  "libraryFolder": "Library",
+  "categories": [
+    "TEST-MISSING-CATEGORY"
+  ]
+}

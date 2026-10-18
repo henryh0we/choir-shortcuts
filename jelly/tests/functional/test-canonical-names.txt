@@ -1,0 +1,30 @@
+// Installed name: TEST - Canonical Names
+// Role: Test driver; specification revision 1; interface 1.0.
+// Input: None; direct launch.
+// Output: diagnostic Text; native errors/cancellation may halt without a result.
+// Dependency: UTIL - Canonical Choir Name interface 2.0.
+// Side effects: Validation alerts only; no file writes.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6; bundled compiler unknown.
+// Stage: Drafted, not compiled/imported/device tested; tests: README.md.
+import Shortcuts
+list(items: ["Fri1-TestComposer-TestPiece.pdf", "^(Mon|Tue|Wed|Thu(?:rs|r)?|Fri|Sat|Sun)(am|pm)?[0-9]+-"]) >> firstInput
+runShortcut(name: "UTIL - Canonical Choir Name", input: firstInput, show: false) >> firstName
+if(firstName != "TestComposer-TestPiece") {
+output("FAIL: First filename returned ${firstName}")
+}
+list(items: ["Jackson-InGminor.pdf", "^(Mon|Tue|Wed|Thu(?:rs|r)?|Fri|Sat|Sun)(am|pm)?[0-9]+-"]) >> secondInput
+runShortcut(name: "UTIL - Canonical Choir Name", input: secondInput, show: false) >> secondName
+if(secondName != "Jackson-InGminor") {
+output("FAIL: Second filename returned ${secondName}")
+}
+list(items: ["CUSTOM1-TestComposer-TestPiece.pdf", "^CUSTOM[0-9]+-"]) >> customInput
+runShortcut(name: "UTIL - Canonical Choir Name", input: customInput, show: false) >> customName
+if(customName != "TestComposer-TestPiece") {
+output("FAIL: Configured prefix returned ${customName}")
+}
+list(items: ["Fri1-TestComposer-TestPiece.pdf"]) >> missingInput
+runShortcut(name: "UTIL - Canonical Choir Name", input: missingInput, show: false) >> missingName
+if(missingName != nil) {
+output("FAIL: Missing rule returned a value: ${missingName}")
+}
+output("PASS: Two filenames, changed prefix rule and rejected missing argument.")

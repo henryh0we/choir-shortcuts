@@ -1,0 +1,12 @@
+// Installed name: TEST - Choir Service
+// Role: Test driver; specification revision 1; interface 1.0.
+// Input: None; direct interactive launch using assembly configured to a disposable root.
+// Output: diagnostic Text; native errors/cancellation may halt without a result.
+// Dependency: UTIL - Assemble Choir Service completed interface 1.1; its naming/archive dependencies installed.
+// Side effects: Assembly may save/import PDFs, edit score metadata, create or clear selected setlist entries.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6; bundled compiler unknown.
+// Stage: Drafted, not compiled/imported/device tested; tests: README.md.
+import Shortcuts
+text(text: "interactive") >> mode
+runShortcut(name: "UTIL - Assemble Choir Service", input: mode, show: false) >> report
+output("${report}")

@@ -1,0 +1,31 @@
+// Installed name: TEST - Archive Reuse
+// Role: Test driver; specification revision 1; interface 1.0.
+// Input: Native three-item context List from existing test caller: PDF, test Library Folder, config Dictionary.
+// Output: diagnostic Text; native errors/cancellation may halt without a result.
+// Dependency: UTIL - Archive Choir PDF completed interface 2.1.
+// Side effects: Calls archive twice; can save PDFs in the supplied test Library.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6; bundled compiler unknown.
+// Stage: Drafted, not compiled/imported/device tested; tests: README.md.
+import Shortcuts
+runShortcut(name: "UTIL - Archive Choir PDF", input: ShortcutInput, show: false) >> firstFile
+if(firstFile == nil) {
+output("FAIL: First archive call returned nothing.")
+}
+getType(input: firstFile) >> firstType
+if(firstType == "Text") {
+output("FAIL: First archive call returned Text: ${firstFile}")
+}
+fileDetail(input: firstFile, property: Name) >> firstName
+runShortcut(name: "UTIL - Archive Choir PDF", input: ShortcutInput, show: false) >> secondFile
+if(secondFile == nil) {
+output("FAIL: Repeat archive call returned nothing.")
+}
+getType(input: secondFile) >> secondType
+if(secondType == "Text") {
+output("FAIL: Repeat archive call returned Text: ${secondFile}")
+}
+fileDetail(input: secondFile, property: Name) >> secondName
+if(firstName != "${secondName}") {
+output("FAIL: Returned names differ: ${firstName} / ${secondName}")
+}
+output("Returned names match: ${firstName}. Confirm the SECOND call showed no category picker and created no extra PDF.")

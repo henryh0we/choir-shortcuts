@@ -1,0 +1,22 @@
+// Installed name: TEST - Archive Config Error
+// Role: Test driver; specification revision 1; interface 1.0.
+// Input: Native context List from existing test caller; select one supplied invalid test config.
+// Output: diagnostic Text; native errors/cancellation may halt without a result.
+// Dependency: UTIL - Archive Choir PDF completed interface 2.1.
+// Side effects: Calls archive once; failed validation could save to supplied test Library.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6; bundled compiler unknown.
+// Stage: Drafted, not compiled/imported/device tested; tests: README.md.
+import Shortcuts
+runShortcut(name: "UTIL - Archive Choir PDF", input: ShortcutInput, show: false) >> result
+if(result == nil) {
+output("FAIL: Archive returned nothing instead of the expected config error.")
+}
+getType(input: result) >> resultType
+if(resultType != "Text") {
+output("FAIL: Archive returned a non-Text value. Inspect the test Library for an unintended save.")
+}
+matchText(text: "${result}", regex: "^ERROR: (Set prefixRegex in config[.]json[.]|Library has no folder named TEST-MISSING-CATEGORY[.] Fix config[.]json or the folders[.])$", caseSensitive: true) >> expectedError
+if(expectedError == nil) {
+output("FAIL: Unexpected error: ${result}")
+}
+output("Expected config error returned: ${result}. Confirm it matches your chosen fixture and no PDF was saved.")
