@@ -1,4 +1,7 @@
-# Native validation and return blocks
+# Historical native validation proposal (retired)
+
+**Retired:** Archive 13 and Assembly 10 restore executable documented If blocks with direct output(notes: "ERROR: ..."). Do not add the AV/SV/AGUARD/SGUARD/ARETURN/SRETURN native blocks described below to current exports. This page preserves the abandoned proposal for evidence only. Use current source and helper-compatibility-update.md.
+
 
 Current sources: Archive revision 12 / completed interface 2.0; Assembly revision 9 / completed interface 1.1. User reports both messages and stopping actions missing from generated If bodies. These revisions remove entire affected If blocks and all generated Exit/Output calls. They provide Comment + Nothing insertion slots, not an automatic code-only export fix. New compilation/export/runtime: Not run.
 

@@ -1,0 +1,9 @@
+// Diagnostic only: no provider/file/forScore writes.
+// Tests whether leading whitespace causes nested actions to be omitted.
+// User-confirmed fixture: returns Conditional output reached; missing noResultBehaviour/response warnings remain.
+import Shortcuts
+var probeValue = "missing"
+if(probeValue == "missing") {
+output("ERROR: Conditional output reached.")
+}
+output("ERROR: Conditional stop failed or was skipped.")

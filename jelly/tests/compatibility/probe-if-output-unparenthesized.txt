@@ -1,0 +1,10 @@
+// Diagnostic only: no files, providers or forScore writes.
+// Candidate: unlabeled output payload inferred from the app rendering notes: literally.
+// Not a confirmed app signature. Compare generated native action placement before running.
+// Expected: Text/Set Variable, If, Stop and Output INSIDE If, End If, final Stop and Output.
+import Shortcuts
+var probeValue = "missing"
+if probeValue == "missing" {
+    output("ERROR: Conditional output reached.")
+}
+output("ERROR: Conditional stop failed or was skipped.")

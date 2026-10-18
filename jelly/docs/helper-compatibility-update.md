@@ -1,12 +1,15 @@
 # Archive and assembly compatibility update
 
-**Current Archive 12 / Assembly 9:** use [native validation block instructions](native-validation-blocks.md). All affected whole If blocks and generated stop/return calls are now native insertion slots. Add AGUARD/SGUARD as real native stops immediately after import; the placeholder is not an execution guard. Older generated Exit/Output/validation instructions below are superseded.
+**Current source: Archive 14 / Assembly 11.** The user confirms the small flush-left, parenthesized If probe returns Conditional output reached. The indented parenthesized probe dropped its Output; the unparenthesized probe dropped its If. Both helpers now keep code flush left and use positional `output("ERROR: ...")`, with no notes: label. Literal multiline message whitespace is preserved. Warnings about missing noResultBehaviour and response remain unresolved: the successful probe is not warning-free. This establishes only the tested conditional stop/Text fixture, not interpolation, File returns, nested loops or either complete helper. Existing native ARC/CFG/CONF/COL/SCORE/FS completion remains; no native validation construction is required.
 
 
-Current correction: archive **11** / assembly **8** replace failed Exit generation with the local documented `output(notes: ...)`, omitting optional `folder`. This is an **unverified compiler candidate**, not a working-signature claim. Inspect every exported validation If: Alert/Text and Stop and Output must be inside it. CFG03/CFG04 now intentionally export empty output fields: manually select native existingCleanFile/savedCleanFile. Do not use interpolated Text for File returns. Keep/inspect the initial guard until completion. Older Exit-return instructions below are superseded.
 
 
-18 October 2026. Archive revision 11 / completed interface 2.0; assembly revision 8 / completed interface 1.1. These sources are Drafted: no new iPad compiler/export/runtime pass is claimed. This checklist supersedes older instructions to repair empty Output fields or capture Repeat Results for these two revisions. Input contracts and config keys are unchanged.
+18 October 2026. Archive revision 14 / completed interface 2.1; assembly revision 11 / completed interface 1.1. These sources are Drafted: no new iPad compiler/export/runtime pass is claimed. This checklist supersedes older instructions to repair empty Output fields or capture Repeat Results for these two revisions. Input contracts and config keys are unchanged.
+
+## Historical revisions before 13 / 10
+
+Older Exit/Output and native-validation instructions below record superseded approaches; the current source behavior is described above.
 
 ## What changed
 
@@ -40,11 +43,11 @@ Set receiving type to Text and pass interactive. Retain the initial ASSEMBLY GUA
 | --- | --- | --- |
 | CONF01 | Folder selecting Choir Music, the parent of config.json and Library | Root Get Contents of Folder and CONF02 |
 | CONF02 | Get File from Folder: CONF01 Folder, path config.json, error if absent on | Get Dictionary from Input |
-| COL01 | Add to Variable: orderedFile from the immediately preceding ordering Choose from List → orderedFiles | Replace the slot Nothing; keep inside ordering Repeat |
-| COL02 | Add to Variable: orderedName from File Details → orderedNames | Replace the slot Nothing; keep inside validation Repeat |
+| COL01 | Add to Variable: orderedFile from the immediately preceding ordering Choose from List â†’ orderedFiles | Replace the slot Nothing; keep inside ordering Repeat |
+| COL02 | Add to Variable: orderedName from File Details â†’ orderedNames | Replace the slot Nothing; keep inside validation Repeat |
 | SCORE01 | Get Item from List: FS01 existingScore lookup, Item at Index 1 | Following Set Variable workingScore |
 | SCORE02 | Get Item from List: FS03 importedScore lookup, Item at Index 1 | Following Set Variable workingScore |
-| COL03 | Add to Variable: named workingScore → preparedScores | Replace slot Nothing at end of preparation Repeat |
+| COL03 | Add to Variable: named workingScore â†’ preparedScores | Replace slot Nothing at end of preparation Repeat |
 | FS01-FS13 | Native forScore actions in the existing assembly guide | FS01 now feeds the presence check and SCORE01; FS03 feeds its presence check and SCORE02; FS12 feeds entry Count. Final Exit returns serviceReport |
 
 Add to Variable appends; Set Variable replaces the collection and would lose earlier items. For SCORE slots reconnect before deleting Nothing. COL slots have no consumed dummy result: insert Add to Variable, then delete Nothing. Keep these actions inside their original loops/branches.

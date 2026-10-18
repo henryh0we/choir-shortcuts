@@ -1,6 +1,7 @@
 # Complete the generated choir Shortcuts
 
-**Current Archive 12 / Assembly 9:** use [native validation block instructions](native-validation-blocks.md). All affected whole If blocks and generated stop/return calls are now native insertion slots. Add AGUARD/SGUARD as real native stops immediately after import; the placeholder is not an execution guard. Older generated Exit/Output/validation instructions below are superseded.
+**Current source: Archive 14 / Assembly 11.** The user confirms the small flush-left, parenthesized If probe returns Conditional output reached. The indented parenthesized probe dropped its Output; the unparenthesized probe dropped its If. Both helpers now keep code flush left and use positional `output("ERROR: ...")`, with no notes: label. Literal multiline message whitespace is preserved. Warnings about missing noResultBehaviour and response remain unresolved: the successful probe is not warning-free. This establishes only the tested conditional stop/Text fixture, not interpolation, File returns, nested loops or either complete helper. Existing native ARC/CFG/CONF/COL/SCORE/FS completion remains; no native validation construction is required.
+
 
 
 Current archive 9 / assembly 7: follow the [18 October compatibility checklist](helper-compatibility-update.md). Its native selector/collection slots and Exit returns supersede older selector, Output-field and Repeat Results instructions on this page.

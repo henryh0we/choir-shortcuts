@@ -1,12 +1,11 @@
 # Build the choir service workflow
 
-**Current Archive 12 / Assembly 9:** use [native validation block instructions](native-validation-blocks.md). All affected whole If blocks and generated stop/return calls are now native insertion slots. Add AGUARD/SGUARD as real native stops immediately after import; the placeholder is not an execution guard. Older generated Exit/Output/validation instructions below are superseded.
+**Current source: Archive 14 / Assembly 11.** The user confirms the small flush-left, parenthesized If probe returns Conditional output reached. The indented parenthesized probe dropped its Output; the unparenthesized probe dropped its If. Both helpers now keep code flush left and use positional `output("ERROR: ...")`, with no notes: label. Literal multiline message whitespace is preserved. Warnings about missing noResultBehaviour and response remain unresolved: the successful probe is not warning-free. This establishes only the tested conditional stop/Text fixture, not interpolation, File returns, nested loops or either complete helper. Existing native ARC/CFG/CONF/COL/SCORE/FS completion remains; no native validation construction is required.
 
 
-Current correction: archive **11** / assembly **8** replace failed Exit generation with the local documented `output(notes: ...)`, omitting optional `folder`. This is an **unverified compiler candidate**, not a working-signature claim. Inspect every exported validation If: Alert/Text and Stop and Output must be inside it. CFG03/CFG04 now intentionally export empty output fields: manually select native existingCleanFile/savedCleanFile. Do not use interpolated Text for File returns. Keep/inspect the initial guard until completion. Older Exit-return instructions below are superseded.
 
 
-17 October 2026. Current source revisions: canonical 9 (interface 2.0), archive 11 (completed interface 2.0), assembly 8 (completed interface 1.1), main 3 (interface 1.0). These config-based revisions are Drafted, not compiled or device-tested. Earlier manually adjusted naming/save fixtures remain historical evidence.
+17 October 2026. Current source revisions: canonical 9 (interface 2.0), archive 14 (completed interface 2.1), assembly 11 (completed interface 1.1), main 3 (interface 1.0). These config-based revisions are Drafted, not compiled or device-tested. Earlier manually adjusted naming/save fixtures remain historical evidence.
 
 Start with [config integration and migration](config-integration.md), which owns the current input contracts and config slots. The existing [forScore assembly table](choir-service-assembly.md) still owns FS01-FS13. This release retains the user's generated-source plus native-insertion workflow.
 

@@ -1,8 +1,8 @@
 // Installed name: UTIL - Archive Choir PDF
 // Purpose: Generated archive helper; complete CFG slots after importing.
-// Role: Reusable; specification revision 12; completed interface 2.0.
+// Role: Reusable; specification revision 14; completed interface 2.1.
 // Input: Native List: one PDF File, native Library Folder, parsed config Dictionary.
-// Output after assembly: One native File, or empty output after validation alerts.
+// Output after assembly: Native File on success; Text starting ERROR: on validation failure. Caller must reject error Text before import.
 // Direct/called: May ask for a type folder when absent; no unattended mode.
 // Side effects after assembly: Save a canonical clean PDF; never overwrite.
 // Dependency: UTIL - Canonical Choir Name interface 2.0, util-canonical-choir-name.jelly.
@@ -12,16 +12,17 @@
 
 import Shortcuts
 
-// NATIVE COMPLETION: Generated validation bodies dropped both messages and stopping actions. AV slots replace whole validation If blocks; add them natively using the checklist before running. No generated Exit/Output binding remains.
+// VALIDATION: Device-confirmed probe uses parenthesized If, flush-left actions and positional output("ERROR: ..."). Missing noResultBehaviour/response warnings remain in the probe; no successful named-parameter repair is known. Full helper revision still needs device verification.
 
-// ASSEMBLY GUARD: The next guard slot requires a native stop action after import. Do not run this template before adding it; retain it until every validation/return and existing native slot is complete.
-// AGUARD REQUIRED IMPORT GUARD: Before running this imported template, replace next Nothing with native Show Alert (Helper needs manual completion), then native Stop This Shortcut. Retain until ALL validation, return and existing action slots are complete. Nothing itself does not stop execution.
-nothing()
+// ASSEMBLY GUARD: Keep the next unconditional Output until the existing native action slots are complete. Validation If blocks below contain executable text-error Output calls.
+// INITIAL GUARD: Remove only this first Output once the existing native action slots are complete.
+output("ERROR: Archive helper needs ARC01-ARC03 and CFG02-CFG04 completed.")
 
 count(type: Items, input: ShortcutInput) >> contextCount
 text(text: "${contextCount}") >> contextCountText
-// AV01 NATIVE IF BLOCK: Replace next Nothing with a complete native If (contextCountText != "3"), Show Alert (title="Archive input needs updating", message="Supply a native List: one PDF File, Library Folder, parsed config Dictionary.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
+if(contextCountText != "3") {
+output("ERROR: Supply a native List: one PDF File, Library Folder, parsed config Dictionary.")
+}
 // ARC01 CONTEXT ITEM: Replace next Nothing with native Get Item from List, List=Shortcut Input, Item at Index=1. Keep the native result as sourceFile; reconnect its presence check, Count, File Details and Set Name inputs before deleting Nothing. Never convert this result to Text.
 nothing() >> sourceFile
 // ARC02 CONTEXT ITEM: Replace next Nothing with native Get Item from List, List=Shortcut Input, Item at Index=2. Keep the native result as archiveRoot; reconnect Library name check and both root Get Contents of Folder inputs before deleting Nothing. Never convert this result to Text.
@@ -30,35 +31,44 @@ nothing() >> archiveRoot
 nothing() >> workflowConfig
 valueFor(key: "version", dictionary: workflowConfig) >> configVersion
 text(text: "${configVersion}") >> configVersionText
-// AV02 NATIVE IF BLOCK: Replace next Nothing with a complete native If (configVersionText != "1"), Show Alert (title="Unsupported config", message="Only config version 1 is supported.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
+if(configVersionText != "1") {
+output("ERROR: Only config version 1 is supported.")
+}
 valueFor(key: "prefixRegex", dictionary: workflowConfig) >> prefixRegex
 valueFor(key: "categories", dictionary: workflowConfig) >> categories
 valueFor(key: "libraryFolder", dictionary: workflowConfig) >> libraryFolderName
-// AV03 NATIVE IF BLOCK: Replace next Nothing with a complete native If (libraryFolderName == nil), Show Alert (title="Missing Library name", message="Set libraryFolder in config.json.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
+if(libraryFolderName == nil) {
+output("ERROR: Set libraryFolder in config.json.")
+}
 fileDetail(input: archiveRoot, property: Name) >> actualLibraryName
-// AV04 NATIVE IF BLOCK: Replace next Nothing with a complete native If (actualLibraryName != "${libraryFolderName}"), Show Alert (title="Wrong Library Folder", message="Input item 2 must be the native ${libraryFolderName} Folder beneath Choir Music.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
-// AV05 NATIVE IF BLOCK: Replace next Nothing with a complete native If (prefixRegex == nil), Show Alert (title="Missing prefix pattern", message="Set prefixRegex in config.json.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
-// AV06 NATIVE IF BLOCK: Replace next Nothing with a complete native If (categories == nil), Show Alert (title="Missing categories", message="Set a nonempty categories array in config.json.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
-// AV07 NATIVE IF BLOCK: Replace next Nothing with a complete native If (sourceFile == nil), Show Alert (title="No source PDF", message="Supply one PDF File.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
+if(actualLibraryName != "${libraryFolderName}") {
+output("ERROR: Input item 2 must be the native ${libraryFolderName} Folder beneath Choir Music.")
+}
+if(prefixRegex == nil) {
+output("ERROR: Set prefixRegex in config.json.")
+}
+if(categories == nil) {
+output("ERROR: Set a nonempty categories array in config.json.")
+}
+if(sourceFile == nil) {
+output("ERROR: Supply one PDF File.")
+}
 count(type: Items, input: sourceFile) >> inputCount
 text(text: "${inputCount}") >> inputCountText
-// AV08 NATIVE IF BLOCK: Replace next Nothing with a complete native If (inputCountText != "1"), Show Alert (title="One PDF required", message="Supply exactly one PDF File.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
+if(inputCountText != "1") {
+output("ERROR: Supply exactly one PDF File.")
+}
 fileDetail(input: sourceFile, property: File Extension) >> sourceExtension
 changeCase(text: "${sourceExtension}", case: lowercase) >> lowerExtension
-// AV09 NATIVE IF BLOCK: Replace next Nothing with a complete native If (lowerExtension != "pdf"), Show Alert (title="PDF required", message="No file saved. Select a PDF.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
+if(lowerExtension != "pdf") {
+output("ERROR: No file saved. Select a PDF.")
+}
 fileDetail(input: sourceFile, property: Name) >> sourceName
 list(items: [sourceName, prefixRegex]) >> sourceNameInput
 runShortcut(name: "UTIL - Canonical Choir Name", input: sourceNameInput, show: false) >> canonicalStem
-// AV10 NATIVE IF BLOCK: Replace next Nothing with a complete native If (canonicalStem == nil), Show Alert (title="Empty music identity", message="A file named only .pdf is not supported.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
+if(canonicalStem == nil) {
+output("ERROR: A file named only .pdf is not supported.")
+}
 
 // Old CFG01 is retired: archiveRoot is the native Library Folder from context item 2.
 
@@ -70,49 +80,54 @@ var archiveExtensionLower = ""
 var archiveStem = ""
 var existingCleanFile = noArchiveMatch
 repeatEach(archiveContents) {
-    fileDetail(input: RepeatItem, property: File Extension) >> archiveExtension
-    changeCase(text: "${archiveExtension}", case: lowercase) >> archiveExtensionLowerResult
-    archiveExtensionLower = archiveExtensionLowerResult
-    if(archiveExtensionLower == "pdf") {
-        fileDetail(input: RepeatItem, property: Name) >> archiveName
-        list(items: [archiveName, prefixRegex]) >> archiveNameInput
-        runShortcut(name: "UTIL - Canonical Choir Name", input: archiveNameInput, show: false) >> archiveStemResult
-        archiveStem = archiveStemResult
-        if(archiveStem == "${canonicalStem}") {
-            // AV11 NATIVE IF BLOCK: Replace next Nothing with a complete native If (existingCleanFile != nil), Show Alert (title="Multiple clean copies", message="Resolve duplicate canonical PDFs in iCloud before retrying.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-            nothing()
-            existingCleanFile = RepeatItem
-        }
-    }
+fileDetail(input: RepeatItem, property: File Extension) >> archiveExtension
+changeCase(text: "${archiveExtension}", case: lowercase) >> archiveExtensionLowerResult
+archiveExtensionLower = archiveExtensionLowerResult
+if(archiveExtensionLower == "pdf") {
+fileDetail(input: RepeatItem, property: Name) >> archiveName
+list(items: [archiveName, prefixRegex]) >> archiveNameInput
+runShortcut(name: "UTIL - Canonical Choir Name", input: archiveNameInput, show: false) >> archiveStemResult
+archiveStem = archiveStemResult
+if(archiveStem == "${canonicalStem}") {
+if(existingCleanFile != nil) {
+output("ERROR: Resolve duplicate canonical PDFs in iCloud before retrying.")
+}
+existingCleanFile = RepeatItem
+}
+}
 }
 
-// AV12 NATIVE IF BLOCK: Replace next Nothing with a complete native If (existingCleanFile != nil), then Stop and Output (native existingCleanFile) inside it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
+if(existingCleanFile != nil) {
+// CFG03: Set the next Stop and Output result to named native existingCleanFile after export; preserve File type.
+output("")
+}
 
 choose(list: categories, prompt: "Choose the music category from config.json.", multiple: false, all: false) >> chosenCategory
-// AV13 NATIVE IF BLOCK: Replace next Nothing with a complete native If (chosenCategory == nil), then Stop and Output (empty) inside it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
+if(chosenCategory == nil) {
+output("ERROR: No category selected. No PDF saved.")
+}
 // Resolve category Text to an immediate native Library Folder; never use Text as a save destination.
 getFolderContents(folder: archiveRoot, recursive: false) >> libraryChildren
 nothing() >> noCategoryFolder
 var childName = ""
 var typeFolder = noCategoryFolder
 repeatEach(libraryChildren) {
-    fileDetail(input: RepeatItem, property: Name) >> childNameResult
-    childName = childNameResult
-    if(childName == "${chosenCategory}") {
-        // AV14 NATIVE IF BLOCK: Replace next Nothing with a complete native If (typeFolder != nil), Show Alert (title="Ambiguous category", message="Multiple Library children match the selected category.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-        nothing()
-        typeFolder = RepeatItem
-    }
+fileDetail(input: RepeatItem, property: Name) >> childNameResult
+childName = childNameResult
+if(childName == "${chosenCategory}") {
+if(typeFolder != nil) {
+output("ERROR: Multiple Library children match the selected category.")
 }
-// AV15 NATIVE IF BLOCK: Replace next Nothing with a complete native If (typeFolder == nil), Show Alert (title="Category folder missing", message="Library has no folder named ${chosenCategory}. Fix config.json or the folders.") and Stop and Output (empty) INSIDE it, then End If. Select actual producer/named-variable tokens for conditions and interpolated values; do not type variable names as literal Text. Preserve this loop/branch position.
-nothing()
+typeFolder = RepeatItem
+}
+}
+if(typeFolder == nil) {
+output("ERROR: Library has no folder named ${chosenCategory}. Fix config.json or the folders.")
+}
 // Folder preflight must succeed before Set Name or Save File.
 getFolderContents(folder: typeFolder, recursive: false) >> categoryContents
 setName(input: sourceFile, name: "${canonicalStem}.pdf", dontIncludeExtension: false) >> renamedFile
 // CFG02 SAVE DESTINATION. The next Save File is generated with its picker enabled because the reviewed binding cannot encode a Folder destination. Set Ask Where to Save OFF and Destination to the named native typeFolder variable. Keep Overwrite OFF and the native renamedFile input.
 saveFile(input: renamedFile, ask: true, path: "", overwrite: false) >> savedCleanFile
-// CFG04 NEW FILE RETURN: Complete ARETURN below with native savedCleanFile from Save File.
-// ARETURN NATIVE FILE RETURN (CFG04): Replace next Nothing with native Stop and Output, result=native savedCleanFile from Save File. Do not convert the File to Text.
-nothing()
+// CFG04: In the next Stop and Output, select native savedCleanFile from Save File after export; preserve File type.
+output("")

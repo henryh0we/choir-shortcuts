@@ -1,12 +1,11 @@
 # Config-based choir workflow
 
-**Current Archive 12 / Assembly 9:** use [native validation block instructions](native-validation-blocks.md). All affected whole If blocks and generated stop/return calls are now native insertion slots. Add AGUARD/SGUARD as real native stops immediately after import; the placeholder is not an execution guard. Older generated Exit/Output/validation instructions below are superseded.
+**Current source: Archive 14 / Assembly 11.** The user confirms the small flush-left, parenthesized If probe returns Conditional output reached. The indented parenthesized probe dropped its Output; the unparenthesized probe dropped its If. Both helpers now keep code flush left and use positional `output("ERROR: ...")`, with no notes: label. Literal multiline message whitespace is preserved. Warnings about missing noResultBehaviour and response remain unresolved: the successful probe is not warning-free. This establishes only the tested conditional stop/Text fixture, not interpolation, File returns, nested loops or either complete helper. Existing native ARC/CFG/CONF/COL/SCORE/FS completion remains; no native validation construction is required.
 
 
-Current correction: archive **11** / assembly **8** replace failed Exit generation with the local documented `output(notes: ...)`, omitting optional `folder`. This is an **unverified compiler candidate**, not a working-signature claim. Inspect every exported validation If: Alert/Text and Stop and Output must be inside it. CFG03/CFG04 now intentionally export empty output fields: manually select native existingCleanFile/savedCleanFile. Do not use interpolated Text for File returns. Keep/inspect the initial guard until completion. Older Exit-return instructions below are superseded.
 
 
-17 October 2026. Current revisions: canonical **9 / interface 2.0**, archive **11 / completed interface 2.0**, assembly **8 / completed interface 1.1**, main **3 / interface 1.0**. Current sources are Drafted; config parsing, native context transfer and updated exports have not been tested on the iPad. Earlier successful naming/save fixtures apply to manually adjusted older versions, not these revisions.
+17 October 2026. Current revisions: canonical **9 / interface 2.0**, archive **14 / completed interface 2.1**, assembly **11 / completed interface 1.1**, main **3 / interface 1.0**. Current sources are Drafted; config parsing, native context transfer and updated exports have not been tested on the iPad. Earlier successful naming/save fixtures apply to manually adjusted older versions, not these revisions.
 
 For current archive/assembly source, follow the [18 October compatibility checklist](helper-compatibility-update.md). It supersedes older Output-field, selector and Repeat Results instructions below.
 
@@ -42,7 +41,7 @@ We use native Lists instead of constructing a Dictionary containing Files. The i
 | Installed Shortcut | Input | Output |
 | --- | --- | --- |
 | UTIL - Canonical Choir Name | Exactly two Text items: `[filename, prefixRegex]` | Canonical Text; invalid/missing input returns no useful value after validation. |
-| UTIL - Archive Choir PDF | Exactly three native items: `[one PDF File, Library Folder, parsed config Dictionary]` | Native existing/saved PDF after CFG completion; validation stops with no File. |
+| UTIL - Archive Choir PDF | Exactly three native items: `[one PDF File, Library Folder, parsed config Dictionary]` | Native existing/saved PDF after CFG completion; validation returns ERROR: Text which assembly rejects before import. |
 | UTIL - Assemble Choir Service | Text `interactive`, as before | Report Text, now including selected service type. |
 | MAIN - Build Choir Service | No input consumed | Calls updated assembly and returns report. |
 
@@ -62,7 +61,7 @@ In the **assembly helper**, retain its first guard while completing:
 | --- | --- | --- |
 | CONF01 | Replace Nothing with Folder selecting **Choir Music**, the parent containing config.json and Library. | Root Get Contents of Folder and CONF02's Folder. |
 | CONF02 | Replace Nothing with native Get File from Folder: Folder = CONF01, file path = `config.json`, error if missing enabled. | Get Dictionary from Input immediately below must consume that File. |
-| FS01–FS13 | Complete the existing [forScore slot table](choir-service-assembly.md). | Preserve all native Score/Composer/Setlist connections. `workingScore` is now a named variable, not an If Result. |
+| FS01â€“FS13 | Complete the existing [forScore slot table](choir-service-assembly.md). | Preserve all native Score/Composer/Setlist connections. `workingScore` is now a named variable, not an If Result. |
 
 CONF02 is an explicit native insertion because the inspected Jelly Get File signature does not expose a native Folder destination. Do not substitute the legacy action's default Shortcuts folder, a cloud path string or an unrelated config picked elsewhere.
 
@@ -82,7 +81,7 @@ Only `//` comments are used; one source line creates one native Comment block in
 
 Use the [config integration checks](../tests/config-integration.md). For a standalone archive test, choose one disposable PDF, select the test Library Folder, read the parent config File using Get Dictionary from Input, then build a native three-row List using those whole variables. Run archive with the List and inspect the returned filename/location. Input item 2 is Library, not Choir Music.
 
-Use Get Details of Files → Name → Show Result instead of requiring Quick Look, whose UI failed in the earlier fixture. Check the actual saved PDF in Files. Repeat the same source to check reuse, with no second save/category prompt. Re-export restores all manual-completion requirements; retain your working copies until the new version passes.
+Use Get Details of Files â†’ Name â†’ Show Result instead of requiring Quick Look, whose UI failed in the earlier fixture. Check the actual saved PDF in Files. Repeat the same source to check reuse, with no second save/category prompt. Re-export restores all manual-completion requirements; retain your working copies until the new version passes.
 
 ## Manual naming input/output repairs (18 October 2026)
 
