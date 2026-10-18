@@ -76,3 +76,7 @@ Conclusion and next change:
 ```
 
 18 October 2026, canonical revision 9/interface 2.0: user reports manual repairs to receiving type (Text) and final output (canonicalName). Source now explicitly converts extracted filename to Text and documents post-import receiving/output wiring. Final exit(var: canonicalName) was already present and is retained; its exported native token must be checked. Caller still supplies two Text items via List; receiving Text must preserve their separate extraction. Regenerated revision compilation and runtime: Not run. See config-integration setup notes for the repair checklist.
+
+## Helper compatibility revision, 18 October 2026
+
+Archive 9/interface 2.0 and assembly 7/interface 1.1 remove Output enum arguments, all getItemFromList bindings and all block-result captures. Returns use documented exit(var: ...); native ARC01-ARC03/SCORE01-SCORE02 slots handle selection and COL01-COL03 Add to Variable slots handle ordered native collections. Archive File returns now directly reference existingCleanFile/savedCleanFile; inspect exported tokens. Both initial guards remain. Config keys/call contracts unchanged. Assembly Quick Look removed after earlier failed UI fixture; FS13 and report remain. See [completion checklist](../../docs/helper-compatibility-update.md). New compiler/export/device results: Not run. Native List shape, named variable wiring, collection emptiness/ordering and repeated scores still require the integrated run. MAIN is unchanged and retains the unresolved Output form.

@@ -1,6 +1,8 @@
 # Config-based choir workflow
 
-17 October 2026. Current revisions: canonical **9 / interface 2.0**, archive **8 / completed interface 2.0**, assembly **6 / completed interface 1.1**, main **3 / interface 1.0**. Current sources are Drafted; config parsing, native context transfer and updated exports have not been tested on the iPad. Earlier successful naming/save fixtures apply to manually adjusted older versions, not these revisions.
+17 October 2026. Current revisions: canonical **9 / interface 2.0**, archive **9 / completed interface 2.0**, assembly **7 / completed interface 1.1**, main **3 / interface 1.0**. Current sources are Drafted; config parsing, native context transfer and updated exports have not been tested on the iPad. Earlier successful naming/save fixtures apply to manually adjusted older versions, not these revisions.
+
+For current archive/assembly source, follow the [18 October compatibility checklist](helper-compatibility-update.md). It supersedes older Output-field, selector and Repeat Results instructions below.
 
 ## Configuration location and keys
 
@@ -63,10 +65,10 @@ In the **archive helper**, old CFG01 is removed. Its Library Folder comes from c
 | Slot | Configure |
 | --- | --- |
 | CFG02 | Save File: input = native renamedFile; Ask Where to Save off; destination = **named native `typeFolder`**, resolved from the category name; Overwrite off. The picker now returns Text, so do not wire Chosen Item directly as a Folder. |
-| CFG03 | Stop and Output result = named native `existingCleanFile`. |
-| CFG04 | Final Stop and Output result = native `savedCleanFile` from Save File. |
+| CFG03 | Inspect Exit result = named native `existingCleanFile`. |
+| CFG04 | Inspect final Exit result = native `savedCleanFile` from Save File. |
 
-Set all empty-result Stop and Output actions to Do Nothing when there is no recipient. Do not clear the native CFG03/CFG04 results. Keep explanatory Text output on service failures. Check incoming List item extraction, Run Shortcut inputs, all If/End If and Repeat/End Repeat markers, mutable-variable references and final returns. Only after completion remove each helper's initial ASSEMBLY GUARD Stop and Output. Keep validation/return stops and Nothing initializers.
+Current revisions use Exit variable returns instead of the Output binding. Archive validation returns noArchiveResult (Nothing); CFG03/CFG04 return native Files directly. Inspect those native tokens after export. Keep explanatory Text output on service failures. Check incoming List item extraction, Run Shortcut inputs, all If/End If and Repeat/End Repeat markers, mutable-variable references and final returns. Only after completion remove each helper's initial ASSEMBLY GUARD Stop and Output. Keep validation/return stops and Nothing initializers.
 
 Only `//` comments are used; one source line creates one native Comment block in the user's app. There is no block-comment requirement.
 

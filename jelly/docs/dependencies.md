@@ -1,5 +1,7 @@
 # Shortcut inventory and installation order
 
+Current archive 9 / assembly 7: follow the [18 October compatibility checklist](helper-compatibility-update.md). Its native selector/collection slots and Exit returns supersede older selector, Output-field and Repeat Results instructions on this page.
+
 Source headers own contracts and direct dependency details. This table is the navigation summary; update it alongside source and test records.
 
 | Installed name / source | Role and purpose | Direct dependencies | Interface | Stage |

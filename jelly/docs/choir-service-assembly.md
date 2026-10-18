@@ -1,5 +1,7 @@
 # Complete the generated choir Shortcuts
 
+Current archive 9 / assembly 7: follow the [18 October compatibility checklist](helper-compatibility-update.md). Its native selector/collection slots and Exit returns supersede older selector, Output-field and Repeat Results instructions on this page.
+
 17 October 2026. Config-based source revisions: canonical 8, archive 8, assembly 6, main 3. Read [config integration](config-integration.md) for current contracts and setup. Compile all four Jelly files, then finish the marked fields/actions in Apple Shortcuts. Comments explain the required work; Nothing actions are temporary result placeholders. This is a generated template requiring manual completion, not a fully generated forScore integration.
 
 The user's installed Jellycuts build supports `//` line comments, with one source line becoming one separate native Comment block. The user reports that `/* ... */` block comments do not work, despite older compiler-source evidence; use line comments for instructions. All affected production source comments have now been converted to line comments. No guessed `comment()` or forScore function call is used. The native binding for Output handles Text; native File returns therefore have marked fields to reconnect after export. Source evidence and remaining version checks are recorded in [the compiler reference](jellycuts-reference.md).
