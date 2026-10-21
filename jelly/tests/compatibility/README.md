@@ -1,5 +1,11 @@
 # Jellycuts app compatibility evidence
 
+**Local CLI evidence, 21 October 2026:** the WSL compiler is now installed. The
+native-file-variable and output-respond probes passed local compilation and
+structural export checks; other probes failed compilation or export checks. See
+the [per-file local audit](../compiler/README.md). This does not update the device
+results below or establish that the 2024 CLI matches Jellycuts 2026.6.4.
+
 Device profile reported in the existing project record: Jellycuts **2026.6.4**, iPadOS **26.6**, forScore **15.2.5**. The bundled compiler and action-library revisions remain unknown. Open-Jellycore `e1ec31c2ee192c8721749f9eb3b50108e38891cf` is a source-inspection candidate, not an established match for that app.
 
 Documentation snapshot: `19306be1dd30c20e12058ebe144dd8342e64ca39`; navigate through the [local index](../../docs/jellycuts-docs-index.md). Prefer an exact device-tested form for this app profile over conflicting documentation or unmatched compiler source. Preserve discrepancies and their evidence rather than silently rewriting upstream examples.

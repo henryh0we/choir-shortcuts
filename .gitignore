@@ -1,0 +1,8 @@
+# Local compiler exports, diagnostics, and temporary validation fixtures
+/jelly/build/
+**/__pycache__/
+*.pyc
+# Keep downloaded toolchains and compiler checkouts out of repository history
+/.tools/
+/.cache/
+**/.build/

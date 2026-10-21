@@ -1,0 +1,44 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Jelly: build active file",
+      "type": "process",
+      "command": "python3",
+      "windows": { "command": "python" },
+      "args": ["${workspaceFolder}/scripts/build.py", "${file}"],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": [
+        {
+          "owner": "jelly",
+          "fileLocation": "absolute",
+          "pattern": { "regexp": "^(.*):(\\d+): (error|warning): (.*)$", "file": 1, "line": 2, "severity": 3, "message": 4 }
+        },
+        {
+          "owner": "jelly",
+          "fileLocation": "absolute",
+          "pattern": { "regexp": "^(.*\\.jelly): (error|warning): (.*)$", "kind": "file", "file": 1, "severity": 2, "message": 3 }
+        }
+      ],
+      "presentation": { "reveal": "always", "clear": true, "panel": "dedicated" }
+    },
+    {
+      "label": "Jelly: build all",
+      "type": "process",
+      "command": "python3",
+      "windows": { "command": "python" },
+      "args": ["${workspaceFolder}/scripts/build.py", "--all"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Jelly: validate compiler integration",
+      "type": "process",
+      "command": "python3",
+      "windows": { "command": "python" },
+      "args": ["${workspaceFolder}/scripts/validate.py"],
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

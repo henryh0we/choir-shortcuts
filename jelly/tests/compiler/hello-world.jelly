@@ -1,0 +1,10 @@
+// Installed name: TEST - Local Compiler Hello; purpose: local compiler smoke test; role: diagnostic; specification 1; interface 1.0.
+// Input: None; no fields or defaults; incoming content ignored.
+// Output: Displays one Text value using Quick Look; no structured return; compilation failure produces no export.
+// Execution: Direct and called execution both display a result on an Apple device; requires interactive UI.
+// Dependencies: None. Target: iOS/iPadOS 14+ native Text and Quick Look; no external apps or services.
+// Compiler: Open-Jellycore e1ec31c2ee192c8721749f9eb3b50108e38891cf; validation evidence: README.md beside this file.
+import Shortcuts
+
+text(text: "Hello from local Jellycore!") >> greeting
+quicklook(input: greeting)

@@ -14,6 +14,18 @@ These instructions apply to `jelly/` and its descendants. This is the code-based
 
 Read [README.md](README.md), [the syntax reference](docs/jellycuts-reference.md), [architecture](docs/architecture.md), and [dependencies](docs/dependencies.md) before implementation. The reference records source-backed patterns, known discrepancies, and current tooling limits.
 
+## Local compiler workflow (21 October 2026)
+
+The WSL/Linux compiler is installed: Open-Jellycore `e1ec31c2ee192c8721749f9eb3b50108e38891cf`, built unmodified with Swift 6.4.1. This is a separate profile from the user's Jellycuts app. Read [development](docs/development.md), [setup](docs/setup.md), [compiler limitations](docs/compiler-limitations.md), and [local test evidence](tests/compiler/README.md) when working on tooling or interpreting a compiler mismatch. Older statements below about compiler absence describe the earlier inspection.
+
+Whenever you create or modify `.jelly` source, run `python jelly/scripts/build.py "jelly/path/to/source.jelly"` from the repository root on Windows, or `python3 scripts/build.py "path/to/source.jelly"` from `jelly/` in WSL. Pass multiple paths explicitly in dependency order. `--all` compiles every source, including incompatible app probes; its failures are not permission to rewrite those probes or production source indiscriminately. Reusable helpers remain independently installed Shortcuts with established contracts and exact names, not compile-time includes.
+
+Use the wrapper's exit code, emitted diagnostics and `build/<source-relative-path>.build.json`, plus its stdout/stderr logs. Do not use raw CLI status zero as evidence: observed compiler errors return zero. Read the reported source and relevant pinned binding/grammar, fix supported source mistakes, and recompile. Stop after three unsuccessful attempts at the same diagnosis and report the concrete unsupported feature or unresolved cause. Preserve app-tested forms when the 2024 CLI disagrees; report a profile incompatibility instead of introducing arbitrary syntax changes. Never declare `.jelly` work complete without a passing build or the exact reason it could not pass.
+
+The wrapper compiles a temporary UTF-8/LF copy to avoid the observed CRLF parser bug; it preserves source files, removes stale exports, checks plist structure/UUID references/text attachment ranges, and emits unsigned exports in `jelly/build/`. An interpolation export with out-of-range attachments is rejected and retained as `.rejected.plist` for inspection. Do not bypass that check or repair generated exports as the lasting implementation. `python jelly/scripts/validate.py` reruns the real compiler integration checks. Codex's restricted Windows sandbox may require escalation to invoke WSL; that is an execution permission issue, not a reason to reinstall WSL.
+
+Report source review, compiler acceptance, structural export acceptance, signing, import, and device execution separately. A `.shortcut` generated here is unsigned. Do not upload sources/exports to signing services without explicit user permission. No iPhone/iPad execution has been performed by this setup. Ctrl+Shift+B invokes the default active-file task when this repository or `jelly/` is opened in VS Code; save source first.
+
 For forScore integrations, also read [forscore.md](../forscore.md). Follow its verified-capability checks, separate native-helper architecture, and iPhone/iPad-only build workflow; do not require a Mac or assume native forScore actions have Jelly bindings.
 
 ## Layout and naming

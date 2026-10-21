@@ -4,6 +4,15 @@ This directory contains Jelly source for Apple Shortcuts. Each `.jelly` file rep
 
 Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/jellycuts-reference.md), [architecture](docs/architecture.md), and [Shortcut inventory and installation order](docs/dependencies.md).
 
+Local compilation is now available through WSL2: Open-Jellycore `e1ec31c`, built with Swift 6.4.1. See [setup](docs/setup.md), [daily development](docs/development.md), [limitations/signing](docs/compiler-limitations.md), and [validation evidence](tests/compiler/README.md). From this repository's root, run:
+
+```powershell
+python jelly/scripts/build.py jelly/tests/compiler/hello-world.jelly
+python jelly/scripts/validate.py
+```
+
+In VS Code, save a `.jelly` file and press **Ctrl+Shift+B**. Exports and diagnostics go under `jelly/build/`, mirroring source folders. Existing app sources may fail this older CLI profile; a compiler pass does not establish iPad compatibility. The notes below about absent local tooling describe the 14 October inspection, before this installation.
+
 | Location | Purpose |
 | --- | --- |
 | `examples/` | Source-reviewed reusable formatter and composed demonstration |
@@ -11,7 +20,8 @@ Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/
 | `shortcuts/reusable/` | Generated shared components |
 | `docs/` | Syntax evidence, design, dependencies, and compilation instructions |
 | [tests/examples.md](tests/examples.md) | Expected results and actual validation record |
-| `build/` | Future generated exports; create when exporting |
+| `build/` | Ignored unsigned exports, build reports, captured logs, temporary validation files |
+| `scripts/` | Cross-platform compiler wrapper, integration validation and WSL setup launcher |
 
 The examples use signatures checked against Open-Jellycore source at revision `e1ec31c2ee192c8721749f9eb3b50108e38891cf`. They have **not been compiled, imported, or run**. No Jelly compiler was found on PATH in this Windows workspace on 2026-10-14. The user-reported device profile is Jellycuts 2026.6.4 on iPadOS 26.6, with forScore 15.2.5. Bundled compiler and action-library revisions remain unknown; the inspected compiler is not a confirmed match.
 
