@@ -1,6 +1,6 @@
 # forScore source review before iPad transfer
 
-21 October 2026. Current sources: **Canonical 10 / Archive 14 / Assembly 12 /
+21 October 2026. Current sources: **Canonical 11 / Archive 14 / Assembly 12 /
 Main 4**. Interfaces remain **2.0 / 2.1 / 1.1 / 1.0**, respectively. This review
 supersedes older current-version/Exit-return instructions in the linked guides;
 historical observations remain evidence for those older revisions.
@@ -9,7 +9,7 @@ historical observations remain evidence for those older revisions.
 
 | Source | Problem found | Change |
 | --- | --- | --- |
-| Canonical 10 | Still used indented If bodies and `exit(var: ...)`, despite recorded app failures of those forms | Flush-left bodies and positional Output; invalid input returns empty Text, success returns canonicalName Text. NAME01/NAME02 and manual receiving/output-token inspection remain required |
+| Canonical 11 | Manual NAME01/NAME02 extraction plus the earlier unreliable Exit/indented forms | Quoted-index loop extracts the two incoming Text items in source, following the user's successful caller/receiver test. Flush-left bodies and positional Output retained; full-helper receiving, validation, replacement and returned-Text inspection remain required |
 | Main 4 | Still used the old result/noResultBehavior/response Output signature | Uses positional Text Output, matching the user's isolated iPad probe. No-recipient behaviour is Do Nothing; direct display is not guaranteed |
 | Assembly 12 | Collection slots could leave an incomplete order/preview or preparation list without preventing setlist writes | Checks orderedFiles/orderedNames counts before file writes, workingScore presence before metadata, and preparedScores count after the complete preparation loop and before any setlist creation/clearing/appending |
 | Assembly 12 | Empty metadata/mode/target choices were not explicitly handled | Adds empty-result checks before using those choices; messages accurately acknowledge any earlier preparation or creation of an empty setlist |
@@ -56,7 +56,7 @@ Assessment after inspecting the installed compiler source, 21 October 2026:
 
 | Repair | Automation potential | Current blocker |
 | --- | --- | --- |
-| NAME/ARC/SCORE indexed selection | A local compiler can potentially generate the native selection and wire its output | The local binding exists, but the iPad rejected the tested Jelly enum forms. No replacement source form has been verified on the app |
+| NAME/ARC/SCORE extraction | NAME01/NAME02 are now replaced by a user-confirmed incoming two-Text loop in Canonical 11 | This does not establish native File/Folder/Dictionary/Score extraction for ARC/SCORE; enum forms remain rejected or generate First Item |
 | COL ordered collections | Potential local generation of native collection actions and references | Requires correct action serialization, scoped variables and native File/Score preservation, then device verification |
 | Native return tokens and named-variable conditions | Good candidates for local compiler serialization fixes | Existing local interpolation/UUID defects and app-specific wiring defects must be isolated and tested; literal Output acceptance does not establish native File returns |
 | Save destination CFG02 | Could be added to a local compiler binding | The inspected SaveFileParameter exposes input/ask/path/overwrite, with no native Folder destination field. A path string is not an equivalent replacement |
@@ -70,18 +70,21 @@ compiler, a separate route would need to generate the final Shortcut locally,
 preserve/assemble native actions, and use a verified signing/import workflow.
 Local files are currently unsigned and that import route has not been tested.
 
-No further native repair slot was removed on the strength of local compiler access
-alone. The supported source-side Output/indentation fixes above are already applied.
+NAME01/NAME02 were removed only after user-confirmed incoming two-Text execution;
+local compiler access alone did not establish that repair. Other native slots
+remain, and the supported source-side Output/indentation fixes above are applied.
 Developing and validating a local compiler/export route is feasible investigation,
 but it is additional work, not functionality the present installation provides.
 
 ## Transfer and integrated checks
 
-Preserve renamed working installed copies. Transfer Canonical 10, Assembly 12 and
+Preserve renamed working installed copies. Transfer Canonical 11, Assembly 12 and
 Main 4 (`.jelly` or byte-identical `.txt` copies). Keep/reuse the completed archive
 when its interface matches. Install/confirm exact names in dependency order:
-Canonical, Archive, Assembly, Main. Reapply the new Canonical's NAME01/NAME02,
-receiving type and final canonicalName output-token settings. In Assembly, retain
+Canonical, Archive, Assembly, Main. Canonical needs no NAME01/NAME02 insertion;
+inspect its incoming two-item count, named-variable loop assignments and final
+canonicalName output token. If input is collapsed, compare receiving settings
+with the working boundary test rather than assuming a setting. In Assembly, retain
 the guard while completing native slots and inspect every If/Repeat boundary.
 
 | Check on disposable data | Expected result | Actual |

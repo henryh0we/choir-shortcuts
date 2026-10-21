@@ -2,12 +2,23 @@
 
 ## Current pre-iPad review, 21 October 2026
 
-Current source revisions: Canonical **10**, Archive **14** (unchanged), Assembly
+Current source revisions: Canonical **11**, Archive **14** (unchanged), Assembly
 **12**, Main **4**; interfaces 2.0 / 2.1 / 1.1 / 1.0. See the
 [review and device acceptance cases](../docs/pre-ipad-review.md) for the changes
 and migration steps. These instructions supersede historical Exit/noNameResult
 requirements below: Canonical now uses positional Output and no longer has that
-Nothing initializer. Its NAME01/NAME02 and final Text-token repairs still apply.
+Nothing initializer. Canonical 11 now also removes NAME01/NAME02; the final
+canonicalName Text-token check still applies.
+
+User-confirmed extraction update: the quoted-index fixed fixture and caller/
+receiver test both produce the expected two previews on the iPad. The user edited
+existing device sources, so exact hashes/settings are not independently confirmed.
+Revision 11 applies that loop to the naming helper's incoming Shortcut Input,
+with unchanged interface 2.0. The full helper was attempted locally and rejected
+at positional Output (known profile mismatch); no full-helper iPad pass is claimed.
+Next run the existing canonical naming cases against revision 11: valid prefixed
+and unprefixed filenames, custom regex, missing argument, and actual returned Text.
+Native File/Score extraction is outside this successful Text-only probe's scope.
 
 Local compiler attempts were performed for all four sources. None passed this
 older CLI: it rejects positional Output and reports additional existing core-node

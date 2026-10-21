@@ -1,6 +1,6 @@
 # Shortcut inventory and installation order
 
-**Current, 21 October 2026: Canonical 10 / Archive 14 / Assembly 12 / Main 4.**
+**Current, 21 October 2026: Canonical 11 / Archive 14 / Assembly 12 / Main 4.**
 See [the pre-iPad review](pre-ipad-review.md) for implemented fixes, preserved
 archive repairs and required checks. Interfaces remain 2.0 / 2.1 / 1.1 / 1.0.
 The revision paragraphs below are historical; they do not override this review.

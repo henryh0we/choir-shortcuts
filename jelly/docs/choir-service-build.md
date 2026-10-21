@@ -1,6 +1,6 @@
 # Build the choir service workflow
 
-**21 October update:** Transfer Canonical 10 / Assembly 12 / Main 4; preserve the
+**21 October update:** Transfer Canonical 11 / Assembly 12 / Main 4; preserve the
 user's working completed Archive 14 when its interface matches. Follow
 [the pre-iPad review](pre-ipad-review.md) for new collection/setlist checks,
 Output compatibility fixes and the required native slot/variable inspection.
@@ -22,7 +22,7 @@ Use the [current compatibility checklist](helper-compatibility-update.md) for AR
 
 | Order | Installed name | Completion |
 | --- | --- | --- |
-| 1 | [UTIL - Canonical Choir Name](../shortcuts/reusable/util-canonical-choir-name.jelly) | Compile/import; complete NAME01/NAME02 and allow the two-item native List. |
+| 1 | [UTIL - Canonical Choir Name](../shortcuts/reusable/util-canonical-choir-name.jelly) | Revision 11 extracts both Text items in source; no NAME slots. Compile/import and inspect argument count, named-variable references, replacements and returned canonicalName Text. |
 | 2 | [UTIL - Archive Choir PDF](../shortcuts/reusable/util-archive-choir-pdf.jelly) | Compile/import; three-item native context input; complete ARC01-ARC03 and CFG02-CFG04. |
 | 3 | [UTIL - Assemble Choir Service](../shortcuts/reusable/util-assemble-choir-service.jelly) | Compile/import; complete CONF01-CONF02, COL01-COL03, SCORE01-SCORE02 and FS01-FS13. |
 | 4 | [MAIN - Build Choir Service](../shortcuts/main/main-build-choir-service.jelly) | Compile/import and reselect the completed assembly helper. |

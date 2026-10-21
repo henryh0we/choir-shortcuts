@@ -311,7 +311,22 @@ and the caller's Run Shortcut names `TEST - Jelly Name Items Input` and referenc
 the actual List action's UUID. The List contains the two different expected Texts,
 and both transfer copies are byte-identical to their sources. These are local
 serialization observations, not device results or complete Apple schema validation.
-Incoming-List iPad compilation, action inspection and execution: **Not run**.
-After this boundary passes, the loop can replace NAME01/NAME02 in the production
-helper while retaining its argument validation, canonical replacements and Text
-return checks. This probe does not establish native File/Score extraction.
+### User-confirmed incoming-List result
+
+The user reports adjusting their existing Jellycuts files for this test and that
+it works as expected, loading the two previews. This confirms the caller-supplied
+two-Text List is extracted in order using the quoted-index loop. The precise
+device source hashes, receiving settings and any additional edits were not supplied;
+this is user-reported boundary execution, not an independent byte-for-byte audit.
+Earlier screenshots of the fixed fixture also show the expected Repeat Index
+conditions, Set Variable actions inside the repeat, and current named-variable
+previews after End Repeat.
+
+Canonical revision **11** now replaces NAME01/NAME02 with that incoming-List loop;
+no manual Get Item from List insertion/reconnection is required for extraction.
+Interface 2.0 and the two-Text order stay unchanged. The full helper still needs
+its own iPad validation of argument checking, both replacements and the returned
+canonicalName Text. The local full-helper build fails at the known positional
+Output incompatibility; its diagnostics are in `build/canonical-11-build.log` and
+the usual per-source JSON/logs. Do not claim the full helper passed on the strength
+of these extraction probes. Native File/Score extraction remains unverified.

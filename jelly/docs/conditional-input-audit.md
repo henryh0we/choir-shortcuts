@@ -1,6 +1,12 @@
 # Conditional input connection audit
 
-21 October source update: Canonical 10 / Archive 14 / Assembly 12 / Main 4.
+21 October source update: Canonical 11 / Archive 14 / Assembly 12 / Main 4.
+
+Canonical 11 retires NAME01/NAME02 after the user's successful incoming-List
+Text extraction test. Inspect both `RepeatIndex == "1"` / `"2"` conditions and
+their named filename/prefixRegex assignments inside the loop, plus downstream
+presence checks and Text/replacement inputs using the current named variables.
+The complete naming helper remains unverified on the device for this revision.
 The line-number tables below are the 19 October snapshot, not current line
 locations. See [the pre-iPad review](pre-ipad-review.md). New assembly conditions
 to inspect: orderedFile has no value (current named variable assigned this

@@ -19,10 +19,11 @@ at lines 15/18 because variables 1 and 2 are not in scope. The separate
 [quoted-index candidate](name-item-extraction.md#next-candidate-quoted-loop-index-comparisons)
 uses `"1"` and `"2"`, following the documented String comparison form. It compiles
 locally with the same warnings. The user now confirms that adding quotes to the
-original loop makes it work as expected. This is a fixed-Text-fixture runtime pass;
-incoming native List input has not yet been verified. The comparison record now
-includes an input receiver plus caller to check that boundary before production
-NAME01/NAME02 replacement. Preserve all earlier failed probes.
+original loop makes it work as expected. The user subsequently confirms the
+caller/receiver test also loads the two expected previews from the incoming List.
+Canonical revision 11 now uses that source-only quoted-index loop instead of
+NAME01/NAME02 slots. Full naming-helper validation and native File/Score transport
+remain separate; preserve all earlier failed probes.
 
 For a small same-source iPad/local experiment, use the new
 [positional Output comparison](output-signature-comparison.md). It isolates the

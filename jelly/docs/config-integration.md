@@ -1,10 +1,12 @@
 # Config-based choir workflow
 
-**21 October update:** Current sources are Canonical 10 / Archive 14 / Assembly
+**21 October update:** Current sources are Canonical 11 / Archive 14 / Assembly
 12 / Main 4. Read [the pre-iPad review](pre-ipad-review.md) first for Output fixes,
 setlist preflights and exact transfer/native-token checks. The older revision and
 Exit-return instructions below are historical. Interfaces remain unchanged;
-the user's completed archive should be preserved.
+the user's completed archive should be preserved. Canonical 11 removes NAME01/
+NAME02 manual extraction slots using the user-confirmed incoming two-Text loop
+with quoted index comparisons; complete naming-helper validation is still pending.
 
 **Current source: Archive 14 / Assembly 11.** The user confirms the small flush-left, parenthesized If probe returns Conditional output reached. The indented parenthesized probe dropped its Output; the unparenthesized probe dropped its If. Both helpers now keep code flush left and use positional `output("ERROR: ...")`, with no notes: label. Literal multiline message whitespace is preserved. Warnings about missing noResultBehaviour and response remain unresolved: the successful probe is not warning-free. This establishes only the tested conditional stop/Text fixture, not interpolation, File returns, nested loops or either complete helper. Existing native ARC/CFG/CONF/COL/SCORE/FS completion remains; no native validation construction is required.
 
@@ -57,7 +59,7 @@ The assembly helper reads `config.json` once before PDF selection and all writes
 
 ## Install and complete slots
 
-The naming helper now also requires **NAME01** and **NAME02** after export. The installed compiler rejected the reviewed getItemFromList selector forms, so the source contains Nothing placeholders instead of guessing another spelling. Replace NAME01's Nothing with native Get Item from List: List = Shortcut Input, Item at Index = 1. Replace NAME02's Nothing with the same native action at index 2. Reconnect the filename presence If and filename Text action input to NAME01's output; reconnect the prefixRegex presence If and second Replace Text Find field to NAME02's output. Use native tokens, then delete each unused Nothing. Keep the first Nothing producing noNameResult for empty validation exits. There is no extra assembly-guard stop in this helper; uncompleted placeholders yield no usable name. Compile/export of the new skeleton and its Exit action still need confirmation.
+**Current naming extraction (revision 11):** NAME01/NAME02 insertion is no longer required. The helper loops through Shortcut Input and assigns its first/second Text items to named filename/prefixRegex using `RepeatIndex == "1"` / `"2"`. This follows the user-confirmed fixed-fixture and incoming-List tests in [extraction evidence](../tests/compatibility/name-item-extraction.md). Inspect consumers of the current named variables rather than initial empty Text actions. There is no noNameResult initializer or Exit binding; invalid input uses empty positional Output and the final Output must return canonicalName Text. Earlier NAME/Exit instructions apply only to historical skeletons. Full regenerated-helper device tests remain pending.
 
 Preserve renamed copies of your working installed shortcuts and their native edits. Compile/import in order: naming, archive, assembly, main. Keep exact installed names, reselect them in Run Shortcut actions and update all four as a set. Refreshing from `.jelly` reinstates guards and slots; `.txt` files are byte-identical transfer copies.
 
