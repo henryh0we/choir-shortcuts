@@ -27,7 +27,7 @@ for the isolated probe, not execution, interpolation or arbitrary native File
 returns. The canonical/main dynamic Text outputs still require inspection on the
 iPad; this review does not claim the full regenerated sources compile there.
 
-## Native work that source fixes cannot resolve
+## Native work still required by the current source workflow
 
 - Keep the assembly's initial unconditional guard until CONF01-CONF02,
   COL01-COL03, SCORE01-SCORE02 and FS01-FS13 are complete. Archive CFG03/CFG04
@@ -49,6 +49,31 @@ iPad; this review does not claim the full regenerated sources compile there.
 - Create new still relies on selecting the newly created setlist and using an
   unused name. The native action's duplicate-name behaviour is unverified. Use a
   disposable setlist first; equal counts do not prove correct target or order.
+
+### Could a compiler change remove these repairs?
+
+Assessment after inspecting the installed compiler source, 21 October 2026:
+
+| Repair | Automation potential | Current blocker |
+| --- | --- | --- |
+| NAME/ARC/SCORE indexed selection | A local compiler can potentially generate the native selection and wire its output | The local binding exists, but the iPad rejected the tested Jelly enum forms. No replacement source form has been verified on the app |
+| COL ordered collections | Potential local generation of native collection actions and references | Requires correct action serialization, scoped variables and native File/Score preservation, then device verification |
+| Native return tokens and named-variable conditions | Good candidates for local compiler serialization fixes | Existing local interpolation/UUID defects and app-specific wiring defects must be isolated and tested; literal Output acceptance does not establish native File returns |
+| Save destination CFG02 | Could be added to a local compiler binding | The inspected SaveFileParameter exposes input/ask/path/overwrite, with no native Folder destination field. A path string is not an equivalent replacement |
+| CONF folder/config selection and receiving settings | Some metadata/wiring might be generated once the representation is verified | User-selected provider Folder references, permissions and actual app receiving behaviour still require device setup/checking |
+| FS01-FS13 forScore actions | Potential with verified native action templates/bindings | No verified Jelly binding or complete machine-readable native action schema is available in the current setup; action display names alone are insufficient |
+
+Editing the WSL Open-Jellycore checkout changes only locally generated exports;
+it does not patch the compiler bundled inside Jellycuts on the iPad. The current
+workflow transfers source and recompiles there. To benefit from a patched local
+compiler, a separate route would need to generate the final Shortcut locally,
+preserve/assemble native actions, and use a verified signing/import workflow.
+Local files are currently unsigned and that import route has not been tested.
+
+No further native repair slot was removed on the strength of local compiler access
+alone. The supported source-side Output/indentation fixes above are already applied.
+Developing and validating a local compiler/export route is feasible investigation,
+but it is additional work, not functionality the present installation provides.
 
 ## Transfer and integrated checks
 

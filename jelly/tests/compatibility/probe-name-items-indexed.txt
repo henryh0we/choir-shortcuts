@@ -1,0 +1,16 @@
+// Installed name: TEST - Jelly Name Items Indexed; purpose: test source replacements for NAME01/NAME02; role: independent diagnostic.
+// Specification revision: 1; interface version: 1.0.
+// Input: Ignored; fixed two-Text fixture models filename and prefixRegex. No dependencies or required fields.
+// Output: Quick Look first shows Fri1-TestComposer-TestPiece.pdf, then ^Fri[0-9]+-. No explicit Shortcut return contract.
+// Direct/called: Both present two interactive previews; caller input is ignored. Not for unattended use.
+// Side effects: Preview UI only; no file writes, provider access, network or forScore operations. Permissions: None.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6; bundled compiler unknown. Local candidate: Open-Jellycore e1ec31c / Swift 6.4.1.
+// Evidence: Full argument slots and bare ItemAtIndex from pinned compiler source; this selector previously failed in the larger iPad helper. This isolated source is unverified on the iPad.
+// Validation/results/instructions: name-item-extraction.md. Preserve existing production NAME slots until this test is confirmed.
+import Shortcuts
+
+list(items: ["Fri1-TestComposer-TestPiece.pdf", "^Fri[0-9]+-"]) >> namingInput
+getItemFromList(list: namingInput, type: ItemAtIndex, index: "1", startIndex: "", endIndex: "") >> filename
+getItemFromList(list: namingInput, type: ItemAtIndex, index: "2", startIndex: "", endIndex: "") >> prefixRegex
+quicklook(input: filename)
+quicklook(input: prefixRegex)

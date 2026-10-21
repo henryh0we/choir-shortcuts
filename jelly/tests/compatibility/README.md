@@ -1,5 +1,14 @@
 # Jellycuts app compatibility evidence
 
+Source-only NAME01/NAME02 experiments:
+[indexed naming-item tests](name-item-extraction.md). The original fixed two-Text
+probe compiled locally, but the user confirms iPad rejection at lines 13/14 because
+ItemAtIndex was not in scope. The separate declared-selector candidate compiles
+locally and, by user report, compiles/runs on the iPad, but the supplied screenshot
+shows **both selectors defaulting to First Item**. It fails the required indexed
+extraction and must not replace production NAME slots. Both failed probes are
+preserved; successful compilation alone is insufficient evidence.
+
 For a small same-source iPad/local experiment, use the new
 [positional Output comparison](output-signature-comparison.md). It isolates the
 Output argument form from control flow and interpolation; its exact-source iPad

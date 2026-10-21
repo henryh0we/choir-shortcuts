@@ -1,0 +1,16 @@
+// Installed name: TEST - Jelly Declared Selector; purpose: test the scope error separately from indexed extraction; role: diagnostic.
+// Specification revision: 1; interface version: 1.0.
+// Input: Ignored; fixed two-Text List. Dependencies: None. No required fields or defaults.
+// Output: Two Quick Look previews: Fri1-TestComposer-TestPiece.pdf, then ^Fri[0-9]+-. No explicit return contract.
+// Direct/called: Same interactive previews; no files, network, provider access or forScore writes. Permissions: None.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6; bundled compiler unknown. Local: Open-Jellycore e1ec31c / Swift 6.4.1.
+// Hypothesis: The app checks the bare selector as an identifier. Declare it using the local enum's serialized Text value; inspect the actual generated mode and indexes before claiming extraction works.
+// Tests and evidence: name-item-extraction.md. Experimental workaround; not a confirmed app enum signature. Production NAME slots remain unchanged.
+import Shortcuts
+
+var ItemAtIndex = "Item At Index"
+list(items: ["Fri1-TestComposer-TestPiece.pdf", "^Fri[0-9]+-"]) >> namingInput
+getItemFromList(list: namingInput, type: ItemAtIndex, index: "1", startIndex: "", endIndex: "") >> filename
+getItemFromList(list: namingInput, type: ItemAtIndex, index: "2", startIndex: "", endIndex: "") >> prefixRegex
+quicklook(input: filename)
+quicklook(input: prefixRegex)
