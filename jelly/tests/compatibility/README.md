@@ -1,5 +1,9 @@
 # Jellycuts app compatibility evidence
 
+New isolated manual-work candidate: [running-order Text accumulator](running-order-text.md).
+The local CLI accepts it, but structural export checks reject the known
+interpolation defect. Its iPad result is pending; production COL02 is unchanged.
+
 Source-only NAME01/NAME02 experiments:
 [indexed naming-item tests](name-item-extraction.md). The original fixed two-Text
 probe compiled locally, but the user confirms iPad rejection at lines 13/14 because

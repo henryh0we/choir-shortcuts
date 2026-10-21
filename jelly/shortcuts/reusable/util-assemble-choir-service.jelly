@@ -1,6 +1,6 @@
 // Installed name: UTIL - Assemble Choir Service
 // Purpose: Generate standard actions; insert forScore actions at FS01-FS13.
-// Role: Reusable; specification revision 12; completed interface 1.1.
+// Role: Reusable; specification revision 13; completed interface 1.1.
 // Input: Text interactive. Other/missing input returns instructions; direct no-input unsupported.
 // Output: One service-report Text if native actions/navigation complete.
 // Side effects after assembly: File selection, clean archive/import, metadata, setlist writes.
@@ -50,8 +50,10 @@ replaceText(input: "ConfigValidation.pdf", find: "${prefixRegex}", replace: "", 
 getFolderContents(folder: choirRoot, recursive: false) >> rootChildren
 nothing() >> noLibraryFolder
 var libraryRoot = noLibraryFolder
+var rootChildName = ""
 repeatEach(rootChildren) {
-fileDetail(input: RepeatItem, property: Name) >> rootChildName
+fileDetail(input: RepeatItem, property: Name) >> rootChildNameResult
+rootChildName = rootChildNameResult
 if(rootChildName == "${libraryFolderName}") {
 if(libraryRoot != nil) {
 output("ERROR: Multiple root children match libraryFolder. No changes made.")
@@ -99,9 +101,11 @@ output("ERROR: Running order is incomplete. Check COL01 and its named orderedFil
 
 nothing() >> emptyOrderedNames
 var orderedNames = emptyOrderedNames
+var lowerExtension = ""
 repeatEach(orderedFiles) {
 fileDetail(input: RepeatItem, property: File Extension) >> sourceExtension
-changeCase(text: "${sourceExtension}", case: lowercase) >> lowerExtension
+changeCase(text: "${sourceExtension}", case: lowercase) >> lowerExtensionResult
+lowerExtension = lowerExtensionResult
 if(lowerExtension != "pdf") {
 output("ERROR: A selected item is not a PDF. No changes made.")
 }
@@ -131,10 +135,12 @@ Continue to save clean PDFs and prepare scores. Check omissions/repetitions now.
 var archiveResultType = ""
 nothing() >> emptyPreparedScores
 var preparedScores = emptyPreparedScores
+var canonicalStem = ""
 repeatEach(orderedFiles) {
 fileDetail(input: RepeatItem, property: Name) >> sourceName
 list(items: [sourceName, prefixRegex]) >> sourceNameInput
-runShortcut(name: "UTIL - Canonical Choir Name", input: sourceNameInput, show: false) >> canonicalStem
+runShortcut(name: "UTIL - Canonical Choir Name", input: sourceNameInput, show: false) >> canonicalStemResult
+canonicalStem = canonicalStemResult
 if(canonicalStem == nil) {
 output("ERROR: Empty music identity. Earlier pieces may already be prepared.")
 }

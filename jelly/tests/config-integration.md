@@ -1,9 +1,17 @@
 # Config integration acceptance checks
 
+Latest installation review: [pre-install audit](../docs/pre-install-audit.md).
+Current Assembly 13 predeclares three loop-comparison variables; its updated
+transfer copy matches source. All four production compiler attempts failed on
+the recorded older-profile diagnostics; aggregate log: `build/pre-install-review.log`.
+A separate running-order Text accumulator was compiled but its export failed
+interpolation range validation. COL02 and all native File/Score/provider/forScore
+slots remain; no new device pass or complete installable build is claimed.
+
 ## Current pre-iPad review, 21 October 2026
 
 Current source revisions: Canonical **11**, Archive **14** (unchanged), Assembly
-**12**, Main **4**; interfaces 2.0 / 2.1 / 1.1 / 1.0. See the
+**13**, Main **4**; interfaces 2.0 / 2.1 / 1.1 / 1.0. See the
 [review and device acceptance cases](../docs/pre-ipad-review.md) for the changes
 and migration steps. These instructions supersede historical Exit/noNameResult
 requirements below: Canonical now uses positional Output and no longer has that

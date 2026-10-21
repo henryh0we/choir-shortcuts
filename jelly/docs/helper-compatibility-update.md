@@ -1,7 +1,7 @@
 # Archive and assembly compatibility update
 
 **21 October update:** [The pre-iPad review](pre-ipad-review.md) owns the current
-Canonical 11 / Archive 14 / Assembly 12 / Main 4 migration. Canonical/Main now
+Canonical 11 / Archive 14 / Assembly 13 / Main 4 migration. Canonical/Main now
 use positional Text Output; no regenerated source should follow the historical
 Exit instructions below. Existing native slot IDs and archive File return repairs
 remain required. Preserve the completed installed archive and inspect new assembly

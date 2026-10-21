@@ -1,6 +1,6 @@
 # Build the choir service workflow
 
-**21 October update:** Transfer Canonical 11 / Assembly 12 / Main 4; preserve the
+**21 October update:** Transfer Canonical 11 / Assembly 13 / Main 4; preserve the
 user's working completed Archive 14 when its interface matches. Follow
 [the pre-iPad review](pre-ipad-review.md) for new collection/setlist checks,
 Output compatibility fixes and the required native slot/variable inspection.

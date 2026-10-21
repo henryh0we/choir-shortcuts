@@ -1,0 +1,22 @@
+// Installed name: TEST - Jelly Running Order Text; purpose: test source replacement for manual COL02 Text preview collection and Custom separator; role: diagnostic.
+// Specification revision: 1; interface version: 1.0.
+// Input: Ignored; fixed three-Text fixture with an intentional repeat. Dependencies: None; no caller fields required.
+// Output: One Quick Look preview should show First | Second | First. No explicit return contract.
+// Direct/called: Same interactive preview. Side effects: Preview UI only; no files, providers, network or forScore writes. Permissions: None.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6; bundled compiler unknown. Local: Open-Jellycore e1ec31c / Swift 6.4.1.
+// Candidate: User-confirmed quoted index loop plus documented Text interpolation/assignment. Dynamic interpolation and the complete accumulator still require device confirmation; production COL02 is unchanged.
+// Tests and evidence: running-order-text.md. Preserve earlier fixture failures and native File/Score collection slots.
+import Shortcuts
+
+list(items: ["First", "Second", "First"]) >> orderedNames
+var runningOrder = ""
+repeatEach(orderedNames) {
+if(RepeatIndex == "1") {
+runningOrder = RepeatItem
+}
+if(RepeatIndex != "1") {
+text(text: "${runningOrder} | ${RepeatItem}") >> appendedOrder
+runningOrder = appendedOrder
+}
+}
+quicklook(input: runningOrder)

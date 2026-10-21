@@ -1,7 +1,7 @@
 # Complete the generated choir Shortcuts
 
 **21 October update:** Current sources are Canonical 11 / Archive 14 / Assembly
-12 / Main 4. [The pre-iPad review](pre-ipad-review.md) supersedes older current-
+13 / Main 4. [The pre-iPad review](pre-ipad-review.md) supersedes older current-
 revision/Exit instructions below. Keep the existing slot IDs and guards. COL01 now
 appends the current named native orderedFile (assigned from chosenOrderedFile);
 reconnect its new presence check and all collection Count checks to the current

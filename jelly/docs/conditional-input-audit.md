@@ -1,6 +1,12 @@
 # Conditional input connection audit
 
-21 October source update: Canonical 11 / Archive 14 / Assembly 12 / Main 4.
+Assembly 13 scope review: rootChildName, lowerExtension and canonicalStem now use
+named variables declared before the corresponding Repeat, with distinct Result
+captures assigned immediately before conditional use. Inspect both Set Variable
+inputs and current named-variable condition tokens. These are source fixes using
+the established pattern, not a new full-device pass; see [the pre-install audit](pre-install-audit.md).
+
+21 October source update: Canonical 11 / Archive 14 / Assembly 13 / Main 4.
 
 Canonical 11 retires NAME01/NAME02 after the user's successful incoming-List
 Text extraction test. Inspect both `RepeatIndex == "1"` / `"2"` conditions and

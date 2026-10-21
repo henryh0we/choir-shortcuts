@@ -1,14 +1,20 @@
 # forScore source review before iPad transfer
 
-21 October 2026. Current sources: **Canonical 11 / Archive 14 / Assembly 12 /
+21 October 2026. Current sources: **Canonical 11 / Archive 14 / Assembly 13 /
 Main 4**. Interfaces remain **2.0 / 2.1 / 1.1 / 1.0**, respectively. This review
 supersedes older current-version/Exit-return instructions in the linked guides;
 historical observations remain evidence for those older revisions.
+
+Latest [pre-install audit](pre-install-audit.md): Assembly 13 adds three named
+loop-comparison variables to reduce scope risk. All four full local builds still
+fail on recorded profile issues; 26 native slot IDs remain. The new COL02 Text
+accumulator candidate was rejected by local export checks and is not integrated.
 
 ## Fixes applied
 
 | Source | Problem found | Change |
 | --- | --- | --- |
+| Assembly 13 | rootChildName, lowerExtension and canonicalStem were direct loop captures consumed by conditions | Predeclare named variables and assign distinct captured Result outputs immediately before use, following the earlier scope workaround; full-device validation pending |
 | Canonical 11 | Manual NAME01/NAME02 extraction plus the earlier unreliable Exit/indented forms | Quoted-index loop extracts the two incoming Text items in source, following the user's successful caller/receiver test. Flush-left bodies and positional Output retained; full-helper receiving, validation, replacement and returned-Text inspection remain required |
 | Main 4 | Still used the old result/noResultBehavior/response Output signature | Uses positional Text Output, matching the user's isolated iPad probe. No-recipient behaviour is Do Nothing; direct display is not guaranteed |
 | Assembly 12 | Collection slots could leave an incomplete order/preview or preparation list without preventing setlist writes | Checks orderedFiles/orderedNames counts before file writes, workingScore presence before metadata, and preparedScores count after the complete preparation loop and before any setlist creation/clearing/appending |
@@ -78,7 +84,7 @@ but it is additional work, not functionality the present installation provides.
 
 ## Transfer and integrated checks
 
-Preserve renamed working installed copies. Transfer Canonical 11, Assembly 12 and
+Preserve renamed working installed copies. Transfer Canonical 11, Assembly 13 and
 Main 4 (`.jelly` or byte-identical `.txt` copies). Keep/reuse the completed archive
 when its interface matches. Install/confirm exact names in dependency order:
 Canonical, Archive, Assembly, Main. Canonical needs no NAME01/NAME02 insertion;

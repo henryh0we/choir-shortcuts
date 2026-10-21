@@ -1,7 +1,7 @@
 # Config-based choir workflow
 
 **21 October update:** Current sources are Canonical 11 / Archive 14 / Assembly
-12 / Main 4. Read [the pre-iPad review](pre-ipad-review.md) first for Output fixes,
+13 / Main 4. Read [the pre-iPad review](pre-ipad-review.md) first for Output fixes,
 setlist preflights and exact transfer/native-token checks. The older revision and
 Exit-return instructions below are historical. Interfaces remain unchanged;
 the user's completed archive should be preserved. Canonical 11 removes NAME01/
