@@ -166,3 +166,58 @@ was omitted, ignored or serialized under an unexpected field/value by the iPad
 compiler. It does not identify that app's exact internal cause. Correct selector
 serialization requires further evidence; merely declaring more enum names is
 not a justified repair. Native NAME01/NAME02 remain required in production.
+
+## Next candidate: avoid selectors with a loop
+
+Use [probe-name-items-loop.txt](probe-name-items-loop.txt)
+([Jelly source](probe-name-items-loop.jelly)); intended name
+`TEST - Jelly Name Items Loop`. The fixed two-Text fixture is unchanged, but
+there is no enum declaration and no Get Item from List call. It initializes
+two named Text variables, repeats over the fixture, and assigns Repeat Item to
+filename when RepeatIndex is 1 or prefixRegex when it is 2. The previews consume
+the current named variables after the loop, not their empty initial Text actions.
+
+This combines the [documented Repeat Each](../../vendor/jellycuts-docs/markdown/Language_Guide/repeat.md),
+[variables](../../vendor/jellycuts-docs/markdown/Language_Guide/variables.md) and
+[If](../../vendor/jellycuts-docs/markdown/Language_Guide/if_else.md) forms. Unspaced
+RepeatIndex/RepeatItem come from pinned compiler tests and existing project
+patterns. Parenthesized blocks and flush-left bodies follow the recorded app
+evidence. It is a distinct extraction algorithm, not another selector spelling.
+It has not been established that the combination works on the iPad.
+
+Local command:
+
+```powershell
+python jelly/scripts/build.py jelly/tests/compatibility/probe-name-items-loop.jelly
+```
+
+Actual local result: raw/wrapper status 0, unsigned export generated; **six
+`Unable to get core node` warnings** mentioning braces. Do not call this a clean
+compiler pass. Inspection of the exported graph found the Repeat Each start,
+both conditional start/end pairs testing Repeat Index against 1 and 2, an
+assignment of Repeat Item to the corresponding variable inside each branch,
+the repeat end, and both previews using the named variables. Start/end grouping
+identifiers and branch/loop nesting were checked. No Get Item from List selector
+is emitted. This checks the represented graph, not Apple's entire action schema
+or actual runtime interpretation of the condition values/variable types.
+
+### iPad procedure
+
+1. Compile this new source unchanged; record any errors or warnings.
+2. Inspect the generated Shortcut. It should initialize filename/prefixRegex,
+   repeat over the two-item List, and contain two If blocks **inside** that repeat:
+   Repeat Index is 1 sets filename to Repeat Item; Repeat Index is 2 sets
+   prefixRegex to Repeat Item. There should be no First Item selectors.
+3. Check each preview is **after** End Repeat and reads its named variable's
+   current value, not the initial empty Text output.
+4. Run in the foreground. Dismiss the first preview to continue. Expect
+   `Fri1-TestComposer-TestPiece.pdf`, then `^Fri[0-9]+-`. Empty or repeated values,
+   missing/misplaced If bodies, or incorrect variable tokens are failures.
+5. Record the generated settings/results before applying any manual repair.
+   If preview UI fails, distinguish that from the extraction result.
+
+Exact-source iPad compilation, action inspection and two-value runtime result:
+**Not run**. Earlier failed probes and production NAME slots remain unchanged.
+Only after this fixture passes should an incoming-List version be tried at the
+real naming-helper boundary. Do not claim native File/Score extraction from this
+Text-only test.

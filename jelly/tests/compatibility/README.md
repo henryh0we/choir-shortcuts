@@ -9,6 +9,11 @@ shows **both selectors defaulting to First Item**. It fails the required indexed
 extraction and must not replace production NAME slots. Both failed probes are
 preserved; successful compilation alone is insufficient evidence.
 
+A separate [loop-based candidate](name-item-extraction.md#next-candidate-avoid-selectors-with-a-loop)
+now avoids enum selectors entirely. It compiles locally with brace/core-node
+warnings; its exported loop, index conditions and named assignments were inspected.
+Its iPad result is pending; it is not yet a production replacement.
+
 For a small same-source iPad/local experiment, use the new
 [positional Output comparison](output-signature-comparison.md). It isolates the
 Output argument form from control flow and interpolation; its exact-source iPad

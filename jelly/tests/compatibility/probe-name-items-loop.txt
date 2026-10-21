@@ -1,0 +1,23 @@
+// Installed name: TEST - Jelly Name Items Loop; purpose: extract two Text items without Get Item from List selectors; role: independent diagnostic.
+// Specification revision: 1; interface version: 1.0.
+// Input: Ignored; fixed two-Text fixture. Dependencies: None. No fields or defaults required from the caller.
+// Output: Quick Look should show Fri1-TestComposer-TestPiece.pdf, then ^Fri[0-9]+-. No explicit Shortcut return contract.
+// Direct/called: Same interactive previews; not for unattended use. Side effects: Preview UI only; no files, network or forScore writes. Permissions: None.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6; bundled compiler unknown. Local comparison: Open-Jellycore e1ec31c / Swift 6.4.1.
+// Candidate: RepeatIndex conditions and named Text assignments replace the faulty enum selector. Parenthesized If and flush-left bodies follow device evidence; complete loop/wiring still requires device testing.
+// Tests and evidence: name-item-extraction.md. Keep production NAME slots and earlier failed probes unchanged until exact results are confirmed.
+import Shortcuts
+
+list(items: ["Fri1-TestComposer-TestPiece.pdf", "^Fri[0-9]+-"]) >> namingInput
+var filename = ""
+var prefixRegex = ""
+repeatEach(namingInput) {
+if(RepeatIndex == 1) {
+filename = RepeatItem
+}
+if(RepeatIndex == 2) {
+prefixRegex = RepeatItem
+}
+}
+quicklook(input: filename)
+quicklook(input: prefixRegex)
