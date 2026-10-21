@@ -1,5 +1,10 @@
 # Jellycuts app compatibility evidence
 
+For a small same-source iPad/local experiment, use the new
+[positional Output comparison](output-signature-comparison.md). It isolates the
+Output argument form from control flow and interpolation; its exact-source iPad
+result is pending. The existing named Output probe is the local positive control.
+
 **Local CLI evidence, 21 October 2026:** the WSL compiler is now installed. The
 native-file-variable and output-respond probes passed local compilation and
 structural export checks; other probes failed compilation or export checks. See

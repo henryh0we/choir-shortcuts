@@ -1,0 +1,12 @@
+// Installed name: TEST - Jelly Positional Output; purpose: compare app and local Output argument handling; role: diagnostic.
+// Specification revision: 1; interface version: 1.0.
+// Input: None; all incoming content is ignored; no required fields or defaults.
+// Output: One constant Text, COMPATIBILITY PROBE: positional output reached.; compilation errors produce no usable export.
+// Direct execution: Returns the constant Text; no-recipient presentation depends on the app-generated Output settings. Called execution: returns the same Text.
+// Side effects: Result presentation only; no files, network, clipboard or provider actions. Dependencies: None; permissions: None.
+// Target: Jellycuts 2026.6.4 on iPadOS 26.6; bundled compiler unknown. Local comparison: Open-Jellycore e1ec31c with Swift 6.4.1.
+// Evidence: Positional Output previously worked in the user's flush-left If probe; this isolated file still needs its own iPad test.
+// Tests, local result and comparison procedure: output-signature-comparison.md. This file is deliberately expected to fail the local 2024 compiler.
+import Shortcuts
+
+output("COMPATIBILITY PROBE: positional output reached.")
