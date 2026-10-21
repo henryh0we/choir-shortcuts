@@ -1,5 +1,13 @@
 # Jellycuts app compatibility evidence
 
+Latest user report: the manually repaired Archive 15 saves/reuses correctly after
+replacing literal variable names in its naming-input List with actual tokens.
+See [List variable transport](list-variable-transport.md) for the required
+sender-side checks and **TEST - List Text Interpolation** ([source](probe-list-text-interpolation.jelly),
+[transfer](probe-list-text-interpolation.txt)). This diagnostic has no dependencies
+or writes, ignores input and previews two Text values. Its local export was
+rejected by the known interpolation-range defect; iPad result is pending.
+
 Archive 15 replaces ARC01-ARC03 with a native context loop candidate. Independent
 read-only diagnostic **TEST - Archive Context Loop**: [source](probe-archive-context-loop.jelly),
 [transfer copy](probe-archive-context-loop.txt), [contract, steps and evidence](archive-context-loop.md).

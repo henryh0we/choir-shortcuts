@@ -41,6 +41,15 @@ in [config tests](../config-integration.md).
 
 ## Evidence
 
+Subsequent full Archive 15 test: the user fixed its sourceFile presence condition
+by changing the expected content type from Text to File. The read-only probe
+does not exercise these presence conditions. The user subsequently confirms
+replacing literal variable names in the naming-input List with actual variable
+tokens resolves the naming/reuse failure. Their installed archive now returns
+an existing File, otherwise asks for a category and saves the PDF. See
+[integration evidence](../config-integration.md); full service and failure-case
+coverage are still pending.
+
 User report, 21 October 2026: the probe returns `Fri4-Humfrey-InEMinor`, then
 `13`, then `1`. This is evidence that the three extracted values can feed File
 Name, Folder Contents/Count and Dictionary version lookup in that device run.
@@ -48,8 +57,9 @@ The middle value differs from the one-subfolder fixture; the actual selected
 Folder contents have not been independently confirmed. If that Library contains
 13 immediate children, the count is correct. The filename preview is the Name
 property, not the canonical naming-helper result, and need not include `.pdf`.
-Exact installed source/settings were not supplied; no full Archive 15 execution,
-PDF-content preservation, save/reuse or native File-return pass is claimed.
+Exact installed source/settings were not supplied for the probe. Its previews
+alone do not establish PDF-content preservation or the full archive's behavior;
+the later manually repaired save/reuse report is recorded separately above.
 
 Local compiler/structural export checks passed with eight brace/core-node
 warnings. Export inspection found the three quoted index branches, native Repeat

@@ -114,6 +114,16 @@ Allow direct execution when useful through a documented default or explicit inte
 
 ## Contracts and native calls
 
+Confirmed app List defect, reported 22 October 2026: bare variable names in
+Archive's generated naming-input List became literal Text. The user replaced
+them with actual native variable tokens and confirms save/reuse now works.
+Inspect every dynamic sender List after regeneration, including Assembly's
+PDF/Folder/Dictionary archiveInput. Compilation or receiver extraction alone
+does not establish sender transport. Do not interpolate native File/Folder/
+Dictionary/Score values into Text. Explicit Text interpolation inside a List is
+only a candidate until the isolated device test passes; its local export currently
+fails interpolation-range validation. See [List evidence](tests/compatibility/list-variable-transport.md).
+
 Use native Text, Number, Boolean representations, Date, List, Dictionary, File, and URL content where supported. Specify actual representation and cardinality: a file-path string is not a File, and Text `false` is not a native Boolean. Define date locale/timezone and list ordering where relevant. Use one native Dictionary for multiple related inputs; prefer consistent lowerCamelCase keys without changing established interfaces solely for casing.
 
 Use simple outputs for simple utilities. A structured error result is optional and must define keys, their native types, and presence on each path. Do not assume a JSON `null` example is a supported Dictionary value. Document errors that halt without returning a result separately from recoverable validation errors.

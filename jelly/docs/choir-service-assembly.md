@@ -1,5 +1,44 @@
 # Complete the generated choir Shortcuts
 
+## Integrate the working archive
+
+22 October 2026: the user confirms their manually repaired Archive 15 now saves
+new PDFs and returns existing Files. Preserve that installed copy under a backup
+name before further work; keep the active name **UTIL - Archive Choir PDF**.
+The generated source does not preserve its condition-type, List-token or CFG
+repairs. Do not reimport it just for integration.
+
+1. Compile/import **UTIL - Assemble Choir Service** (source revision 13), keeping
+   its initial guard. Complete **CONF01-CONF02**, **COL01-COL03**,
+   **SCORE01-SCORE02** and **FS01-FS13** using the tables below.
+2. CONF01 selects **Choir Music**; CONF02 reads its `config.json`. Confirm Library
+   is resolved from that root and matches the one used for the successful archive
+   test. Reselect the installed naming/archive helpers in Run Shortcut actions.
+3. Inspect the generated naming-input List: actual sourceName and prefixRegex
+   variable tokens. Inspect archiveInput: actual PDF Repeat Item from this loop,
+   native libraryRoot Folder and parsed workflowConfig Dictionary. These must
+   not be typed names. Keep native items out of Text interpolation. See
+   [the confirmed List defect](../tests/compatibility/list-variable-transport.md).
+4. Inspect native condition types and current named-variable inputs, especially
+   File and Score presence checks. Reconnect every consumer of replaced Nothing
+   slots. Keep Overwrite off and leave Replace existing testing until later.
+5. Once all native slots/wiring are complete, remove only Assembly's initial
+   guard. Run Assembly directly with Text input `interactive`, using disposable
+   PDFs and an unused test service name. Start with one PDF already archived.
+   Confirm it is reused, its native score is found/imported, and Create new makes
+   a test setlist with the selected score. Inspect the result in forScore.
+6. Run a second test with one uniquely named unarchived PDF and one existing PDF.
+   Check the category prompt only appears for the new archive item; inspect
+   filenames, metadata, returned report and actual Manual setlist order. Then
+   test deliberate repeats (A, B, A); verify identities and order, not just count.
+7. Install/reselect **MAIN - Build Choir Service** after Assembly passes. Confirm
+   its Run Shortcut calls this completed Assembly and returns its report.
+
+Whole-service integration remains **Not run**. Record observed outcomes in
+[choir-service tests](../tests/choir-service.md) and required failure cases in
+[config tests](../tests/config-integration.md). The older revision/untested notes
+below are historical where superseded by the specific installed-archive report.
+
 **Archive 15 update, 21 October 2026:** ARC01-ARC03 manual extraction is replaced
 in source by a quoted-index loop, with Nothing-initialized native variables.
 Mixed File/Folder/Dictionary preservation is still unverified on the iPad; run

@@ -1,5 +1,34 @@
 # Config integration acceptance checks
 
+## Archive 15 save/reuse resolution, reported 22 October 2026
+
+The user confirms the naming-input List contained the text names of variables,
+not their values. Replacing those with actual variable tokens fixed the issue.
+Their manually repaired archive now returns the existing File when found;
+otherwise it asks for the category and saves the PDF. This supersedes the
+unresolved naming/reuse status in the preceding report below. The File-typed
+sourceFile presence-condition repair is also retained in that installed copy.
+Exact source hash/native edits were not captured. This is a user-reported
+save/reuse success, not a pass for all invalid-input, cancellation, duplicate
+canonical-file or whole-service cases. Do not regenerate the working copy just
+to change source. Integration next: [Assembly checklist](../docs/choir-service-assembly.md#integrate-the-working-archive).
+List transport prevention and the separate Text-only source candidate:
+[evidence and test](compatibility/list-variable-transport.md).
+
+## Archive 15 installed-condition and naming report, 21 October 2026
+
+The user reports the sourceFile presence condition expected Text; changing its
+content type to File fixed the erroneous `ERROR: Supply one PDF File` stop.
+Record this as a native condition-type repair, not a source-loop failure.
+The next run reportedly saves again when a file already exists, using the name
+`sourceName`. Save/reuse is therefore not passed for this installed revision.
+Earlier device evidence below records the same literal-name List defect and a
+separate post-loop existingCleanFile condition wiring defect. Recheck both
+naming-input Lists for actual variable tokens (sourceName/prefixRegex and
+archiveName/prefixRegex), then the current named existingCleanFile File presence
+condition and CFG03 return. These are proposed checks; this latest recurrence
+has not yet been resolved by user report. Keep Overwrite off.
+
 ## Archive 15 context extraction update, 21 October 2026
 
 Interface remains 2.1. ARC01-ARC03 are replaced by a quoted-index Repeat loop

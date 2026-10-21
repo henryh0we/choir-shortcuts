@@ -1,0 +1,15 @@
+// Installed name: TEST - List Text Interpolation
+// Purpose: Check dynamic Text List entries instead of bare variable names; role: diagnostic; specification revision 1; interface 1.0.
+// Input: Ignored; fixed filename and regex Text values. Dependencies: None. No fields or defaults required.
+// Output: Two Quick Look previews: Fri4-Humfrey-InEminor.pdf, then ^Fri[0-9]+-. No explicit Shortcut return contract.
+// Direct/called: Same interactive previews. Side effects: UI only; no file, provider, network or forScore writes. Permissions: None.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6. Local comparison: Open-Jellycore e1ec31c / Swift 6.4.1.
+// Stage: Candidate; iPad interpolation inside List is unverified. Text only; never apply interpolation to File/Folder/Dictionary/Score transport. Evidence: list-variable-transport.md.
+import Shortcuts
+
+text(text: "Fri4-Humfrey-InEminor.pdf") >> sourceName
+text(text: "^Fri[0-9]+-") >> prefixRegex
+list(items: ["${sourceName}", "${prefixRegex}"]) >> namingInput
+repeatEach(namingInput) {
+quicklook(input: RepeatItem)
+}

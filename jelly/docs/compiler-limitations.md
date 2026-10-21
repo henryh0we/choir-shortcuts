@@ -1,5 +1,12 @@
 # Local compiler limits and signing
 
+App List transport update, 22 October 2026: the user confirms generated bare
+variable names in a naming-input List became literal Text; selecting real tokens
+fixed the installed archive's save/reuse. Inspect sender Lists as well as receiver
+loops after every export. The separate Text-interpolation List probe currently
+hits the local interpolation-range defect and has no iPad result. See
+[exact evidence and prevention checks](../tests/compatibility/list-variable-transport.md).
+
 The selected compiler is [official Open-Jellycore](https://github.com/OpenJelly/Open-Jellycore)
 at `e1ec31c2ee192c8721749f9eb3b50108e38891cf` (16 May 2024).
 Inspection on 21 October 2026 found the same upstream HEAD. The GitHub fork list
