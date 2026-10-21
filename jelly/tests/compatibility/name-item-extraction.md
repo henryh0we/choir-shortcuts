@@ -216,8 +216,48 @@ or actual runtime interpretation of the condition values/variable types.
 5. Record the generated settings/results before applying any manual repair.
    If preview UI fails, distinguish that from the extraction result.
 
-Exact-source iPad compilation, action inspection and two-value runtime result:
-**Not run**. Earlier failed probes and production NAME slots remain unchanged.
+Exact-source iPad compilation: **Failed by user report** at lines 15/18:
+the variables `1` and `2` do not exist in scope. These are the unquoted numeric
+operands in the two If conditions. Generated-action inspection and two-value
+execution were not reached. Preserve this source unchanged as failed evidence.
+Earlier failed probes and production NAME slots remain unchanged.
 Only after this fixture passes should an incoming-List version be tried at the
 real naming-helper boundary. Do not claim native File/Score extraction from this
 Text-only test.
+
+## Next candidate: quoted loop-index comparisons
+
+Use [probe-name-items-loop-text.txt](probe-name-items-loop-text.txt)
+([Jelly source](probe-name-items-loop-text.jelly)), installed name
+`TEST - Jelly Name Items Text Index`. It keeps the loop algorithm but changes
+only the executable comparison operands to documented Strings:
+
+```jelly
+if(RepeatIndex == "1") {
+filename = RepeatItem
+}
+if(RepeatIndex == "2") {
+prefixRegex = RepeatItem
+}
+```
+
+The If guide explicitly permits a Variable compared with a String. The user's
+scope errors identify the unquoted operands, so this candidate uses that form;
+it does not declare misleading variables named 1/2 or change the production helper.
+Whether the app's Repeat Index condition evaluates these quoted operands as
+intended still needs actual device testing.
+
+Compile unchanged on the iPad. If accepted, inspect Repeat Index comparisons
+against literal 1 and 2 inside the repeat, the two Set Variable inputs from Repeat
+Item, and the current named-variable preview inputs after End Repeat. Then run:
+the first preview must be the filename and the second the regex. Blank or repeated
+values are failures; a compile pass alone is insufficient.
+
+Local compilation/export inspection: raw/wrapper status **0**, unsigned export
+generated, with the same six brace/core-node warnings. Both condition operands
+are exported as `WFConditionalActionString` values `1` and `2`; assignments are
+inside their respective conditional groups, and both named previews follow End
+Repeat. The transfer copy is byte-identical. This is the same observed operand
+representation as the numeric-source candidate in the local export; it does not
+establish how the iPad compiler will handle the source quotes or runtime comparison.
+Exact-source iPad compilation, action inspection and runtime: **Not run**.

@@ -14,6 +14,13 @@ now avoids enum selectors entirely. It compiles locally with brace/core-node
 warnings; its exported loop, index conditions and named assignments were inspected.
 Its iPad result is pending; it is not yet a production replacement.
 
+Loop update: the user reports the unquoted numeric comparisons fail app compilation
+at lines 15/18 because variables 1 and 2 are not in scope. The separate
+[quoted-index candidate](name-item-extraction.md#next-candidate-quoted-loop-index-comparisons)
+uses `"1"` and `"2"`, following the documented String comparison form. It compiles
+locally with the same warnings; its iPad result is pending. Preserve both sources
+and keep the production helper's manual extraction slots until actual results pass.
+
 For a small same-source iPad/local experiment, use the new
 [positional Output comparison](output-signature-comparison.md). It isolates the
 Output argument form from control flow and interpolation; its exact-source iPad

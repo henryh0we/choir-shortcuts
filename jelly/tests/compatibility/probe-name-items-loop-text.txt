@@ -1,0 +1,23 @@
+// Installed name: TEST - Jelly Name Items Text Index; purpose: test quoted index comparisons after numeric literals failed app scope checking; role: diagnostic.
+// Specification revision: 1; interface version: 1.0.
+// Input: Ignored; fixed two-Text fixture; no dependencies or caller fields required.
+// Output: Two Quick Look previews should show Fri1-TestComposer-TestPiece.pdf, then ^Fri[0-9]+-. No explicit return contract.
+// Direct/called: Same interactive previews; no files, provider access, network or forScore writes. Permissions: None.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6; bundled compiler unknown. Local: Open-Jellycore e1ec31c / Swift 6.4.1.
+// Candidate: Quoted If operands use the documented String comparison form. Repeat Index comparison/coercion and current named variable wiring still require device verification.
+// Tests and evidence: name-item-extraction.md. Keep earlier failed probes and production NAME slots unchanged.
+import Shortcuts
+
+list(items: ["Fri1-TestComposer-TestPiece.pdf", "^Fri[0-9]+-"]) >> namingInput
+var filename = ""
+var prefixRegex = ""
+repeatEach(namingInput) {
+if(RepeatIndex == "1") {
+filename = RepeatItem
+}
+if(RepeatIndex == "2") {
+prefixRegex = RepeatItem
+}
+}
+quicklook(input: filename)
+quicklook(input: prefixRegex)
