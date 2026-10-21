@@ -1,5 +1,12 @@
 # Jellycuts app compatibility evidence
 
+Archive 15 replaces ARC01-ARC03 with a native context loop candidate. Independent
+read-only diagnostic **TEST - Archive Context Loop**: [source](probe-archive-context-loop.jelly),
+[transfer copy](probe-archive-context-loop.txt), [contract, steps and evidence](archive-context-loop.md).
+No dependencies; reads a supplied PDF/Folder/Dictionary, shows three previews,
+and performs no saves or forScore writes. Local compiler/structural checks passed
+with eight core-node warnings; iPad mixed-type preservation remains unverified.
+
 New isolated manual-work candidate: [running-order Text accumulator](running-order-text.md).
 The local CLI accepts it, but structural export checks reject the known
 interpolation defect. Its iPad result is pending; production COL02 is unchanged.

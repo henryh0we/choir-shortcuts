@@ -1,5 +1,13 @@
 # Archive and assembly compatibility update
 
+**Archive 15 update, 21 October 2026:** ARC01-ARC03 manual extraction is replaced
+in source by a quoted-index loop, with Nothing-initialized native variables.
+Mixed File/Folder/Dictionary preservation is still unverified on the iPad; run
+[the read-only context test](../tests/compatibility/archive-context-loop.md).
+CFG02-CFG04 remain manual. Preserve the working installed archive and keep the
+new initial guard until native extraction and CFG completion are checked.
+Earlier ARC instructions below describe revision 14 and are superseded for 15.
+
 **21 October update:** [The pre-iPad review](pre-ipad-review.md) owns the current
 Canonical 11 / Archive 14 / Assembly 13 / Main 4 migration. Canonical/Main now
 use positional Text Output; no regenerated source should follow the historical

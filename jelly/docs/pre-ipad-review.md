@@ -1,13 +1,22 @@
 # forScore source review before iPad transfer
 
-21 October 2026. Current sources: **Canonical 11 / Archive 14 / Assembly 13 /
+**Archive 15 update, 21 October 2026:** ARC01-ARC03 manual extraction is replaced
+in source by a quoted-index loop, with Nothing-initialized native variables.
+Mixed File/Folder/Dictionary preservation is still unverified on the iPad; run
+[the read-only context test](../tests/compatibility/archive-context-loop.md).
+CFG02-CFG04 remain manual. Preserve the working installed archive and keep the
+new initial guard until native extraction and CFG completion are checked.
+Earlier ARC instructions below describe revision 14 and are superseded for 15.
+
+21 October 2026. Current sources: **Canonical 11 / Archive 15 / Assembly 13 /
 Main 4**. Interfaces remain **2.0 / 2.1 / 1.1 / 1.0**, respectively. This review
 supersedes older current-version/Exit-return instructions in the linked guides;
 historical observations remain evidence for those older revisions.
 
 Latest [pre-install audit](pre-install-audit.md): Assembly 13 adds three named
 loop-comparison variables to reduce scope risk. All four full local builds still
-fail on recorded profile issues; 26 native slot IDs remain. The new COL02 Text
+fail on recorded profile issues. Archive 15 leaves 23 native slot IDs;
+its mixed native context loop still needs device testing. The new COL02 Text
 accumulator candidate was rejected by local export checks and is not integrated.
 
 ## Fixes applied
@@ -22,7 +31,7 @@ accumulator candidate was rejected by local export checks and is not integrated.
 | Assembly 12 | Readback count mismatch still flowed into the usual completion report | Returns a specific partial-write error on mismatch; equal counts still do not prove identity/order |
 | Assembly header/inventory | Claimed Canonical required interface 2.1 | Corrected Canonical 2.0 versus Archive 2.1 |
 
-The unchanged Archive 14 retains the user's reported manual save/reuse repair.
+The previously installed Archive 14 retains the user's reported manual save/reuse repair.
 Do not regenerate/replace the working installed archive just for these changes.
 Preserve it and confirm its native List input and File-success/Text-error contract
 match the assembly caller. The source skeleton still cannot preserve the user's

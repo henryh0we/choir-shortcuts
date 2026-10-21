@@ -1,5 +1,13 @@
 # Build the choir service workflow
 
+**Archive 15 update, 21 October 2026:** ARC01-ARC03 manual extraction is replaced
+in source by a quoted-index loop, with Nothing-initialized native variables.
+Mixed File/Folder/Dictionary preservation is still unverified on the iPad; run
+[the read-only context test](../tests/compatibility/archive-context-loop.md).
+CFG02-CFG04 remain manual. Preserve the working installed archive and keep the
+new initial guard until native extraction and CFG completion are checked.
+Earlier ARC instructions below describe revision 14 and are superseded for 15.
+
 **21 October update:** Transfer Canonical 11 / Assembly 13 / Main 4; preserve the
 user's working completed Archive 14 when its interface matches. Follow
 [the pre-iPad review](pre-ipad-review.md) for new collection/setlist checks,
@@ -23,7 +31,7 @@ Use the [current compatibility checklist](helper-compatibility-update.md) for AR
 | Order | Installed name | Completion |
 | --- | --- | --- |
 | 1 | [UTIL - Canonical Choir Name](../shortcuts/reusable/util-canonical-choir-name.jelly) | Revision 11 extracts both Text items in source; no NAME slots. Compile/import and inspect argument count, named-variable references, replacements and returned canonicalName Text. |
-| 2 | [UTIL - Archive Choir PDF](../shortcuts/reusable/util-archive-choir-pdf.jelly) | Compile/import; three-item native context input; complete ARC01-ARC03 and CFG02-CFG04. |
+| 2 | [UTIL - Archive Choir PDF](../shortcuts/reusable/util-archive-choir-pdf.jelly) | Revision 15: compile/import; verify the three-item native context loop; complete CFG02-CFG04. No ARC insertion slots remain. |
 | 3 | [UTIL - Assemble Choir Service](../shortcuts/reusable/util-assemble-choir-service.jelly) | Compile/import; complete CONF01-CONF02, COL01-COL03, SCORE01-SCORE02 and FS01-FS13. |
 | 4 | [MAIN - Build Choir Service](../shortcuts/main/main-build-choir-service.jelly) | Compile/import and reselect the completed assembly helper. |
 

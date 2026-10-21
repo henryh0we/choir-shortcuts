@@ -1,6 +1,14 @@
 # Complete the generated choir Shortcuts
 
-**21 October update:** Current sources are Canonical 11 / Archive 14 / Assembly
+**Archive 15 update, 21 October 2026:** ARC01-ARC03 manual extraction is replaced
+in source by a quoted-index loop, with Nothing-initialized native variables.
+Mixed File/Folder/Dictionary preservation is still unverified on the iPad; run
+[the read-only context test](../tests/compatibility/archive-context-loop.md).
+CFG02-CFG04 remain manual. Preserve the working installed archive and keep the
+new initial guard until native extraction and CFG completion are checked.
+Earlier ARC instructions below describe revision 14 and are superseded for 15.
+
+**21 October update:** Current sources are Canonical 11 / Archive 15 / Assembly
 13 / Main 4. [The pre-iPad review](pre-ipad-review.md) supersedes older current-
 revision/Exit instructions below. Keep the existing slot IDs and guards. COL01 now
 appends the current named native orderedFile (assigned from chosenOrderedFile);
@@ -9,8 +17,8 @@ variables. Main/Canonical now use positional Text Output. Preserve working nativ
 archive edits and inspect new generated actions before execution.
 
 Canonical 11 replaces NAME01/NAME02 with the user-confirmed quoted-index incoming
-Text loop. Those manual slots are retired only for naming; ARC/SCORE/native
-collection/forScore slots remain unchanged.
+Text loop. NAME slots are retired. Archive 15 also replaces ARC extraction with a native
+loop candidate; SCORE/native collection/forScore slots remain unchanged.
 
 **Current source: Archive 14 / Assembly 11.** The user confirms the small flush-left, parenthesized If probe returns Conditional output reached. The indented parenthesized probe dropped its Output; the unparenthesized probe dropped its If. Both helpers now keep code flush left and use positional `output("ERROR: ...")`, with no notes: label. Literal multiline message whitespace is preserved. Warnings about missing noResultBehaviour and response remain unresolved: the successful probe is not warning-free. This establishes only the tested conditional stop/Text fixture, not interpolation, File returns, nested loops or either complete helper. Existing native ARC/CFG/CONF/COL/SCORE/FS completion remains; no native validation construction is required.
 

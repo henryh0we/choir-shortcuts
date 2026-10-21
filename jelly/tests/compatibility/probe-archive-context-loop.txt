@@ -1,0 +1,32 @@
+// Installed name: TEST - Archive Context Loop
+// Purpose: Read-only test of Archive revision 15 native context extraction; role: diagnostic; specification revision 1; interface 1.0.
+// Input: Exactly three native List items: one PDF File, Library Folder, parsed config Dictionary with version=1. No defaults; malformed input is unsupported in this diagnostic.
+// Output: Three Quick Look previews: PDF filename, Library child count, config version. No explicit Shortcut return contract.
+// Direct/called: Supply the List through a caller; interactive previews. Dependencies: None.
+// Side effects: Reads the supplied Folder; no saves, renames, network requests or forScore writes. Permissions: Files provider access to selected Folder.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6; local comparison Open-Jellycore e1ec31c / Swift 6.4.1.
+// Stage: Drafted; Text loop confirmed separately, mixed native preservation unverified. Instructions/results: archive-context-loop.md.
+import Shortcuts
+
+nothing() >> emptyContextItem
+var sourceFile = emptyContextItem
+var archiveRoot = emptyContextItem
+var workflowConfig = emptyContextItem
+repeatEach(ShortcutInput) {
+if(RepeatIndex == "1") {
+sourceFile = RepeatItem
+}
+if(RepeatIndex == "2") {
+archiveRoot = RepeatItem
+}
+if(RepeatIndex == "3") {
+workflowConfig = RepeatItem
+}
+}
+fileDetail(input: sourceFile, property: Name) >> sourceName
+getFolderContents(folder: archiveRoot, recursive: false) >> libraryChildren
+count(type: Items, input: libraryChildren) >> childCount
+valueFor(key: "version", dictionary: workflowConfig) >> configVersion
+quicklook(input: sourceName)
+quicklook(input: childCount)
+quicklook(input: configVersion)

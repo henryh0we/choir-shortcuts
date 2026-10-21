@@ -1,16 +1,52 @@
 # Config integration acceptance checks
 
+## Archive 15 context extraction update, 21 October 2026
+
+Interface remains 2.1. ARC01-ARC03 are replaced by a quoted-index Repeat loop
+that assigns native Repeat Items to Nothing-initialized sourceFile, archiveRoot
+and workflowConfig. Presence checks precede Dictionary/File actions. Save
+configuration and native File returns CFG02-CFG04 remain manual; guard retained.
+The unchanged List contract requires all three native items separately.
+
+Local command (Open-Jellycore e1ec31c / Swift 6.4.1):
+
+```powershell
+python jelly/scripts/build.py jelly/shortcuts/reusable/util-archive-choir-pdf.jelly jelly/tests/compatibility/probe-archive-context-loop.jelly
+```
+
+- Archive 15: failed. Diagnostics include positional Output parameter errors,
+  brace/core-node messages and File Details unnamed-parameter errors. These are
+  the recorded older-profile blockers; no successful full archive build claimed.
+- Read-only probe: compiler and structural export checks passed, with **eight**
+  brace/core-node warnings. Unsigned export contains the enclosing Repeat,
+  three matched If/End If pairs with quoted 1/2/3 comparisons, Repeat Item
+  assignments and downstream references to the current named variables.
+  No extraction value is converted to Text. Exact source hashes and diagnostics
+  are in the corresponding `build/shortcuts/reusable/` and
+  `build/tests/compatibility/` `.build.json` reports.
+- iPad: **Not run** for Archive 15 or this probe. Prior Text-only success does
+  not establish native preservation. Follow [context-loop steps](compatibility/archive-context-loop.md),
+  then existing save/reuse, native File-return and invalid-input cases below.
+
+User-reported naming result, 21 October 2026: after the revision 11 transfer and
+native List → Run Shortcut → Quick Look instructions, the user reports the correct
+output. This confirms a successful complete naming-helper call for their supplied
+test input, extending the earlier extraction-only previews. The message does not
+specify which/all of the proposed filename cases were run, exact installed source
+hash or any native edits; do not mark missing-input/custom-regex cases passed.
+No new archive or whole-service result was supplied in this report.
+
 Latest installation review: [pre-install audit](../docs/pre-install-audit.md).
 Current Assembly 13 predeclares three loop-comparison variables; its updated
 transfer copy matches source. All four production compiler attempts failed on
 the recorded older-profile diagnostics; aggregate log: `build/pre-install-review.log`.
 A separate running-order Text accumulator was compiled but its export failed
 interpolation range validation. COL02 and all native File/Score/provider/forScore
-slots remain; no new device pass or complete installable build is claimed.
+slots remain except ARC01-ARC03, replaced by the Archive 15 candidate above; no new device pass or complete installable build is claimed.
 
 ## Current pre-iPad review, 21 October 2026
 
-Current source revisions: Canonical **11**, Archive **14** (unchanged), Assembly
+Current source revisions: Canonical **11**, Archive **15** (native context loop candidate), Assembly
 **13**, Main **4**; interfaces 2.0 / 2.1 / 1.1 / 1.0. See the
 [review and device acceptance cases](../docs/pre-ipad-review.md) for the changes
 and migration steps. These instructions supersede historical Exit/noNameResult

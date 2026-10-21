@@ -1,10 +1,20 @@
 # Installation review after incoming-List extraction tests
 
-21 October 2026. Current production revisions: Canonical **11**, Archive **14**,
+21 October 2026. Current production revisions: Canonical **11**, Archive **15**,
 Assembly **13**, Main **4**. Interfaces remain 2.0 / 2.1 / 1.1 / 1.0.
 This is a source/compiler/manual-work audit, not a successful full iPad build.
 
-## Changes made now
+## Archive 15 follow-up
+
+ARC01-ARC03 are now source assignments in a quoted-index Repeat loop; Nothing
+initialization avoids introducing Text values for the native context objects.
+This is a candidate extension of the successful Text tests, not a mixed-type
+device pass. [Run the read-only probe](../tests/compatibility/archive-context-loop.md)
+before enabling Archive 15. CFG02-CFG04 and the initial guard remain.
+The probe passed local compiler/export checks with eight core-node warnings;
+the full Archive 15 failed on the existing Output/File Details profile issues.
+
+## Earlier review of Assembly 13 and Archive 14
 
 Assembly 13 predeclares rootChildName, lowerExtension and canonicalStem, captures
 each producing action under a distinct Result name, then assigns the named
@@ -43,12 +53,12 @@ produce the wrong default setting, so action inspection is essential.
 
 ## Remaining manual work
 
-There are **26 active native insertion/configuration IDs** across the two larger
+There are **23 active native insertion/configuration IDs** across the two larger
 helpers (retired CFG01 and retired naming NAME01/NAME02 are excluded):
 
 | IDs | Required native work / reason it remains |
 | --- | --- |
-| ARC01-ARC03 | Extract File, Folder and Dictionary from the archive context. The successful two-Text loop does not yet establish mixed native object preservation |
+| ARC01-ARC03 (retired in 15; excluded from count) | Replaced by source extraction. Native File/Folder/Dictionary preservation still requires the read-only device test |
 | CFG02 | Save File native destination Folder; the inspected binding exposes no Folder destination argument |
 | CFG03-CFG04 | Return the actual existing/saved native File; empty source Outputs are placeholders, not working File returns |
 | CONF01-CONF02 | Select the actual Choir Music Folder and read its config File from that Folder |
