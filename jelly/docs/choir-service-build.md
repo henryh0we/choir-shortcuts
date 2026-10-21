@@ -1,5 +1,12 @@
 # Build the choir service workflow
 
+**21 October update:** Transfer Canonical 10 / Assembly 12 / Main 4; preserve the
+user's working completed Archive 14 when its interface matches. Follow
+[the pre-iPad review](pre-ipad-review.md) for new collection/setlist checks,
+Output compatibility fixes and the required native slot/variable inspection.
+Older revision/Exit instructions below are historical. Changed revisions still
+need compilation and testing in Jellycuts on the iPad.
+
 **Current source: Archive 14 / Assembly 11.** The user confirms the small flush-left, parenthesized If probe returns Conditional output reached. The indented parenthesized probe dropped its Output; the unparenthesized probe dropped its If. Both helpers now keep code flush left and use positional `output("ERROR: ...")`, with no notes: label. Literal multiline message whitespace is preserved. Warnings about missing noResultBehaviour and response remain unresolved: the successful probe is not warning-free. This establishes only the tested conditional stop/Text fixture, not interpolation, File returns, nested loops or either complete helper. Existing native ARC/CFG/CONF/COL/SCORE/FS completion remains; no native validation construction is required.
 
 

@@ -1,5 +1,10 @@
 # Shortcut inventory and installation order
 
+**Current, 21 October 2026: Canonical 10 / Archive 14 / Assembly 12 / Main 4.**
+See [the pre-iPad review](pre-ipad-review.md) for implemented fixes, preserved
+archive repairs and required checks. Interfaces remain 2.0 / 2.1 / 1.1 / 1.0.
+The revision paragraphs below are historical; they do not override this review.
+
 **Current source: Archive 14 / Assembly 11.** The user confirms the small flush-left, parenthesized If probe returns Conditional output reached. The indented parenthesized probe dropped its Output; the unparenthesized probe dropped its If. Both helpers now keep code flush left and use positional `output("ERROR: ...")`, with no notes: label. Literal multiline message whitespace is preserved. Warnings about missing noResultBehaviour and response remain unresolved: the successful probe is not warning-free. This establishes only the tested conditional stop/Text fixture, not interpolation, File returns, nested loops or either complete helper. Existing native ARC/CFG/CONF/COL/SCORE/FS completion remains; no native validation construction is required.
 
 
@@ -13,8 +18,8 @@ Source headers own contracts and direct dependency details. This table is the na
 | [UTIL - Jelly Format Greeting](../examples/util-jelly-format-greeting.jelly) | Example reusable utility: format one name, default to Friend | None | 1.0 | Syntax reviewed |
 | [MAIN - Jelly Greeting Demo](../examples/main-jelly-greeting-demo.jelly) | Example main: pass Henry to utility and return its result | UTIL - Jelly Format Greeting, interface 1.0 | 1.0 | Syntax reviewed |
 | [UTIL - Canonical Choir Name](../shortcuts/reusable/util-canonical-choir-name.jelly) | Configured canonical name from a two-Text List | None | 2.0 | Drafted |
-| [UTIL - Archive Choir PDF](../shortcuts/reusable/util-archive-choir-pdf.jelly) | Config-based archive with native context List and CFG slots | UTIL - Canonical Choir Name, interface 2.0 | 2.0 | Drafted |
-| [UTIL - Assemble Choir Service](../shortcuts/reusable/util-assemble-choir-service.jelly) | Load config once, prepare service; CONF/FS slots | UTIL - Canonical Choir Name; UTIL - Archive Choir PDF, interfaces 2.0 | 1.1 | Drafted |
+| [UTIL - Archive Choir PDF](../shortcuts/reusable/util-archive-choir-pdf.jelly) | Config-based archive with native context List and CFG slots | UTIL - Canonical Choir Name, interface 2.0 | 2.1 | Drafted skeleton; older completed installed copy has user-reported save/reuse repairs |
+| [UTIL - Assemble Choir Service](../shortcuts/reusable/util-assemble-choir-service.jelly) | Load config once, prepare service; CONF/FS slots | UTIL - Canonical Choir Name 2.0; UTIL - Archive Choir PDF 2.1 | 1.1 | Drafted |
 | [MAIN - Build Choir Service](../shortcuts/main/main-build-choir-service.jelly) | Generated interactive production entry point | UTIL - Assemble Choir Service, interface 1.1 | 1.0 | Drafted |
 
 External provider apps/services: None for the example actions. Jellycuts or a compatible compiler is a build tool; Apple Shortcuts is the runtime. Current user-reported target: Jellycuts 2026.6.4 on iPadOS 26.6; no successful compilation or runtime validation is recorded for these sources.

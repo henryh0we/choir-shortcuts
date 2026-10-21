@@ -1,5 +1,33 @@
 # Config integration acceptance checks
 
+## Current pre-iPad review, 21 October 2026
+
+Current source revisions: Canonical **10**, Archive **14** (unchanged), Assembly
+**12**, Main **4**; interfaces 2.0 / 2.1 / 1.1 / 1.0. See the
+[review and device acceptance cases](../docs/pre-ipad-review.md) for the changes
+and migration steps. These instructions supersede historical Exit/noNameResult
+requirements below: Canonical now uses positional Output and no longer has that
+Nothing initializer. Its NAME01/NAME02 and final Text-token repairs still apply.
+
+Local compiler attempts were performed for all four sources. None passed this
+older CLI: it rejects positional Output and reports additional existing core-node
+handling errors in the large helpers. No matching iPad compiler pass is claimed
+for the changed revisions, and no signing/import/runtime test was performed.
+Generated JSON includes current source hashes and diagnostics. New collection,
+Score, choice and readback checks are source-reviewed candidates awaiting the
+integrated device cases in the review. Prior user-confirmed installed archive
+save/reuse fixes remain evidence for that manually completed copy only.
+
+Final static checks: all four `.jelly`/`.txt` pairs are byte-identical; executable
+source remains flush left; assembly block nesting is balanced; orderedFiles and
+orderedNames preflights are outside their collection loops; preparedScores
+preflight is outside the preparation loop and before setlist mode/creation.
+Per-source build reports match the final source SHA-256 values. These checks are
+source inspection evidence, not Apple runtime or matching-compiler validation.
+The final assembly retry is captured in `build/forscore-assembly-review-final.log`.
+
+## Historical revisions and device observations
+
 Current naming skeleton: canonical revision 8/completed interface 2.0. Revision 7 failed at both bare ItemAtIndex calls. Revision 8 replaces them with NAME01/NAME02 native Get Item from List insertions. Complete indexes 1/2 from Shortcut Input and reconnect both presence checks and Replace Text consumers before tests. Keep noNameResult's Nothing initializer. Compilation/export, Exit returns, native completion and new-interface runtime remain Not run. Earlier enum experiments below are failed historical candidates, not instructions for the current helper.
 
 Current canonical candidate: revision 7/interface 2.0. Revision 6 failed: the app explicitly disallows quoted ItemAtIndex and still rejects the full noResultBehavior argument. Revision 7 removes Output from this utility, uses documented `exit(var: ...)` for empty/value returns and uses bare ItemAtIndex. Its new Exit action must be compiled/imported and tested before claiming a pass. Check empty exits and both extraction indexes as well as the final Text returned to the caller. Earlier candidate descriptions below are historical.

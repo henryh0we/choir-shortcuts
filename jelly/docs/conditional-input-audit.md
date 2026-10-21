@@ -1,5 +1,16 @@
 # Conditional input connection audit
 
+21 October source update: Canonical 10 / Archive 14 / Assembly 12 / Main 4.
+The line-number tables below are the 19 October snapshot, not current line
+locations. See [the pre-iPad review](pre-ipad-review.md). New assembly conditions
+to inspect: orderedFile has no value (current named variable assigned this
+iteration), orderedCount/orderedNameCount differ from pieceCount,
+workingScore has no value, metadataMode has no value after assignment,
+preparedCount differs from pieceCount (outside the preparation loop),
+setlistMode/targetSetlist have no value, and actualCount differs from requestedCount.
+Count inputs must use current populated collections; targetSetlist uses the actual
+Choose output. These checks are not confirmed device runtime results.
+
 19 October 2026. User confirms archive reuse now returns the correct existing File after reconnecting the post-search If input to named existingCleanFile. This demonstrates one wrong exported/native reference; it does not prove all If conditions fail. Current source cannot reveal the actual installed Magic Variable UUIDs or native edits. Audit priorities below are candidates for inspection, not additional confirmed bugs. Do not regenerate a working installed shortcut solely to inspect these connections.
 
 For named variables updated later, select the named variable rather than the initial empty Nothing or an earlier action output. For replaced Nothing slots, reconnect every consumer to the replacement action. For comparisons with another value, inspect both operands and use actual variable tokens rather than literal variable names.

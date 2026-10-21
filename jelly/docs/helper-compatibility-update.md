@@ -1,5 +1,12 @@
 # Archive and assembly compatibility update
 
+**21 October update:** [The pre-iPad review](pre-ipad-review.md) owns the current
+Canonical 10 / Archive 14 / Assembly 12 / Main 4 migration. Canonical/Main now
+use positional Text Output; no regenerated source should follow the historical
+Exit instructions below. Existing native slot IDs and archive File return repairs
+remain required. Preserve the completed installed archive and inspect new assembly
+collection/choice checks before removing its guard.
+
 **Current source: Archive 14 / Assembly 11.** The user confirms the small flush-left, parenthesized If probe returns Conditional output reached. The indented parenthesized probe dropped its Output; the unparenthesized probe dropped its If. Both helpers now keep code flush left and use positional `output("ERROR: ...")`, with no notes: label. Literal multiline message whitespace is preserved. Warnings about missing noResultBehaviour and response remain unresolved: the successful probe is not warning-free. This establishes only the tested conditional stop/Text fixture, not interpolation, File returns, nested loops or either complete helper. Existing native ARC/CFG/CONF/COL/SCORE/FS completion remains; no native validation construction is required.
 
 

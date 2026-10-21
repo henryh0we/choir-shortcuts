@@ -1,39 +1,38 @@
 // Installed name: UTIL - Canonical Choir Name
 // Purpose: Remove a terminal PDF extension and recognised service prefix.
-// Role: Reusable; specification revision 9; completed interface 2.0.
+// Role: Reusable; specification revision 10; completed interface 2.0.
 // Input: Two Text items in order: filename, config.prefixRegex; caller passes a native List. Set the imported Shortcut receiving type to Text manually.
-// Output: One Text stem, or empty output after invalid input. Caller rejects empty.
+// Output: One Text stem, or empty Text after invalid input. Caller rejects empty. No-recipient behaviour is Do Nothing.
 // Side effects: Validation alerts only; no file/account writes. Direct/called use the same List contract.
 // Dependencies: None.
 // Target: iPadOS 26.6; Jellycuts 2026.6.4 reported, bundled compiler unknown.
 // Profile: Native NAME01/NAME02 extraction required; installed app rejects the reviewed list-item selector forms.
-// Stage: Revision 9 drafted; user reports manual receiving-type and canonicalName output repairs. Regenerated revision not device tested.
+// Stage: Revision 10 drafted; positional Output and flush-left branches follow app evidence. Regenerated naming helper not device tested; retain manual receiving/output repairs.
 // Contract/tests/install: ../../docs/config-integration.md; ../../tests/config-integration.md
 
 import Shortcuts
 
 // MANUAL INPUT REPAIR (18 October 2026): In Apple Shortcuts, set the receiving type to Text. Preserve the two separate filename/prefixRegex items and NAME01/NAME02 extraction; verify the caller List is not collapsed into one Text item. The documented Jelly metadata does not provide a receiving-type directive.
-// MANUAL OUTPUT REPAIR (18 October 2026): The final Stop and Output must return the native canonicalName token from the second Replace Text action, not Shortcut Input, filenameStem or the literal word canonicalName. The final exit(var: canonicalName) expresses that connection; inspect/reselect it after export if needed.
+// MANUAL OUTPUT REPAIR: The final Stop and Output must return the canonicalName Text token from the second Replace Text action, not Shortcut Input, filenameStem or the literal word canonicalName. Positional Output follows the confirmed app form; inspect/reselect the interpolated token after export. This does not establish arbitrary native File returns.
 
-nothing() >> noNameResult
 count(type: Items, input: ShortcutInput) >> argumentCount
 text(text: "${argumentCount}") >> argumentCountText
 if(argumentCountText != "2") {
-    alert(alert: "Supply a List containing filename Text and config.prefixRegex Text.", title: "Naming input needs updating", cancel: false)
-    exit(var: noNameResult)
+alert(alert: "Supply a List containing filename Text and config.prefixRegex Text.", title: "Naming input needs updating", cancel: false)
+output("")
 }
 // NAME01 FILENAME: replace next Nothing with native Get Item from List, List=Shortcut Input, Item at Index=1. Reconnect filename in its presence If and the filename Text action input to that native result before deleting Nothing.
 nothing() >> filename
 // NAME02 PREFIX PATTERN: replace next Nothing with native Get Item from List, List=Shortcut Input, Item at Index=2. Reconnect prefixRegex in its presence If and the second Replace Text Find field to that native result before deleting Nothing.
 nothing() >> prefixRegex
 if(filename == nil) {
-    exit(var: noNameResult)
+output("")
 }
 if(prefixRegex == nil) {
-    alert(alert: "Set a nonempty prefixRegex in config.json.", title: "Missing prefix pattern", cancel: false)
-    exit(var: noNameResult)
+alert(alert: "Set a nonempty prefixRegex in config.json.", title: "Missing prefix pattern", cancel: false)
+output("")
 }
 text(text: "${filename}") >> filenameText
 replaceText(input: "${filenameText}", find: "[.]pdf$", replace: "", isRegex: true, caseSensitive: false) >> filenameStem
 replaceText(input: "${filenameStem}", find: "${prefixRegex}", replace: "", isRegex: true, caseSensitive: false) >> canonicalName
-exit(var: canonicalName)
+output("${canonicalName}")

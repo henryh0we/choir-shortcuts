@@ -1,11 +1,11 @@
 // Installed name: UTIL - Assemble Choir Service
 // Purpose: Generate standard actions; insert forScore actions at FS01-FS13.
-// Role: Reusable; specification revision 11; completed interface 1.1.
+// Role: Reusable; specification revision 12; completed interface 1.1.
 // Input: Text interactive. Other/missing input returns instructions; direct no-input unsupported.
 // Output: One service-report Text if native actions/navigation complete.
 // Side effects after assembly: File selection, clean archive/import, metadata, setlist writes.
 // Called mode is interactive; cancellation/failure may leave partial writes with no report.
-// Dependencies: UTIL - Canonical Choir Name and UTIL - Archive Choir PDF, interface 2.1.
+// Dependencies: UTIL - Canonical Choir Name interface 2.0; UTIL - Archive Choir PDF interface 2.1.
 // Sources: util-canonical-choir-name.jelly and util-archive-choir-pdf.jelly.
 // Target: iPadOS 26.6, forScore 15.2.5, Jellycuts 2026.6.4; Files/app permissions.
 // Stage: Drafted; local docs/source reviewed, not compiled/device tested.
@@ -81,10 +81,20 @@ output("ERROR: No files selected. No changes made.")
 count(type: Items, input: selectedFiles) >> pieceCount
 nothing() >> emptyOrderedFiles
 var orderedFiles = emptyOrderedFiles
+nothing() >> emptyOrderedFile
+var orderedFile = emptyOrderedFile
 repeatEach(selectedFiles) {
-choose(list: selectedFiles, prompt: "Choose piece ${RepeatIndex} of ${pieceCount} in running order.", multiple: false, all: false) >> orderedFile
-// COL01 ORDERED FILES: Replace next Nothing with native Add to Variable, input=orderedFile from this Choose from List, variable=orderedFiles. Append one native File per iteration; do not use Text or Set Variable.
+choose(list: selectedFiles, prompt: "Choose piece ${RepeatIndex} of ${pieceCount} in running order.", multiple: false, all: false) >> chosenOrderedFile
+orderedFile = chosenOrderedFile
+if(orderedFile == nil) {
+output("ERROR: No piece selected for the running order. No changes made.")
+}
+// COL01 ORDERED FILES: Replace next Nothing with native Add to Variable, input=current named native orderedFile assigned from this iteration's Choose from List, variable=orderedFiles. Append one native File per iteration; do not use Text or replace Add to Variable with Set Variable. Inspect the preceding Set Variable orderedFile uses chosenOrderedFile from this Choose action.
 nothing()
+}
+count(type: Items, input: orderedFiles) >> orderedCount
+if(orderedCount != pieceCount) {
+output("ERROR: Running order is incomplete. Check COL01 and its named orderedFiles variable. No changes made.")
 }
 
 nothing() >> emptyOrderedNames
@@ -98,6 +108,10 @@ output("ERROR: A selected item is not a PDF. No changes made.")
 fileDetail(input: RepeatItem, property: Name) >> orderedName
 // COL02 ORDERED NAMES: Replace next Nothing with native Add to Variable, input=orderedName, variable=orderedNames. Append the filename Text in this validation loop.
 nothing()
+}
+count(type: Items, input: orderedNames) >> orderedNameCount
+if(orderedNameCount != pieceCount) {
+output("ERROR: Running order preview is incomplete. Check COL02 and its named orderedNames variable. No changes made.")
 }
 combineText(text: [orderedNames], combine: Custom, separator: " | ") >> runningOrder
 askForInput(prompt: "Service name including date, for example 2026-10-18 - Evensong", type: Text, default: "", allowDecimal: false, allowNegative: false) >> enteredServiceName
@@ -157,12 +171,18 @@ output("ERROR: Import unconfirmed for ${canonicalStem}. Inspect forScore before 
 nothing() >> importedWorkingScore
 workingScore = importedWorkingScore
 }
+if(workingScore == nil) {
+output("ERROR: No native working Score selected. Check SCORE01/SCORE02 and workingScore. Earlier pieces may already be prepared; setlist entries have not been changed.")
+}
 
 var metadataMode = "Review metadata"
 if(existingScore != nil) {
 list(items: ["Reuse unchanged", "Review metadata"]) >> metadataChoices
 choose(list: metadataChoices, prompt: "Existing score: preserve or review metadata?", multiple: false, all: false) >> selectedMetadataMode
 metadataMode = selectedMetadataMode
+if(metadataMode == nil) {
+output("ERROR: No metadata choice selected. Earlier pieces may already be prepared; setlist entries have not been changed.")
+}
 }
 
 if(metadataMode == "Review metadata") {
@@ -205,8 +225,17 @@ nothing()
 nothing()
 }
 
+// Preflight the named collection before creating, clearing or appending setlist entries.
+count(type: Items, input: preparedScores) >> preparedCount
+if(preparedCount != pieceCount) {
+output("ERROR: Prepared score count does not match the running order. Check COL03 and its named preparedScores variable. Files or metadata may already be changed; setlist entries have not been changed.")
+}
+
 list(items: ["Create new", "Replace existing"]) >> setlistChoices
 choose(list: setlistChoices, prompt: "Create an unused service name, or replace an existing service?", multiple: false, all: false) >> setlistMode
+if(setlistMode == nil) {
+output("ERROR: No setlist mode selected. Scores may already be prepared; setlist entries have not been changed.")
+}
 if(setlistMode == "Create new") {
 // FS08 CREATE SETLIST. Replace next Nothing with new setlist (expanded Create Setlist Name). Name=serviceName; Folder unset. Use an unused name. Creation's return is not consumed.
 nothing()
@@ -214,6 +243,9 @@ nothing()
 // FS09 RETRIEVE SETLISTS. Replace next Nothing with Get all setlists. Reconnect the following Choose from List input to its Setlists output.
 nothing() >> availableSetlists
 choose(list: availableSetlists, prompt: "Select the new service, or the existing service to replace.", multiple: false, all: false) >> targetSetlist
+if(targetSetlist == nil) {
+output("ERROR: No target setlist selected. A new empty setlist may have been created; existing setlist entries have not been changed.")
+}
 alert(alert: """
 ${runningOrder}
 
@@ -231,6 +263,9 @@ nothing()
 nothing() >> actualEntries
 count(type: Items, input: actualEntries) >> actualCount
 count(type: Items, input: preparedScores) >> requestedCount
+if(actualCount != requestedCount) {
+output("ERROR: Setlist readback count differs from the requested order. Entries may already have changed. Inspect the selected setlist in forScore before retrying.")
+}
 text(text: """
 ${serviceName}
 ${runningOrder}

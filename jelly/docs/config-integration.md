@@ -1,5 +1,11 @@
 # Config-based choir workflow
 
+**21 October update:** Current sources are Canonical 10 / Archive 14 / Assembly
+12 / Main 4. Read [the pre-iPad review](pre-ipad-review.md) first for Output fixes,
+setlist preflights and exact transfer/native-token checks. The older revision and
+Exit-return instructions below are historical. Interfaces remain unchanged;
+the user's completed archive should be preserved.
+
 **Current source: Archive 14 / Assembly 11.** The user confirms the small flush-left, parenthesized If probe returns Conditional output reached. The indented parenthesized probe dropped its Output; the unparenthesized probe dropped its If. Both helpers now keep code flush left and use positional `output("ERROR: ...")`, with no notes: label. Literal multiline message whitespace is preserved. Warnings about missing noResultBehaviour and response remain unresolved: the successful probe is not warning-free. This establishes only the tested conditional stop/Text fixture, not interpolation, File returns, nested loops or either complete helper. Existing native ARC/CFG/CONF/COL/SCORE/FS completion remains; no native validation construction is required.
 
 

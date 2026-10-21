@@ -1,6 +1,6 @@
 // Installed name: MAIN - Build Choir Service
 // Purpose: Start the interactive Nextcloud/iCloud/forScore service workflow.
-// Role: Main; specification revision 3; interface 1.0.
+// Role: Main; specification revision 4; interface 1.0.
 // Input: None consumed. Direct launch only; ignores any incoming content.
 // Output: One diagnostic service-report Text if the helper completes.
 // Side effects: Selection UI, clean archive saves, imports/metadata/setlist writes.
@@ -11,7 +11,7 @@
 // Install order: Canonical Choir Name, completed Archive Choir PDF, completed Assemble Choir Service, main.
 // Target: iPadOS 26.6; forScore 15.2.5; Jellycuts 2026.6.4 reported.
 // Permissions: Files/Nextcloud/iCloud and forScore access requested on device.
-// Profile: Existing source-reviewed runShortcut/output forms; bundled compiler unknown.
+// Profile: Positional Text Output follows the user's iPad compilation/action-inspection evidence; bundled compiler unknown. No-recipient behaviour is Do Nothing.
 // Stage: Drafted, not compiled/imported/device tested.
 // Contract/install: ../../docs/choir-service-build.md; tests: ../../tests/choir-service.md
 
@@ -19,4 +19,4 @@ import Shortcuts
 
 text(text: "interactive") >> launchMode
 runShortcut(name: "UTIL - Assemble Choir Service", input: launchMode, show: false) >> serviceReport
-output(result: "${serviceReport}", noResultBehavior: Respond, response: "${serviceReport}")
+output("${serviceReport}")
