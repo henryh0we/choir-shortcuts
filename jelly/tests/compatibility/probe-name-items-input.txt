@@ -1,0 +1,21 @@
+// Installed name: TEST - Jelly Name Items Input; purpose: check the quoted-index extraction loop on caller-supplied input; role: diagnostic callee.
+// Specification revision: 1; interface version: 1.0.
+// Input: Native List of exactly two Text items, filename then prefixRegex. Missing/extra/non-Text input is unsupported by this boundary-only probe; no defaults or fixed fallback.
+// Output: Two Quick Look previews of the extracted values; no explicit return contract. Direct run requires supplied input; called run previews the caller's two values.
+// Dependencies: None. Side effects: Interactive previews only; no files, providers, network or forScore writes. Permissions: None.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6; bundled compiler unknown. Local: Open-Jellycore e1ec31c / Swift 6.4.1.
+// Evidence: User reports the fixed-fixture loop works after quoting 1/2; incoming List boundary remains untested. Tests: name-item-extraction.md.
+import Shortcuts
+
+var filename = ""
+var prefixRegex = ""
+repeatEach(ShortcutInput) {
+if(RepeatIndex == "1") {
+filename = RepeatItem
+}
+if(RepeatIndex == "2") {
+prefixRegex = RepeatItem
+}
+}
+quicklook(input: filename)
+quicklook(input: prefixRegex)

@@ -12,14 +12,17 @@ preserved; successful compilation alone is insufficient evidence.
 A separate [loop-based candidate](name-item-extraction.md#next-candidate-avoid-selectors-with-a-loop)
 now avoids enum selectors entirely. It compiles locally with brace/core-node
 warnings; its exported loop, index conditions and named assignments were inspected.
-Its iPad result is pending; it is not yet a production replacement.
+Its unquoted numeric version failed iPad compilation as recorded below.
 
 Loop update: the user reports the unquoted numeric comparisons fail app compilation
 at lines 15/18 because variables 1 and 2 are not in scope. The separate
 [quoted-index candidate](name-item-extraction.md#next-candidate-quoted-loop-index-comparisons)
 uses `"1"` and `"2"`, following the documented String comparison form. It compiles
-locally with the same warnings; its iPad result is pending. Preserve both sources
-and keep the production helper's manual extraction slots until actual results pass.
+locally with the same warnings. The user now confirms that adding quotes to the
+original loop makes it work as expected. This is a fixed-Text-fixture runtime pass;
+incoming native List input has not yet been verified. The comparison record now
+includes an input receiver plus caller to check that boundary before production
+NAME01/NAME02 replacement. Preserve all earlier failed probes.
 
 For a small same-source iPad/local experiment, use the new
 [positional Output comparison](output-signature-comparison.md). It isolates the

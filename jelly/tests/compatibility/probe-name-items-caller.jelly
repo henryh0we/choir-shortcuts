@@ -1,0 +1,12 @@
+// Installed name: TEST - Jelly Name Items Caller; purpose: pass a distinct two-Text List through Run Shortcut to the extraction probe; role: diagnostic caller.
+// Specification revision: 1; interface version: 1.0.
+// Input: Ignored. Output: Callee previews Sun2-SecondComposer-SecondPiece.pdf, then ^Sun[0-9]+-. No explicit return contract.
+// Direct/called: Same fixed test invocation; interactive previews require foreground execution. Missing callee or native cancellation may halt without results.
+// Dependency: TEST - Jelly Name Items Input interface 1.0, probe-name-items-input.jelly; install under that exact name first.
+// Side effects: Preview UI only; no files, providers, network or forScore writes. Permissions: None.
+// Target: Jellycuts 2026.6.4 / iPadOS 26.6; bundled compiler unknown. Local: Open-Jellycore e1ec31c / Swift 6.4.1.
+// Stage: Boundary test unverified on the iPad. Tests/results: name-item-extraction.md. Production helpers remain unchanged.
+import Shortcuts
+
+list(items: ["Sun2-SecondComposer-SecondPiece.pdf", "^Sun[0-9]+-"]) >> namingInput
+runShortcut(name: "TEST - Jelly Name Items Input", input: namingInput, show: false)

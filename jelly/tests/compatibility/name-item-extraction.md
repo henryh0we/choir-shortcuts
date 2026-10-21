@@ -260,4 +260,58 @@ inside their respective conditional groups, and both named previews follow End
 Repeat. The transfer copy is byte-identical. This is the same observed operand
 representation as the numeric-source candidate in the local export; it does not
 establish how the iPad compiler will handle the source quotes or runtime comparison.
-Exact-source iPad compilation, action inspection and runtime: **Not run**.
+### User-confirmed quoted-index result
+
+The user reports adding quotation marks to the comparisons in the original loop
+probe on the iPad and that it **works as expected**. This confirms the fixed
+fixture's quoted-index loop extracts the expected filename and regex in order.
+The user edited their original device copy; the separately named loop-text file
+has equivalent executable logic, but its exact transferred bytes/hash were not
+independently checked on the device. No additional screenshots, warnings or
+generated-action details were supplied for this successful run.
+
+Preserve the original repository loop file with unquoted digits as failure evidence;
+use `probe-name-items-loop-text.jelly` / `.txt` as the reproducible quoted version.
+This success does not validate an incoming native List, arbitrary File/Score
+values, or the complete production naming helper.
+
+## Incoming-List check: last boundary before NAME replacement
+
+Two independent diagnostic Shortcuts are provided, in installation order:
+
+1. [probe-name-items-input.txt](probe-name-items-input.txt)
+   ([source](probe-name-items-input.jelly)), exact installed name
+   **TEST - Jelly Name Items Input**. Same successful quoted-index loop, but it
+   repeats over Shortcut Input with no fixed fixture or fallback. It expects
+   exactly two Text items and previews them separately. Direct no-input execution
+   is unsupported; use the caller for this test.
+2. [probe-name-items-caller.txt](probe-name-items-caller.txt)
+   ([source](probe-name-items-caller.jelly)), installed name
+   **TEST - Jelly Name Items Caller**. Creates a List with deliberately different
+   values and passes the native List through Run Shortcut to the receiver.
+
+Compile/import both sources unchanged, install the receiver under its exact name,
+then run **Caller**. Expected previews, in order:
+
+- `Sun2-SecondComposer-SecondPiece.pdf`
+- `^Sun[0-9]+-`
+
+The different values demonstrate that extraction reads the actual caller input,
+not a leftover fixed fixture. Inspect the Run Shortcut input as the native List
+output; preserve its two Text items. The receiver's Repeat With Each must read
+Shortcut Input. Record the initial generated receiving configuration before any
+manual repair; if values are collapsed/empty, retain that failure evidence.
+No forScore/File actions, provider permissions or production helper changes are
+required. Earlier selector failures remain preserved.
+
+Local compiler/export inspection: **2/2 compiled and exported**, raw/wrapper status
+0. Receiver has the same six brace/core-node warnings; caller has no diagnostics.
+The receiver's Repeat Each input is exported as Shortcut Input (`ExtensionInput`),
+and the caller's Run Shortcut names `TEST - Jelly Name Items Input` and references
+the actual List action's UUID. The List contains the two different expected Texts,
+and both transfer copies are byte-identical to their sources. These are local
+serialization observations, not device results or complete Apple schema validation.
+Incoming-List iPad compilation, action inspection and execution: **Not run**.
+After this boundary passes, the loop can replace NAME01/NAME02 in the production
+helper while retaining its argument validation, canonical replacements and Text
+return checks. This probe does not establish native File/Score extraction.
