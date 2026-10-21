@@ -51,7 +51,34 @@ The wrapper's failure must be distinguished from a raw CLI error and from reject
 of an otherwise compiled export. Check `compiler_exit_code`, `stage`, diagnostics
 and captured stdout rather than relying on the raw process status alone.
 
-## iPad test (user action; not yet performed for this file)
+## iPad evidence reported by the user, 21 October 2026
+
+The user reports successful compilation of A, with these warnings (transcribed
+exactly from the user's message, including spelling):
+
+```text
+Warning: could not find any content for the aprameter noResultBehavious in output
+Warning: could not find any content for the parameter response in output
+```
+
+The generated Shortcut contains only a Stop and Output action with the exact
+Text `COMPATIBILITY PROBE: positional output reached.` Its **If there's nowhere
+to output** setting is **Do Nothing**. No additional header Comment actions were
+reported. This is user-reported compilation and generated-action inspection;
+neither an actual run nor a returned value observed by a caller was reported.
+The profile above comes from the existing project record; the bundled compiler
+revision remains unknown. The source file is preserved unchanged so the local
+comparison and source hash remain applicable; its header's pending-test wording
+predates this report and is superseded by this evidence.
+
+This confirms the positional Output acceptance discrepancy for this probe.
+The missing settings generate warnings, but do not prevent the app generating
+the intended literal Text action. Do Nothing is the observed no-recipient setting;
+do not assume Respond/display behaviour or guess a named-argument fix. It does
+not establish native non-Text returns, interpolation, other bindings, or the
+opposite named signature's iPad compatibility.
+
+## iPad repeat/remaining test procedure
 
 1. Transfer/open **the `.jelly` source** of A in Jellycuts on the iPad. Do not use
    the PC export: A is expected to have no successful local export.
@@ -75,8 +102,8 @@ and captured stdout rather than relying on the raw process status alone.
 | --- | --- | --- |
 | Local compiler acceptance, 21 October 2026 | Rejected: unnamed parameter plus missing result/noResultBehavior/response | Accepted on rerun |
 | Local structural export acceptance | Not reached; no `.shortcut` published | Passed on rerun; unsigned export generated |
-| Exact-source iPad acceptance/errors/warnings | Not run | Not run |
-| iPad generated Output payload inspected | Not run | Not run |
+| Exact-source iPad acceptance/errors/warnings | User reports accepted with the two warnings recorded above | Not run |
+| iPad generated Output payload inspected | User reports exact literal Text; no-recipient Do Nothing; only Stop and Output | Not run |
 | iPad execution / ignored-input cases | Not run | Not run |
 
 Both were tested together using:
@@ -94,8 +121,9 @@ correctly identified the compiler rejection. B's `.build.json` records
 `success: true`, `stage: exported-unsigned`. No source was changed to obtain
 these results, and no signing or device execution was performed.
 
-If the unchanged A is accepted on the iPad but rejected locally, that confirms
-different acceptance rules for this exact source. If the iPad also rejects it,
-the new test has not reproduced the historical discrepancy; retain the diagnostics
-and check versions/source differences. A local B pass rules out a generally broken
-compiler installation as the explanation for A's failure.
+The user's A result and the local A rejection confirm different acceptance rules
+for this probe. B's local pass shows the compiler can build the corresponding
+named form. Future failures should retain exact diagnostics and check app/source
+versions before changing syntax. To verify runtime return behaviour, the remaining
+check is to call A from another Shortcut and inspect the returned Text. Direct
+execution may show nothing because the observed no-recipient setting is Do Nothing.

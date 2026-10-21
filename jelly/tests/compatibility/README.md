@@ -3,7 +3,12 @@
 For a small same-source iPad/local experiment, use the new
 [positional Output comparison](output-signature-comparison.md). It isolates the
 Output argument form from control flow and interpolation; its exact-source iPad
-result is pending. The existing named Output probe is the local positive control.
+compilation and generated action are now confirmed by user report: one Stop and
+Output with the exact literal Text and no-recipient behaviour Do Nothing, despite
+two missing-parameter warnings. Local Open-Jellycore rejects that positional form.
+Runtime return behaviour remains untested. The existing named Output probe is the
+local positive control; its iPad result remains unknown. See the comparison for
+the exact warnings and limits of this evidence.
 
 **Local CLI evidence, 21 October 2026:** the WSL compiler is now installed. The
 native-file-variable and output-respond probes passed local compilation and

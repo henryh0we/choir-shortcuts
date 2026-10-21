@@ -46,6 +46,14 @@ compatibility or correct runtime behaviour.
   [per-file audit](../tests/compiler/README.md). Do not rewrite device-tested
   sources merely to suppress these mismatches.
 
+The [isolated positional Output comparison](../tests/compatibility/output-signature-comparison.md)
+now has user-reported iPad confirmation: `output("...")` compiles with two
+missing-setting warnings and generates the correct literal Stop and Output Text,
+with no-recipient behaviour Do Nothing. Local CLI rejection of this exact form is
+a confirmed profile incompatibility; it does not invalidate that app compilation.
+Runtime return behaviour remains untested. Preserve the source form and record
+the mismatch without suppressing the local failure or guessing replacement arguments.
+
 Only 3 of 20 audited sources passed compilation plus the wrapper's structural
 checks. Five compiled but had rejected exports; twelve reported compiler errors.
 The installed compiler supports local iteration on its accepted subset. It cannot
