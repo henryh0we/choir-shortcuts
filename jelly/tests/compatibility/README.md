@@ -5,7 +5,10 @@ read-only diagnostic **TEST - Archive Context Loop**: [source](probe-archive-con
 [transfer copy](probe-archive-context-loop.txt), [contract, steps and evidence](archive-context-loop.md).
 No dependencies; reads a supplied PDF/Folder/Dictionary, shows three previews,
 and performs no saves or forScore writes. Local compiler/structural checks passed
-with eight core-node warnings; iPad mixed-type preservation remains unverified.
+with eight core-node warnings. The user reports iPad previews
+`Fri4-Humfrey-InEMinor`, `13`, `1`, supporting the three native consumers;
+confirm the selected Folder has 13 immediate children. Full archive save/reuse
+and native File returns remain untested; see the linked evidence for scope.
 
 New isolated manual-work candidate: [running-order Text accumulator](running-order-text.md).
 The local CLI accepts it, but structural export checks reject the known

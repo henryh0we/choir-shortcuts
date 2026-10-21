@@ -5,7 +5,8 @@ quoted-index loop used successfully for naming Texts. Whole Repeat Items are
 assigned to mutable variables initialized with Nothing. No File, Folder or
 Dictionary is interpolated or converted to Text during extraction.
 
-This extends the Text-only evidence; native preservation is **not yet confirmed**.
+The user has now reported three previews from this probe; see evidence below.
+The full archive's save/reuse and native File returns remain separate tests.
 The separate [read-only probe](probe-archive-context-loop.jelly) exercises the
 same extraction without saving or renaming anything. It has no dependencies and
 is not required by production. The earlier failed selector probes are preserved.
@@ -21,8 +22,10 @@ is not required by production. The earlier failed selector probes are preserved.
    Dictionary variable, in that order. Insert native tokens, not typed names.
 5. **Run Shortcut** → TEST - Archive Context Loop, input = that List.
 
-Expected previews: the PDF's filename, then `1` (the Folder child count), then
-`1` (config version). Inspect the loop's three If conditions and assignments;
+Expected previews: the PDF's Name property (which may omit its extension), then
+`1` (child count for this one-subfolder fixture), then `1` (config version).
+For an existing Library, the middle number must match its actual immediate
+child count, including both files and folders. Inspect the loop's three If conditions and assignments;
 downstream actions must read current named sourceFile/archiveRoot/workflowConfig,
 not the initial Nothing token. Any missing/wrong preview or native-action failure
 means the mixed context path has not passed. Receiving settings must retain all
@@ -38,7 +41,16 @@ in [config tests](../config-integration.md).
 
 ## Evidence
 
-Device execution: **Not run** for this probe or the Archive 15 context loop.
+User report, 21 October 2026: the probe returns `Fri4-Humfrey-InEMinor`, then
+`13`, then `1`. This is evidence that the three extracted values can feed File
+Name, Folder Contents/Count and Dictionary version lookup in that device run.
+The middle value differs from the one-subfolder fixture; the actual selected
+Folder contents have not been independently confirmed. If that Library contains
+13 immediate children, the count is correct. The filename preview is the Name
+property, not the canonical naming-helper result, and need not include `.pdf`.
+Exact installed source/settings were not supplied; no full Archive 15 execution,
+PDF-content preservation, save/reuse or native File-return pass is claimed.
+
 Local compiler/structural export checks passed with eight brace/core-node
 warnings. Export inspection found the three quoted index branches, native Repeat
 Item assignments and current named-variable consumers. The exact command/result is recorded in [config tests](../config-integration.md);

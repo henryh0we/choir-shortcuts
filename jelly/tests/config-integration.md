@@ -24,9 +24,13 @@ python jelly/scripts/build.py jelly/shortcuts/reusable/util-archive-choir-pdf.je
   No extraction value is converted to Text. Exact source hashes and diagnostics
   are in the corresponding `build/shortcuts/reusable/` and
   `build/tests/compatibility/` `.build.json` reports.
-- iPad: **Not run** for Archive 15 or this probe. Prior Text-only success does
-  not establish native preservation. Follow [context-loop steps](compatibility/archive-context-loop.md),
-  then existing save/reuse, native File-return and invalid-input cases below.
+- iPad user report, 21 October: the read-only probe returns
+  `Fri4-Humfrey-InEMinor`, `13`, `1`. File Name, Folder Contents/Count and
+  Dictionary lookup therefore produced values from the three extracted items.
+  Confirm the selected Library actually has 13 immediate children; the documented
+  one-subfolder fixture would return 1. Exact installed source/settings were not
+  supplied. Full Archive 15 save/reuse, PDF-content preservation, native File
+  return and invalid-input cases remain untested. See [context-loop evidence](compatibility/archive-context-loop.md).
 
 User-reported naming result, 21 October 2026: after the revision 11 transfer and
 native List → Run Shortcut → Quick Look instructions, the user reports the correct
