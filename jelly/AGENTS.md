@@ -14,6 +14,70 @@ These instructions apply to `jelly/` and its descendants. This is the code-based
 
 Read [README.md](README.md), [the syntax reference](docs/jellycuts-reference.md), [architecture](docs/architecture.md), and [dependencies](docs/dependencies.md) before implementation. The reference records source-backed patterns, known discrepancies, and current tooling limits.
 
+## Mandatory iPad generation and repair rules (23 October 2026)
+
+Read [the assembly incident record](docs/ipad-assembly-lessons.md) before changing
+these helpers. The user completed a one-score service run after native repairs,
+then confirmed direct New Setlist assignment and a prompted date/name default.
+This does not validate an untouched source export or all service branches.
+The [iPad investigation plan](tests/ipad-investigation/README.md) records the
+small tests needed to improve generation rather than repeatedly debug full runs.
+
+1. Every required native insertion or repair must have an adjacent single-line
+   `//` comment in the .jelly source and identical .txt copy. Include a stable ID,
+   ADD/RECONNECT/CHECK, exact producing action or named variable, input type,
+   consumers to reconnect, operator/default/settings, loop/branch placement and
+   which placeholder to delete or initializer to preserve. A prose guide alone
+   is insufficient. Do not mark all Nothing actions for deletion.
+2. Distinguish action-output tokens from named mutable variables. After native
+   slot replacement reconnect every consumer before deleting Nothing. After
+   loop/branch assignments, consumers must read current named variables rather
+   than empty initializers. Explicitly inspect Count inputs, both If operands,
+   Combine Text and Repeat inputs, and all downstream forScore fields.
+3. Verify native If polarity, not just variable names. `== nil` means **does not
+   have any value**; `!= nil` means **has any value**. A workingScore missing-value
+   error was installed with the opposite condition. Count guards must compare
+   the actual Count output **is not** the intended expected-count output. Do not
+   assert a universal compiler cause from these installed-action observations.
+4. Ask for Input defaults and dynamic Lists need actual tokens. Full-helper
+   title/composer defaults exported literal expressions despite a separate Text
+   List interpolation probe passing. Do not extrapolate across action fields.
+   Mark exact default-token repairs and remove literal empty quote placeholders.
+5. Verify each Run Shortcut's selected installed target together with its List
+   contract: naming = two Text items; archive = PDF File / Library Folder /
+   parsed config Dictionary; assembly = Text interactive. The wrong archive
+   target was once selected for the naming List. Temporary `2-util-*` names are
+   installation aliases, not authorization to rename source contracts globally.
+6. Preserve the app-supported complementary If workaround for score reuse/import
+   until an isolated test supersedes it. It resolved duplicate magic-variable
+   errors; do not claim Otherwise is universally broken or silently reintroduce
+   that source form because a native Otherwise works.
+7. Collections use Add to Variable, one item per iteration, not Set Variable.
+   SCORE01/02 assign native lookup Items to workingScore; COL03 appends that
+   named Score outside metadata Ifs. Editor Text labels alone neither prove nor
+   disprove native preservation. Verify actual Score use; count equality is not
+   identity/order verification.
+8. Record manual UI changes separately from generated behaviour. New Setlist can
+   feed named targetSetlist directly for Create new; only Replace existing needs
+   the chooser. Prompted Date -> yyyy-MM-dd - EEE -> service-type Text -> editable
+   name default works natively. Do not invent Jelly bindings to reproduce these;
+   add precise native completion comments until source generation is established.
+9. Diagnose the first failing boundary: preview the actual Run Shortcut result,
+   then current named variable, then Count operands and If operator. Never assume
+   an import diagnostic succeeded if no report establishes it. A healthy PDF
+   preview plus a missing-PDF error suggests checking that guard's connection.
+10. Back up completed installed shortcuts before regeneration. Keep a concise
+    current evidence summary above historical records and link exact manual
+    changes. Mark fresh-source, compiled, imported, repaired-runtime and broader
+    regression evidence separately. Prioritise targeted probes over another
+    full-service debugging campaign.
+
+Example comment format (one physical line per native Comment action):
+
+```jelly
+// WIRE-COL03 RECONNECT: Count Items input=named preparedScores (native Scores); following If left=this Count output, operator=is not, right=pieceCount from original selected-files Count. Preserve emptyPreparedScores initializer; COL03 Add remains inside preparation Repeat and outside metadata Ifs.
+```
+
 ## Local compiler workflow (21 October 2026)
 
 The WSL/Linux compiler is installed: Open-Jellycore `e1ec31c2ee192c8721749f9eb3b50108e38891cf`, built unmodified with Swift 6.4.1. This is a separate profile from the user's Jellycuts app. Read [development](docs/development.md), [setup](docs/setup.md), [compiler limitations](docs/compiler-limitations.md), and [local test evidence](tests/compiler/README.md) when working on tooling or interpreting a compiler mismatch. Older statements below about compiler absence describe the earlier inspection.

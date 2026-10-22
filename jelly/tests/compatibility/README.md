@@ -1,5 +1,17 @@
 # Jellycuts app compatibility evidence
 
+## Installed Assembly result, 23 October 2026
+
+The user confirms one-score setlist population/readback/open after manual input,
+Count, default-answer and condition-polarity repairs, then confirms direct native
+New Setlist assignment and prompted service-date/name defaults. Details, temporary
+installed aliases, exact repairs and untested scope are in
+[the incident record](../../docs/ipad-assembly-lessons.md). This supersedes runtime
+“Not confirmed” below only for that repaired fixture. Assembly 16 adds comments
+for reconnections and those manual UI changes; it does not claim regenerated
+behaviour matches the installed shortcut. Next tests are in the separate
+[iPad investigation directory](../ipad-investigation/README.md).
+
 ## Assembly duplicate magic-variable errors, 22 October 2026
 
 User reports installation of Assembly 14 with 28 warnings and two errors:

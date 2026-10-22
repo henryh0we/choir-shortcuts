@@ -1,5 +1,14 @@
 # Conditional input connection audit
 
+23 October 2026: installed Assembly failures confirmed that checking a source
+condition is insufficient. The workingScore error branch used **has any value**
+and needed **does not have any value**; several Count and collection consumers
+worked after native reselection. Read [the current repair record](ipad-assembly-lessons.md)
+for actual outcomes and the [iPad test plan](../tests/ipad-investigation/README.md)
+for isolated polarity/reference tests. Old line numbers and “unverified” statements
+below are historical; the completed one-score fixture now opens its setlist.
+Fresh-source fidelity and full regression coverage are still unverified.
+
 Assembly 13 scope review: rootChildName, lowerExtension and canonicalStem now use
 named variables declared before the corresponding Repeat, with distinct Result
 captures assigned immediately before conditional use. Inspect both Set Variable

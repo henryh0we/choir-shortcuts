@@ -1,5 +1,14 @@
 # Complete the generated choir Shortcuts
 
+## Current installed result, 23 October 2026
+
+The user confirms a manually repaired one-score service populates and opens its
+setlist. Create new now directly uses New Setlist, and the prompted date/name
+default works after native edits. Follow [the exact repair and change record](ipad-assembly-lessons.md)
+before the historical procedure below. Those two UI changes are not executable
+source changes; WIRE/EDIT comments in Assembly 16 mark checks and native edits.
+Fresh exports and multi-score/replacement regressions are not validated by this.
+
 ## Integrate the working archive
 
 22 October 2026: the user confirms their manually repaired Archive 15 now saves
@@ -35,7 +44,8 @@ repairs. Do not reimport it just for integration.
 7. Install/reselect **MAIN - Build Choir Service** after Assembly passes. Confirm
    its Run Shortcut calls this completed Assembly and returns its report.
 
-Whole-service integration remains **Not run**. Record observed outcomes in
+The one-score installed fixture has since passed after manual repairs; broader
+whole-service regression remains **Not run**. Record observed outcomes in
 [choir-service tests](../tests/choir-service.md) and required failure cases in
 [config tests](../tests/config-integration.md). The older revision/untested notes
 below are historical where superseded by the specific installed-archive report.
@@ -128,7 +138,13 @@ All File, Score, Composer and Setlist inputs above are native tokens. The title/
 
 The source uses **Get Item from List: Item at Index, 1** wherever these instructions refer to Get First Item. It uses the documented `File Extension` enum throughout. Running-order filenames are joined with ` | ` using Custom, avoiding the unmatched `NewLines` enum spelling; multiline alerts/reports use documented triple-quoted strings.
 
-Check that FS11 uses Repeat Item from the final writing loop, not the preparation loop. Check that the preparation loop's last Get Item from List still yields workingScore; its Repeat Results become preparedScores. The ordering loop ends with Choose from List so its Repeat Results are native Files. Keep comments above their slots, not after those final output actions. These remaining loop/If result captures are compiler-source-backed candidates, not device-confirmed. The optional repeat-capture probe isolates their syntax if the app reports another out-of-scope result.
+Check that FS11 uses Repeat Item from the final writing loop, not the preparation
+loop. Current sources use explicit Add to Variable slots: COL01 builds named
+orderedFiles, COL02 builds orderedNames, COL03 builds preparedScores. Do not use
+Repeat Results as substitutes. Preserve collection initializers and reselect
+named collections in Count/Repeat/Combine consumers; use the Count outputs in
+both comparison operands. The repaired one-score fixture passes, while multiple
+items/repetitions still need the separate iPad tests.
 
 After completing CONF01-CONF02, all 13 FS slots and the archive helper, remove only the **first** Stop and Output under the service ASSEMBLY GUARD. Leave the guard Comment as the checklist locator. Then run the main with one complete service as described in [the build guide](choir-service-build.md).
 

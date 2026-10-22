@@ -4,6 +4,36 @@ This directory contains Jelly source for Apple Shortcuts. Each `.jelly` file rep
 
 Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/jellycuts-reference.md), [architecture](docs/architecture.md), and [Shortcut inventory and installation order](docs/dependencies.md).
 
+## Current iPad status and avoiding repeat debugging
+
+23 October 2026: the user confirms a manually completed one-score Assembly run
+populates and opens the forScore setlist. Direct use of New Setlist for Create new
+and a prompted service-date/name default also work after native edits. Fresh
+exports and multi-score, repeated-score and replacement cases remain unverified.
+Preserve the working installed shortcuts; regenerating restores placeholders.
+
+Read [the repairs and installed changes](docs/ipad-assembly-lessons.md) before
+another import. Source comments marked WIRE/EDIT identify required checks beside
+actions, in addition to CONF/COL/SCORE/FS insertion slots. In particular:
+
+- Reconnect consumers after replacing Nothing; keep initializer Nothing actions.
+- Reselect current named collections in Count, Combine Text and Repeat; reconnect
+  both Count comparison operands and verify **is not**.
+- Missing-value guards must say **does not have any value**; presence guards say
+  **has any value**. Check the native operator after export.
+- Insert real default-answer and List variable tokens; literal expressions and
+  `""` are not working defaults. Preserve native File/Folder/Dictionary/Score types.
+- Select each Run Shortcut target and matching List together: naming takes two
+  Texts, archive takes PDF/Library/config, Assembly takes Text interactive.
+- Diagnose actual action outputs before changing implementation. A count or
+  editor Text label alone does not establish native type, identity or order.
+
+For a repeatable route to better generation, use the separate
+[iPad questions and test checklist](tests/ipad-investigation/README.md). It lists
+small experiments, expected outcomes, existing evidence and a results template;
+the proposed tests have not been executed. Improve source forms only from recorded
+evidence, and leave explicit repair comments where generation is still uncertain.
+
 Local compilation is now available through WSL2: Open-Jellycore `e1ec31c`, built with Swift 6.4.1. See [setup](docs/setup.md), [daily development](docs/development.md), [limitations/signing](docs/compiler-limitations.md), and [validation evidence](tests/compiler/README.md). From this repository's root, run:
 
 ```powershell
@@ -35,6 +65,6 @@ For new work, inspect existing components, define contracts, create one `.jelly`
 
 ## Build a choir service
 
-Current config-based revisions (17 October 2026): read [config setup and changed input contracts](docs/config-integration.md) first. Naming and archive now use interface 2.0 native List inputs. Assembly loads the existing `Choir Music/config.json` once and requires CONF01-CONF02 plus the existing FS slots; archive keeps CFG02-CFG04. Preserve working installed copies before updating all callers. These new revisions are Drafted and need device validation.
+Read [config setup and input contracts](docs/config-integration.md) first. Naming uses interface 2.0; Archive completed interface is 2.1; Assembly completed interface is 1.1. Assembly loads `Choir Music/config.json` once and needs CONF01-CONF02, COL01-COL03, SCORE01-SCORE02 and FS01-FS13; archive keeps CFG02-CFG04. The manually repaired installed fixture has the limited success recorded above; generated source is still a completion template.
 
-Start with [the choir service build guide](docs/choir-service-build.md). It provides the implementation scope and dependency-first order for all four Jelly sources. Standard actions are generated; [Comment slots](docs/choir-service-assembly.md) identify forScore insertions and archive configuration. Complete those slots after export, then check one service run. Sources are Drafted, not compiled, installed or working. The older manual blueprints remain reference material.
+Start with [the choir service build guide](docs/choir-service-build.md) for scope and dependency order, then [the assembly guide](docs/choir-service-assembly.md) and current repair record. Complete native slots and reconnections after export, inspect conditions and defaults, then run the one-score test. The older manual blueprints remain reference material.

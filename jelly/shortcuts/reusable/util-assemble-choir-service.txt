@@ -1,6 +1,6 @@
 // Installed name: UTIL - Assemble Choir Service
 // Purpose: Generate standard actions; insert forScore actions at FS01-FS13.
-// Role: Reusable; specification revision 15; completed interface 1.1.
+// Role: Reusable; specification revision 16; completed interface 1.1.
 // Input: Text interactive. Other/missing input returns instructions; direct no-input unsupported.
 // Output: One service-report Text if native actions/navigation complete.
 // Side effects after assembly: File selection, clean archive/import, metadata, setlist writes.
@@ -8,8 +8,8 @@
 // Dependencies: UTIL - Canonical Choir Name interface 2.0; UTIL - Archive Choir PDF interface 2.1.
 // Sources: util-canonical-choir-name.jelly and util-archive-choir-pdf.jelly.
 // Target: iPadOS 26.6, forScore 15.2.5, Jellycuts 2026.6.4; Files/app permissions.
-// Stage: Drafted; local docs/source reviewed, not compiled/device tested.
-// Assembly: ../../docs/config-integration.md; tests: ../../tests/config-integration.md
+// Stage: Revision 15 compiled on iPad; manually repaired one-score run opens setlist. Revision 16 adds repair comments only; fresh export fidelity unverified.
+// Assembly: ../../docs/ipad-assembly-lessons.md and ../../docs/config-integration.md; tests: ../../tests/ipad-investigation/README.md
 
 import Shortcuts
 
@@ -76,6 +76,7 @@ output("ERROR: No service type selected. No changes made.")
 selectedServiceType = chosenServiceType
 }
 // servicesFolder and manifestFilename are reserved; this release creates no manifest or service-folder copies.
+// WIRE-SELECT RECONNECT: Following missing-files If, original pieceCount Count, ordering Repeat and its Choose List must consume this Select File output. If operator=does not have any value; error stays inside If.
 selectFile(type: Files, multiple: true) >> selectedFiles
 if(selectedFiles == nil) {
 output("ERROR: No files selected. No changes made.")
@@ -87,6 +88,7 @@ nothing() >> emptyOrderedFile
 var orderedFile = emptyOrderedFile
 repeatEach(selectedFiles) {
 choose(list: selectedFiles, prompt: "Choose piece ${RepeatIndex} of ${pieceCount} in running order.", multiple: false, all: false) >> chosenOrderedFile
+// WIRE-ORDER RECONNECT: This Set Variable orderedFile input=this ordering Choose action's Chosen Item. Following If uses named orderedFile, operator=does not have any value; COL01 appends named orderedFile. Preserve initializer Nothing.
 orderedFile = chosenOrderedFile
 if(orderedFile == nil) {
 output("ERROR: No piece selected for the running order. No changes made.")
@@ -94,6 +96,7 @@ output("ERROR: No piece selected for the running order. No changes made.")
 // COL01 ORDERED FILES: Replace next Nothing with native Add to Variable, input=current named native orderedFile assigned from this iteration's Choose from List, variable=orderedFiles. Append one native File per iteration; do not use Text or replace Add to Variable with Set Variable. Inspect the preceding Set Variable orderedFile uses chosenOrderedFile from this Choose action.
 nothing()
 }
+// WIRE-COL01 RECONNECT: Count input=named orderedFiles; following If left=this Count result, operator=is not, right=pieceCount from original selected-files Count. Next validation/preparation Repeats use named orderedFiles. Keep COL01 Add inside ordering Repeat.
 count(type: Items, input: orderedFiles) >> orderedCount
 if(orderedCount != pieceCount) {
 output("ERROR: Running order is incomplete. Check COL01 and its named orderedFiles variable. No changes made.")
@@ -113,11 +116,13 @@ fileDetail(input: RepeatItem, property: Name) >> orderedName
 // COL02 ORDERED NAMES: Replace next Nothing with native Add to Variable, input=orderedName, variable=orderedNames. Append the filename Text in this validation loop.
 nothing()
 }
+// WIRE-COL02 RECONNECT: Count and Combine Text inputs=named orderedNames; If left=this Count result, operator=is not, right=original pieceCount. COL02 Add input=this validation loop's File Details Name. Preserve collection initializer Nothing.
 count(type: Items, input: orderedNames) >> orderedNameCount
 if(orderedNameCount != pieceCount) {
 output("ERROR: Running order preview is incomplete. Check COL02 and its named orderedNames variable. No changes made.")
 }
 combineText(text: [orderedNames], combine: Custom, separator: " | ") >> runningOrder
+// EDIT-DATE ADD/RECONNECT: Before this name question add native Ask for Input Date, Format Date custom yyyy-MM-dd - EEE (English UK), then Text with Formatted Date and selectedServiceType tokens separated by " - ". Replace name Default Answer with that Text token; prompt=Confirm the service name. Keep following trim connected to this Ask result. Native edit confirmed; source bindings not established.
 askForInput(prompt: "Service name including date, for example 2026-10-18 - Evensong", type: Text, default: "", allowDecimal: false, allowNegative: false) >> enteredServiceName
 replaceText(input: "${enteredServiceName}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> serviceName
 if(serviceName == nil) {
@@ -138,6 +143,7 @@ var preparedScores = emptyPreparedScores
 var canonicalStem = ""
 repeatEach(orderedFiles) {
 fileDetail(input: RepeatItem, property: Name) >> sourceName
+// WIRE-NAME CHECK: Next Run Shortcut must select installed Canonical helper, NOT Archive; input=this two-Text List with sourceName/prefixRegex tokens. After a renamed install reselect actual target; next Set canonicalStem uses this naming Run result.
 list(items: ["${sourceName}", "${prefixRegex}"]) >> sourceNameInput
 runShortcut(name: "UTIL - Canonical Choir Name", input: sourceNameInput, show: false) >> canonicalStemResult
 canonicalStem = canonicalStemResult
@@ -145,6 +151,7 @@ if(canonicalStem == nil) {
 output("ERROR: Empty music identity. Earlier pieces may already be prepared.")
 }
 // Native context List: keep File, Folder and Dictionary as whole variable tokens; no Text/JSON conversion.
+// WIRE-ARCHIVE RECONNECT: This List rows=current preparation Repeat PDF, named libraryRoot Folder, parsed workflowConfig Dictionary, all native tokens. Next Run targets installed Archive and consumes this List. Get Type, missing-PDF If and FS02 consume that Run result, not diagnostic output.
 list(items: [RepeatItem, libraryRoot, workflowConfig]) >> archiveInput
 runShortcut(name: "UTIL - Archive Choir PDF", input: archiveInput, show: false) >> cleanFile
 getType(input: cleanFile) >> archiveResultTypeResult
@@ -152,11 +159,13 @@ archiveResultType = archiveResultTypeResult
 if(archiveResultType == "Text") {
 output("${cleanFile}")
 }
+// WIRE-CLEAN CHECK: Reselect actual Archive Run Shortcut result here; operator=does not have any value. Above Text-error If uses current named archiveResultType equal to Text. A correct PDF preview must pass this absence guard.
 if(cleanFile == nil) {
 output("ERROR: No clean PDF returned for ${canonicalStem}. Inspect archive before retrying.")
 }
 
 // FS01 LOOKUP. Replace next Nothing with Get score named canonicalStem. Continue if not found ON; category filters unset; Reference empty. Reconnect the following existingScore presence If and SCORE01 list input to THIS Get score output. Never use the first score of the whole library.
+// WIRE-FS01 RECONNECT: Replacement lookup output feeds BOTH complementary existingScore Ifs, SCORE01 List and later metadata presence If. Presence=has any value; import branch=does not have any value. Use the same intended forScore library for lookups and setlists.
 nothing() >> existingScore
 
 nothing() >> noWorkingScore
@@ -166,9 +175,9 @@ if(existingScore != nil) {
 nothing() >> reusedWorkingScore
 workingScore = reusedWorkingScore
 }
-// Candidate workaround for duplicate magic-variable errors in the former Otherwise branch; iPad compilation pending.
+// APP EVIDENCE: Complementary If checks fixed duplicate magic-variable errors in revision 15 and compiled on iPad; preserve this source form pending isolated branch tests.
 if(existingScore == nil) {
-// FS02 IMPORT. Replace next Nothing with the import action that worked in the device diagnostic. Files=cleanFile native File; Conflict Handling=Skip. Raw import output is not consumed.
+// FS02 IMPORT ADD/CHECK: Replace next Nothing with forScore Import file(s), a candidate to verify with a disposable PDF; exact successful catalogue action/branch was not recorded. Files=actual archive Run Shortcut result cleanFile (native PDF); Conflict Handling=Skip. Output is unused; FS03 looks up the Score.
 nothing()
 // FS03 LOOKUP AFTER IMPORT. Replace next Nothing with Get score named canonicalStem, Continue if not found ON, other filters unset. Reconnect the following importedScore presence If and SCORE02 list input to this lookup's native Score output.
 nothing() >> importedScore
@@ -179,6 +188,7 @@ output("ERROR: Import unconfirmed for ${canonicalStem}. Inspect forScore before 
 nothing() >> importedWorkingScore
 workingScore = importedWorkingScore
 }
+// WIRE-SCORE RECONNECT/CHECK: SCORE01 and SCORE02 Set Variable workingScore each consume their own Get Item output (native Score, index 1). This If input=named workingScore, operator=does not have any value, NEVER has any value. Preserve noWorkingScore initializer.
 if(workingScore == nil) {
 output("ERROR: No native working Score selected. Check SCORE01/SCORE02 and workingScore. Earlier pieces may already be prepared; setlist entries have not been changed.")
 }
@@ -205,11 +215,13 @@ titleSuggestion = matchedTitleSuggestion
 }
 replaceText(input: "${titleSuggestion}", find: "([a-z])([A-Z])", replace: "$1 $2", isRegex: true, caseSensitive: true) >> spacedTitle
 replaceText(input: "${spacedTitle}", find: "-", replace: " - ", isRegex: false, caseSensitive: true) >> readableTitle
+// WIRE-TITLE RECONNECT: Ask for Input Default Answer=preceding readableTitle Replace Text output token; delete literal interpolation text. The full export displayed a literal expression until manually repaired.
 askForInput(prompt: "Confirm title, retaining movement and variant details.", type: Text, default: "${readableTitle}", allowDecimal: false, allowNegative: false) >> enteredTitle
 replaceText(input: "${enteredTitle}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> displayTitle
 if(displayTitle == nil) {
 output("ERROR: Empty title. Rerun and choose Review metadata to finish any imported score.")
 }
+// WIRE-COMPOSER RECONNECT: Ask for Input Default Answer=named composerSuggestion token; delete literal expression. Use current suggestion assigned by composer/title branch, not an initial unrelated Text output.
 askForInput(prompt: "Confirm composer; a single hyphen means unknown/not applicable.", type: Text, default: "${composerSuggestion}", allowDecimal: false, allowNegative: false) >> enteredComposer
 replaceText(input: "${enteredComposer}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> composerName
 
@@ -234,6 +246,7 @@ nothing()
 }
 
 // Preflight the named collection before creating, clearing or appending setlist entries.
+// WIRE-COL03 RECONNECT: Count and final writing Repeat inputs=named preparedScores; If left=this Count result, operator=is not, right=original pieceCount. COL03 Add named workingScore remains inside preparation Repeat, outside metadata Ifs. Preserve initializer; editor Text label alone is inconclusive.
 count(type: Items, input: preparedScores) >> preparedCount
 if(preparedCount != pieceCount) {
 output("ERROR: Prepared score count does not match the running order. Check COL03 and its named preparedScores variable. Files or metadata may already be changed; setlist entries have not been changed.")
@@ -244,11 +257,13 @@ choose(list: setlistChoices, prompt: "Create an unused service name, or replace 
 if(setlistMode == nil) {
 output("ERROR: No setlist mode selected. Scores may already be prepared; setlist entries have not been changed.")
 }
+// EDIT-TARGET ADD/RECONNECT: User-tested native flow: Create new sets named targetSetlist from FS08 New Setlist output; Otherwise contains FS09 Get all setlists, chooser and Set targetSetlist from Chosen Item. Move End If after both assignments. Reconnect validation and FS10-FS13 to named targetSetlist. Template below retains original chooser until this native edit is applied; see incident guide.
 if(setlistMode == "Create new") {
 // FS08 CREATE SETLIST. Replace next Nothing with new setlist (expanded Create Setlist Name). Name=serviceName; Folder unset. Use an unused name. Creation's return is not consumed.
 nothing()
 }
 // FS09 RETRIEVE SETLISTS. Replace next Nothing with Get all setlists. Reconnect the following Choose from List input to its Setlists output.
+// WIRE-FS09 CHECK: In Library selects intended library (Current Library was used; Empty is a named separate test library). Sort Order Title is acceptable for this chooser. Choose List=Get all setlists output. With EDIT-TARGET this retrieval/chooser belongs only in Replace existing branch.
 nothing() >> availableSetlists
 choose(list: availableSetlists, prompt: "Select the new service, or the existing service to replace.", multiple: false, all: false) >> targetSetlist
 if(targetSetlist == nil) {
@@ -269,6 +284,7 @@ nothing()
 }
 // FS12 READBACK. Replace next Nothing with Get setlist entries. Setlist=targetSetlist; Sorting=Manual. Reconnect Count below to its native Entries output; inspect actual Manual order in forScore after FS13.
 nothing() >> actualEntries
+// WIRE-READBACK RECONNECT: First Count input=FS12 native Entries; second Count input=named preparedScores. Following If left=first Count output, operator=is not, right=second Count output. Equal counts still require actual identity/Manual-order inspection in forScore.
 count(type: Items, input: actualEntries) >> actualCount
 count(type: Items, input: preparedScores) >> requestedCount
 if(actualCount != requestedCount) {
@@ -284,4 +300,5 @@ Running order submitted to selected setlist. Check Manual order and metadata; co
 """) >> serviceReport
 // FS13 OPEN SERVICE. Replace next Nothing with open setlist. Setlist=targetSetlist. Do not supply serviceName Text instead of the object. Keep the following Stop and Output connected to serviceReport Text.
 nothing()
+// WIRE-REPORT CHECK: Final Stop and Output uses serviceReport Text output token, not literal interpolation text or FS13 output. Preserve this return after opening targetSetlist.
 output("${serviceReport}")
