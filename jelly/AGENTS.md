@@ -120,9 +120,12 @@ them with actual native variable tokens and confirms save/reuse now works.
 Inspect every dynamic sender List after regeneration, including Assembly's
 PDF/Folder/Dictionary archiveInput. Compilation or receiver extraction alone
 does not establish sender transport. Do not interpolate native File/Folder/
-Dictionary/Score values into Text. Explicit Text interpolation inside a List is
-only a candidate until the isolated device test passes; its local export currently
-fails interpolation-range validation. See [List evidence](tests/compatibility/list-variable-transport.md).
+Dictionary/Score values into Text. The user now confirms the isolated Text List
+interpolation probe installs, inserts variable tokens and previews values rather
+than names. Use explicit `"${variable}"` entries for dynamic Text Lists; Archive
+16 and Assembly 14 apply this to naming inputs. The older local compiler still
+fails interpolation-range validation for the probe. Full updated callers need
+device retesting. See [List evidence](tests/compatibility/list-variable-transport.md).
 
 Use native Text, Number, Boolean representations, Date, List, Dictionary, File, and URL content where supported. Specify actual representation and cardinality: a file-path string is not a File, and Text `false` is not a native Boolean. Define date locale/timezone and list ordering where relevant. Use one native Dictionary for multiple related inputs; prefer consistent lowerCamelCase keys without changing established interfaces solely for casing.
 

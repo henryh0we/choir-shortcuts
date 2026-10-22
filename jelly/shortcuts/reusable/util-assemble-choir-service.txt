@@ -1,6 +1,6 @@
 // Installed name: UTIL - Assemble Choir Service
 // Purpose: Generate standard actions; insert forScore actions at FS01-FS13.
-// Role: Reusable; specification revision 13; completed interface 1.1.
+// Role: Reusable; specification revision 14; completed interface 1.1.
 // Input: Text interactive. Other/missing input returns instructions; direct no-input unsupported.
 // Output: One service-report Text if native actions/navigation complete.
 // Side effects after assembly: File selection, clean archive/import, metadata, setlist writes.
@@ -138,7 +138,7 @@ var preparedScores = emptyPreparedScores
 var canonicalStem = ""
 repeatEach(orderedFiles) {
 fileDetail(input: RepeatItem, property: Name) >> sourceName
-list(items: [sourceName, prefixRegex]) >> sourceNameInput
+list(items: ["${sourceName}", "${prefixRegex}"]) >> sourceNameInput
 runShortcut(name: "UTIL - Canonical Choir Name", input: sourceNameInput, show: false) >> canonicalStemResult
 canonicalStem = canonicalStemResult
 if(canonicalStem == nil) {

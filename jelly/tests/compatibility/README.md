@@ -6,7 +6,10 @@ See [List variable transport](list-variable-transport.md) for the required
 sender-side checks and **TEST - List Text Interpolation** ([source](probe-list-text-interpolation.jelly),
 [transfer](probe-list-text-interpolation.txt)). This diagnostic has no dependencies
 or writes, ignores input and previews two Text values. Its local export was
-rejected by the known interpolation-range defect; iPad result is pending.
+rejected by the known interpolation-range defect; the user now confirms iPad
+List variable tokens and value previews work. Archive 16 (two naming Lists) and
+Assembly 14 (one naming List) apply that Text-only fix. Full updated callers
+still need device retesting; native File/Folder/Dictionary transport is separate.
 
 Archive 15 replaces ARC01-ARC03 with a native context loop candidate. Independent
 read-only diagnostic **TEST - Archive Context Loop**: [source](probe-archive-context-loop.jelly),

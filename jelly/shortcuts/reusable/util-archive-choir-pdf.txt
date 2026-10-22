@@ -1,6 +1,6 @@
 // Installed name: UTIL - Archive Choir PDF
 // Purpose: Generated archive helper; complete CFG slots after importing.
-// Role: Reusable; specification revision 15; completed interface 2.1.
+// Role: Reusable; specification revision 16; completed interface 2.1.
 // Input: Native List: one PDF File, native Library Folder, parsed config Dictionary.
 // Output after assembly: Native File on success; Text starting ERROR: on validation failure. Caller must reject error Text before import.
 // Direct/called: May ask for a type folder when absent; no unattended mode.
@@ -80,7 +80,7 @@ if(lowerExtension != "pdf") {
 output("ERROR: No file saved. Select a PDF.")
 }
 fileDetail(input: sourceFile, property: Name) >> sourceName
-list(items: [sourceName, prefixRegex]) >> sourceNameInput
+list(items: ["${sourceName}", "${prefixRegex}"]) >> sourceNameInput
 runShortcut(name: "UTIL - Canonical Choir Name", input: sourceNameInput, show: false) >> canonicalStem
 if(canonicalStem == nil) {
 output("ERROR: A file named only .pdf is not supported.")
@@ -101,7 +101,7 @@ changeCase(text: "${archiveExtension}", case: lowercase) >> archiveExtensionLowe
 archiveExtensionLower = archiveExtensionLowerResult
 if(archiveExtensionLower == "pdf") {
 fileDetail(input: RepeatItem, property: Name) >> archiveName
-list(items: [archiveName, prefixRegex]) >> archiveNameInput
+list(items: ["${archiveName}", "${prefixRegex}"]) >> archiveNameInput
 runShortcut(name: "UTIL - Canonical Choir Name", input: archiveNameInput, show: false) >> archiveStemResult
 archiveStem = archiveStemResult
 if(archiveStem == "${canonicalStem}") {

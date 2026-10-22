@@ -8,14 +8,15 @@ name before further work; keep the active name **UTIL - Archive Choir PDF**.
 The generated source does not preserve its condition-type, List-token or CFG
 repairs. Do not reimport it just for integration.
 
-1. Compile/import **UTIL - Assemble Choir Service** (source revision 13), keeping
+1. Compile/import **UTIL - Assemble Choir Service** (source revision 14), keeping
    its initial guard. Complete **CONF01-CONF02**, **COL01-COL03**,
    **SCORE01-SCORE02** and **FS01-FS13** using the tables below.
 2. CONF01 selects **Choir Music**; CONF02 reads its `config.json`. Confirm Library
    is resolved from that root and matches the one used for the successful archive
    test. Reselect the installed naming/archive helpers in Run Shortcut actions.
 3. Inspect the generated naming-input List: actual sourceName and prefixRegex
-   variable tokens. Inspect archiveInput: actual PDF Repeat Item from this loop,
+   variable tokens; revision 14 uses the now user-confirmed Text interpolation
+   form. Inspect archiveInput: actual PDF Repeat Item from this loop,
    native libraryRoot Folder and parsed workflowConfig Dictionary. These must
    not be typed names. Keep native items out of Text interpolation. See
    [the confirmed List defect](../tests/compatibility/list-variable-transport.md).

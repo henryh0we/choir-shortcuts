@@ -1,5 +1,17 @@
 # Config integration acceptance checks
 
+## Text List interpolation confirmed, 22 October 2026
+
+The user reports TEST - List Text Interpolation installs successfully, puts
+variables into the List and previews their values rather than their names.
+Archive **16** updates both naming-input Lists and Assembly **14** updates its
+naming-input List to explicit Text interpolation. Interfaces unchanged; no
+native object is converted to Text. Exact probe hash/settings were not supplied.
+Both full sources were attempted locally; neither passed the recorded older
+Output/File Details/core-node diagnostics. See [exact command, evidence and
+migration](compatibility/list-variable-transport.md). Full updated helper tests
+remain pending; preserve the working manually repaired Archive 15.
+
 ## Archive 15 save/reuse resolution, reported 22 October 2026
 
 The user confirms the naming-input List contained the text names of variables,

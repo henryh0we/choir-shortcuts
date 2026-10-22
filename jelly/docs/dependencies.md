@@ -1,5 +1,12 @@
 # Shortcut inventory and installation order
 
+**Current, 22 October 2026: Canonical 11 / Archive 16 / Assembly 14 / Main 4.**
+Archive/Assembly now use the user-confirmed Text interpolation form in all three
+naming Lists. Native object Lists and slot requirements remain unchanged.
+Preserve the working repaired Archive 15; regeneration restores guards/native
+slots. See [List evidence and migration](../tests/compatibility/list-variable-transport.md).
+Both updated full local builds still fail the recorded older-profile diagnostics.
+
 **Archive 15 update, 21 October 2026:** ARC01-ARC03 manual extraction is replaced
 in source by a quoted-index loop, with Nothing-initialized native variables.
 Mixed File/Folder/Dictionary preservation is still unverified on the iPad; run

@@ -1,5 +1,12 @@
 # Build the choir service workflow
 
+**22 October update:** Current sources are Canonical 11 / Archive 16 / Assembly
+14 / Main 4. The three naming-input Lists now use explicit Text interpolation,
+confirmed in the user's isolated iPad test. Full updated callers still need
+retesting. Preserve the working manually repaired Archive 15; continue with
+Assembly 14 using [the integration checklist](choir-service-assembly.md#integrate-the-working-archive).
+Native archiveInput tokens and all remaining slots still need inspection.
+
 **Archive 15 update, 21 October 2026:** ARC01-ARC03 manual extraction is replaced
 in source by a quoted-index loop, with Nothing-initialized native variables.
 Mixed File/Folder/Dictionary preservation is still unverified on the iPad; run
