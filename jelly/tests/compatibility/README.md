@@ -15,8 +15,10 @@ unchanged FS01 existingScore output: presence reuses SCORE01, absence imports
 through FS02/FS03/SCORE02. Names, native Score consumers, interface 1.1 and guard
 remain unchanged. Uses the locally documented presence operators and the
 app-confirmed parenthesized, flush-left If form. Renaming alone would not address
-possible repeated branch processing. Corrected iPad compile/export/runtime:
-**Not run**. Preserve completed installed edits before regenerating only Assembly;
+possible repeated branch processing. User now confirms Assembly 15 compiles
+successfully after this change. Corrected iPad compilation: **Pass, user report**.
+Export/action wiring, native slot completion and runtime: **Not confirmed**.
+Remaining warning count/text was not supplied. Preserve completed installed edits before regenerating only Assembly;
 archive, naming and main do not need replacement. After export, confirm both
 checks consume FS01, import occurs only on absence, and SCORE01/SCORE02 each set
 the named workingScore from their own native lookup result.

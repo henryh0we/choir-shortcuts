@@ -2,8 +2,8 @@
 
 **Current, 22 October 2026: Canonical 11 / Archive 16 / Assembly 15 / Main 4.**
 Assembly 15 replaces its score lookup/import Otherwise branch with two complementary
-presence checks after user-reported duplicate magic-variable errors. Corrected
-iPad compilation/export is pending. See [compatibility evidence](../tests/compatibility/README.md).
+presence checks after user-reported duplicate magic-variable errors. User confirms
+Assembly 15 now compiles on the iPad; export/wiring and execution remain unconfirmed. See [compatibility evidence](../tests/compatibility/README.md).
 Archive/Assembly now use the user-confirmed Text interpolation form in all three
 naming Lists. Native object Lists and slot requirements remain unchanged.
 Preserve the working repaired Archive 15; regeneration restores guards/native

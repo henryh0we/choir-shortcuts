@@ -8,7 +8,7 @@ name before further work; keep the active name **UTIL - Archive Choir PDF**.
 The generated source does not preserve its condition-type, List-token or CFG
 repairs. Do not reimport it just for integration.
 
-1. Compile/import **UTIL - Assemble Choir Service** (source revision 14), keeping
+1. Export/import the now user-confirmed compiled **UTIL - Assemble Choir Service** (source revision 15), keeping
    its initial guard. Complete **CONF01-CONF02**, **COL01-COL03**,
    **SCORE01-SCORE02** and **FS01-FS13** using the tables below.
 2. CONF01 selects **Choir Music**; CONF02 reads its `config.json`. Confirm Library
@@ -110,7 +110,7 @@ Labels below use the supplied action inventory; the expanded wording may differ.
 
 | ID | Action and settings | Downstream output connections |
 | --- | --- | --- |
-| FS01 | **Get score** named canonicalStem; Continue if not found On | Replace dummy existingScore in the first presence If, its Get First Item, and the later metadata-choice presence If |
+| FS01 | **Get score** named canonicalStem; Continue if not found On | Replace dummy existingScore in BOTH complementary presence/absence Ifs, SCORE01, and the later metadata-choice presence If |
 | FS02 | The **Import file(s)** or **Import score(s)** action that worked in your diagnostic; Files = cleanFile; Conflict Handling Skip | None; the next lookup retrieves the score independently |
 | FS03 | **Get score** named canonicalStem; Continue if not found On | Replace dummy importedScore in the absence If and Get First Item after import |
 | FS04 | **Rename score**: Scores = workingScore; Name = displayTitle | None; workingScore is the named native variable assigned from reuse/import |
@@ -121,7 +121,7 @@ Labels below use the supplied action inventory; the expanded wording may differ.
 | FS09 | **Get all setlists** | Reconnect the following Choose from List to its Setlists output |
 | FS10 | **Remove all setlist entries**: Setlist = targetSetlist | None; keep it inside Replace existing and after all score preparation |
 | FS11 | **add scores to setlist**: Scores = Repeat Item from the writing loop; Setlist = targetSetlist; Skip if already added Off | None; this loop's output is unused |
-| FS12 | **Get setlist entries**: Setlist = targetSetlist; Sorting Manual | Reconnect the following entry Count and later Quick Look to its Entries output |
+| FS12 | **Get setlist entries**: Setlist = targetSetlist; Sorting Manual | Reconnect the following entry Count to its Entries output |
 | FS13 | **open setlist**: Setlist = targetSetlist | None; final Stop and Output still uses serviceReport Text |
 
 All File, Score, Composer and Setlist inputs above are native tokens. The title/composer prompts and canonical lookup stem are Text. The Get First Item actions after FS01/FS03 operate on the individual lookup results, never on a whole library.
