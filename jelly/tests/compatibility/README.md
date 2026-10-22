@@ -1,6 +1,29 @@
 # Jellycuts app compatibility evidence
 
-Latest user report: the manually repaired Archive 15 saves/reuses correctly after
+## Assembly duplicate magic-variable errors, 22 October 2026
+
+User reports installation of Assembly 14 with 28 warnings and two errors:
+line 172 says importedScore is already a magic-variable name; line 177 reports
+the same for importedWorkingScore. Each capture occurs exactly once in source;
+both are in the score-import Otherwise branch. Reprocessing that branch is a
+candidate explanation, not an established compiler diagnosis. Exact warning
+text was not supplied; do not assume all 28 are the previously observed Output
+warnings.
+
+Assembly 15 replaces this If/Otherwise with two complementary checks of the
+unchanged FS01 existingScore output: presence reuses SCORE01, absence imports
+through FS02/FS03/SCORE02. Names, native Score consumers, interface 1.1 and guard
+remain unchanged. Uses the locally documented presence operators and the
+app-confirmed parenthesized, flush-left If form. Renaming alone would not address
+possible repeated branch processing. Corrected iPad compile/export/runtime:
+**Not run**. Preserve completed installed edits before regenerating only Assembly;
+archive, naming and main do not need replacement. After export, confirm both
+checks consume FS01, import occurs only on absence, and SCORE01/SCORE02 each set
+the named workingScore from their own native lookup result.
+
+Local validation: ran `python jelly/scripts/build.py jelly/shortcuts/reusable/util-assemble-choir-service.jelly`. The older pinned CLI rejected the source with core-node/control-flow diagnostics and the established positional Output signature incompatibility; no accepted export. This cannot confirm the iPad correction.
+
+Latest prior user report: the manually repaired Archive 15 saves/reuses correctly after
 replacing literal variable names in its naming-input List with actual tokens.
 See [List variable transport](list-variable-transport.md) for the required
 sender-side checks and **TEST - List Text Interpolation** ([source](probe-list-text-interpolation.jelly),

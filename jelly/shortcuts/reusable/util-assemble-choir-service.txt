@@ -1,6 +1,6 @@
 // Installed name: UTIL - Assemble Choir Service
 // Purpose: Generate standard actions; insert forScore actions at FS01-FS13.
-// Role: Reusable; specification revision 14; completed interface 1.1.
+// Role: Reusable; specification revision 15; completed interface 1.1.
 // Input: Text interactive. Other/missing input returns instructions; direct no-input unsupported.
 // Output: One service-report Text if native actions/navigation complete.
 // Side effects after assembly: File selection, clean archive/import, metadata, setlist writes.
@@ -165,7 +165,9 @@ if(existingScore != nil) {
 // SCORE01 SCORE RESULT: Replace next Nothing with native Get Item from List, List=existingScore from its individual lookup, Item at Index=1. Reconnect the following Set Variable workingScore input to this native Score before deleting Nothing.
 nothing() >> reusedWorkingScore
 workingScore = reusedWorkingScore
-} else {
+}
+// Candidate workaround for duplicate magic-variable errors in the former Otherwise branch; iPad compilation pending.
+if(existingScore == nil) {
 // FS02 IMPORT. Replace next Nothing with the import action that worked in the device diagnostic. Files=cleanFile native File; Conflict Handling=Skip. Raw import output is not consumed.
 nothing()
 // FS03 LOOKUP AFTER IMPORT. Replace next Nothing with Get score named canonicalStem, Continue if not found ON, other filters unset. Reconnect the following importedScore presence If and SCORE02 list input to this lookup's native Score output.
