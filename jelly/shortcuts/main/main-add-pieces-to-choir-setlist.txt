@@ -1,0 +1,15 @@
+// Installed name: MAIN - Add Pieces to Choir Setlist
+// Purpose: Launch the append-only workflow for adding Nextcloud PDFs to an existing forScore setlist.
+// Role: Main; specification revision 1; interface 1.0.
+// Input: None consumed. Direct launch only.
+// Output: One diagnostic Text report if the utility completes.
+// Side effects: See UTIL - Add to Choir Setlist.
+// Dependency: UTIL - Add to Choir Setlist, interface 1.0; canonical and archive helpers; completed forScore slots.
+// Stage: Drafted, not compiled/imported/device tested.
+// Contract/assembly: ../../docs/add-to-choir-setlist.md
+
+import Shortcuts
+
+text(text: "interactive") >> launchMode
+runShortcut(name: "UTIL - Add to Choir Setlist", input: launchMode, show: false) >> addReport
+output("${addReport}")

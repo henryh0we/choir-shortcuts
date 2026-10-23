@@ -1,0 +1,237 @@
+// Installed name: UTIL - Add to Choir Setlist
+// Purpose: Prepare one or more Nextcloud PDFs as forScore scores and append them to a chosen existing setlist.
+// Role: Reusable; specification revision 1; interface 1.0.
+// Input: Text interactive. Direct no-input is unsupported.
+// Output: One diagnostic Text report after appending and readback.
+// Side effects: May save clean archive PDFs, import/rename scores, add composer metadata and append setlist entries.
+// Failure/cancellation may leave prepared files/scores or a partially appended setlist. It never removes existing entries.
+// Dependencies: UTIL - Canonical Choir Name interface 2.0; UTIL - Archive Choir PDF interface 2.1; completed forScore actions at AT01-AT12.
+// Target: iPadOS 26.6; forScore 15.2.5; Jellycuts 2026.6.4 reported.
+// Stage: Drafted, not compiled/imported/device tested. Follow ../../docs/add-to-choir-setlist.md.
+
+import Shortcuts
+
+// RECEIVING: Text interactive. Preserve native archiveInput context and both Text naming inputs. See full helper export for repairs on installed helpers.
+// ASSEMBLY GUARD: Keep until CONF01-CONF02, COL01-COL03 and AT01-AT12 are inserted and connected.
+output("ERROR: Add helper needs CONF, COL, SCORE and forScore slots completed.")
+
+if(ShortcutInput != "interactive") {
+output("ERROR: Launch MAIN - Add Pieces to Choir Setlist.")
+}
+
+// CONF01/CONF02 match the existing service helper: choose Choir Music and read config.json from it.
+nothing() >> choirRoot
+nothing() >> configFile
+getDictionaryFrom(input: configFile) >> workflowConfig
+valueFor(key: "version", dictionary: workflowConfig) >> configVersion
+text(text: "${configVersion}") >> configVersionText
+if(configVersionText != "1") {
+output("ERROR: Only config.json version 1 is supported. No changes made.")
+}
+valueFor(key: "prefixRegex", dictionary: workflowConfig) >> prefixRegex
+valueFor(key: "categories", dictionary: workflowConfig) >> categories
+valueFor(key: "libraryFolder", dictionary: workflowConfig) >> libraryFolderName
+if(prefixRegex == nil) {
+output("ERROR: config.json needs a nonempty prefixRegex. No changes made.")
+}
+if(categories == nil) {
+output("ERROR: config.json needs a nonempty categories array. No changes made.")
+}
+if(libraryFolderName == nil) {
+output("ERROR: config.json needs libraryFolder. No changes made.")
+}
+replaceText(input: "ConfigValidation.pdf", find: "${prefixRegex}", replace: "", isRegex: true, caseSensitive: false) >> regexValidation
+
+getFolderContents(folder: choirRoot, recursive: false) >> rootChildren
+nothing() >> noLibraryFolder
+var libraryRoot = noLibraryFolder
+var rootChildName = ""
+repeatEach(rootChildren) {
+fileDetail(input: RepeatItem, property: Name) >> rootChildNameResult
+rootChildName = rootChildNameResult
+if(rootChildName == "${libraryFolderName}") {
+if(libraryRoot != nil) {
+output("ERROR: Multiple root children match libraryFolder. No changes made.")
+}
+libraryRoot = RepeatItem
+}
+}
+if(libraryRoot == nil) {
+output("ERROR: Choir Music has no folder named ${libraryFolderName}. No changes made.")
+}
+getFolderContents(folder: libraryRoot, recursive: false) >> libraryPreflight
+
+// AT01: Get all setlists. AT02: Choose from its Setlists output. Library must be the same library used for score lookup.
+nothing() >> availableSetlists
+choose(list: availableSetlists, prompt: "Choose the existing service to add pieces to.", multiple: false, all: false) >> targetSetlist
+if(targetSetlist == nil) {
+output("ERROR: No setlist selected. No changes made.")
+}
+
+// Select any number of Nextcloud PDFs, then establish append order explicitly.
+selectFile(type: Files, multiple: true) >> selectedFiles
+if(selectedFiles == nil) {
+output("ERROR: Select one or more PDFs. No changes made.")
+}
+count(type: Items, input: selectedFiles) >> pieceCount
+nothing() >> emptyOrderedFiles
+var orderedFiles = emptyOrderedFiles
+nothing() >> emptyOrderedFile
+var orderedFile = emptyOrderedFile
+repeatEach(selectedFiles) {
+choose(list: selectedFiles, prompt: "Choose piece ${RepeatIndex} of ${pieceCount} in append order.", multiple: false, all: false) >> chosenOrderedFile
+orderedFile = chosenOrderedFile
+if(orderedFile == nil) {
+output("ERROR: No piece selected for append order. No changes made.")
+}
+// COL01: Native Add to Variable; input=named orderedFile; variable=orderedFiles.
+nothing()
+}
+count(type: Items, input: orderedFiles) >> orderedCount
+if(orderedCount != pieceCount) {
+output("ERROR: Append order is incomplete. No changes made.")
+}
+
+nothing() >> emptyOrderedNames
+var orderedNames = emptyOrderedNames
+var lowerExtension = ""
+repeatEach(orderedFiles) {
+fileDetail(input: RepeatItem, property: File Extension) >> sourceExtension
+changeCase(text: "${sourceExtension}", case: lowercase) >> lowerExtensionResult
+lowerExtension = lowerExtensionResult
+if(lowerExtension != "pdf") {
+output("ERROR: A selected item is not a PDF. No changes made.")
+}
+fileDetail(input: RepeatItem, property: Name) >> orderedName
+// COL02: Native Add to Variable; input=orderedName Text; variable=orderedNames.
+nothing()
+}
+count(type: Items, input: orderedNames) >> orderedNameCount
+if(orderedNameCount != pieceCount) {
+output("ERROR: Append order preview is incomplete. No changes made.")
+}
+combineText(text: [orderedNames], combine: Custom, separator: " | ") >> runningOrder
+alert(alert: """
+Append to the selected setlist:
+${runningOrder}
+
+Existing entries will be kept. These pieces will be appended in this order.
+""", title: "Confirm append", cancel: true)
+
+// Prepare every score before changing the selected setlist.
+var archiveResultType = ""
+nothing() >> emptyPreparedScores
+var preparedScores = emptyPreparedScores
+var canonicalStem = ""
+repeatEach(orderedFiles) {
+fileDetail(input: RepeatItem, property: Name) >> sourceName
+list(items: ["${sourceName}", "${prefixRegex}"]) >> sourceNameInput
+runShortcut(name: "UTIL - Canonical Choir Name", input: sourceNameInput, show: false) >> canonicalStemResult
+canonicalStem = canonicalStemResult
+if(canonicalStem == nil) {
+output("ERROR: Empty music identity. Earlier pieces may already be prepared; setlist is unchanged.")
+}
+list(items: [RepeatItem, libraryRoot, workflowConfig]) >> archiveInput
+runShortcut(name: "UTIL - Archive Choir PDF", input: archiveInput, show: false) >> cleanFile
+getType(input: cleanFile) >> archiveResultTypeResult
+archiveResultType = archiveResultTypeResult
+if(archiveResultType == "Text") {
+output("${cleanFile}")
+}
+if(cleanFile == nil) {
+output("ERROR: No clean PDF returned for ${canonicalStem}. Inspect archive; setlist is unchanged.")
+}
+
+// AT03 lookup: Get score named canonicalStem, Continue if not found ON.
+nothing() >> existingScore
+nothing() >> noWorkingScore
+var workingScore = noWorkingScore
+if(existingScore != nil) {
+// SCORE01: Get Item from List, List=existingScore; Item at Index=1. Set workingScore to that native Score.
+nothing() >> reusedWorkingScore
+workingScore = reusedWorkingScore
+}
+if(existingScore == nil) {
+// AT04 import: forScore Import file(s), Files=cleanFile, Conflict Handling=Skip.
+nothing()
+// AT05 lookup: Get score named canonicalStem, Continue if not found ON.
+nothing() >> importedScore
+if(importedScore == nil) {
+output("ERROR: Import unconfirmed for ${canonicalStem}. Inspect forScore; setlist is unchanged.")
+}
+// SCORE02: Get Item from List, List=importedScore; Item at Index=1. Set workingScore to that native Score.
+nothing() >> importedWorkingScore
+workingScore = importedWorkingScore
+}
+if(workingScore == nil) {
+output("ERROR: No native working Score selected. Earlier pieces may be prepared; setlist is unchanged.")
+}
+
+var metadataMode = "Review metadata"
+if(existingScore != nil) {
+list(items: ["Reuse unchanged", "Review metadata"]) >> metadataChoices
+choose(list: metadataChoices, prompt: "Existing score: preserve or review metadata?", multiple: false, all: false) >> selectedMetadataMode
+metadataMode = selectedMetadataMode
+if(metadataMode == nil) {
+output("ERROR: No metadata choice selected. Prepared files may remain; setlist is unchanged.")
+}
+}
+if(metadataMode == "Review metadata") {
+matchText(text: "${canonicalStem}", regex: "^(?!(?:NEH[0-9]|Ps[0-9]|OH[0-9]|[0-9]|Hy-|RSC-))(?!.*-Hebdom)[^-]+-.+$", caseSensitive: false) >> composerTitleMatch
+var composerSuggestion = "-"
+var titleSuggestion = "${canonicalStem}"
+if(composerTitleMatch != nil) {
+replaceText(input: "${canonicalStem}", find: "^([^-]+)-(.+)$", replace: "$1", isRegex: true, caseSensitive: true) >> matchedComposerSuggestion
+composerSuggestion = matchedComposerSuggestion
+replaceText(input: "${canonicalStem}", find: "^([^-]+)-(.+)$", replace: "$2", isRegex: true, caseSensitive: true) >> matchedTitleSuggestion
+titleSuggestion = matchedTitleSuggestion
+}
+replaceText(input: "${titleSuggestion}", find: "([a-z])([A-Z])", replace: "$1 $2", isRegex: true, caseSensitive: true) >> spacedTitle
+replaceText(input: "${spacedTitle}", find: "-", replace: " - ", isRegex: false, caseSensitive: true) >> readableTitle
+askForInput(prompt: "Confirm title, retaining movement and variant details.", type: Text, default: "${readableTitle}", allowDecimal: false, allowNegative: false) >> enteredTitle
+replaceText(input: "${enteredTitle}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> displayTitle
+if(displayTitle == nil) {
+output("ERROR: Empty title. Rerun and review metadata to finish the prepared score.")
+}
+askForInput(prompt: "Confirm composer; a single hyphen means unknown/not applicable.", type: Text, default: "${composerSuggestion}", allowDecimal: false, allowNegative: false) >> enteredComposer
+replaceText(input: "${enteredComposer}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> composerName
+// AT06: Rename score, Scores=workingScore, Name=displayTitle.
+nothing()
+if(composerName != nil) {
+if(composerName != "-") {
+// AT07: Find composer named composerName, Continue if not found ON.
+nothing() >> existingComposer
+if(existingComposer != nil) {
+// AT08: Add metadata, Score=workingScore, Composers=AT07 Composer output.
+nothing()
+} else {
+// AT09: Create composer named composerName, add to Scores=workingScore.
+nothing()
+}
+}
+}
+}
+// COL03: Native Add to Variable, input=named native workingScore; variable=preparedScores.
+nothing()
+}
+count(type: Items, input: preparedScores) >> preparedCount
+if(preparedCount != pieceCount) {
+output("ERROR: Prepared score count differs from requested pieces. Setlist is unchanged.")
+}
+
+// AT10 append: loop over preparedScores; add scores to setlist, Scores=Repeat Item, Setlist=targetSetlist, Skip if already added OFF.
+repeatEach(preparedScores) {
+nothing()
+}
+// AT11 readback: Get setlist entries, Setlist=targetSetlist, Sorting=Manual. Connect actualEntries to Entries output.
+nothing() >> actualEntries
+count(type: Items, input: actualEntries) >> actualCount
+text(text: """
+Append complete.
+Added in requested order: ${runningOrder}
+Entries now in setlist: ${actualCount}
+Inspect Manual order in forScore if exact order matters.
+""") >> addReport
+// AT12: Open setlist, Setlist=targetSetlist.
+nothing()
+output("${addReport}")
