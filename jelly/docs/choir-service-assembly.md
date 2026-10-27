@@ -1,5 +1,28 @@
 # Complete the generated choir Shortcuts
 
+## Current change, 27 October 2026
+
+Assembly 17 supersedes the historical mode/chooser instructions below. FS09 now
+requires a native exact-name resolver returning all matching native Setlists for
+serviceName in the intended library, with empty output for no matches. The
+user confirms Get setlist exposes Name and Continue if not found: use
+Name=serviceName token, Continue if not found On. Exact matching, empty output and
+duplicate behavior still need device checking; retain the guard until verified.
+TARGET01 selects index 1 only after the matching count is exactly one. Zero
+matches creates directly through FS08; one match asks replacement confirmation;
+duplicate matches stop. All branches assign named targetSetlist for FS10-FS13.
+There is no target chooser. Preserve the working installed shortcut while making
+these native edits; source regeneration restores all the other slots too.
+Add **FS10R** Get setlist entries, target=named targetSetlist, Sorting Manual,
+immediately after FS10 clearing and inside Replace existing. Count its Entries;
+If that Count **is not Number 0**, stop before the FS11 adding loop. The reported
+A/B/B/A result shows why this pre-append check is needed.
+
+The active installed shortcut and failed replacement report, diagnostic steps,
+piece-name prompt edits and A/B/A fixture are in the
+[27 October repair update](ipad-assembly-lessons.md). These changes are not yet
+validated on the iPad.
+
 ## Current installed result, 23 October 2026
 
 The user confirms a manually repaired one-score service populates and opens its

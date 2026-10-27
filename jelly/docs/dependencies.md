@@ -1,5 +1,15 @@
 # Shortcut inventory and installation order
 
+**27 October 2026: Assembly source revision 17; interfaces unchanged.** Active
+iPad caller is confirmed as `test-assemble-service` ->
+`2-util-assemble-choir-service`. A/B -> B/A replacement failed the readback guard;
+actual entries are A/B/B/A; old entries remained before appending B/A. Revision 17 replaces the mode/target choosers
+with a native exact-name resolver slot FS09, TARGET01 unique-match extraction and
+direct FS08 target assignment; Get setlist Name and Continue if not found fields are confirmed; matching behavior needs checking. FS10R now verifies zero entries after clearing, before appending.
+Metadata prompts show piece identity and count errors show numeric operands.
+Source is not a repaired/validated installed replacement. Preserve native edits;
+follow [latest repair instructions](ipad-assembly-lessons.md) before regeneration.
+
 **Current, 23 October 2026: Canonical 11 / Archive 16 / Assembly 16 / Main 4.**
 Assembly 16 adds adjacent repair/check comments without changing executable flow.
 The user's completed installed one-score service now populates and opens its

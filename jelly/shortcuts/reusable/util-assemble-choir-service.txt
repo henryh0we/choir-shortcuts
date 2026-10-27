@@ -1,6 +1,6 @@
 // Installed name: UTIL - Assemble Choir Service
 // Purpose: Generate standard actions; insert forScore actions at FS01-FS13.
-// Role: Reusable; specification revision 16; completed interface 1.1.
+// Role: Reusable; specification revision 17; completed interface 1.1.
 // Input: Text interactive. Other/missing input returns instructions; direct no-input unsupported.
 // Output: One service-report Text if native actions/navigation complete.
 // Side effects after assembly: File selection, clean archive/import, metadata, setlist writes.
@@ -8,14 +8,14 @@
 // Dependencies: UTIL - Canonical Choir Name interface 2.0; UTIL - Archive Choir PDF interface 2.1.
 // Sources: util-canonical-choir-name.jelly and util-archive-choir-pdf.jelly.
 // Target: iPadOS 26.6, forScore 15.2.5, Jellycuts 2026.6.4; Files/app permissions.
-// Stage: Revision 15 compiled on iPad; manually repaired one-score run opens setlist. Revision 16 adds repair comments only; fresh export fidelity unverified.
+// Stage: Revision 17 changes metadata prompts and readback diagnostics; name-matched targeting requires native completion. Installed replacement failed readback on 27 October; this source is not device-tested.
 // Assembly: ../../docs/ipad-assembly-lessons.md and ../../docs/config-integration.md; tests: ../../tests/ipad-investigation/README.md
 
 import Shortcuts
 
 // RECEIVING: Text interactive. Parenthesized If and flush-left actions follow the successful device probe; positional Output returns error/report Text. Preserve native archiveInput context and both Text naming inputs. Archive Text errors return before import; inspect full export. Missing noResultBehaviour/response warnings remain unresolved.
 
-// ASSEMBLY GUARD: Keep the next unconditional Output until the existing native action slots are complete. Validation If blocks below contain executable text-error Output calls.
+// ASSEMBLY GUARD: Keep the next unconditional Output until CONF/COL/SCORE/FS slots, FS09 name lookup, TARGET01 and FS10R clear verification are complete and connected. Validation If blocks below contain executable text-error Output calls.
 // INITIAL GUARD: Remove only this first Output once the existing native action slots are complete.
 output("ERROR: Service helper needs CONF, COL, SCORE and forScore slots completed.")
 
@@ -196,7 +196,8 @@ output("ERROR: No native working Score selected. Check SCORE01/SCORE02 and worki
 var metadataMode = "Review metadata"
 if(existingScore != nil) {
 list(items: ["Reuse unchanged", "Review metadata"]) >> metadataChoices
-choose(list: metadataChoices, prompt: "Existing score: preserve or review metadata?", multiple: false, all: false) >> selectedMetadataMode
+// WIRE-METADATA CHECK: This Choose prompt includes current named canonicalStem Text token, not literal interpolation; choices remain Reuse unchanged / Review metadata. Keep inside existingScore presence If in preparation Repeat.
+choose(list: metadataChoices, prompt: "${canonicalStem}: preserve or review metadata?", multiple: false, all: false) >> selectedMetadataMode
 metadataMode = selectedMetadataMode
 if(metadataMode == nil) {
 output("ERROR: No metadata choice selected. Earlier pieces may already be prepared; setlist entries have not been changed.")
@@ -216,13 +217,13 @@ titleSuggestion = matchedTitleSuggestion
 replaceText(input: "${titleSuggestion}", find: "([a-z])([A-Z])", replace: "$1 $2", isRegex: true, caseSensitive: true) >> spacedTitle
 replaceText(input: "${spacedTitle}", find: "-", replace: " - ", isRegex: false, caseSensitive: true) >> readableTitle
 // WIRE-TITLE RECONNECT: Ask for Input Default Answer=preceding readableTitle Replace Text output token; delete literal interpolation text. The full export displayed a literal expression until manually repaired.
-askForInput(prompt: "Confirm title, retaining movement and variant details.", type: Text, default: "${readableTitle}", allowDecimal: false, allowNegative: false) >> enteredTitle
+askForInput(prompt: "${canonicalStem}: confirm title, retaining movement and variant details.", type: Text, default: "${readableTitle}", allowDecimal: false, allowNegative: false) >> enteredTitle
 replaceText(input: "${enteredTitle}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> displayTitle
 if(displayTitle == nil) {
 output("ERROR: Empty title. Rerun and choose Review metadata to finish any imported score.")
 }
 // WIRE-COMPOSER RECONNECT: Ask for Input Default Answer=named composerSuggestion token; delete literal expression. Use current suggestion assigned by composer/title branch, not an initial unrelated Text output.
-askForInput(prompt: "Confirm composer; a single hyphen means unknown/not applicable.", type: Text, default: "${composerSuggestion}", allowDecimal: false, allowNegative: false) >> enteredComposer
+askForInput(prompt: "${canonicalStem}: confirm composer for ${displayTitle}; a single hyphen means unknown/not applicable.", type: Text, default: "${composerSuggestion}", allowDecimal: false, allowNegative: false) >> enteredComposer
 replaceText(input: "${enteredComposer}", find: "^[ ]+|[ ]+$", replace: "", isRegex: true, caseSensitive: true) >> composerName
 
 // FS04 RENAME. Replace next Nothing with Rename score. Scores=named native workingScore variable, Name=displayTitle Text. No output from Rename is consumed; workingScore stays native.
@@ -252,31 +253,51 @@ if(preparedCount != pieceCount) {
 output("ERROR: Prepared score count does not match the running order. Check COL03 and its named preparedScores variable. Files or metadata may already be changed; setlist entries have not been changed.")
 }
 
-list(items: ["Create new", "Replace existing"]) >> setlistChoices
-choose(list: setlistChoices, prompt: "Create an unused service name, or replace an existing service?", multiple: false, all: false) >> setlistMode
-if(setlistMode == nil) {
-output("ERROR: No setlist mode selected. Scores may already be prepared; setlist entries have not been changed.")
+// FS09 ADD/RECONNECT: Replace next Nothing with native forScore Get setlist, Name=trimmed edited serviceName Text token, Continue if not found ON (fields confirmed 27 October). Use same intended library as score/add/readback actions. Reconnect matchingSetlistCount Count and TARGET01 to its native Setlists output before deleting placeholder; verify empty/unique/duplicate-name results and exact matching before removing initial guard. If it silently picks one duplicate or matches loosely, add native exact-name enumeration instead; no guessed Jelly binding, unfiltered Get all or chooser.
+nothing() >> matchingSetlists
+// WIRE-MATCH CHECK: Count input=FS09 exact-match native Setlists, explicit token even when empty; no matches must count 0. Both Ifs below read this Count output. Duplicate-name resolution stops before creating/clearing a setlist; do not silently pick first.
+count(type: Items, input: matchingSetlists) >> matchingSetlistCount
+if(matchingSetlistCount != "0") {
+if(matchingSetlistCount != "1") {
+output("ERROR: Multiple setlists match ${serviceName}. Resolve duplicate names in the intended forScore library. Scores may already be prepared; setlist entries have not been changed.")
 }
-// EDIT-TARGET ADD/RECONNECT: User-tested native flow: Create new sets named targetSetlist from FS08 New Setlist output; Otherwise contains FS09 Get all setlists, chooser and Set targetSetlist from Chosen Item. Move End If after both assignments. Reconnect validation and FS10-FS13 to named targetSetlist. Template below retains original chooser until this native edit is applied; see incident guide.
+}
+nothing() >> noTargetSetlist
+var targetSetlist = noTargetSetlist
+var setlistMode = "Create new"
+if(matchingSetlistCount == "1") {
+// TARGET01 ADD/RECONNECT: Replace next Nothing with native Get Item from List, input=FS09 matchingSetlists, Item at Index=1, only inside unique-match If. Set named targetSetlist from its native Setlist output; reconnect following assignment before deleting placeholder. Preserve noTargetSetlist initializer.
+nothing() >> matchedTargetSetlist
+targetSetlist = matchedTargetSetlist
+setlistMode = "Replace existing"
+}
 if(setlistMode == "Create new") {
-// FS08 CREATE SETLIST. Replace next Nothing with new setlist (expanded Create Setlist Name). Name=serviceName; Folder unset. Use an unused name. Creation's return is not consumed.
-nothing()
+// FS08 ADD/RECONNECT: Replace next Nothing with native Create Setlist, Name=trimmed serviceName Text token, intended library, Folder unset. Following Set targetSetlist input=this action's native New Setlist output; reconnect before deleting placeholder. No mode prompt or setlist chooser on zero matches. Preserve noTargetSetlist initializer.
+nothing() >> createdTargetSetlist
+targetSetlist = createdTargetSetlist
 }
-// FS09 RETRIEVE SETLISTS. Replace next Nothing with Get all setlists. Reconnect the following Choose from List input to its Setlists output.
-// WIRE-FS09 CHECK: In Library selects intended library (Current Library was used; Empty is a named separate test library). Sort Order Title is acceptable for this chooser. Choose List=Get all setlists output. With EDIT-TARGET this retrieval/chooser belongs only in Replace existing branch.
-nothing() >> availableSetlists
-choose(list: availableSetlists, prompt: "Select the new service, or the existing service to replace.", multiple: false, all: false) >> targetSetlist
+// WIRE-TARGET CHECK: This If and FS10-FS13 consume current named native targetSetlist, not initializer, name Text or a chooser. Missing-value operator=does not have any value.
 if(targetSetlist == nil) {
-output("ERROR: No target setlist selected. A new empty setlist may have been created; existing setlist entries have not been changed.")
+output("ERROR: No target setlist resolved for ${serviceName}. Inspect forScore; a new empty setlist may already exist. No entries have been submitted.")
 }
+if(setlistMode == "Replace existing") {
+// WIRE-REPLACE CHECK: Alert uses serviceName and runningOrder Text tokens; cancellation stops before FS10. Only the unique exact-name match reaches this branch; no setlist chooser. Earlier PDF/score preparation may already have changed files/metadata.
 alert(alert: """
+A service named ${serviceName} already exists.
+
 ${runningOrder}
 
-Apply this running order to the setlist you selected? Replace existing clears its entries first; scores and clean PDFs remain.
-""", title: "Apply running order", cancel: true)
-if(setlistMode == "Replace existing") {
-// FS10 CLEAR ONLY THE SELECTED SETLIST. Replace next Nothing with Remove all setlist entries. Setlist=targetSetlist native Chosen Item. This is inside Replace existing and after all scores are prepared.
+Replace its existing entries with this running order? Scores and clean PDFs remain.
+""", title: "Replace ${serviceName}?", cancel: true)
+// FS10 ADD/RECONNECT: Replace next Nothing with Remove all setlist entries, Setlist=current named native targetSetlist from unique name match. Keep inside Replace existing after confirmation and score preparation, before FS11 writing Repeat. CHECK its actual target/output state when diagnosing doubled readback; no clear occurs on Create new.
 nothing()
+// FS10R ADD/RECONNECT: After FS10 and still inside Replace existing, replace next Nothing with native Get setlist entries, Setlist=current named targetSetlist, Sorting=Manual. Following Count input=this new Entries output; reconnect before deleting placeholder. Do not reuse FS12 output from after writing. This verifies the target is empty before FS11 can append.
+nothing() >> entriesAfterClear
+// WIRE-CLEAR CHECK: Count input=FS10R Entries; following If left=this Count output, operator=is not, right=Number 0. Error includes remainingEntryCount and serviceName tokens; keep stop inside If before leaving replacement branch.
+count(type: Items, input: entriesAfterClear) >> remainingEntryCount
+if(remainingEntryCount != "0") {
+output("ERROR: ${serviceName}: ${remainingEntryCount} entries remain after clearing. No new entries have been added. Inspect FS10 and its target before retrying; earlier entries or prepared scores may already have changed.")
+}
 }
 repeatEach(preparedScores) {
 // FS11 ADD ONE SCORE. Replace next Nothing with add scores to setlist. Scores=Repeat Item from THIS writing loop; Setlist=targetSetlist; Skip if already added OFF to retain deliberate repetitions. Loop results from this action are not consumed.
@@ -284,11 +305,11 @@ nothing()
 }
 // FS12 READBACK. Replace next Nothing with Get setlist entries. Setlist=targetSetlist; Sorting=Manual. Reconnect Count below to its native Entries output; inspect actual Manual order in forScore after FS13.
 nothing() >> actualEntries
-// WIRE-READBACK RECONNECT: First Count input=FS12 native Entries; second Count input=named preparedScores. Following If left=first Count output, operator=is not, right=second Count output. Equal counts still require actual identity/Manual-order inspection in forScore.
+// WIRE-READBACK RECONNECT: First Count input=FS12 native Entries from named targetSetlist; second Count input=named preparedScores. Following If left=first Count output, operator=is not, right=second Count output. Error uses actual serviceName/actualCount/requestedCount tokens. For replacement inspect FS10 target and completed clear, FS11 Repeat input and Skip setting before retry. Equal counts still require actual identity/Manual-order inspection in forScore.
 count(type: Items, input: actualEntries) >> actualCount
 count(type: Items, input: preparedScores) >> requestedCount
 if(actualCount != requestedCount) {
-output("ERROR: Setlist readback count differs from the requested order. Entries may already have changed. Inspect the selected setlist in forScore before retrying.")
+output("ERROR: ${serviceName}: setlist readback count ${actualCount} differs from requested ${requestedCount}. Entries may already have changed. Inspect the selected setlist in forScore before retrying.")
 }
 text(text: """
 ${serviceName}

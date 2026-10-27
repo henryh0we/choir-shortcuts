@@ -1,5 +1,75 @@
 # iPad assembly repairs and working installed changes
 
+## Current update, 27 October 2026
+
+The user confirms `test-assemble-service` calls `2-util-assemble-choir-service`,
+not the second installed Assembly copy. Preserve this active copy before edits.
+The user tested A/B then attempted B/A using Replace existing. After choosing
+the old service in the chooser, execution stopped with the readback-count error.
+Follow-up: the user reports actual entries **A, B, B, A**. Old entries remained
+while B/A was appended; the count guard caught a real mismatch. Why clearing
+failed (branch, action or target) and the numeric Count operands remain unknown.
+Replacement is not a pass. The user confirms native **Get setlist** exposes
+**Name** and **Continue if not found**.
+
+Assembly source revision 17 removes the unconditional mode/target choosers.
+FS09 is now a **native exact-name resolver slot**, returning every matching
+Setlist in the intended library for the trimmed, edited serviceName. Its native
+construction uses native Get setlist, Name=serviceName token, Continue if not
+found On. Exact/absence/duplicate behavior and library scope still need checking.
+Do not guess a Jelly binding or use an unfiltered list. Keep
+the generation guard until the resolver is complete and tested:
+
+- Zero matches: Create Setlist, assign its New Setlist to named targetSetlist,
+  then populate it without asking whether to replace.
+- One match: TARGET01 extracts that native Setlist, assigns targetSetlist and
+  asks whether to replace this named service. Cancel stops before clearing.
+- Multiple exact matches: stop for duplicate-name resolution; never pick first.
+
+All FS10-FS13 inputs use current named targetSetlist in the same library. Lookup
+currently occurs after score preparation, so a refusal or duplicate-name stop
+can leave prepared PDFs/scores/metadata. Metadata mode/title/composer prompts now
+include canonicalStem; confirm actual tokens after export. The readback error
+now includes serviceName, actualCount and requestedCount. These are source changes,
+not changes already applied to the user's installed shortcut.
+
+**FS10R** adds native Get setlist entries immediately after Remove all setlist
+entries, still inside Replace existing: Setlist=named targetSetlist, Sorting
+Manual. Count this Entries output and require zero before reaching the adding
+loop. Reconnect its If to that Count, operator **is not**, right **Number 0**.
+If entries remain, stop before adding. Keep the initial guard until this extra
+slot is connected. This check is not device-tested and cannot restore any entries
+already removed before a failure.
+
+For the failed B/A replacement, the reported four entries establish an actual
+mismatch. Record both Count outputs and inspect the clear branch before retrying. FS12 must read named targetSetlist in
+Manual order; actualCount counts that Entries output; requestedCount counts named
+preparedScores; the If compares those two results using **is not**. FS10 must
+clear that same target after confirmation and before FS11. FS11 repeats over
+named preparedScores and adds its own native Repeat Item, Skip off. Four actual
+entries for two requested would suggest retained/extra entries; two actual and
+two requested entering the error would suggest a connection/operator defect.
+These are diagnostic possibilities, not established causes. Keep the guard.
+
+A/B/A means three requested occurrences of two distinct scores. Since the current
+ordering Repeat runs once per selected file, selecting just A and B provides only
+two positions. For a three-position fixture, select three disposable source PDFs
+whose canonical identities are A, B and A (for example two different service-prefix
+filenames that canonicalize to A). The final setlist must show A, B, A as native
+scores, not merely count three. Run this after two-piece replacement is repaired.
+
+The historical chooser instructions below are superseded by this requested
+name-matching behavior; they still describe the previously working installed UI.
+
+Validation for revision 17: the required repository build wrapper was run through
+WSL on 27 October. The pinned older compiler rejected core/control-flow nodes,
+positional Output parameters and Get File Details with the previously recorded
+profile diagnostics; no accepted local export was produced. The final source
+hash matches its build report. The .jelly/.txt copies are byte-identical and
+`git diff --check` passes. No revision-17 iPad compile, import or runtime test is
+claimed. Preserve the working installed copy and apply the targeted native edits
+rather than replacing it with an unfinished template.
+
 Recorded 23 October 2026 from the user's reports in this conversation. Profile:
 Jellycuts 2026.6.4, iPadOS 26.6, forScore 15.2.5; bundled compiler unknown.
 This is evidence for the manually completed installed shortcuts, not proof that

@@ -6,6 +6,14 @@ Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/
 
 ## Current iPad status and avoiding repeat debugging
 
+27 October update: `test-assemble-service` is confirmed to call
+`2-util-assemble-choir-service`. A/B -> B/A replacement reached a readback-count
+error; the actual entries are A/B/B/A; numeric Count operands remain unknown. Assembly source revision 17
+adds piece identity to metadata prompts and numeric error diagnostics, and
+replaces unconditional Create/Replace and target choosers with a native exact-name
+resolver slot requiring device completion. Preserve the active installed copy;
+see [latest repair/status record](docs/ipad-assembly-lessons.md).
+
 23 October 2026: the user confirms a manually completed one-score Assembly run
 populates and opens the forScore setlist. Direct use of New Setlist for Create new
 and a prompted service-date/name default also work after native edits. Fresh

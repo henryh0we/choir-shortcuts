@@ -1,5 +1,40 @@
 # Choir service integration record
 
+## Latest report, 27 October 2026
+
+Active caller confirmed: `test-assemble-service` ->
+`2-util-assemble-choir-service`, not the second Assembly copy.
+User tested A/B then attempted B/A replacing the old service. The existing
+implementation asked for a target setlist; after selecting it, it stopped with
+“Setlist readback count differs from the requested order”. Follow-up inspection found **A, B, B, A**:
+old entries remained and the new order was appended. Numeric Count operands
+remain unreported; investigate the clear branch/action/target. Two-piece order/replacement: **Attempted,
+failed readback; cause unresolved**, not a pass. Inspect state before retrying.
+
+Assembly 17 source adds piece identity to metadata prompts, numeric readback
+diagnostics, and branches around a native exact-name resolver slot FS09 instead
+of unconditional mode and target choosers. TARGET01 extracts the unique match;
+FS08 directly assigns the newly created native Setlist. Resolver construction
+and this revision's device execution are **Not verified**. See the
+[current repair instructions](../docs/ipad-assembly-lessons.md).
+
+Native Get setlist Name and Continue if not found fields are user-confirmed.
+FS09 uses Name=serviceName token and Continue if not found On; exact/absence/
+duplicate behavior still needs verification. FS10R adds native entry readback
+immediately after clearing, requiring zero before adding any replacements.
+Verify nonempty post-clear output stops without appending.
+
+| Next check | Acceptance / evidence |
+| --- | --- |
+| Name absent | Zero exact matches in intended library; create once without replacement prompt or target chooser. |
+| Name present | One exact match; name appears in replacement confirmation; no chooser; cancel leaves existing entries untouched (prepared scores may already change). |
+| Duplicate name | More than one exact match stops without creating/clearing/appending a setlist. |
+| A/B then B/A | Same serviceName; replace confirmed; actual setlist contains exactly B then A. Record actualCount/requestedCount, target identity, clear action and Manual readback. |
+| Metadata context | Reuse/review choice and both title/composer prompts show the current piece's canonical identity through real tokens. |
+| A/B/A | Three source selections canonicalize to two scores A/B/A; all three native entries retained in Manual order. Two selected files alone currently provide only two order positions. |
+
+Historical results below remain evidence only for their named revisions/fixtures.
+
 23 October 2026, user report: completed installed Assembly prepares one score,
 passes repaired readback and opens its setlist. Native direct New Setlist capture
 and the prompted date/name default also work. This is a manually repaired fixture;

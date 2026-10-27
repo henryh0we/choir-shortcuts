@@ -56,7 +56,7 @@ The naming helper now receives a two-Text List `[filename, prefixRegex]`. Its ca
 
 Launch MAIN - Build Choir Service. Select a configured service type if available, choose disposable Nextcloud PDFs, establish running order, enter a dated name and review before writes. The helper then saves/reuses clean archive PDFs, retrieves/imports working scores and offers title/composer review. FS actions still require manual insertion because no forScore Jelly binding has been established.
 
-Choose Create new for an unused name, or Replace existing and explicitly select/confirm the existing setlist after scores are prepared. Readback count and Manual order require inspection; count equality alone does not prove identity or ordering. Failed/cancelled native actions may leave prepared PDFs/scores or a partial setlist. Inspect state before retrying.
+Assembly 17 requires FS09 native exact-name lookup after scores are prepared: no match creates directly, one match asks replacement confirmation for that name, and duplicate matches stop. There is no mode or target chooser. Native resolver fields/behavior still need device verification; see the latest repair record before updating the installed helper. Readback count and Manual order require inspection; count equality alone does not prove identity or ordering. Failed/cancelled native actions may leave prepared PDFs/scores or a partial setlist. Inspect state before retrying.
 
 ## Verification and boundaries
 
