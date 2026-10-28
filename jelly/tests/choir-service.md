@@ -2,6 +2,17 @@
 
 ## Latest report, 27 October 2026
 
+**Follow-up resolution, user-confirmed:** the installed clear-branch condition
+was `setlistMode is TestReplace existing`. Changing the literal to `Replace existing`
+fixed clearing. The earlier A/B/B/A failure is explained by the branch mismatch;
+do not continue reporting the clearing cause as unresolved. Actual full regression
+details were not supplied, so do not infer all replacement/order cases passed.
+Backup: `2-util-assemble-choir-service 2`.
+
+Remaining native edits and acceptance checks are in the
+[installed-shortcut update guide](../docs/ipad-assembly-update-guide.md).
+Name lookup, revised prompts and the post-clear check remain unverified.
+
 Active caller confirmed: `test-assemble-service` ->
 `2-util-assemble-choir-service`, not the second Assembly copy.
 User tested A/B then attempted B/A replacing the old service. The existing

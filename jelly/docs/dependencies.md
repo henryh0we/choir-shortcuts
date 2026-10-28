@@ -1,5 +1,13 @@
 # Shortcut inventory and installation order
 
+Latest installed result, 27 October: user confirms clearing now works after
+correcting `TestReplace existing` to `Replace existing` in the installed If.
+Active helper/caller names remain unchanged; backup is
+`2-util-assemble-choir-service 2`. No dependencies need reimporting. Remaining
+native edits are in the [installed update guide](ipad-assembly-update-guide.md).
+This supersedes the unresolved-clearing status below, without validating all
+replacement/order regressions or the proposed name-based lookup.
+
 **27 October 2026: Assembly source revision 17; interfaces unchanged.** Active
 iPad caller is confirmed as `test-assemble-service` ->
 `2-util-assemble-choir-service`. A/B -> B/A replacement failed the readback guard;

@@ -2,6 +2,19 @@
 
 ## Current update, 27 October 2026
 
+**Latest confirmed resolution:** the user found the installed clearing If compared
+setlistMode with literal `TestReplace existing`. Correcting it to `Replace existing`
+fixed the failure to clear, by user report. This explains the retained A/B entries
+and subsequent B/A append. Preserve the corrected condition; the historical
+unresolved-cause notes below describe the investigation before this finding.
+This report confirms clearing, not all identity/order/cancellation regressions.
+
+Active shortcut: `2-util-assemble-choir-service`. Backup:
+`2-util-assemble-choir-service 2`. The [manual-format update guide](ipad-assembly-update-guide.md)
+identifies every existing/new block to keep, edit, remove, move, add or check.
+Name-based target resolution, metadata prompt edits and post-clear verification
+remain to be applied and tested; do not regenerate the working shortcut for them.
+
 The user confirms `test-assemble-service` calls `2-util-assemble-choir-service`,
 not the second installed Assembly copy. Preserve this active copy before edits.
 The user tested A/B then attempted B/A using Replace existing. After choosing

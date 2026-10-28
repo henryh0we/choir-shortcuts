@@ -1,5 +1,18 @@
 # Complete the generated choir Shortcuts
 
+## Editing the existing working iPad shortcut
+
+Use the [step-by-step installed-shortcut update guide](ipad-assembly-update-guide.md)
+for `2-util-assemble-choir-service`. It uses the manual workspace's bracketed
+action blocks, with KEEP/EDIT/REMOVE/MOVE/ADD/CHECK labels for each section.
+The backup is `2-util-assemble-choir-service 2`.
+
+Latest user report, 27 October: changing the installed condition from
+`setlistMode is TestReplace existing` to `setlistMode is Replace existing`
+fixed clearing. Preserve that repair. Automatic name lookup, revised metadata
+prompts and the added post-clear check are remaining changes, not confirmed
+installed behaviour. No reimport is needed to follow the guide.
+
 ## Current change, 27 October 2026
 
 Assembly 17 supersedes the historical mode/chooser instructions below. FS09 now

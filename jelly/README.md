@@ -6,6 +6,13 @@ Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/
 
 ## Current iPad status and avoiding repeat debugging
 
+Latest 27 October user report: correcting the installed `TestReplace existing`
+condition to `Replace existing` fixed clearing. Keep that repaired shortcut and
+its `2-util-assemble-choir-service 2` backup. Use the
+[manual-format installed update guide](docs/ipad-assembly-update-guide.md) for the
+remaining name-lookup, metadata-prompt and post-clear-check changes. Each block
+is marked KEEP/EDIT/REMOVE/MOVE/ADD/CHECK; those edits are not yet device-verified.
+
 27 October update: `test-assemble-service` is confirmed to call
 `2-util-assemble-choir-service`. A/B -> B/A replacement reached a readback-count
 error; the actual entries are A/B/B/A; numeric Count operands remain unknown. Assembly source revision 17
