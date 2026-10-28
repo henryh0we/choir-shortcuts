@@ -6,6 +6,12 @@ Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/
 
 ## Current iPad status and avoiding repeat debugging
 
+28 October next-feature draft: [assign archive music category as Genre](docs/ipad-genre-update-guide.md)
+on first-time score import. Archive 17 adds optional interface 2.2 category output;
+Assembly 18 consumes it and has native GEN01-GEN03 slots. Legacy callers keep
+their PDF-only return. Native action fields are confirmed; category transfer and
+Genre assignment have not passed device tests or the older local compiler.
+
 28 October user report: name matching now offers replace or skip replacement in
 `2-util-assemble-choir-service`. Clearing is also confirmed repaired. Keep the
 working installed helper; no reimport is needed for these completed changes.

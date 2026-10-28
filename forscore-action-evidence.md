@@ -1,5 +1,16 @@
 # forScore Action Evidence
 
+## Genre action fields confirmed, 28 October 2026
+
+User reports **Get genre** has **Name** and **Continue if not found**. **Create
+genre** has **Name and add to Scores and/or Bookmarks**. Together with the
+previously visible Add metadata Genres field, this supports the proposed native
+lookup-or-create/assign blocks. Runtime Genre creation/assignment, missing-result
+representation and preservation of other metadata are not yet confirmed.
+Chosen requirement: archive music category becomes Genre on first-time score
+import; do not attach service type as piece Tags/Labels. See the
+[Genre update guide](jelly/docs/ipad-genre-update-guide.md).
+
 Initial screenshot review: 14 October 2026. Latest user evidence: 15 October 2026. The user reports iPadOS 26.6, forScore 15.2.5 and Jellycuts 2026.6.4. Nextcloud appears under Locations in Apple Files. Initially reported empty, the forScore library now contains three scores during diagnostic testing. The user's existing iCloud folder-creation Shortcut creates `Choir Music/Library` with music-type subfolders.
 
 The following settings are visible in the two screenshots supplied in chat. They establish editor labels and displayed settings, not execution results or complete input/output contracts. The original [action inventory](forscore%20shortcut%20actions.md) is preserved separately.

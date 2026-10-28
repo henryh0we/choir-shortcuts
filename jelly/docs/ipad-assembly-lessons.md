@@ -2,13 +2,27 @@
 
 ## Current installed result, 28 October 2026
 
+Genre fields now confirmed by the user: Get genre has Name and Continue if not
+found; Create genre has Name and add to Scores and/or Bookmarks. The new
+[Genre update guide](ipad-genre-update-guide.md) and Archive 17 / Assembly 18
+source templates implement optional category context plus GEN01-GEN03 slots.
+Neither category List transport nor native Genre assignment is device-tested;
+keep the working installed helpers/backups until the guide's checks pass.
+
+Later reports also confirm unused-name creation and the expanded piece-context,
+title/composer/default/reuse metadata checks work as expected in the installed
+helper. Confirmed next requirement: the archive music category becomes the piece's
+Genre on first-time addition. Service type is not needed as piece metadata; do
+not add service-type Tags/Labels. Native Get genre / Create genre fields are now confirmed. The optional category
+contract is drafted in source; installed transfer/assignment still need testing.
+
 User confirms that matching service names now offer the choice to replace or
 skip replacing the setlist in `2-util-assemble-choir-service`. Name matching and
 that choice are **confirmed by user report on the iPad**. The earlier correction
 from `TestReplace existing` to `Replace existing` fixed clearing.
 
-This report does not separately establish absent-name creation, similar/duplicate
-name handling, library switching, metadata prompt changes, post-clear verification,
+This report does not separately establish similar/duplicate-name handling,
+library switching, post-clear verification,
 A/B/A repetitions or fresh-source generation. The exact skip UI/exit point was not
 specified. Preserve the installed working helper and its backup; do not regenerate
 it to obtain changes already working. See the [update guide](ipad-assembly-update-guide.md)

@@ -24,6 +24,15 @@ Simple components return simple values. A structured success/error envelope is o
 
 ## Config-based choir service
 
+28 October draft extension: Archive 2.2 optionally accepts fourth Text
+`with-category` and returns native List `[PDF File, category Text]` instead of
+the default PDF. Legacy three-item callers keep their contract. Assembly 18
+extracts that context and assigns the category as Genre only for missing-score
+imports. Category reuse is resolved within configured folders, not by parsing
+provider paths or storing shared state. Native return/Genre slots are not yet
+device-verified; migration and tests are in the
+[Genre update guide](ipad-genre-update-guide.md).
+
 See [config integration](config-integration.md) for current contracts and migration. Assembly reads config.json once from its single native Choir Music root, validates required values, resolves Library and passes a native three-item List (PDF, Library Folder, parsed Dictionary) to archive. Naming receives a two-Text List (filename, configured prefixRegex). Dictionary construction of native Files is avoided because the inspected writer does not establish preservation of those types. Native List transport remains a device check.
 
 Main keeps its existing Text launch contract with assembly. Config is an immutable snapshot for a run; the next run rereads it. Archive still scans Library per PDF, rejects duplicate canonical matches and resolves category names to immediate native child Folders. No manifest, persistent index or service-folder copy is created. Native forScore actions remain FS slots inside assembly. Working scores stay native, using named variables in place of rejected If-result captures. Repeat-result captures still require export inspection.

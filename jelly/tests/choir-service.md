@@ -2,13 +2,38 @@
 
 ## Latest report, 28 October 2026
 
+Genre feature: user confirms Get genre Name/Continue if not found and Create
+genre Name/add to Scores and/or Bookmarks fields. Archive 17/interface 2.2 adds
+optional fourth Text with-category and native `[PDF, category]` return slots;
+Assembly 18 extracts that List and adds new-score-only GEN01-GEN03. Legacy
+three-item callers remain PDF-only. These are drafts, not installed runtime passes.
+Follow [the Genre guide](../docs/ipad-genre-update-guide.md) for save/reuse,
+existing/new Genre, existing-score preservation and per-piece category tests.
+
+Required local builds were run on 28 October through the repository wrapper:
+Archive and Assembly both failed, with core-node/control-flow, positional Output
+and Get File Details profile diagnostics. No accepted exports or iPad runs were
+produced. Exact diagnostics and source hashes are in their build reports under
+`jelly/build/shortcuts/reusable/`; preserve app-tested syntax instead of guessing
+different bindings to make the unmatched compiler pass.
+
+Subsequent user confirmations: an unused service name creates as expected, and
+the expanded metadata checks work as expected (piece identity in prompts,
+title/composer defaults and accepted values, second-piece context, reuse flow).
+These are user-reported installed results, not validation of regenerated source.
+Confirmed requirement: use the archive music category as the piece's Genre on
+first-time addition. The user says service type need not be attached to the piece.
+Do not add service-type tags/labels. Genre wiring is drafted but not installed/device-tested; Get genre /
+Create genre fields are confirmed; category transfer and native assignment still
+need device testing. See the drafted source/guide record above.
+
 User confirms matching service names now allow replacing or skipping replacement
 in the installed `2-util-assemble-choir-service`. **Pass by user report: name-match
 replacement/skip choice.** Clearing was already confirmed fixed by correcting the
 installed condition to `Replace existing`. Exact skip control/exit was not described.
 
-No separate new results were supplied for absent-name creation, metadata prompts,
-post-clear zero check, final identity/order, similar/duplicate names, library scope,
+No separate new results were supplied for the post-clear zero check, final
+identity/order, similar/duplicate names, library scope,
 A/B/A repetitions or regeneration. Keep these checks open rather than treating the
 whole guide as device-validated. The following 27 October records are historical
 where superseded by this report.

@@ -1,5 +1,23 @@
 # Config-based choir workflow
 
+## Optional category output, 28 October 2026
+
+Archive source revision 17 / interface 2.2 keeps the three-item input and native
+PDF output unchanged. Optional fourth Text `with-category` requests a native
+two-item success List `[PDF File, category Text]`; failure remains ERROR: Text.
+New saves use chosenCategory; reused PDFs resolve their category by scanning the
+configured immediate category folders after the existing global duplicate check.
+An unresolvable/ambiguous category stops instead of guessing. Other fourth values
+are rejected. Category-mode return needs native CFG03C/CFG04C completion and testing.
+
+Assembly source revision 18 requests that mode, rejects error Text, requires two
+items, and extracts named cleanFile/musicCategory before import. FS02 now consumes
+the extracted PDF, not the whole Run result. Missing-score-only GEN01-GEN03 find
+or create/assign Genre using musicCategory. Existing-score metadata is preserved;
+serviceType is not assigned. Native Genre fields are confirmed; this feature is
+not device-tested. See [the incremental Genre guide](ipad-genre-update-guide.md).
+The historical contract table below describes the still-supported legacy mode.
+
 **Archive 15 update, 21 October 2026:** ARC01-ARC03 manual extraction is replaced
 in source by a quoted-index loop, with Nothing-initialized native variables.
 Mixed File/Folder/Dictionary preservation is still unverified on the iPad; run

@@ -1,21 +1,21 @@
 // Installed name: UTIL - Assemble Choir Service
 // Purpose: Generate standard actions; insert forScore actions at FS01-FS13.
-// Role: Reusable; specification revision 17; completed interface 1.1.
+// Role: Reusable; specification revision 18; completed interface 1.1.
 // Input: Text interactive. Other/missing input returns instructions; direct no-input unsupported.
 // Output: One service-report Text if native actions/navigation complete.
 // Side effects after assembly: File selection, clean archive/import, metadata, setlist writes.
 // Called mode is interactive; cancellation/failure may leave partial writes with no report.
-// Dependencies: UTIL - Canonical Choir Name interface 2.0; UTIL - Archive Choir PDF interface 2.1.
+// Dependencies: UTIL - Canonical Choir Name interface 2.0; UTIL - Archive Choir PDF interface 2.2 with-category mode.
 // Sources: util-canonical-choir-name.jelly and util-archive-choir-pdf.jelly.
 // Target: iPadOS 26.6, forScore 15.2.5, Jellycuts 2026.6.4; Files/app permissions.
-// Stage: Revision 17 changes metadata prompts and readback diagnostics; name-matched targeting requires native completion. Installed replacement failed readback on 27 October; this source is not device-tested.
+// Stage: Installed repaired name matching/metadata confirmed by user; revision 18 adds optional archive category context and GEN01-GEN03 slots for new-score Genre assignment. This source/category transfer is not device-tested; see ../../docs/ipad-genre-update-guide.md.
 // Assembly: ../../docs/ipad-assembly-lessons.md and ../../docs/config-integration.md; tests: ../../tests/ipad-investigation/README.md
 
 import Shortcuts
 
 // RECEIVING: Text interactive. Parenthesized If and flush-left actions follow the successful device probe; positional Output returns error/report Text. Preserve native archiveInput context and both Text naming inputs. Archive Text errors return before import; inspect full export. Missing noResultBehaviour/response warnings remain unresolved.
 
-// ASSEMBLY GUARD: Keep the next unconditional Output until CONF/COL/SCORE/FS slots, FS09 name lookup, TARGET01 and FS10R clear verification are complete and connected. Validation If blocks below contain executable text-error Output calls.
+// ASSEMBLY GUARD: Keep the next unconditional Output until CONF/COL/SCORE/FS slots, FS09 name lookup, TARGET01, FS10R clear verification, GEN-CONTEXT and GEN01-GEN03 are complete and connected. Validation If blocks below contain executable text-error Output calls.
 // INITIAL GUARD: Remove only this first Output once the existing native action slots are complete.
 output("ERROR: Service helper needs CONF, COL, SCORE and forScore slots completed.")
 
@@ -150,18 +150,38 @@ canonicalStem = canonicalStemResult
 if(canonicalStem == nil) {
 output("ERROR: Empty music identity. Earlier pieces may already be prepared.")
 }
-// Native context List: keep File, Folder and Dictionary as whole variable tokens; no Text/JSON conversion.
-// WIRE-ARCHIVE RECONNECT: This List rows=current preparation Repeat PDF, named libraryRoot Folder, parsed workflowConfig Dictionary, all native tokens. Next Run targets installed Archive and consumes this List. Get Type, missing-PDF If and FS02 consume that Run result, not diagnostic output.
-list(items: [RepeatItem, libraryRoot, workflowConfig]) >> archiveInput
-runShortcut(name: "UTIL - Archive Choir PDF", input: archiveInput, show: false) >> cleanFile
-getType(input: cleanFile) >> archiveResultTypeResult
+// Native category context request: preserve PDF/Folder/Dictionary tokens; fourth row is literal Text with-category. Upgrade Archive to 2.2 before enabling this caller; three-row legacy callers keep their File return.
+// WIRE-ARCHIVE RECONNECT: List rows=current preparation PDF, named libraryRoot Folder, workflowConfig Dictionary, literal with-category. Run targets installed Archive 2.2, input=this List; Get Type consumes actual Run result. On Text error stop before extraction/import. Category success must be a two-item native List, not a PDF-only legacy result.
+list(items: [RepeatItem, libraryRoot, workflowConfig, "with-category"]) >> archiveInput
+runShortcut(name: "UTIL - Archive Choir PDF", input: archiveInput, show: false) >> archiveResult
+getType(input: archiveResult) >> archiveResultTypeResult
 archiveResultType = archiveResultTypeResult
 if(archiveResultType == "Text") {
-output("${cleanFile}")
+output("${archiveResult}")
 }
-// WIRE-CLEAN CHECK: Reselect actual Archive Run Shortcut result here; operator=does not have any value. Above Text-error If uses current named archiveResultType equal to Text. A correct PDF preview must pass this absence guard.
+count(type: Items, input: archiveResult) >> archiveResultCount
+text(text: "${archiveResultCount}") >> archiveResultCountText
+if(archiveResultCountText != "2") {
+output("ERROR: Archive category mode must return [PDF File, category Text]. Inspect Archive version and native List return before retrying.")
+}
+nothing() >> emptyArchiveFile
+var cleanFile = emptyArchiveFile
+var musicCategory = ""
+// GEN-CONTEXT CHECK: Repeat input=actual archiveResult List; first Repeat Item assigned whole to named cleanFile (PDF), second to named musicCategory (Text). Consumers use current named variables, not initializer/Repeat Results. Quoted index pattern follows recorded Text probe; mixed native return needs device verification.
+repeatEach(archiveResult) {
+if(RepeatIndex == "1") {
+cleanFile = RepeatItem
+}
+if(RepeatIndex == "2") {
+musicCategory = RepeatItem
+}
+}
+// WIRE-CLEAN CHECK: Input=named cleanFile PDF extracted above, operator=does not have any value. FS02 consumes this same named native PDF; never feed whole archiveResult List to import. Preserve emptyArchiveFile initializer.
 if(cleanFile == nil) {
 output("ERROR: No clean PDF returned for ${canonicalStem}. Inspect archive before retrying.")
+}
+if(musicCategory == nil) {
+output("ERROR: Archive returned no music category. Inspect archive context before importing.")
 }
 
 // FS01 LOOKUP. Replace next Nothing with Get score named canonicalStem. Continue if not found ON; category filters unset; Reference empty. Reconnect the following existingScore presence If and SCORE01 list input to THIS Get score output. Never use the first score of the whole library.
@@ -177,7 +197,7 @@ workingScore = reusedWorkingScore
 }
 // APP EVIDENCE: Complementary If checks fixed duplicate magic-variable errors in revision 15 and compiled on iPad; preserve this source form pending isolated branch tests.
 if(existingScore == nil) {
-// FS02 IMPORT ADD/CHECK: Replace next Nothing with forScore Import file(s), a candidate to verify with a disposable PDF; exact successful catalogue action/branch was not recorded. Files=actual archive Run Shortcut result cleanFile (native PDF); Conflict Handling=Skip. Output is unused; FS03 looks up the Score.
+// FS02 IMPORT ADD/CHECK: Replace next Nothing with the working forScore import action. Files=named cleanFile (native PDF extracted from category context, NOT whole archive Run result); Conflict Handling=Skip. Output is unused; FS03 looks up the Score.
 nothing()
 // FS03 LOOKUP AFTER IMPORT. Replace next Nothing with Get score named canonicalStem, Continue if not found ON, other filters unset. Reconnect the following importedScore presence If and SCORE02 list input to this lookup's native Score output.
 nothing() >> importedScore
@@ -191,6 +211,20 @@ workingScore = importedWorkingScore
 // WIRE-SCORE RECONNECT/CHECK: SCORE01 and SCORE02 Set Variable workingScore each consume their own Get Item output (native Score, index 1). This If input=named workingScore, operator=does not have any value, NEVER has any value. Preserve noWorkingScore initializer.
 if(workingScore == nil) {
 output("ERROR: No native working Score selected. Check SCORE01/SCORE02 and workingScore. Earlier pieces may already be prepared; setlist entries have not been changed.")
+}
+
+// GEN-NEW CHECK: This block runs only when original FS01 existingScore is absent, after native workingScore is validated and before title/composer review. Reused scores, including Review metadata, receive no automatic Genre change. Service type is not used. Keep GEN slots outside composer-specific Ifs.
+if(existingScore == nil) {
+// GEN01 ADD/RECONNECT: Replace next Nothing with native Get genre, Name=named musicCategory Text, Continue if not found ON. Both following complementary Ifs and GEN02 Genres input use this actual native Genre result; reconnect before deleting placeholder. Fields confirmed by user 28 October; runtime unverified.
+nothing() >> existingGenre
+if(existingGenre != nil) {
+// GEN02 ADD/CHECK: Replace next Nothing with native Add metadata, Scores=named workingScore native Score, Genres=GEN01 native Genre output. Bookmarks, Composers, Tags, Labels unset; preserve existing metadata. No output consumed. Inside genre-present If and new-score-only block.
+nothing()
+}
+if(existingGenre == nil) {
+// GEN03 ADD/CHECK: Replace next Nothing with native Create genre, Name=named musicCategory Text, add to Scores=named workingScore native Score, Bookmarks unset. Creation assigns Genre directly; do not also run GEN02. Inside genre-absent If and new-score-only block; no output consumed.
+nothing()
+}
 }
 
 var metadataMode = "Review metadata"

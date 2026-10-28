@@ -1,5 +1,11 @@
 # Complete the generated choir Shortcuts
 
+For the next feature, use [Add music category as Genre](ipad-genre-update-guide.md).
+It spells out Archive's optional category return and Assembly's new-score-only
+Genre blocks, keeping the existing working name matching and metadata prompts.
+Archive 17 / Assembly 18 remain source templates needing native completion and
+device testing. Do not regenerate working helpers merely to apply this guide.
+
 ## Editing the existing working iPad shortcut
 
 Use the [step-by-step installed-shortcut update guide](ipad-assembly-update-guide.md)

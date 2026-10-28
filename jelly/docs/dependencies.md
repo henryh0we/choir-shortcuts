@@ -1,5 +1,14 @@
 # Shortcut inventory and installation order
 
+**28 October Genre draft: Canonical 11 / Archive 17 (interface 2.2) / Assembly 18
+(launch interface 1.1) / Main 4.** Assembly now requires Archive's optional
+`with-category` output. Complete/test Archive category mode before enabling that
+caller. Legacy callers, including the append draft and functional archive tests,
+continue using three items and receive a PDF; they do not gain Genre assignment.
+GEN01-GEN03 and CFG03C/CFG04C are native completion slots, not verified generated
+actions. Both local builds fail the recorded older-profile diagnostics. Preserve
+working installed helpers; follow the [Genre guide](ipad-genre-update-guide.md).
+
 Latest installed result, 28 October: user confirms matching names allow replace
 or skip replacement in `2-util-assemble-choir-service`. Preserve that working
 installed helper; no caller/dependency changes or reimports are needed. Remaining
