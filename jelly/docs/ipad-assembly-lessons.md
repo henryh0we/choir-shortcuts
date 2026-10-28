@@ -1,6 +1,20 @@
 # iPad assembly repairs and working installed changes
 
-## Current update, 27 October 2026
+## Current installed result, 28 October 2026
+
+User confirms that matching service names now offer the choice to replace or
+skip replacing the setlist in `2-util-assemble-choir-service`. Name matching and
+that choice are **confirmed by user report on the iPad**. The earlier correction
+from `TestReplace existing` to `Replace existing` fixed clearing.
+
+This report does not separately establish absent-name creation, similar/duplicate
+name handling, library switching, metadata prompt changes, post-clear verification,
+A/B/A repetitions or fresh-source generation. The exact skip UI/exit point was not
+specified. Preserve the installed working helper and its backup; do not regenerate
+it to obtain changes already working. See the [update guide](ipad-assembly-update-guide.md)
+and [test record](../tests/choir-service.md) for remaining checks.
+
+## Historical update, 27 October 2026
 
 **Latest confirmed resolution:** the user found the installed clearing If compared
 setlistMode with literal `TestReplace existing`. Correcting it to `Replace existing`

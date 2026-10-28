@@ -1,6 +1,19 @@
 # Choir service integration record
 
-## Latest report, 27 October 2026
+## Latest report, 28 October 2026
+
+User confirms matching service names now allow replacing or skipping replacement
+in the installed `2-util-assemble-choir-service`. **Pass by user report: name-match
+replacement/skip choice.** Clearing was already confirmed fixed by correcting the
+installed condition to `Replace existing`. Exact skip control/exit was not described.
+
+No separate new results were supplied for absent-name creation, metadata prompts,
+post-clear zero check, final identity/order, similar/duplicate names, library scope,
+A/B/A repetitions or regeneration. Keep these checks open rather than treating the
+whole guide as device-validated. The following 27 October records are historical
+where superseded by this report.
+
+## Historical report, 27 October 2026
 
 **Follow-up resolution, user-confirmed:** the installed clear-branch condition
 was `setlistMode is TestReplace existing`. Changing the literal to `Replace existing`

@@ -8,15 +8,23 @@ Input: One Text value exactly interactive, supplied by test-assemble-service.
 Output: The existing service-report Text, or explanatory error Text.
 
 Category: Reusable; manual update guide for the Jelly-generated installed helper.
-Specification revision: 1
+Specification revision: 2
 Interface: Existing installed interactive contract; no caller change.
 Target: User-reported iPadOS 26.6; English Shortcuts editor.
-Status: Proposed edits; automatic name lookup and revised prompts not device-tested.
+Status: Name matching with replace/skip confirmed on iPad; other edits/tests need separate evidence.
 Required apps: Apple Shortcuts, forScore 15.2.5, Files/Nextcloud as already configured.
 Permissions: Retain existing file-provider and forScore permissions.
 Launch: test-assemble-service -> 2-util-assemble-choir-service.
 Backup: 2-util-assemble-choir-service 2. Do not edit this backup.
 Side effects: Existing PDF/archive/import/metadata preparation; create/replace setlists.
+
+CURRENT RESULT, 28 OCTOBER 2026:
+User confirms matching service names now allow replacing or skipping replacement.
+Preserve that working installed behaviour. Steps 6-13 describe the target layout;
+do not remove/rebuild working matching/choice blocks merely to follow this guide.
+Use KEEP/CHECK for those completed blocks. Exact skip UI/exit was not specified.
+Absent-name creation, metadata prompts, post-clear verification and other tests
+have not been separately confirmed by this report.
 
 CONFIRMED FIX:
 The replacement If had the literal TestReplace existing. Changing it to
@@ -560,12 +568,17 @@ IMPLEMENTATION RECORD
 
 27 October 2026, user report: correcting TestReplace existing -> Replace existing
 fixed the installed failure to clear. Active caller/target and backup are confirmed.
-Automatic lookup, new prompts and post-clear check from this guide: Not yet applied
-or device-verified by this documentation work. Broader regression is not inferred.
+28 October 2026, user report: matching names now offer replace or skip replacement.
+This confirms the installed name-match/choice path; exact skip UI was not described.
+Metadata prompts, post-clear check, absent-name creation and broader regression
+remain without separate results. Creating/updating this document executes no tests.
 
 ========================
 CHANGE HISTORY
 ========================
+
+Revision 2, 28 October 2026: record user-confirmed name-match replace/skip choice;
+mark completed blocks KEEP/CHECK rather than asking for repeated reconstruction.
 
 Revision 1, 27 October 2026: first incremental guide using the manual workspace's
 bracketed blueprint style. Each existing/new block has an explicit edit status.

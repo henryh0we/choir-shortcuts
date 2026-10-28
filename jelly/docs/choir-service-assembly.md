@@ -7,11 +7,13 @@ for `2-util-assemble-choir-service`. It uses the manual workspace's bracketed
 action blocks, with KEEP/EDIT/REMOVE/MOVE/ADD/CHECK labels for each section.
 The backup is `2-util-assemble-choir-service 2`.
 
-Latest user report, 27 October: changing the installed condition from
-`setlistMode is TestReplace existing` to `setlistMode is Replace existing`
-fixed clearing. Preserve that repair. Automatic name lookup, revised metadata
-prompts and the added post-clear check are remaining changes, not confirmed
-installed behaviour. No reimport is needed to follow the guide.
+Latest user report, 28 October: matching service names now offer replace or skip
+replacement in the installed helper. Clearing was already fixed by correcting
+`TestReplace existing` to `Replace existing`. Preserve those working native edits.
+The exact skip UI was not specified; metadata prompts, absent-name creation,
+post-clear verification and broader regressions remain separately unconfirmed.
+Do not repeat completed edits or reimport the working helper. Historical source
+completion instructions below do not override the installed runtime evidence.
 
 ## Current change, 27 October 2026
 

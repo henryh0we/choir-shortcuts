@@ -1,6 +1,12 @@
 # Shortcut inventory and installation order
 
-Latest installed result, 27 October: user confirms clearing now works after
+Latest installed result, 28 October: user confirms matching names allow replace
+or skip replacement in `2-util-assemble-choir-service`. Preserve that working
+installed helper; no caller/dependency changes or reimports are needed. Remaining
+checks are in the [service test record](../tests/choir-service.md). This validates
+the reported installed path, not a fresh Assembly 17 export.
+
+Historical installed result, 27 October: user confirms clearing now works after
 correcting `TestReplace existing` to `Replace existing` in the installed If.
 Active helper/caller names remain unchanged; backup is
 `2-util-assemble-choir-service 2`. No dependencies need reimporting. Remaining

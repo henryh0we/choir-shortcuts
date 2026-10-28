@@ -6,7 +6,14 @@ Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/
 
 ## Current iPad status and avoiding repeat debugging
 
-Latest 27 October user report: correcting the installed `TestReplace existing`
+28 October user report: name matching now offers replace or skip replacement in
+`2-util-assemble-choir-service`. Clearing is also confirmed repaired. Keep the
+working installed helper; no reimport is needed for these completed changes.
+Metadata prompts, absent-name creation and other outstanding checks still need
+separate evidence; see the [service test record](tests/choir-service.md).
+The 27 October notes below describe earlier stages.
+
+Historical 27 October user report: correcting the installed `TestReplace existing`
 condition to `Replace existing` fixed clearing. Keep that repaired shortcut and
 its `2-util-assemble-choir-service 2` backup. Use the
 [manual-format installed update guide](docs/ipad-assembly-update-guide.md) for the
