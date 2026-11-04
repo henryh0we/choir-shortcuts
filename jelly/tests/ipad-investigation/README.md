@@ -1,5 +1,19 @@
 # iPad Jellycuts questions and test plan
 
+## Runnable generation groups, 4 November 2026
+
+Use the [four-group test checklist](generation-groups.md) to start testing. It
+links 16 isolated `.jelly` probes and identical `.txt` paste copies, with exact
+installed names, receiver-first order, setup, action inspection and expected
+previews. Start with **G1A Presence**, then G1B and G1C; do not reimport production
+helpers. G2C alone needs a native Score fixture and one Open score insertion.
+
+[Local build evidence](generation-groups-builds.md): 10/16 pass compiler/basic
+structural checks, but defaults are omitted in three accepted local exports;
+six probes fail this older profile. **All iPad results remain Not run** in the
+[results sheet](generation-groups-results.md). These are test candidates, not
+established fixes. The earlier P01-P15 questions below remain the wider backlog.
+
 Created 23 October 2026. These are proposed small experiments, **not executed
 tests or ready-to-compile Jelly signatures**. Their purpose is to establish which
 source forms generate correct actions and native tokens without manual repair.

@@ -1,0 +1,17 @@
+// Installed name: TEST - G4B Default Interpolation
+// Purpose/role: Compare interpolated captured/named defaults with G4A; independent generation diagnostic.
+// Specification revision: 1; interface 1.0. Contract: No input; accept defaults unchanged; expected Alpha then Gamma without literal expressions; no explicit return
+// Dependencies: None. Exact installed targets must match source; export filenames do not set installed names.
+// Side effects: Previews/prompts only; no saves, renames, imports, metadata or setlist writes.
+// Target: iPadOS/Jellycuts versions must be recorded; previous profile iPadOS 26.6 / Jellycuts 2026.6.4. Local comparison Open-Jellycore e1ec31c / Swift 6.4.1.
+// Stage: Candidate, not iPad compiled/imported/executed. Local build results: generation-groups-builds.md. Test instructions/results: generation-groups.md.
+// Setup: No native fixture slots. Import unchanged first; do not repair before recording the untouched result.
+import Shortcuts
+
+text(text: "Alpha") >> capturedDefault
+askForInput(prompt: "G4B captured default: expect Alpha. Accept unchanged.", type: Text, default: "${capturedDefault}", allowDecimal: false, allowNegative: false) >> firstAnswer
+quicklook(input: firstAnswer)
+var namedDefault = "Beta"
+namedDefault = "Gamma"
+askForInput(prompt: "G4B named default: expect latest Gamma. Accept unchanged.", type: Text, default: "${namedDefault}", allowDecimal: false, allowNegative: false) >> secondAnswer
+quicklook(input: secondAnswer)

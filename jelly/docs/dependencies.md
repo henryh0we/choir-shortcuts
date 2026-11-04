@@ -1,5 +1,11 @@
 # Shortcut inventory and installation order
 
+4 November 2026: optional independent [generation test groups](../tests/ipad-investigation/generation-groups.md)
+are available. The checklist owns exact installed TEST names, inputs and
+dependencies. G3 Exit Echo/Context receivers install before their three callers;
+G2C requires a temporary native two-Score fixture caller. None is a production
+dependency. Production names/contracts and installed shortcuts are unchanged.
+
 **28 October Genre draft: Canonical 11 / Archive 17 (interface 2.2) / Assembly 18
 (launch interface 1.1) / Main 4.** Assembly now requires Archive's optional
 `with-category` output. Complete/test Archive category mode before enabling that

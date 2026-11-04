@@ -1,0 +1,31 @@
+// Installed name: TEST - G2C Append Scores
+// Purpose/role: Test += retains native Scores and repeats; independent generation diagnostic.
+// Specification revision: 1; interface 1.0. Contract: Required caller input exactly two different native Scores in List A,B; expected Count 3 and native Open score A,B,A; no explicit return
+// Dependencies: None. Exact installed targets must match source; export filenames do not set installed names.
+// Side effects: Read-only forScore score navigation and previews; no import, metadata, archive or setlist writes.
+// Target: iPadOS/Jellycuts versions must be recorded; previous profile iPadOS 26.6 / Jellycuts 2026.6.4. Local comparison Open-Jellycore e1ec31c / Swift 6.4.1.
+// Stage: Candidate, not iPad compiled/imported/executed. Local build results: generation-groups-builds.md. Test instructions/results: generation-groups.md.
+// Setup: Requires manual two-Score fixture caller and G2S-CONSUME native Open score slot only; see generation-groups.md. Never substitute typed score titles in the input List.
+import Shortcuts
+
+count(type: Items, input: ShortcutInput) >> fixtureCount
+quicklook(input: fixtureCount)
+nothing() >> emptyCollection
+var collectedScores = emptyCollection
+var firstScore = emptyCollection
+repeatEach(ShortcutInput) {
+if(RepeatIndex == "1") {
+firstScore = RepeatItem
+}
+collectedScores += RepeatItem
+}
+collectedScores += firstScore
+count(type: Items, input: collectedScores) >> collectedCount
+quicklook(input: collectedCount)
+repeatEach(collectedScores) {
+getType(input: RepeatItem) >> scoreType
+quicklook(input: scoreType)
+// G2S-CONSUME ADD/CHECK: Replace only next Nothing with native forScore Open score, Score=this writing Repeat Item (native Score), no title Text. Keep inside collectedScores Repeat; no output consumers to reconnect. Preserve emptyCollection initializer. Follow with generated Wait to Return; inspect actual A/B/A identities before returning to Shortcuts. Fixture Open score is deliberately native; += and its consumers must remain untouched for acceptance.
+nothing()
+waitToReturn()
+}

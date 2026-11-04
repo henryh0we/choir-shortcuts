@@ -1,0 +1,15 @@
+// Installed name: TEST - G3A Text Caller
+// Purpose/role: Observe actual Text return through Run Shortcut; independent generation diagnostic.
+// Specification revision: 1; interface 1.0. Contract: No input consumed; expected type Text then G3 ALPHA RETURN; no explicit return
+// Dependencies: TEST - G3 Exit Echo interface 1.0. Exact installed targets must match source; export filenames do not set installed names.
+// Side effects: Previews/prompts only; no saves, renames, imports, metadata or setlist writes.
+// Target: iPadOS/Jellycuts versions must be recorded; previous profile iPadOS 26.6 / Jellycuts 2026.6.4. Local comparison Open-Jellycore e1ec31c / Swift 6.4.1.
+// Stage: Candidate, not iPad compiled/imported/executed. Local build results: generation-groups-builds.md. Test instructions/results: generation-groups.md.
+// Setup: No native fixture slots. Import unchanged first; do not repair before recording the untouched result.
+import Shortcuts
+
+text(text: "G3 ALPHA RETURN") >> sentText
+runShortcut(name: "TEST - G3 Exit Echo", input: sentText, show: false) >> returnedText
+getType(input: returnedText) >> returnedType
+quicklook(input: returnedType)
+quicklook(input: returnedText)

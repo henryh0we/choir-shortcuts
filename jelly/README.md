@@ -6,6 +6,12 @@ Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/
 
 ## Current iPad status and avoiding repeat debugging
 
+4 November: [four isolated generation test groups](tests/ipad-investigation/generation-groups.md)
+are ready as source/paste candidates to investigate variables/guards, native
+collections, returns and questions/date generation. Start with **G1A Presence**;
+production shortcuts remain unchanged. See [local results and caveats](tests/ipad-investigation/generation-groups-builds.md)
+and [Not run iPad results](tests/ipad-investigation/generation-groups-results.md).
+
 28 October next-feature draft: [assign archive music category as Genre](docs/ipad-genre-update-guide.md)
 on first-time score import. Archive 17 adds optional interface 2.2 category output;
 Assembly 18 consumes it and has native GEN01-GEN03 slots. Legacy callers keep
