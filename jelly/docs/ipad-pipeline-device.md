@@ -1,12 +1,14 @@
 # iPad setup and first compilation experiment
 
-Status: **header-free G1A editor generation and runtime passed by user report**.
+Status: **header-free G1A runtime passed through editor and Compile Jelly Text by user report**.
 The user confirms the Calculate block is gone, all four If statements are correct,
 and execution shows EMPTY ABSENT followed by FILLED PRESENT as expected.
 This is the separate header-free candidate; the original headered G1A still fails.
-Next test the same header-free candidate through Compile Jelly Text. That route
-has not yet been reported for this candidate. Exact consumed hash, device versions
-and any native repairs remain unconfirmed.
+The subsequent Compile Jelly Text test also has no Calculate block or unexpected
+Stop actions, and runs with EMPTY ABSENT then FILLED PRESENT as expected.
+Exact build ID/consumed hash, installed name, device versions and any native
+repairs remain unconfirmed. This is one reported successful attempt per route,
+not a repeated reliability test or validation of every header comment.
 The next G1A Compile Jelly Text attempt produced a division/calculation action
 containing the Dependencies comment text and an unexpected Stop this shortcut,
 visible in the user's screenshot. These are not intended G1A actions. Preserve

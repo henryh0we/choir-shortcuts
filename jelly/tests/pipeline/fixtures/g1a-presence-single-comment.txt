@@ -1,0 +1,22 @@
+// Installed name: TEST - G1A Presence | Purpose/role: Inspect empty/populated If polarity; independent generation diagnostic. | Specification revision: 1; interface 1.0. Contract: No input consumed; expected exactly EMPTY ABSENT then FILLED PRESENT; no explicit return | Dependencies: None. Exact installed targets must match source; export filenames do not set installed names. | Side effects: Previews/prompts only; no saves, renames, imports, metadata or setlist writes. | Target: iPadOS/Jellycuts versions must be recorded; previous profile iPadOS 26.6 / Jellycuts 2026.6.4. Local comparison Open-Jellycore e1ec31c / Swift 6.4.1. | Stage: Candidate, not iPad compiled/imported/executed. Local build results: generation-groups-builds.md. Test instructions/results: generation-groups.md. | Setup: No native fixture slots. Import unchanged first; do not repair before recording the untouched result.
+import Shortcuts
+
+nothing() >> emptyValue
+var currentValue = emptyValue
+if(currentValue == nil) {
+text(text: "G1A EMPTY ABSENT") >> emptyAbsent
+quicklook(input: emptyAbsent)
+}
+if(currentValue != nil) {
+text(text: "FAIL G1A EMPTY PRESENT") >> emptyPresent
+quicklook(input: emptyPresent)
+}
+currentValue = "Alpha"
+if(currentValue != nil) {
+text(text: "G1A FILLED PRESENT") >> filledPresent
+quicklook(input: filledPresent)
+}
+if(currentValue == nil) {
+text(text: "FAIL G1A FILLED ABSENT") >> filledAbsent
+quicklook(input: filledAbsent)
+}

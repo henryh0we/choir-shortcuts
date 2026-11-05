@@ -8,7 +8,12 @@ execution shows EMPTY ABSENT then FILLED PRESENT as expected. This implicates
 the removed header content, without identifying a particular triggering comment.
 Exact consumed hash, versions and any native repairs remain unconfirmed. This
 report belongs to the separate candidate, not the original headered request.
-Compile Jelly Text on this candidate remains untested.
+The subsequent Compile Jelly Text comparison also passed runtime by user report:
+no Calculate block or unexpected Stop actions, then EMPTY ABSENT followed by
+FILLED PRESENT. Installed name and complete four-If inspection were not separately
+confirmed for that attempt. Exact build/hash and repair history remain unconfirmed;
+this report is not attached to the original headered request. Repeated reliability
+and the specific header trigger remain untested.
 
 **Latest editor comparison:** the user copied the same G1A code into Jellycuts,
 compiled and built through the editor, and reports the same erroneous Calculate
@@ -50,9 +55,9 @@ this input, without proving every comment or a particular word is broken. A
 failure means header removal is insufficient; preserve the result before isolating
 the executable constructs. Only compare the compilation action on that candidate
 after recording the editor result. That editor result is now the reported pass
-above. Next prepare a distinct request for the same header-free candidate using
-Compile Jelly Text, inspect its four Ifs and tokens, then check the same two
-previews. See [the candidate contract](../pipeline/README.md#header-isolation-after-both-paths-failed).
+above, followed by the reported Compile Jelly Text runtime pass. Keep the same
+candidate for repeated compilation checks before testing individual header
+comments in separate variants. See [the candidate contract](../pipeline/README.md#header-isolation-after-both-paths-failed).
 
 ## Initial investigation record
 

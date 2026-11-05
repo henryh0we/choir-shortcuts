@@ -38,6 +38,15 @@ ignored exchange and verified without recording any device result.
 
 ## User-reported compilation observations, 5 November 2026
 
+**Latest header-free Compile Jelly Text result: runtime passed by user report.**
+Following the requested pipeline comparison, the user confirms no Calculate block
+or unexpected Stop actions, and execution shows EMPTY ABSENT then FILLED PRESENT.
+This is separate from the editor pass below. The latest report does not separately
+confirm all four generated Ifs or the installed name. Exact build ID/consumed hash,
+versions and native repair history remain unconfirmed; no immutable request is
+assigned this result without confirmed linkage. Both routes now have a reported
+successful runtime for this candidate; repeated compilation reliability is untested.
+
 **Latest header-free editor result: generation and runtime passed by user report.**
 The user confirms the Calculate block is gone, all four If statements are correct,
 and execution displays EMPTY ABSENT followed by FILLED PRESENT as expected.
@@ -45,7 +54,7 @@ This follows the header-removal experiment below, not a fix to the original sour
 Exact consumed bytes/build ID, app/device versions and native repairs were not
 supplied. Keep this report separate from the original headered request's failures;
 no immutable build feedback is attributed to this manually tested variant.
-Compile Jelly Text on the header-free candidate remains the next test.
+The subsequent Compile Jelly Text result is recorded above.
 
 **Latest editor follow-up:** the user copied the same G1A source into Jellycuts,
 compiled and built, and reports the exact same Calculate-box defect. They state
@@ -232,8 +241,10 @@ Current candidate result: **editor generation and runtime passed by user report*
 no Calculate block, four correct If statements, EMPTY ABSENT then FILLED PRESENT.
 This implicates the removed header content without identifying the triggering
 comment or proving all comments unsupported. Exact consumed hash and repair
-history remain unconfirmed. Next compare the same candidate via Compile Jelly
-Text; that candidate/path result is **Not run**.
+history remain unconfirmed. The subsequent Compile Jelly Text comparison also
+passed runtime by user report, with no Calculate block or unexpected Stop and
+EMPTY ABSENT then FILLED PRESENT. Its exact build/hash, installed name and complete
+action inspection remain unconfirmed. Preserve the original headered failures.
 
 To prepare a reproducible candidate request rather than editing an immutable build:
 
@@ -245,6 +256,28 @@ The candidate is already a deliberate source variant; the pipeline still deliver
 its submitted bytes unchanged. Do not delete comments from stored request files.
 The Windows suite now passes 34 tests with one symlink skip; the additional test
 establishes this candidate's noncomment-byte identity, not app compilation.
+
+## Single large header comment experiment
+
+At the user's request, `tests/pipeline/fixtures/g1a-presence-single-comment.txt`
+combines all eight original header comments into **one physical `//` line**,
+joining their text with ` | `. All original header wording is retained; this
+includes historical status and installed-name text, not current result metadata.
+Every byte after that comment matches the successful header-free candidate.
+Neither original G1A source nor an existing request is changed.
+
+Use intended installed name **TEST - G1A Presence Single Comment** in the
+manifest. Contract: no input or dependencies, previews only, no explicit return.
+Expected output: G1A EMPTY ABSENT then G1A FILLED PRESENT, without FAIL.
+Inspect for one header Comment, four correctly connected If statements, and no
+Calculate or unexpected Stop before running. Device result: **Not run**.
+This tests one large comment instead of eight separate comments; comment count
+is a hypothesis, not an established cause. The separators also differ from the
+original line breaks, so a pass alone cannot isolate the parser mechanism.
+
+```powershell
+python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/g1a-presence-single-comment.txt --allow-text-source --shortcut-name 'TEST - G1A Presence Single Comment' --method compile-jelly-text --exchange $exchangeRoot
+```
 
 ## Prepare a separate request per method and case
 
@@ -316,7 +349,7 @@ objects/errors are observations, not automatically trusted result-schema entries
 | H | Not run | Not run | Not run | Not run |
 | M | Not run in this loop | Expected three-action sequence reported via compiler helper after local copy; build/hash and exact path unconfirmed | No separate result | Not reported |
 | G | Same Calculate-box defect reported after copying identical code; no second screenshot | Malformed generation shown: Dependencies division plus unexpected Stop; request association noted above | No separate result | Not reported; preserve malformed output |
-| Header-free G1A candidate | User reports no Calculate block and four correct If statements | Not run | Not run | User reports EMPTY ABSENT then FILLED PRESENT as expected, after editor compilation; build/hash and repairs unconfirmed |
+| Header-free G1A candidate | User reports no Calculate block and four correct If statements | User reports no Calculate block or unexpected Stop; complete If inspection not separately confirmed | Not run | User reports EMPTY ABSENT then FILLED PRESENT through both routes; build/hash and repairs unconfirmed |
 | C | Not run | Not run | Not run | Not run |
 | I | Not run | Not run | Not run | Must not run |
 | N | Not applicable | Not run | Not applicable | Guard only |
