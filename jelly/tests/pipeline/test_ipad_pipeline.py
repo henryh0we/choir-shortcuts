@@ -58,6 +58,84 @@ class PipelineTests(unittest.TestCase):
             self.assertEqual((self.root / "requests" / request["build_id"] / name).read_bytes(), data)
         self.assertEqual(self.source.read_bytes(), data)
 
+    def test_filename_names_overrides_and_same_path_persistence(self):
+        source = self.base / "util-archive-choir-pdf.jelly"
+        source.write_bytes(self.data)
+        first = pipeline.prepare(self.root, source)
+        self.assertEqual(first["shortcut_name"], "UTIL - Archive Choir PDF")
+        self.assertIsNone(first["name_from_build_id"])
+        override = pipeline.prepare(self.root, source, name="TEST - Archive Trial")
+        original = (self.root / "requests" / first["build_id"] / "request.json").read_bytes()
+        source.write_bytes(self.data.replace(b"Hello", b"New revision"))
+        revised = pipeline.prepare(self.root, source)
+        self.assertEqual(revised["shortcut_name"], "TEST - Archive Trial")
+        self.assertEqual(revised["name_from_build_id"], override["build_id"])
+        self.assertNotEqual(revised["source"]["sha256"], override["source"]["sha256"])
+        self.assertEqual((self.root / "requests" / first["build_id"] / "request.json").read_bytes(), original)
+        self.assertTrue(self.cli("verify")["consistent"])
+
+    def test_name_reuse_across_source_rename_and_path_isolation(self):
+        original = self.prepare(name="TEST - Stable Display Name")
+        moved = self.base / "renamed-source.jelly"
+        self.source.rename(moved)
+        fresh = pipeline.prepare(self.root, moved)
+        self.assertEqual(fresh["shortcut_name"], "Renamed Source")
+        reused = pipeline.prepare(self.root, moved, name_from_build=original["build_id"])
+        self.assertEqual(reused["shortcut_name"], "TEST - Stable Display Name")
+        self.assertEqual(reused["name_from_build_id"], original["build_id"])
+        other = self.base / "other" / moved.name
+        other.parent.mkdir()
+        other.write_bytes(self.data)
+        self.assertEqual(pipeline.prepare(self.root, other)["shortcut_name"], "Renamed Source")
+
+    def test_name_cli_and_installed_name_mismatch_feedback(self):
+        prepared = self.cli("prepare", str(self.source), "--shortcut-name", "TEST - Hello World")
+        build_id = prepared["request"]["build_id"]
+        self.assertIn("TEST - Hello World", prepared["ipad_instruction"])
+        wrong = self.cli("record", build_id, "--status", "output-unverified", "--installed-name", "source")
+        self.assertEqual(wrong["summary"]["installed_shortcut_name"], "source")
+        self.assertFalse(wrong["summary"]["name_matches"])
+        corrected = self.cli("record", build_id, "--status", "output-unverified", "--installed-name", "TEST - Hello World")
+        self.assertTrue(corrected["summary"]["name_matches"])
+        self.assertEqual(corrected["summary"]["accepted_observations"], 2)
+        self.assertEqual(self.cli("prepare", str(self.source))["request"]["shortcut_name"], "TEST - Hello World")
+
+    def test_invalid_names_and_unobserved_installed_name_are_rejected(self):
+        for name in ("", " ", "Name\nInjected", " name", "name ", 42):
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                self.prepare(name=name)
+        self.assertFalse(self.root.exists())
+        request = self.prepare()
+        self.cli("record", request["build_id"], "--status", "not-attempted", "--installed-name", "source", expected=1)
+        feedback = pipeline.result_template(request)
+        feedback["installed_shortcut_name"] = "source"
+        with self.assertRaisesRegex(ValueError, "installed name"):
+            pipeline.validate_result(feedback, request)
+
+    def test_legacy_requests_results_and_receipts_remain_readable(self):
+        request = self.prepare()
+        folder = self.root / "requests" / request["build_id"]
+        legacy = dict(request)
+        legacy["schema_version"] = 1
+        del legacy["shortcut_name"], legacy["name_from_build_id"]
+        template = pipeline.result_template(legacy)
+        template["schema_version"] = 1
+        del template["installed_shortcut_name"]
+        raw_template = pipeline.json_bytes(template)
+        (folder / "feedback-template.json").write_bytes(raw_template)
+        legacy["artifacts"]["feedback-template.json"] = pipeline.digest(raw_template)
+        (folder / "request.json").write_bytes(pipeline.json_bytes(legacy))
+        before = {p.name: p.read_bytes() for p in folder.iterdir()}
+        pipeline.save_result(self.root, legacy, template, "ingest")
+        status = self.cli("status", legacy["build_id"])
+        self.assertIsNone(status["summary"]["shortcut_name"])
+        self.assertIsNone(status["summary"]["installed_shortcut_name"])
+        self.cli("record", legacy["build_id"], "--status", "output-unverified", "--installed-name", "source")
+        self.assertTrue(self.cli("verify")["consistent"])
+        self.assertEqual(before, {p.name: p.read_bytes() for p in folder.iterdir()})
+        with self.assertRaisesRegex(ValueError, "Legacy request"):
+            self.prepare(name_from_build=legacy["build_id"])
+
     def test_existing_g1a_variants_remain_distinct_and_unchanged(self):
         jelly = SCRIPT.parents[1] / "tests/ipad-investigation/g1a-presence.jelly"
         text = jelly.with_suffix(".txt")
@@ -167,11 +245,13 @@ class PipelineTests(unittest.TestCase):
 
     def test_simulated_evidence_is_visible(self):
         request = self.prepare()
-        self.cli("record", request["build_id"], "--status", "device-passed", "--repairs-required", "no", "--evidence", "simulated")
+        self.cli("record", request["build_id"], "--status", "device-passed", "--repairs-required", "no", "--evidence", "simulated", "--installed-name", "Simulated name")
         status = self.cli("list")["requests"][0]
         self.assertEqual(status["latest_evidence_source"], "simulated")
         self.assertEqual(status["latest_observation_status"], "device-passed")
         self.assertEqual(status["ipad_status"], "not-attempted")
+        self.assertIsNone(status["installed_shortcut_name"])
+        self.assertIsNone(status["name_matches"])
 
     def test_valid_incoming_requires_explicit_ingest(self):
         request = self.prepare()
@@ -213,7 +293,7 @@ class PipelineTests(unittest.TestCase):
         request = self.prepare()
         base = pipeline.result_template(request)
         mutations = [
-            {"schema_version": 2}, {"schema_version": True}, {"unknown": "value"},
+            {"schema_version": 3}, {"schema_version": True}, {"unknown": "value"},
             {"compilation_attempted": "false"}, {"reported_at_utc": "yesterday"},
             {"status": "success"}, {"shortcut_generated": True},
             {"compilation_attempted": True, "status": "output-unverified", "shortcut_generated": True, "actions_inspected": True, "action_sequence_correct": False},

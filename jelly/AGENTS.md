@@ -97,6 +97,12 @@ untouched generation, and simulated evidence distinct. No result folder or trans
 means compiled; no successful compilation means executed. The Windows CLI cannot
 measure iPad behavior. Do not fabricate feedback or regenerate working installed
 shortcuts for transport tests. New observations/builds preserve previous evidence.
+New requests have explicit shortcut_name metadata; use --shortcut-name to preserve
+established source-header/caller names or choose a distinct TEST name. Same-path
+builds inherit it; --name-from-build carries it across source renames. Display it
+on the iPad and use the observed naming field, never the generic source filename.
+Record --installed-name only from device observation. No #Name directive or
+automatic installed-shortcut/caller rename is authorized by this metadata.
 
 The WSL/Linux compiler is installed: Open-Jellycore `e1ec31c2ee192c8721749f9eb3b50108e38891cf`, built unmodified with Swift 6.4.1. This is a separate profile from the user's Jellycuts app. Read [development](docs/development.md), [setup](docs/setup.md), [compiler limitations](docs/compiler-limitations.md), and [local test evidence](tests/compiler/README.md) when working on tooling or interpreting a compiler mismatch. Older statements below about compiler absence describe the earlier inspection.
 

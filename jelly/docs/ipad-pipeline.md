@@ -87,6 +87,59 @@ The source's original absolute path is recorded for traceability, so exchange
 folders contain source code and potentially private path information. Use a
 trusted shared location; hashes detect inconsistency, not malicious authorship.
 
+## Intended and installed names
+
+Version 2 separates `source.filename`, `shortcut_name` and `build_id`. Generic
+source.txt/source.jelly remain transport aliases; their basename must not be used
+as the intended installed name. No source bytes or installed shortcuts are renamed.
+
+```powershell
+python jelly/scripts/ipad_pipeline.py prepare jelly/shortcuts/reusable/util-archive-choir-pdf.jelly --shortcut-name 'UTIL - Archive Choir PDF' --exchange $exchangeRoot
+# Repeat prepare for the same original path: the previous intended name persists.
+# After a deliberate source-file rename/move, reuse a previous request's name:
+python jelly/scripts/ipad_pipeline.py prepare 'path/to/renamed-source.jelly' --name-from-build $buildId --exchange $exchangeRoot
+```
+
+`--shortcut-name` overrides the name for this and subsequent same-path builds in
+this exchange. Otherwise the newest valid named request for that original absolute
+path supplies it, regardless of source hash. With no named history, the original
+filename stem is humanized: hyphens/underscores become spaces, common acronyms
+such as PDF stay uppercase, and leading util/main/test become `UTIL -`/`MAIN -`/
+`TEST -`. Examples: hello-world.jelly → Hello World; util-archive-choir-pdf.jelly →
+UTIL - Archive Choir PDF. Existing source-header/caller contracts outrank a
+filename suggestion: supply the exact established name explicitly. For the hello
+fixture use `--shortcut-name 'TEST - Local Compiler Hello'` to match its header.
+For isolated experiments choose a distinct TEST name rather than replacing a
+working dependency. Duplicate names must be checked on the device before install.
+
+`--name-from-build` carries the name across a source path change. It and
+`--shortcut-name` are mutually exclusive. Name history is scoped to the chosen
+exchange; another machine/root may need an explicit name or copied named request.
+Legacy version-1 requests have no intended-name metadata and are not guessed.
+Corrupt existing requests are not used for inheritance: repair/review exchange
+consistency or specify an explicit name when submitting a separate valid request.
+
+Prepare output and list/status display the intended name. In the iPad helper,
+read request.shortcut_name and connect that token to the compiler's naming field
+where supported. The user reports that their configured naming field previously
+used the File name and consequently created `source`; this is not evidence of an
+intrinsic compiler naming rule. See the [helper naming steps](ipad-pipeline-device.md).
+If no editable name setting exists on a path, rename the newly generated test
+shortcut manually after installation and inspect all name-based callers. Do not
+invent `#Name`, rename working shortcuts, or silently rewrite Run Shortcut targets.
+
+Record what was actually installed, even if wrong:
+
+```powershell
+python jelly/scripts/ipad_pipeline.py record $buildId --exchange $exchangeRoot --status output-unverified --installed-name 'source' --notes 'Observed before manual rename'
+```
+
+`installed_shortcut_name` defaults to null, never to the requested name. A later
+observation can record the corrected name; earlier evidence remains intact.
+`name_matches` in summaries is true/false when both names are known, otherwise
+null. This is independent of compiler/action/runtime status. New version-2
+feedback works with old requests, without editing their manifests or templates.
+
 The original G1A `.txt` and `.jelly` have different comments. Both remain
 unchanged. To submit the historical text variant deliberately:
 

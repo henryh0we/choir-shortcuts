@@ -1,8 +1,9 @@
 # Pipeline tests and physical-iPad integration plan
 
-Windows transport/evidence code is tested independently of the iPad. Device
-results below are **Not run**. No generated importable Shortcut or app output
-is fabricated. Production sources and both G1A originals remain unchanged.
+Windows transport/evidence code is tested independently of the iPad. Build-linked
+device results below remain **Not run**; the unlinked user reports are recorded
+separately. No generated importable Shortcut or app output is fabricated.
+Production sources and both G1A originals remain unchanged.
 
 ## Automated acceptance suite
 
@@ -33,6 +34,31 @@ exchange. Simulations left actual iPad status not-attempted. Its local transcrip
 is ignored under `jelly/build/pipeline-smoke/`; no device was contacted. Two clean
 pending requests (Hello and minimal variables) were also prepared in the default
 ignored exchange and verified without recording any device result.
+
+## User-reported compilation observations, 5 November 2026
+
+Naming-enhancement checks: **Windows 33 passed, 1 symlink skip; WSL Ubuntu
+34 passed**. These add filename defaults, overrides, same-path persistence,
+renamed-source name reuse, actual-name mismatches, simulated-name isolation and
+version-1 request/result/receipt compatibility. The original default exchange
+verified successfully without modifying its eight existing request files. A new
+version-2 minimal-variable request was prepared with intended name
+`TEST - Pipeline Minimal Variable` for Compile Jelly Text; its device status is
+still not-attempted.
+
+These are separate attempts, not a single reliability pass. Build ID, exact source
+hash, device versions, timing and screenshots were not supplied, so no immutable
+request/result bundle has been attributed to either report.
+
+| Observation | Reported evidence | Limits |
+| --- | --- | --- |
+| First Hello World attempt, Compile Jelly Text | Initial hang. | No confirmed completion/error, duration, recovery or generated output; inconclusive, not a compiler rejection. |
+| Second Hello World attempt, Compile Jelly Text | Retry produced the expected Hello World shortcut. The installed name was `source`; the user configured the compilation action's naming input from the File name. | Supports this reported generation and configurable naming input. Exact build/source/action wiring and runtime were not captured; reliability still needs repeated tests. It does not prove the compiler inherently names all shortcuts from their source files. |
+
+Change that helper's name input to request.shortcut_name, then record the actual
+installed name. Do not silently rename existing installed dependencies. Once the
+actual build ID/hash is confirmed, append separate inconclusive and generation
+observations using record/ingest; retain unknown fields and do not infer execution.
 
 ## Exact integration inputs
 
@@ -91,8 +117,8 @@ for the app by this plan.
 
 ```powershell
 $exchangeRoot = Join-Path $PWD 'jelly\build\ipad-exchange'
-python jelly/scripts/ipad_pipeline.py prepare jelly/tests/compiler/hello-world.jelly --method editor --exchange $exchangeRoot
-python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/minimal-variable.txt --allow-text-source --method editor --exchange $exchangeRoot
+python jelly/scripts/ipad_pipeline.py prepare jelly/tests/compiler/hello-world.jelly --shortcut-name 'TEST - Local Compiler Hello' --method editor --exchange $exchangeRoot
+python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/minimal-variable.txt --allow-text-source --shortcut-name 'TEST - Pipeline Minimal Variable' --method editor --exchange $exchangeRoot
 # Repeat with --method compile-jelly-text, then --method compile-jelly-file.
 # G uses .jelly normally; C and I require --allow-text-source.
 ```
@@ -116,6 +142,11 @@ instructions](../../docs/ipad-pipeline-device.md), including the anti-filename g
 Input hashes for N are the selected H/M/G/C request's hash. Its deliberately wrong
 literal is never a valid delivered source and must not be recorded as that source
 having compiled. Put this wiring failure in developer_notes/inconclusive evidence.
+
+For each valid generated shortcut also inspect the actual installed name. It
+should match request.shortcut_name after the naming-field connection or a recorded
+manual Rename. Record installed_shortcut_name separately from action correctness.
+Test distinct filenames and explicit overrides without modifying source bytes.
 
 ## Record each result
 
@@ -156,5 +187,6 @@ objects/errors are observations, not automatically trusted result-schema entries
 | I | Not run | Not run | Not run | Must not run |
 | N | Not applicable | Not run | Not applicable | Guard only |
 
-These are results for the newly prepared pipeline experiments, not an erasure of
-the earlier successful and failed user reports in the existing compatibility record.
+These are build-linked results for the newly prepared pipeline experiments, not
+an erasure of the unlinked Hello World reports above or the earlier successful
+and failed user reports in the existing compatibility record.

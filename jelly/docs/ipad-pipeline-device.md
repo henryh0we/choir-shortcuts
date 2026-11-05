@@ -22,6 +22,38 @@ An action returning without an error is not a successful generation test.
    are present and downloaded, not just cloud placeholders. Do not rename/edit them.
 4. Record actual iPadOS/Jellycuts versions and the exact build ID with every report.
 
+### Read and apply the intended display name
+
+For a version-2 request use **Get Dictionary Value**, key `shortcut_name`,
+Dictionary=named request; **Set Variable** intendedShortcutName to that Text
+output. Also retrieve source.filename from sourceInfo for context. Show buildId,
+original filename and intendedShortcutName together before compilation. If using
+a legacy request without this field, prepare a new named request on Windows;
+do not edit the old immutable manifest or guess its historical intended name.
+
+The user reports configuring the compilation action's name from the File name,
+which generated an installed shortcut called **source**. In that existing helper,
+replace the File-name token in its naming field with **intendedShortcutName** from
+request.json. This is the reported configurable input; its exact current UI label
+and its behavior on each compilation path still need recording. Do not pass the
+name token into the source-code input. The source Text/File connection remains
+the one specified below. Confirm the resulting installed name after compilation;
+the Windows tool cannot apply the field or verify device behavior itself.
+
+For any path with no editable name setting, rename only the newly generated test
+shortcut after installation: open its editor, tap the arrow beside its name,
+choose Rename, enter intendedShortcutName and finish. Inspect existing names
+first. Never replace/rename a working choir helper to accommodate a test; exact
+Run Shortcut targets must continue to match their established contracts.
+[Apple's iOS 26 rename instructions](https://support.apple.com/en-il/guide/shortcuts/apdd57094696/9.0/ios/26)
+document this manual fallback. Jellycuts' [pinned metadata reference](../vendor/jellycuts-docs/markdown/Language_Guide/metadata.md)
+documents Color/Icon, not a shortcut-name directive; no `#Name` is assumed.
+
+Use Windows `record --installed-name '<actual observed name>'` or the v2 feedback
+field installed_shortcut_name. Keep null when not observed. Record the initial
+name and any later manual rename as separate observations. A matching name is
+not proof of correct actions or runtime. Avoid duplicate installed test names.
+
 ## Path A: diagnostic text compiler helper
 
 Create a new manually constructed Shortcut named **TEST - Compile Exchange Text**.
@@ -44,8 +76,8 @@ the physical device. No guessed Jelly bindings are involved.
 | 11 | **If** sourceText does not have any value: Show Alert "No source text", then Stop This Shortcut. |
 | 12 | For the supplied integration fixtures only: **Match Text**, pattern `(?m)^import[ \t]+Shortcuts[ \t]*\r?$`, input = named sourceText. Count the Matches. If Count is 0: Show Alert "Expected source contents, not a filename/path", then Stop This Shortcut. |
 | 13 | **Quick Look**, input = named sourceText, explicitly reselected. Inspect the complete source, including its first and last lines and header comments. Dismiss Quick Look to continue. |
-| 14 | **Show Alert**, title = buildId token, message = expectedHash token plus a reminder to compare the source with request.json. Enable Cancel; cancel if the selected source is wrong. |
-| 15 | Jellycuts **Compile Jelly Text**, its source/input chip = named sourceText from step 10. Never select sourceFile Name, source.filename, a path Text or the preceding Alert output. Photograph/record available options; do not guess undocumented settings. |
+| 14 | **Show Alert**, title = buildId token, message = intendedShortcutName, original filename and expectedHash tokens plus a reminder to compare the source with request.json. Enable Cancel; cancel if source or intended name is wrong/conflicting. |
+| 15 | Jellycuts **Compile Jelly Text**, its source/input chip = named sourceText from step 10; naming field where available = intendedShortcutName. Never select sourceFile Name as the shortcut name or as source code, source.filename, a path Text or the preceding Alert output. Photograph/record available options; do not guess undocumented settings. |
 
 **Device validation required:** step 8 must hash the actual File bytes. Confirm
 its value against the Windows manifest on the initial LF fixture. Then test BOM
@@ -103,7 +135,9 @@ attempt, or record the actual method explicitly against the original request.
    existing reported editor/paste route; end-to-end clipboard transfer of this
    prepared request still needs a physical-device check.
 3. Compile/export through the app's normal existing flow. Inspect the generated
-   actions before running. Do not use a Windows unsigned export as a substitute.
+   actions and actual name before running. Use intendedShortcutName in any naming
+   setting actually available, or the manual Rename fallback above. Do not use a
+   Windows unsigned export as a substitute.
 4. Keep any malformed generated shortcut unchanged for evidence. If investigating
    a native repair, duplicate it, record every edit and report repaired execution
    separately. This experiment uses small TEST shortcuts, never production helpers.

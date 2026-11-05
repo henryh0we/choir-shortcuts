@@ -1,7 +1,11 @@
-# iPad exchange format, schema version 1
+# iPad exchange format, schema versions 1 and 2
 
 This is the normative JSON contract validated by `scripts/ipad_pipeline.py`.
-All listed fields are required, unknown fields and duplicate keys are rejected.
+New requests/results use version 2. Version 1 remains readable without rewriting
+old requests, templates, results or receipts. Fields marked v2 are required only
+in version 2; other listed fields are required in both versions. Unknown fields
+and duplicate keys are rejected. A v2 result can report on a v1 request; a v1
+result remains accepted with its installed name unknown. Receipts remain version 1.
 JSON is UTF-8 (an input JSON BOM is accepted); NaN/Infinity are rejected. A JSON
 manifest/result must be at most 2 MB. Source text is strict UTF-8, with optional
 BOM; there is no source-size limit imposed by this tool.
@@ -15,12 +19,14 @@ strings ending in `Z`. Booleans are JSON true/false, never 0/1 or strings.
 
 | Field | Type / constraint |
 | --- | --- |
-| schema_version | Integer `1` |
+| schema_version | Integer `1` or `2`; newly prepared requests use `2` |
 | build_id | Unique ID, matching its request folder |
 | created_at_utc | UTC timestamp |
 | status | Literal `prepared`, permanently unchanged |
 | target | Literal `ipad-jellycuts` |
 | requested_method | `editor`, `compile-jelly-text`, `compile-jelly-file` |
+| shortcut_name (v2) | Explicit intended Apple Shortcuts display name, independent of filename/build ID |
+| name_from_build_id (v2) | Earlier request ID whose intended name was reused, or null for a filename default/explicit override; provenance only, not a runtime dependency |
 | source | Object defined below |
 | local_validation | Object defined below |
 | artifacts | Filename → SHA-256 object |
@@ -32,7 +38,7 @@ strings ending in `Z`. Booleans are JSON true/false, never 0/1 or strings.
 | filename | Original source basename |
 | original_path | Absolute originating path, metadata only; not read during verification |
 | sha256 | Hash of original submitted bytes |
-| delivered_sha256 | Equal to sha256 in schema 1 |
+| delivered_sha256 | Equal to sha256 in both versions |
 | bytes | Positive integer byte count |
 | encoding | `utf-8` or `utf-8-bom`, checked against bytes |
 | transformation | Literal `none` |
@@ -49,6 +55,14 @@ original bytes. Every artifact hash is checked. The feedback template is a valid
 not-attempted result with the request identity prefilled. The template timestamp
 starts at request creation; replace it in a result copy with the actual report time.
 
+Shortcut names must be nonempty printable Text without surrounding whitespace.
+They are never injected into source or treated as Jelly metadata. Source filename
+remains `source.filename`; it is not duplicated or changed when the display name
+changes. Default naming/persistence is documented in [the guide](ipad-pipeline.md).
+Legacy requests have no stored intended name: summaries show null, not a guessed
+historical name. A name reference need not be present in a copied exchange because
+the new immutable request contains the actual intended name itself.
+
 No source-name/path field controls a filesystem destination. Bundle filenames
 are fixed by this schema. No manifest contents are executed.
 
@@ -58,7 +72,7 @@ Start with the generated `feedback-template.json`, copied outside the request.
 
 | Field | Type / meaning |
 | --- | --- |
-| schema_version | Integer `1` |
+| schema_version | Integer `1` or `2`; new templates and manual records use `2` |
 | build_id | Exact matching request ID |
 | source_sha256 | Exact request original hash |
 | delivered_sha256 | Exact request delivered hash |
@@ -77,6 +91,14 @@ Start with the generated `feedback-template.json`, copied outside the request.
 | execution_outcome | `not-run`, `passed`, `failed`, `inconclusive` |
 | developer_notes | Text: identities, previews, discrepancies, exact native edits and evidence references |
 | device | Object with exactly text ipados_version, jellycuts_version, forscore_version; empty strings mean not recorded |
+| installed_shortcut_name (v2) | Observed actual installed name, or null if not known; never copied from intended name |
+
+A non-null installed name requires compilation_attempted=true and
+shortcut_generated=true. It may differ from shortcut_name; the summary reports
+`name_matches=false` without hiding an otherwise valid generation observation.
+Record names before/after a manual rename as separate observations. Simulated
+names do not populate actual installed-name summaries. Matching names alone say
+nothing about generated actions or execution.
 
 ## Status semantics
 

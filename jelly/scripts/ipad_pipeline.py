@@ -31,6 +31,8 @@ RESULT_FIELDS = {"schema_version", "build_id", "source_sha256", "delivered_sha25
                  "shortcut_generated", "actions_inspected", "action_sequence_correct",
                  "manual_repairs_required", "device_tested", "execution_outcome",
                  "developer_notes", "device"}
+NAMED_REQUEST_FIELDS = REQUEST_FIELDS | {"shortcut_name", "name_from_build_id"}
+NAMED_RESULT_FIELDS = RESULT_FIELDS | {"installed_shortcut_name"}
 
 
 class PipelineError(ValueError):
@@ -103,6 +105,39 @@ def source_text(data):
     return text
 
 
+def shortcut_name(value):
+    require(isinstance(value, str) and value.strip() and value == value.strip() and value.isprintable(),
+            "Shortcut name must be nonempty printable text without surrounding whitespace")
+    return value
+
+
+def default_shortcut_name(filename):
+    words = re.split(r"[-_\s]+", Path(filename).stem)
+    role = words.pop(0).upper() if len(words) > 1 and words[0].lower() in ("util", "main", "test") else None
+    acronyms = {"pdf", "url", "api", "id"}
+    title = " ".join(word.upper() if word.lower() in acronyms else word.capitalize() if word.islower() else word
+                     for word in words if word)
+    return shortcut_name(f"{role} - {title}" if role else title)
+
+
+def select_shortcut_name(root, source_path, explicit=None, from_build=None):
+    require(not (explicit is not None and from_build is not None), "Use --shortcut-name OR --name-from-build")
+    if explicit is not None:
+        return shortcut_name(explicit), None
+    if from_build is not None:
+        previous = read_request(root, from_build)
+        require("shortcut_name" in previous, "Legacy request has no intended name; specify --shortcut-name")
+        return previous["shortcut_name"], previous["build_id"]
+    requests = safe_path(root, "requests")
+    if requests.exists():
+        for folder in sorted(requests.iterdir(), reverse=True):
+            if ID.fullmatch(folder.name):
+                previous = read_request(root, folder.name)
+                if "shortcut_name" in previous and os.path.normcase(previous["source"]["original_path"]) == os.path.normcase(str(source_path)):
+                    return previous["shortcut_name"], previous["build_id"]
+    return default_shortcut_name(source_path.name), None
+
+
 def publish(parent, name, files):
     """Publish a complete bundle by rename; never update an existing bundle.
 
@@ -134,7 +169,7 @@ def publish(parent, name, files):
 
 
 def result_template(request):
-    return {"schema_version": 1, "build_id": request["build_id"],
+    return {"schema_version": 2, "build_id": request["build_id"],
             "source_sha256": request["source"]["sha256"],
             "delivered_sha256": request["source"]["delivered_sha256"],
             "reported_at_utc": request["created_at_utc"],
@@ -144,12 +179,15 @@ def result_template(request):
             "actions_inspected": False, "action_sequence_correct": None,
             "manual_repairs_required": None, "device_tested": False,
             "execution_outcome": "not-run", "developer_notes": "",
-            "device": {"ipados_version": "", "jellycuts_version": "", "forscore_version": ""}}
+            "device": {"ipados_version": "", "jellycuts_version": "", "forscore_version": ""},
+            "installed_shortcut_name": None}
 
 
 def validate_result(result, request):
-    fields(result, RESULT_FIELDS, "result")
-    require(type(result["schema_version"]) is int and result["schema_version"] == 1, "Unsupported result schema_version")
+    require(isinstance(result, dict), "result must be an object")
+    version = result.get("schema_version")
+    require(type(version) is int and version in (1, 2), "Unsupported result schema_version")
+    fields(result, NAMED_RESULT_FIELDS if version == 2 else RESULT_FIELDS, "result")
     require(result["build_id"] == request["build_id"], "Result build ID does not match request")
     for key, expected in (("source_sha256", request["source"]["sha256"]),
                           ("delivered_sha256", request["source"]["delivered_sha256"])):
@@ -168,6 +206,9 @@ def validate_result(result, request):
     require(all(isinstance(v, str) for v in result["device"].values()), "Device versions must be text")
     require(result["execution_outcome"] in ("not-run", "passed", "failed", "inconclusive"), "Unknown execution outcome")
     attempted, generated = result["compilation_attempted"], result["shortcut_generated"]
+    if version == 2 and result["installed_shortcut_name"] is not None:
+        shortcut_name(result["installed_shortcut_name"])
+        require(attempted and generated is True, "An installed name requires attempted compilation and a generated shortcut")
     inspected, correct = result["actions_inspected"], result["action_sequence_correct"]
     tested, outcome, status = result["device_tested"], result["execution_outcome"], result["status"]
     require(not inspected or generated is True, "Action inspection requires a generated shortcut")
@@ -217,8 +258,15 @@ def validate_local_report(data, source_hash):
 def read_request(root, build_id):
     folder = safe_path(root, "requests", valid_id(build_id))
     request = parse_json(safe_path(folder, "request.json").read_bytes())
-    fields(request, REQUEST_FIELDS, "request")
-    require(type(request["schema_version"]) is int and request["schema_version"] == 1, "Unsupported request schema_version")
+    require(isinstance(request, dict), "request must be an object")
+    version = request.get("schema_version")
+    require(type(version) is int and version in (1, 2), "Unsupported request schema_version")
+    fields(request, NAMED_REQUEST_FIELDS if version == 2 else REQUEST_FIELDS, "request")
+    if version == 2:
+        shortcut_name(request["shortcut_name"])
+        if request["name_from_build_id"] is not None:
+            valid_id(request["name_from_build_id"])
+            require(request["name_from_build_id"] != build_id, "Name inheritance cannot refer to the same request")
     require(request["build_id"] == build_id, "Request directory and build ID disagree")
     require(request["status"] == "prepared" and request["target"] == "ipad-jellycuts", "Invalid request status/target")
     require(request["requested_method"] in METHODS, "Unknown requested method")
@@ -228,7 +276,7 @@ def read_request(root, build_id):
     require(all(isinstance(source[k], str) and source[k] for k in ("filename", "original_path")), "Missing source path/name")
     require(all(isinstance(source[k], str) and HASH.fullmatch(source[k]) for k in ("sha256", "delivered_sha256")), "Invalid source hash")
     require(source["sha256"] == source["delivered_sha256"] and source["transformation"] == "none",
-            "Schema 1 requires byte-exact delivery without transformation")
+            "Source delivery must be byte-exact without transformation")
     require(type(source["bytes"]) is int and source["bytes"] > 0, "Invalid source size")
     artifacts = request["artifacts"]
     require(isinstance(artifacts, dict), "artifacts must be an object")
@@ -259,7 +307,8 @@ def read_request(root, build_id):
     return request
 
 
-def prepare(root, source_path, method="editor", local_report=None, allow_text=False):
+def prepare(root, source_path, method="editor", local_report=None, allow_text=False,
+            name=None, name_from_build=None):
     source_path = Path(source_path).expanduser().resolve(strict=True)
     require(source_path.is_file(), "Source is not a file")
     require(source_path.suffix.lower() == ".jelly" or (allow_text and source_path.suffix.lower() == ".txt"),
@@ -267,7 +316,9 @@ def prepare(root, source_path, method="editor", local_report=None, allow_text=Fa
     data = source_path.read_bytes()
     source_text(data)
     sha = digest(data)
-    request = {"schema_version": 1, "build_id": identifier(), "created_at_utc": now(),
+    intended_name, inherited_from = select_shortcut_name(root, source_path, name, name_from_build)
+    request = {"schema_version": 2, "build_id": identifier(), "created_at_utc": now(),
+               "shortcut_name": intended_name, "name_from_build_id": inherited_from,
                "status": "prepared", "target": "ipad-jellycuts", "requested_method": method,
                "source": {"filename": source_path.name, "original_path": str(source_path),
                           "sha256": sha, "delivered_sha256": sha, "bytes": len(data),
@@ -339,6 +390,10 @@ def summary(root, request):
     actual = [item["result"] for item in history if item["result"]["evidence_source"] != "simulated"]
     device_evidence = actual[-1] if actual else None
     return {"build_id": request["build_id"], "source_filename": request["source"]["filename"],
+            "shortcut_name": request.get("shortcut_name"),
+            "installed_shortcut_name": device_evidence.get("installed_shortcut_name") if device_evidence else None,
+            "name_matches": (device_evidence["installed_shortcut_name"] == request["shortcut_name"])
+                if device_evidence and device_evidence.get("installed_shortcut_name") is not None and "shortcut_name" in request else None,
             "source_sha256": request["source"]["sha256"], "request_status": "prepared",
             "ipad_status": device_evidence["status"] if device_evidence else "not-attempted",
             "latest_observation_status": latest["status"] if latest else None,
@@ -380,6 +435,7 @@ def manual_result(request, args):
         text = Path(args.diagnostics_file).read_bytes().decode("utf-8-sig")
         result["compiler_messages"] += ("\n" if result["compiler_messages"] else "") + text
     result["developer_notes"] = args.notes
+    result["installed_shortcut_name"] = args.installed_name
     result["device"] = {"ipados_version": args.ipados_version, "jellycuts_version": args.jellycuts_version,
                         "forscore_version": args.forscore_version}
     return result
@@ -404,6 +460,9 @@ def parser():
             sub.add_argument("--method", choices=METHODS, default="editor")
             sub.add_argument("--local-report", type=Path, help="Capture an existing matching build.py report, including failures")
             sub.add_argument("--allow-text-source", action="store_true", help="Explicitly snapshot a historical .txt variant")
+            names = sub.add_mutually_exclusive_group()
+            names.add_argument("--shortcut-name", help="Intended installed display name; otherwise inherit previous same-path build or derive from original filename")
+            names.add_argument("--name-from-build", help="Reuse an existing request's name across a source-file rename/move")
         if command == "ingest":
             sub.add_argument("result", nargs="?", type=Path, help="Default: results/<build-id>/result.json")
         if command == "record":
@@ -417,6 +476,7 @@ def parser():
             sub.add_argument("--error-text")
             sub.add_argument("--diagnostics-file", type=Path, help="UTF-8 diagnostic text (optional BOM)")
             sub.add_argument("--notes", default="")
+            sub.add_argument("--installed-name", help="Actual observed installed name; omit if unknown (never inferred from intended name)")
             for option in ("ipados-version", "jellycuts-version", "forscore-version"):
                 sub.add_argument("--" + option, default="")
     return cli
@@ -425,9 +485,10 @@ def parser():
 def execute(args):
     root = args.exchange.expanduser().resolve()
     if args.command == "prepare":
-        request = prepare(root, args.source, args.method, args.local_report, args.allow_text_source)
+        request = prepare(root, args.source, args.method, args.local_report, args.allow_text_source,
+                          args.shortcut_name, args.name_from_build)
         return {"request": request, "exchange_root": str(root),
-                "ipad_instruction": f"In Files open requests/{request['build_id']}/source.txt; preview its CONTENTS, then use the documented {args.method} path. No iPad compilation has occurred."}
+                "ipad_instruction": f"In Files open requests/{request['build_id']}/source.txt; preview its CONTENTS, then use the documented {args.method} path. Intended shortcut name: {request['shortcut_name']}. Use this in the compiler name field when available; otherwise rename the newly generated test shortcut after installation. Check existing names/callers first. No iPad compilation has occurred."}
     require(root.is_dir(), f"Exchange directory unavailable: {root}. Prepare creates it; list/status/verify never create it.")
     if args.command in ("list", "verify"):
         requests_dir = safe_path(root, "requests")
