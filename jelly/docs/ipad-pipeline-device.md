@@ -22,10 +22,15 @@ Add the request-reading and validation actions before it, then reconnect its
 source and name inputs. The final target is:
 
 ```text
-Select request.json → read manifest → extract build/name/source metadata
-Select source.txt → verify File hash → extract and preview source Text
+Select build folder once → get request.json → extract build/name/source metadata
+Get source.txt from that same folder → verify File hash → preview source Text
 Confirm build/name → existing Compile Jelly Text → existing export/install flow
 ```
+
+Only the build folder is selected interactively. Both files are retrieved by their
+fixed relative filenames. This replaces the earlier two-file-picker instructions.
+Folder selection and child-file retrieval through OneDrive remain an iPad test;
+reported visibility of the files does not yet establish this action chain.
 
 ### 1. Back up the diagnostic helper
 
@@ -57,22 +62,31 @@ When an If is inserted, Shortcuts supplies Otherwise/End If. Do not insert those
 as extra actions. Keep each error alert and Stop This Shortcut **inside its If**;
 leave Otherwise empty. An accidentally unconditional Stop would prevent compilation.
 
-### 3. Select and parse request.json
+### 3. Select the build folder once and retrieve request.json
 
-Add these actions at the beginning, before the existing source-file selection:
+Replace the first manual file picker with these actions at the beginning:
 
-1. **Select File**. Turn multiple selection Off. This first picker is for
-   **request.json**, not source.txt and not feedback-template.json. Add an ordinary
-   **Comment** immediately before it saying `Select request.json for this build`
-   if that makes the two pickers easier to distinguish.
-2. **Set Variable**: name `requestFile`; input = the first Select File's File.
-3. **Get Text from Input**: input = named `requestFile`, with no Name property
+1. **Select Folder**. Turn multiple selection Off. At run time browse to
+   `Jellycuts Exchange/requests` and select the **long build-ID folder itself**,
+   not requests, not a file inside it. If the UI opens the folder to select it,
+   use its folder-selection confirmation control. Do not type its long ID.
+2. **Set Variable**: name `requestFolder`; input = Select Folder's native Folder
+   output. Do not select the Folder's Name or File Path property.
+3. **Get File from Folder**: Folder = named `requestFolder`; File Path = literal
+   `request.json`. Use a relative filename, without a leading slash or a Windows
+   path. If exposed, turn Show Document Picker Off and Error If Not Found On.
+   The Folder slot can initially show a fixed folder such as Shortcuts: replace
+   it with the requestFolder variable token rather than browsing for a fixed folder.
+4. **Set Variable**: name `requestFile`; input = that retrieved native File.
+5. **Get Text from Input**: input = named `requestFile`, with no Name property
    selected. This reads the JSON document contents.
-4. **Get Dictionary from Input**: input = the Text output from step 3.
-5. **Set Variable**: name `request`; input = the Dictionary output from step 4.
+6. **Get Dictionary from Input**: input = the Text output from step 5.
+7. **Set Variable**: name `request`; input = the Dictionary output from step 6.
 
-If the Dictionary action errors, stop and check the selected file. Do not feed
-request.json itself or its JSON text into Compile Jelly Text.
+If request.json is missing or the Folder cannot be read, stop that attempt. If
+the Dictionary action errors, check the retrieved file. Do not feed request.json
+itself or its JSON text into Compile Jelly Text. The pipeline's snapshot filenames
+are always request.json/source.txt, so no file chooser is needed after the folder.
 
 ### 4. Extract the build ID and intended shortcut name
 
@@ -132,20 +146,29 @@ expectedHash: 02e6099570c2aa5af935e95c4055b9b5e7ddfa72875a1a4cfb150cb0793a3cd2
 
 The original filename is context for review. It is not the installed name.
 
-### 6. Select the actual source File
+### 6. Retrieve source.txt from the same selected folder
 
-Reuse the existing source **Select File** action if there is one; otherwise add it
-here. Multiple selection must be Off. Add a Comment before it saying
-`Select source.txt from the same build folder`.
+Replace the old source **Select File** action with another **Get File from Folder**.
+This is automatic retrieval, not a second selection:
 
-1. At run time select **source.txt** from the same folder as request.json.
-2. Immediately after this picker add **Set Variable**: name `sourceFile`;
-   input = this second Select File's native File.
-3. Reselect the original File output if an old token has its **Name** property
-   selected. The value stored in sourceFile must be the File, not a name/path.
+1. **Get File from Folder**: Folder = named `requestFolder` from step 3;
+   File Path = literal `source.txt`. If exposed, Show Document Picker Off;
+   Error If Not Found On.
+2. **Set Variable**: name `sourceFile`; input = this Get File from Folder's
+   native File output.
+3. Reselect the new File output if an old token used the removed Select File or
+   had its Name property selected. Reconnect downstream hashing/text extraction
+   to named sourceFile. Do not connect them to requestFile by automatic chaining.
 
 Use source.txt for this helper. source.jelly is the byte-identical editor-opening
-alias. feedback-template.json is neither source alias.
+alias. feedback-template.json is neither source alias. Keep the source/name/hash
+steps below unchanged; the only user selection is requestFolder.
+
+**Provider check:** the retrieved requestFile and sourceFile must come from the
+selected OneDrive build folder. If the action cannot accept that Folder token or
+asks for another selection, record its actual fields/error before changing the
+design. Do not silently substitute a fixed iCloud folder or path Text. These are
+native Shortcuts actions; no new Jelly binding or Windows pipeline change is needed.
 
 ### 7. Verify the selected File's SHA-256
 
@@ -238,8 +261,8 @@ with intendedShortcutName only when it sets the generated shortcut's display nam
 ### 11. Run the minimal-variable test and inspect the untouched output
 
 1. Run TEST -Jellycuts Compiler in the foreground.
-2. In picker one choose the new build's request.json; in picker two choose its
-   source.txt. Check hash, code preview and displayed name.
+2. Select the new build's long-ID folder once. The helper retrieves request.json
+   and source.txt automatically. Check hash, code preview and displayed name.
 3. At the confirmation alert choose OK for the real compilation attempt.
 4. Record whether compilation completes, hangs or reports errors/warnings.
 5. Inspect the generated shortcut's name. Expected: **TEST - Pipeline Minimal Variable**.
@@ -280,14 +303,15 @@ see the [pipeline command examples](ipad-pipeline.md).
 
 | Named variable | Type | Producer |
 | --- | --- | --- |
-| requestFile | File | First Select File: request.json |
+| requestFolder | Folder | One Select Folder: the long build-ID folder |
+| requestFile | File | Get File from Folder: requestFolder + request.json |
 | request | Dictionary | Get Dictionary from Input of requestFile's Text |
 | buildId | Text | request key build_id |
 | intendedShortcutName | Text | request key shortcut_name |
 | sourceInfo | Dictionary | request key source |
 | originalSourceFilename | Text | sourceInfo key filename |
 | expectedHash | Text | sourceInfo key delivered_sha256 |
-| sourceFile | File | Second Select File: source.txt |
+| sourceFile | File | Get File from Folder: requestFolder + source.txt |
 | actualHash | Text | Lowercase SHA-256 of sourceFile |
 | sourceText | Text | Get Text from Input of sourceFile |
 
@@ -351,13 +375,13 @@ the physical device. No guessed Jelly bindings are involved.
 
 | Step | Action and explicit variable connection |
 | --- | --- |
-| 1 | **Select File**, multiple selection Off. Select request.json in the intended build folder. |
-| 2 | **Get Dictionary from Input**, input = selected request File, not its name. |
+| 1 | **Select Folder**, multiple selection Off; select the long build-ID folder and Set Variable requestFolder to that native Folder. |
+| 2 | **Get File from Folder**, Folder=requestFolder, relative File Path=request.json; Set Variable requestFile. Get Text from Input of requestFile, then Get Dictionary from Input of that Text. |
 | 3 | **Set Variable** request = Dictionary from step 2. |
 | 4 | **Get Dictionary Value**, key `build_id`, Dictionary = named request. Set named buildId from this output. |
 | 5 | **Get Dictionary Value**, key `source`, Dictionary = named request. Set named sourceInfo from this nested Dictionary. |
 | 6 | **Get Dictionary Value**, key `delivered_sha256`, Dictionary = named sourceInfo. Set named expectedHash. |
-| 7 | **Select File**, multiple selection Off. Select source.txt from that exact buildId folder. Set named sourceFile from the selected native File. |
+| 7 | **Get File from Folder**, Folder=requestFolder, relative File Path=source.txt; Set named sourceFile from that retrieved native File. No second picker. |
 | 8 | **Generate Hash** (search Hash), algorithm SHA-256, input = named sourceFile. Set named actualHash. |
 | 9 | **If** actualHash is not expectedHash: Show Alert "Source hash mismatch — stop", then **Stop This Shortcut**. Do not compile that file. |
 | 10 | **Get Text from Input**, input = named sourceFile. Set named sourceText from this action's Text output. |
@@ -468,6 +492,9 @@ template, zero-error return or saved note constitutes a compile pass.
 - Local pinned action references: [Get Text from Input](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/getTextFrom.md),
   [Hash](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/hash.md),
   [Quick Look](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/quicklook.md).
+- [Cherri's native-action reference](https://cherrilang.org/language/standard/documents.html)
+  documents Select Folder and folder-relative file retrieval. It is supporting
+  action evidence, not a proposed compiler migration or proof of OneDrive behavior.
 - Existing user reports establish the two Jellycuts compilation action names,
   successful examples and the incomplete-generation counterexample. They do not
   establish current action parameters, return types, diagnostics/export or the

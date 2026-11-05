@@ -44,6 +44,10 @@ request. This is reported visibility, not confirmation of File-byte hashing,
 compilation or iPad-to-Windows feedback. The [existing-helper upgrade guide](../../docs/ipad-pipeline-device.md#upgrade-test--jellycuts-compiler-step-by-step)
 now walks through upgrading TEST -Jellycuts Compiler; that upgraded wiring has
 not yet been device-tested.
+The user's requested interaction is now **one Select Folder** for the long-ID
+build folder, followed by automatic Get File from Folder retrieval of request.json
+and source.txt. Add a device check that both files come from the selected OneDrive
+folder without a second chooser; the provider/action behavior is not yet confirmed.
 
 Naming-enhancement checks: **Windows 33 passed, 1 symlink skip; WSL Ubuntu
 34 passed**. These add filename defaults, overrides, same-path persistence,
