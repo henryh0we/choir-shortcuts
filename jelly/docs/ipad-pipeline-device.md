@@ -1,6 +1,20 @@
 # iPad setup and first compilation experiment
 
-Status: **upgrade instructions prepared; upgraded helper not device-tested**.
+Status: **minimal-variable generation reported; full G1A generation failed**.
+The next G1A Compile Jelly Text attempt produced a division/calculation action
+containing the Dependencies comment text and an unexpected Stop this shortcut,
+visible in the user's screenshot. These are not intended G1A actions. Preserve
+that failed output. The user subsequently copied the same code into the Jellycuts
+editor, compiled and built, and reports the exact same Calculate-box problem.
+This G1A failure is therefore not isolated to Compile Jelly Text. The next probe
+removes only the eight header comments in a separate candidate; every executable
+statement stays unchanged. See [the header-isolation experiment](../tests/pipeline/README.md#header-isolation-after-both-paths-failed).
+The user copied the request folder locally, ran the helper for TEST - Pipeline
+Minimal Variable, and reports Nothing → Set Variable currentValue to emptyValue
+→ Quick Look currentValue. This matches the intended action sequence; the user
+subsequently confirmed the variable token was correct. Exact consumed hash,
+repairs and generated-shortcut runtime were not reported. The precise local
+launch mode (picker versus Share Sheet) was not stated.
 On 5 November the user confirmed the exchanged files appear as expected in Files.
 This establishes reported file visibility, not byte-level verification or returned
 feedback. Earlier user reports include a Hello World compilation hang followed by
@@ -9,7 +23,8 @@ No importable Shortcut is supplied. Upgrade the diagnostic helper manually in
 Apple Shortcuts; do not modify working installed choir shortcuts. Jellycuts Bridge
 is excluded and no premium Bridge capability is used.
 
-The currently best observed route is the Jellycuts editor. Both compilation
+The editor has earlier successful minimal tests, but is not a demonstrated fix
+for full G1A: both tested paths produced the same Calculate-box anomaly. Both compilation
 actions have also generated incomplete output; see the existing
 [path comparison](../tests/ipad-investigation/compilation-path-comparison.md).
 An action returning without an error is not a successful generation test.
@@ -22,15 +37,32 @@ Add the request-reading and validation actions before it, then reconnect its
 source and name inputs. The final target is:
 
 ```text
-Select build folder once → get request.json → extract build/name/source metadata
+Files → share build folder → Shortcut Input → requestFolder → get request.json
+Read manifest → extract build/name/source metadata
 Get source.txt from that same folder → verify File hash → preview source Text
 Confirm build/name → existing Compile Jelly Text → existing export/install flow
 ```
 
-Only the build folder is selected interactively. Both files are retrieved by their
-fixed relative filenames. This replaces the earlier two-file-picker instructions.
-Folder selection and child-file retrieval through OneDrive remain an iPad test;
-reported visibility of the files does not yet establish this action chain.
+The documented Share Sheet experiment starts from **Files**, passing one
+build folder into the helper. Both files are then retrieved by their fixed relative
+filenames. It replaces Select Folder, which is blocked for OneDrive on this device.
+Folder sharing and child-file retrieval through OneDrive remain an iPad test;
+visibility in Files does not establish that sharing grants directory access.
+
+**Reported blocker, 5 November:** OneDrive and Jellycuts Exchange are greyed out
+in the shortcut's picker while accessible in the Files app. The folder-selection
+route is therefore blocked on this device/provider setup. A provider/picker access
+limitation is a hypothesis, not a confirmed universal OneDrive restriction.
+The subsequent folder Share operation was also reported unavailable/greyed out.
+
+The user then copied the folder over and reports the expected minimal-variable
+generation. This supports local staging for that reported fixture, without proving
+the precise launch/permission path or end-to-end hash checks. The earlier proposed
+isolation procedure was to copy one complete request folder to On My iPad and
+retry the helper there. Local staging is a temporary manual transport fallback,
+not verified bidirectional sync. Confirm the source hash/metadata on subsequent runs.
+Do not change OneDrive accounts, reinstall apps or bypass source-hash checks for
+this experiment. Direct OneDrive folder selection remains unresolved.
 
 ### 1. Back up the diagnostic helper
 
@@ -62,16 +94,31 @@ When an If is inserted, Shortcuts supplies Otherwise/End If. Do not insert those
 as extra actions. Keep each error alert and Stop This Shortcut **inside its If**;
 leave Otherwise empty. An accidentally unconditional Stop would prevent compilation.
 
-### 3. Select the build folder once and retrieve request.json
+### 3. Receive the shared build folder and retrieve request.json
 
-Replace the first manual file picker with these actions at the beginning:
+First configure the helper's entry point in the Shortcuts editor:
 
-1. **Select Folder**. Turn multiple selection Off. At run time browse to
-   `Jellycuts Exchange/requests` and select the **long build-ID folder itself**,
-   not requests, not a file inside it. If the UI opens the folder to select it,
-   use its folder-selection confirmation control. Do not type its long ID.
-2. **Set Variable**: name `requestFolder`; input = Select Folder's native Folder
-   output. Do not select the Folder's Name or File Path property.
+1. Open its Details/settings and enable **Show in Share Sheet**. The exact
+   navigation to Details varies with the installed Shortcuts version.
+2. In the Receive input banner, change accepted content from Any to **Folder**
+   (or Folders, depending on the UI). Apple lists Folder as a supported input type.
+3. If the banner exposes a no-input choice, choose **Stop and Respond** and enter
+   `Share one build folder from Files.`. Do not enable a fallback document picker.
+4. Remove the existing **Select Folder** action. There is no picker inside this
+   route: Files supplies the selection through **Shortcut Input**.
+
+At the beginning of the action sequence add **Count**, type Items, input =
+**Shortcut Input**. Add **If** that Count **is not** Number `1`: Show Alert
+`Share exactly one build folder`, then Stop This Shortcut inside the If. Put the
+remaining actions after End If. This catches empty/multiple input; the Share Sheet
+input filter alone is not a general runtime type check for other callers.
+
+Then add or reconnect these actions:
+
+1. **Get Item from List**, First Item, List = **Shortcut Input**. The count guard
+   has already required exactly one item; do not silently accept the first of many.
+2. **Set Variable**: name `requestFolder`; input = the native Item from step 1.
+   Do not select its Name or File Path property and do not force a URL into Folder.
 3. **Get File from Folder**: Folder = named `requestFolder`; File Path = literal
    `request.json`. Use a relative filename, without a leading slash or a Windows
    path. If exposed, turn Show Document Picker Off and Error If Not Found On.
@@ -82,6 +129,21 @@ Replace the first manual file picker with these actions at the beginning:
    selected. This reads the JSON document contents.
 6. **Get Dictionary from Input**: input = the Text output from step 5.
 7. **Set Variable**: name `request`; input = the Dictionary output from step 6.
+
+To launch it, open **Files**, find the long-ID build folder, touch and hold that
+folder and choose **Share**, then select **TEST -Jellycuts Compiler**. Select the
+folder itself, not the requests parent or one of its files. Sharing from inside
+the OneDrive app may offer different content; test the Files route first.
+
+**Share-input check:** OneDrive may supply a sharing URL or another representation
+instead of a usable native Folder. The helper may then be absent from the Folder
+Share Sheet, or Get File from Folder may fail. Share Sheet launch is a candidate
+workaround, not proof that the picker restriction is bypassed. Do not treat a
+OneDrive URL as a directory, download it as Jelly source, or relax hash checks.
+If input is unclear, use a separate temporary diagnostic accepting Anything with
+only **View Content Graph**, input=Shortcut Input. Share the same folder to that
+diagnostic and record whether it receives a Folder, URL, archive or other type.
+Apple recommends this inspection technique; the diagnostic must not compile.
 
 If request.json is missing or the Folder cannot be read, stop that attempt. If
 the Dictionary action errors, check the retrieved file. Do not feed request.json
@@ -162,7 +224,7 @@ This is automatic retrieval, not a second selection:
 
 Use source.txt for this helper. source.jelly is the byte-identical editor-opening
 alias. feedback-template.json is neither source alias. Keep the source/name/hash
-steps below unchanged; the only user selection is requestFolder.
+steps below unchanged; the only user selection is the folder shared from Files.
 
 **Provider check:** the retrieved requestFile and sourceFile must come from the
 selected OneDrive build folder. If the action cannot accept that Folder token or
@@ -261,8 +323,9 @@ with intendedShortcutName only when it sets the generated shortcut's display nam
 ### 11. Run the minimal-variable test and inspect the untouched output
 
 1. Run TEST -Jellycuts Compiler in the foreground.
-2. Select the new build's long-ID folder once. The helper retrieves request.json
-   and source.txt automatically. Check hash, code preview and displayed name.
+2. In Files share the new build's long-ID folder to TEST -Jellycuts Compiler.
+   If it receives a usable Folder, it retrieves request.json and source.txt
+   automatically. Check hash, code preview and displayed name.
 3. At the confirmation alert choose OK for the real compilation attempt.
 4. Record whether compilation completes, hangs or reports errors/warnings.
 5. Inspect the generated shortcut's name. Expected: **TEST - Pipeline Minimal Variable**.
@@ -303,7 +366,7 @@ see the [pipeline command examples](ipad-pipeline.md).
 
 | Named variable | Type | Producer |
 | --- | --- | --- |
-| requestFolder | Folder | One Select Folder: the long build-ID folder |
+| requestFolder | Folder, to verify on device | Single shared Folder from Shortcut Input, extracted after Count=1 |
 | requestFile | File | Get File from Folder: requestFolder + request.json |
 | request | Dictionary | Get Dictionary from Input of requestFile's Text |
 | buildId | Text | request key build_id |
@@ -375,7 +438,7 @@ the physical device. No guessed Jelly bindings are involved.
 
 | Step | Action and explicit variable connection |
 | --- | --- |
-| 1 | **Select Folder**, multiple selection Off; select the long build-ID folder and Set Variable requestFolder to that native Folder. |
+| 1 | Enable Show in Share Sheet and accept Folder. Count Items in Shortcut Input; stop unless exactly 1. Get First Item, then Set Variable requestFolder to that native Folder. No Select Folder action. |
 | 2 | **Get File from Folder**, Folder=requestFolder, relative File Path=request.json; Set Variable requestFile. Get Text from Input of requestFile, then Get Dictionary from Input of that Text. |
 | 3 | **Set Variable** request = Dictionary from step 2. |
 | 4 | **Get Dictionary Value**, key `build_id`, Dictionary = named request. Set named buildId from this output. |
@@ -488,7 +551,8 @@ template, zero-error return or saved note constitutes a compile pass.
 - [Apple: Using Dictionaries, iOS 26](https://support.apple.com/en-in/guide/shortcuts/apd43b69f337/9.0/ios/26)
   supports Get Dictionary from Input for JSON/plist and dictionary key access.
 - [Apple: Input types](https://support.apple.com/en-gb/guide/shortcuts/apd7644168e1/ios)
-  distinguishes native Files from plain Text.
+  distinguishes native Folder/Files from Text and URLs, and recommends View
+  Content Graph to inspect what another app actually passes into a shortcut.
 - Local pinned action references: [Get Text from Input](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/getTextFrom.md),
   [Hash](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/hash.md),
   [Quick Look](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/quicklook.md).

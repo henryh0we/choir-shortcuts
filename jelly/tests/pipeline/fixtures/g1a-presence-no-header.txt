@@ -1,0 +1,21 @@
+import Shortcuts
+
+nothing() >> emptyValue
+var currentValue = emptyValue
+if(currentValue == nil) {
+text(text: "G1A EMPTY ABSENT") >> emptyAbsent
+quicklook(input: emptyAbsent)
+}
+if(currentValue != nil) {
+text(text: "FAIL G1A EMPTY PRESENT") >> emptyPresent
+quicklook(input: emptyPresent)
+}
+currentValue = "Alpha"
+if(currentValue != nil) {
+text(text: "G1A FILLED PRESENT") >> filledPresent
+quicklook(input: filledPresent)
+}
+if(currentValue == nil) {
+text(text: "FAIL G1A FILLED ABSENT") >> filledAbsent
+quicklook(input: filledAbsent)
+}

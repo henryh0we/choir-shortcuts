@@ -156,6 +156,13 @@ class PipelineTests(unittest.TestCase):
                 matched += 1
         self.assertEqual(matched, 5)
 
+    def test_header_free_g1a_preserves_every_noncomment_byte(self):
+        original = SCRIPT.parents[1] / "tests/ipad-investigation/g1a-presence.jelly"
+        candidate = Path(__file__).with_name("fixtures") / "g1a-presence-no-header.txt"
+        lines = original.read_bytes().splitlines(keepends=True)
+        self.assertEqual(sum(line.startswith(b"//") for line in lines), 8)
+        self.assertEqual(candidate.read_bytes(), b"".join(line for line in lines if not line.startswith(b"//")))
+
     def test_missing_source(self):
         self.source.unlink()
         self.assertIn("source", self.cli("prepare", str(self.source), expected=1).lower())

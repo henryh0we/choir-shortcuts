@@ -1,8 +1,9 @@
 # Pipeline tests and physical-iPad integration plan
 
-Windows transport/evidence code is tested independently of the iPad. Build-linked
-device results below remain **Not run**; the unlinked user reports are recorded
-separately. No generated importable Shortcut or app output is fabricated.
+Windows transport/evidence code is tested independently of the iPad. Device
+evidence now includes a reported expected minimal-variable action sequence after
+local folder copying; exact build linkage remains unconfirmed. Reports are recorded
+separately from hash-linked feedback. No generated Shortcut or app output is fabricated.
 Production sources and both G1A originals remain unchanged.
 
 ## Automated acceptance suite
@@ -37,6 +38,58 @@ ignored exchange and verified without recording any device result.
 
 ## User-reported compilation observations, 5 November 2026
 
+**Latest editor follow-up:** the user copied the same G1A source into Jellycuts,
+compiled and built, and reports the exact same Calculate-box defect. They state
+a screenshot would look identical; no additional screenshot was supplied. This
+G1A generation failure is not specific to the compilation action. Earlier minimal
+success does not establish full G1A support through either route. Next isolate
+the header in the separate candidate described below; keep original failed outputs.
+
+**Latest G1A result: malformed generation, not a pass.** After using the supplied
+prepare command for the original g1a-presence.jelly and compiling with Compile
+Jelly Text, the user supplied a screenshot showing the initial header Comments,
+then a division/calculation action containing `Dependencies: None. Exact installed
+targets must match source; export filenames do not set installed names.`, then
+Stop this shortcut, then further header Comments. The original G1A has a single
+line comment for Dependencies and no such calculation or unconditional stop.
+The screenshot alone does not show all remaining actions or establish the cause.
+
+Windows found one matching G1A request in the configured shared exchange:
+`20261105T232511572676Z-a8d9428214e646b8a8cb603b6c1f83a6`, original/delivered hash
+`9052558758e35e63d3928d3ae79bbe5fa0a2094da87c5c5169bcc87c1b86496c`, requested
+method compile-jelly-text. This matches the supplied command/source and visible
+original header; the consumed iPad bytes/hash were not independently observed.
+Keep compiler errors/warnings, native repair requirements and runtime unknown
+unless supplied. Classify as inconclusive with generated=true, inspected=true,
+correct=false, not a successful validation. The proposed same-source editor
+comparison has now been attempted and also failed by user report.
+The pipeline appended manual observation
+`20261105T233233864343Z-aa086373a56a40258bcf776675e6e891` to this shared request:
+status inconclusive, generated=true, inspected=true, correct=false. Compiler
+error reporting, repairs and installed name remain null/unknown; device_tested=false
+means no generated-shortcut execution has been established. The receipt/source
+hashes identify the request evidence, not independently measured iPad input bytes.
+
+Earlier minimal-variable result: after copying the folder locally, the user ran the helper for
+TEST - Pipeline Minimal Variable and reports the following generated actions:
+
+```text
+Nothing
+Set variable currentValue to emptyValue
+Show currentValue in Quick Look
+```
+
+The sequence matches M's expected generation. It supersedes the earlier
+"local compilation untested" note for this narrow reported case. Exact build ID,
+source hash/hash-check result, device versions, any native repairs and execution
+of the generated shortcut were not supplied. The user subsequently confirmed the
+correct variable token, so token correctness is no longer pending for that report. Local picker
+versus Share Sheet launch was not specified. Do not infer a OneDrive fix or a
+device-passed result, and do not attach this report to an assumed build ID.
+Nothing remains intentionally empty in this fixture; an empty runtime preview
+alone is not a generation failure. This success is limited to that small fixture
+and does not supersede the subsequent G1A failure.
+
 Transport follow-up: the user reports that all exchanged files appear as expected
 in the iPad Files app. Windows inspection also finds the version-2 named minimal
 request in the shared OneDrive exchange alongside the older version-1 Hello World
@@ -48,6 +101,20 @@ The user's requested interaction is now **one Select Folder** for the long-ID
 build folder, followed by automatic Get File from Folder retrieval of request.json
 and source.txt. Add a device check that both files come from the selected OneDrive
 folder without a second chooser; the provider/action behavior is not yet confirmed.
+Follow-up: the user reports OneDrive and Jellycuts Exchange greyed out in the
+shortcut's browser while usable in Files. Folder selection is blocked; the exact
+cause is unresolved. The proposed next isolation test copies one complete request
+folder to On My iPad and retries the same helper there. Local-folder selection,
+hashing and compilation from that copy remain untested.
+The next requested alternative is **Files → Share the build folder → TEST
+-Jellycuts Compiler**, with Show in Share Sheet enabled and Folder input replacing
+Select Folder. Native Folder delivery/child access are unverified; a OneDrive link
+or archive is not a usable Folder. Inspect uncertain input with a separate View
+Content Graph diagnostic before any compilation. A folder received via Share Sheet
+must still pass manifest/source-hash checks. This is not yet a successful workaround.
+The user subsequently reported folder Share unavailable/greyed out too. The local
+copy/generation report above is the latest evidence; it does not establish which
+local launch method worked.
 
 Naming-enhancement checks: **Windows 33 passed, 1 symlink skip; WSL Ubuntu
 34 passed**. These add filename defaults, overrides, same-path persistence,
@@ -125,6 +192,47 @@ contracts and known local failure. C differs only in comments, including the
 joined Result/Dependencies line. Neither variant is declared universally valid
 for the app by this plan.
 
+## Header isolation after both paths failed
+
+New independent candidate: `tests/pipeline/fixtures/g1a-presence-no-header.txt`.
+It removes exactly the eight leading // header-comment lines from the original
+g1a-presence.jelly. An automated test checks that **every noncomment byte remains
+identical**, including all executable statements, blank lines and If bodies.
+Neither G1A original is modified. This is an intentional experimental source
+variant, not a silent pipeline normalization or a proven production fix.
+
+Candidate bytes: 533. SHA-256:
+`109806e133539328882b27899d7fda5207cd2254dcb4d2f0491b968cfc0fbe3d`.
+
+Intended installed diagnostic name: **TEST - G1A Presence No Header**. Input: none
+consumed. Dependencies: none. Side effects: previews only. No explicit return.
+Target: current iPad/Jellycuts versions must be recorded. Expected generation:
+Nothing, currentValue assignment, four If blocks with their Text/Quick Look pairs,
+and Alpha assignment. No header Comment, Calculate/Divide or unconditional Stop.
+Expected runtime remains G1A EMPTY ABSENT then G1A FILLED PRESENT, without FAIL.
+Native token connections and condition polarity must be inspected before execution.
+
+First duplicate the editor test project and delete only its eight leading //
+comment lines, so the first line is import Shortcuts; equivalently paste the exact
+new candidate file. Compile/build through the editor with no other edits, under
+the distinct test name, and inspect before repairs or runtime. A successful
+header-free variant implicates header processing for this input, but does not
+identify a particular comment/word or prove comments are universally broken.
+If it also fails, header removal is insufficient. Preserve both observations.
+After recording that editor result, compare the same candidate via Compile Jelly
+Text. Current candidate device result: **Not run**.
+
+To prepare a reproducible candidate request rather than editing an immutable build:
+
+```powershell
+python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/g1a-presence-no-header.txt --allow-text-source --shortcut-name 'TEST - G1A Presence No Header' --method editor --exchange $exchangeRoot
+```
+
+The candidate is already a deliberate source variant; the pipeline still delivers
+its submitted bytes unchanged. Do not delete comments from stored request files.
+The Windows suite now passes 34 tests with one symlink skip; the additional test
+establishes this candidate's noncomment-byte identity, not app compilation.
+
 ## Prepare a separate request per method and case
 
 ```powershell
@@ -193,8 +301,8 @@ objects/errors are observations, not automatically trusted result-schema entries
 | Case | Editor | Compile Jelly Text | Compile Jelly File | Runtime |
 | --- | --- | --- | --- | --- |
 | H | Not run | Not run | Not run | Not run |
-| M | Not run | Not run | Not run | Not run |
-| G | Not run | Not run | Not run | Not run |
+| M | Not run in this loop | Expected three-action sequence reported via compiler helper after local copy; build/hash and exact path unconfirmed | No separate result | Not reported |
+| G | Same Calculate-box defect reported after copying identical code; no second screenshot | Malformed generation shown: Dependencies division plus unexpected Stop; request association noted above | No separate result | Not reported; preserve malformed output |
 | C | Not run | Not run | Not run | Not run |
 | I | Not run | Not run | Not run | Must not run |
 | N | Not applicable | Not run | Not applicable | Guard only |

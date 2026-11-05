@@ -1,6 +1,51 @@
 # Jellycuts editor versus Shortcuts compilation actions
 
-Recorded 5 November 2026 from user-reported iPad action inspection. No device
+## Latest pipeline evidence, 5 November 2026
+
+**Latest editor comparison:** the user copied the same G1A code into Jellycuts,
+compiled and built through the editor, and reports the same erroneous Calculate
+box; they state another screenshot would look exactly the same. No second image
+was supplied. This disproves isolation of this G1A defect to Compile Jelly Text.
+The exact shared internal component and triggering source feature remain unknown.
+Do not continue presenting the editor as a verified solution for full G1A.
+
+The user now reports successful three-action minimal-variable generation through
+the compiler helper after locally copying the request folder, and confirms its
+variable token is correct. That supersedes the earlier failure only for this new
+minimal attempt; exact consumed hash/versions/settings were not supplied.
+
+The subsequent full original G1A attempt via Compile Jelly Text reproduces the
+earlier header anomaly. A screenshot supplied in chat shows three intended header
+Comments followed by a division/calculation action whose operand contains the
+Dependencies header text, then an unexpected Stop this shortcut, then more
+Comments. G1A's source contains neither that calculation nor that stop. No inference
+about all unseen downstream actions is made. This is incorrect generated output,
+not proof that the source itself is invalid or that comment punctuation/return
+caused the problem.
+
+The shared exchange has a matching request
+`20261105T232511572676Z-a8d9428214e646b8a8cb603b6c1f83a6`, submitted from
+g1a-presence.jelly, SHA-256
+`9052558758e35e63d3928d3ae79bbe5fa0a2094da87c5c5169bcc87c1b86496c`.
+This is the only discovered G1A request and matches the user's supplied prepare
+command and visible source header. Device-side consumed-byte verification,
+compiler warnings/errors, exact versions, repairs and runtime remain unreported.
+The screenshot is in the conversation, not a checked-in image artifact.
+
+**Next experiment:** isolate the header while keeping every executable statement
+and all four If blocks unchanged. New fixture
+[g1a-presence-no-header.txt](../pipeline/fixtures/g1a-presence-no-header.txt)
+is the original .jelly minus its eight leading // comment lines, byte-for-byte
+identical otherwise. Original fixtures remain unchanged. First compile that
+candidate in a separate editor project. A pass implicates header processing for
+this input, without proving every comment or a particular word is broken. A
+failure means header removal is insufficient; preserve the result before isolating
+the executable constructs. Only compare the compilation action on that candidate
+after recording the editor result. See [the candidate contract](../pipeline/README.md#header-isolation-after-both-paths-failed).
+
+## Initial investigation record
+
+Originally recorded 5 November 2026 from user-reported iPad action inspection. No device
 execution, screenshots or exported artifacts were captured in this repository.
 Exact current iPadOS/Jellycuts versions and compiler/library builds were not
 recorded; do not assume the earlier device profile still applies.
@@ -41,8 +86,10 @@ followed by Stop This Shortcut, then remaining comments and functionality.
 Changing the specification comment wording produced a different incomplete
 export with no header comments and a broken currentValue assignment.
 
-The repository's G1A `.txt` and `.jelly` copies were checked during this
-investigation: byte-identical, LF line endings, no UTF-8 BOM. The known local
+The earlier investigation recorded G1A twins as byte-identical. That claim no
+longer describes HEAD: commit d172232 changes only the .txt header, while the
+original .jelly still has hash 9052558758e35e63d3928d3ae79bbe5fa0a2094da87c5c5169bcc87c1b86496c.
+Both current variants have LF line endings and no UTF-8 BOM. The known local
 CRLF compiler defect therefore does not explain those repository bytes. The
 bytes delivered to the iPad were not independently captured.
 
@@ -55,10 +102,10 @@ its presence-condition generation and expected runtime previews remain untested.
 
 ## Current development route
 
-Transfer source from the PC, then compile/export from the Jellycuts editor and
+Transfer the exact request snapshot from the PC, then compile/export from the Jellycuts editor and
 inspect the generated actions. Avoid relying on Compile Jelly File or Compile
-Jelly Text for this workflow until the minimal example generates all three
-actions with intact connections. Keep malformed exports untouched for comparison;
+Jelly Text as the general authoritative pipeline merely because the minimal
+example now generates all three actions: full G1A still fails. Keep malformed exports untouched for comparison;
 manual reconnection would conceal the generation failure.
 
 ### Proposed source-file handoff: not yet tested
