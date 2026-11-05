@@ -1,5 +1,14 @@
 # iPad Jellycuts questions and test plan
 
+## Compilation-path investigation, 5 November 2026
+
+The user reports that a minimal Nothing → Set Variable → Quick Look example
+generates correctly in the Jellycuts editor, while both Compile Jelly File and
+Compile Jelly Text generate only a broken Set Variable. See the
+[comparison and proposed source-file handoff](compilation-path-comparison.md)
+for evidence, an earlier conflicting editor result, unresolved causes, and the
+untested Files/share-sheet workflow. This does not validate G1A runtime behaviour.
+
 ## Runnable generation groups, 4 November 2026
 
 Use the [four-group test checklist](generation-groups.md) to start testing. It
