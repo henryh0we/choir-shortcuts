@@ -38,6 +38,15 @@ ignored exchange and verified without recording any device result.
 
 ## User-reported compilation observations, 5 November 2026
 
+**Latest header-free editor result: generation and runtime passed by user report.**
+The user confirms the Calculate block is gone, all four If statements are correct,
+and execution displays EMPTY ABSENT followed by FILLED PRESENT as expected.
+This follows the header-removal experiment below, not a fix to the original source.
+Exact consumed bytes/build ID, app/device versions and native repairs were not
+supplied. Keep this report separate from the original headered request's failures;
+no immutable build feedback is attributed to this manually tested variant.
+Compile Jelly Text on the header-free candidate remains the next test.
+
 **Latest editor follow-up:** the user copied the same G1A source into Jellycuts,
 compiled and built, and reports the exact same Calculate-box defect. They state
 a screenshot would look identical; no additional screenshot was supplied. This
@@ -219,13 +228,17 @@ the distinct test name, and inspect before repairs or runtime. A successful
 header-free variant implicates header processing for this input, but does not
 identify a particular comment/word or prove comments are universally broken.
 If it also fails, header removal is insufficient. Preserve both observations.
-After recording that editor result, compare the same candidate via Compile Jelly
-Text. Current candidate device result: **Not run**.
+Current candidate result: **editor generation and runtime passed by user report**:
+no Calculate block, four correct If statements, EMPTY ABSENT then FILLED PRESENT.
+This implicates the removed header content without identifying the triggering
+comment or proving all comments unsupported. Exact consumed hash and repair
+history remain unconfirmed. Next compare the same candidate via Compile Jelly
+Text; that candidate/path result is **Not run**.
 
 To prepare a reproducible candidate request rather than editing an immutable build:
 
 ```powershell
-python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/g1a-presence-no-header.txt --allow-text-source --shortcut-name 'TEST - G1A Presence No Header' --method editor --exchange $exchangeRoot
+python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/g1a-presence-no-header.txt --allow-text-source --shortcut-name 'TEST - G1A Presence No Header' --method compile-jelly-text --exchange $exchangeRoot
 ```
 
 The candidate is already a deliberate source variant; the pipeline still delivers
@@ -303,6 +316,7 @@ objects/errors are observations, not automatically trusted result-schema entries
 | H | Not run | Not run | Not run | Not run |
 | M | Not run in this loop | Expected three-action sequence reported via compiler helper after local copy; build/hash and exact path unconfirmed | No separate result | Not reported |
 | G | Same Calculate-box defect reported after copying identical code; no second screenshot | Malformed generation shown: Dependencies division plus unexpected Stop; request association noted above | No separate result | Not reported; preserve malformed output |
+| Header-free G1A candidate | User reports no Calculate block and four correct If statements | Not run | Not run | User reports EMPTY ABSENT then FILLED PRESENT as expected, after editor compilation; build/hash and repairs unconfirmed |
 | C | Not run | Not run | Not run | Not run |
 | I | Not run | Not run | Not run | Must not run |
 | N | Not applicable | Not run | Not applicable | Guard only |

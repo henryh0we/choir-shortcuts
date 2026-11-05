@@ -2,6 +2,14 @@
 
 ## Latest pipeline evidence, 5 November 2026
 
+**Header-free candidate: editor generation and runtime passed by user report.**
+The Calculate block is gone, all four If statements are reported correct, and
+execution shows EMPTY ABSENT then FILLED PRESENT as expected. This implicates
+the removed header content, without identifying a particular triggering comment.
+Exact consumed hash, versions and any native repairs remain unconfirmed. This
+report belongs to the separate candidate, not the original headered request.
+Compile Jelly Text on this candidate remains untested.
+
 **Latest editor comparison:** the user copied the same G1A code into Jellycuts,
 compiled and built through the editor, and reports the same erroneous Calculate
 box; they state another screenshot would look exactly the same. No second image
@@ -32,7 +40,7 @@ command and visible source header. Device-side consumed-byte verification,
 compiler warnings/errors, exact versions, repairs and runtime remain unreported.
 The screenshot is in the conversation, not a checked-in image artifact.
 
-**Next experiment:** isolate the header while keeping every executable statement
+**Header-isolation experiment:** isolate the header while keeping every executable statement
 and all four If blocks unchanged. New fixture
 [g1a-presence-no-header.txt](../pipeline/fixtures/g1a-presence-no-header.txt)
 is the original .jelly minus its eight leading // comment lines, byte-for-byte
@@ -41,7 +49,10 @@ candidate in a separate editor project. A pass implicates header processing for
 this input, without proving every comment or a particular word is broken. A
 failure means header removal is insufficient; preserve the result before isolating
 the executable constructs. Only compare the compilation action on that candidate
-after recording the editor result. See [the candidate contract](../pipeline/README.md#header-isolation-after-both-paths-failed).
+after recording the editor result. That editor result is now the reported pass
+above. Next prepare a distinct request for the same header-free candidate using
+Compile Jelly Text, inspect its four Ifs and tokens, then check the same two
+previews. See [the candidate contract](../pipeline/README.md#header-isolation-after-both-paths-failed).
 
 ## Initial investigation record
 

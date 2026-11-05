@@ -1,14 +1,21 @@
 # iPad setup and first compilation experiment
 
-Status: **minimal-variable generation reported; full G1A generation failed**.
+Status: **header-free G1A editor generation and runtime passed by user report**.
+The user confirms the Calculate block is gone, all four If statements are correct,
+and execution shows EMPTY ABSENT followed by FILLED PRESENT as expected.
+This is the separate header-free candidate; the original headered G1A still fails.
+Next test the same header-free candidate through Compile Jelly Text. That route
+has not yet been reported for this candidate. Exact consumed hash, device versions
+and any native repairs remain unconfirmed.
 The next G1A Compile Jelly Text attempt produced a division/calculation action
 containing the Dependencies comment text and an unexpected Stop this shortcut,
 visible in the user's screenshot. These are not intended G1A actions. Preserve
 that failed output. The user subsequently copied the same code into the Jellycuts
 editor, compiled and built, and reports the exact same Calculate-box problem.
-This G1A failure is therefore not isolated to Compile Jelly Text. The next probe
-removes only the eight header comments in a separate candidate; every executable
-statement stays unchanged. See [the header-isolation experiment](../tests/pipeline/README.md#header-isolation-after-both-paths-failed).
+This original G1A failure is therefore not isolated to Compile Jelly Text. Removing
+only the eight header comments in a separate candidate produced the editor pass
+above; every executable statement stays unchanged. This implicates the removed
+header content without identifying a specific trigger. See [the header-isolation experiment](../tests/pipeline/README.md#header-isolation-after-both-paths-failed).
 The user copied the request folder locally, ran the helper for TEST - Pipeline
 Minimal Variable, and reports Nothing → Set Variable currentValue to emptyValue
 → Quick Look currentValue. This matches the intended action sequence; the user
