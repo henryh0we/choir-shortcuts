@@ -37,6 +37,14 @@ ignored exchange and verified without recording any device result.
 
 ## User-reported compilation observations, 5 November 2026
 
+Transport follow-up: the user reports that all exchanged files appear as expected
+in the iPad Files app. Windows inspection also finds the version-2 named minimal
+request in the shared OneDrive exchange alongside the older version-1 Hello World
+request. This is reported visibility, not confirmation of File-byte hashing,
+compilation or iPad-to-Windows feedback. The [existing-helper upgrade guide](../../docs/ipad-pipeline-device.md#upgrade-test--jellycuts-compiler-step-by-step)
+now walks through upgrading TEST -Jellycuts Compiler; that upgraded wiring has
+not yet been device-tested.
+
 Naming-enhancement checks: **Windows 33 passed, 1 symlink skip; WSL Ubuntu
 34 passed**. These add filename defaults, overrides, same-path persistence,
 renamed-source name reuse, actual-name mismatches, simulated-name isolation and
