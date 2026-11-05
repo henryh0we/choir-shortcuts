@@ -1,0 +1,4 @@
+import Shortcuts
+nothing() >> emptyValue
+var currentValue = emptyValue
+quicklook(input: currentValue)

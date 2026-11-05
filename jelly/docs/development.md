@@ -1,5 +1,12 @@
 # Daily local development
 
+For authoritative iPad compilation requests, use the complementary
+[file-based pipeline](ipad-pipeline.md), its [JSON format](ipad-pipeline-format.md)
+and [manual iPad instructions](ipad-pipeline-device.md). It preserves exact bytes,
+separates local checks from app evidence, and supports feedback without Bridge.
+Run its independent Windows tests with
+`python -B -m unittest discover -s jelly/tests/pipeline -v` from the repository root.
+
 Save one Shortcut per `.jelly` file, preserving the existing `shortcuts/main/`,
 `shortcuts/reusable/`, `examples/` and `tests/` layout and header/contracts.
 See [AGENTS.md](../AGENTS.md) for naming, dependency and device evidence rules.

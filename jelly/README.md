@@ -4,6 +4,16 @@ This directory contains Jelly source for Apple Shortcuts. Each `.jelly` file rep
 
 Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/jellycuts-reference.md), [architecture](docs/architecture.md), and [Shortcut inventory and installation order](docs/dependencies.md).
 
+## File-based iPad compilation pipeline
+
+Use [the pipeline CLI](docs/ipad-pipeline.md) to snapshot exact source into a
+configurable exchange folder and collect append-only compilation feedback.
+Windows preparation/recording/ingestion works without a device; the
+[iPad helper instructions](docs/ipad-pipeline-device.md) and
+[integration tests](tests/pipeline/README.md) still need physical-device execution.
+Jellycuts Bridge is excluded. Existing local compiler tools and working installed
+shortcuts are preserved; neither file transfer nor a local pass proves iPad success.
+
 ## Current iPad status and avoiding repeat debugging
 
 4 November: [four isolated generation test groups](tests/ipad-investigation/generation-groups.md)

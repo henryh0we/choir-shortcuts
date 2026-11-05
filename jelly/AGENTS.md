@@ -80,6 +80,24 @@ Example comment format (one physical line per native Comment action):
 
 ## Local compiler workflow (21 October 2026)
 
+### File-based iPad feedback loop (5 November 2026)
+
+Use [the pipeline guide](docs/ipad-pipeline.md), [result contract](docs/ipad-pipeline-format.md)
+and [device instructions](docs/ipad-pipeline-device.md). Jellycuts Bridge is excluded
+from this workflow; do not configure it, contact it or depend on its subscription.
+After source work and the existing local compiler check below, prepare an immutable
+request with `python jelly/scripts/ipad_pipeline.py prepare <source.jelly>` from the
+repository root. Use `--exchange <shared-directory>` on each subcommand or
+`JELLY_EXCHANGE_ROOT`; the default is an ignored local test exchange, not device sync.
+Optionally capture the exact-source local build report with `--local-report`; local
+failure must not block app submission. Never alter G1A twins to hide their mismatch.
+Report build ID, delivered hash and location, then await actual developer/device
+feedback. Use record/ingest followed by status/verify. Keep repaired execution,
+untouched generation, and simulated evidence distinct. No result folder or transfer
+means compiled; no successful compilation means executed. The Windows CLI cannot
+measure iPad behavior. Do not fabricate feedback or regenerate working installed
+shortcuts for transport tests. New observations/builds preserve previous evidence.
+
 The WSL/Linux compiler is installed: Open-Jellycore `e1ec31c2ee192c8721749f9eb3b50108e38891cf`, built unmodified with Swift 6.4.1. This is a separate profile from the user's Jellycuts app. Read [development](docs/development.md), [setup](docs/setup.md), [compiler limitations](docs/compiler-limitations.md), and [local test evidence](tests/compiler/README.md) when working on tooling or interpreting a compiler mismatch. Older statements below about compiler absence describe the earlier inspection.
 
 Whenever you create or modify `.jelly` source, run `python jelly/scripts/build.py "jelly/path/to/source.jelly"` from the repository root on Windows, or `python3 scripts/build.py "path/to/source.jelly"` from `jelly/` in WSL. Pass multiple paths explicitly in dependency order. `--all` compiles every source, including incompatible app probes; its failures are not permission to rewrite those probes or production source indiscriminately. Reusable helpers remain independently installed Shortcuts with established contracts and exact names, not compile-time includes.
