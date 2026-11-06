@@ -38,6 +38,16 @@ ignored exchange and verified without recording any device result.
 
 ## User-reported compilation observations, 5 November 2026
 
+**Latest single-comment result: runtime passed by user report.** Following the
+single-comment Compile Jelly Text experiment, the user reports no random
+calculation blocks or similar anomalies, and EMPTY ABSENT then FILLED PRESENT.
+This supports the single-comment variant for this test. Exact installed name,
+complete If/token inspection, build ID/consumed hash, versions and repair history
+were not separately supplied. No immutable request is assigned this report.
+The eight-comment original still fails; both header-free and combined-comment
+variants now have reported successful runtime. Comment count/line boundaries
+remain a hypothesis because combining the header also changes its separators.
+
 **Latest header-free Compile Jelly Text result: runtime passed by user report.**
 Following the requested pipeline comparison, the user confirms no Calculate block
 or unexpected Stop actions, and execution shows EMPTY ABSENT then FILLED PRESENT.
@@ -270,7 +280,11 @@ Use intended installed name **TEST - G1A Presence Single Comment** in the
 manifest. Contract: no input or dependencies, previews only, no explicit return.
 Expected output: G1A EMPTY ABSENT then G1A FILLED PRESENT, without FAIL.
 Inspect for one header Comment, four correctly connected If statements, and no
-Calculate or unexpected Stop before running. Device result: **Not run**.
+Calculate or unexpected Stop before running. Device result: **runtime passed by
+user report through the requested Compile Jelly Text experiment**. The user
+reports no random calculation blocks or similar anomalies and the two expected
+outputs, EMPTY ABSENT then FILLED PRESENT. Complete action/token inspection,
+installed name, exact build/hash, versions and native repairs remain unconfirmed.
 This tests one large comment instead of eight separate comments; comment count
 is a hypothesis, not an established cause. The separators also differ from the
 original line breaks, so a pass alone cannot isolate the parser mechanism.
@@ -350,6 +364,7 @@ objects/errors are observations, not automatically trusted result-schema entries
 | M | Not run in this loop | Expected three-action sequence reported via compiler helper after local copy; build/hash and exact path unconfirmed | No separate result | Not reported |
 | G | Same Calculate-box defect reported after copying identical code; no second screenshot | Malformed generation shown: Dependencies division plus unexpected Stop; request association noted above | No separate result | Not reported; preserve malformed output |
 | Header-free G1A candidate | User reports no Calculate block and four correct If statements | User reports no Calculate block or unexpected Stop; complete If inspection not separately confirmed | Not run | User reports EMPTY ABSENT then FILLED PRESENT through both routes; build/hash and repairs unconfirmed |
+| Single-comment G1A candidate | Not run | User reports no random calculation blocks or similar anomalies; complete action inspection not separately confirmed | Not run | User reports EMPTY ABSENT then FILLED PRESENT; build/hash and repairs unconfirmed |
 | C | Not run | Not run | Not run | Not run |
 | I | Not run | Not run | Not run | Must not run |
 | N | Not applicable | Not run | Not applicable | Guard only |

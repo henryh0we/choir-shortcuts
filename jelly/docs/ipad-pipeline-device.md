@@ -1,6 +1,11 @@
 # iPad setup and first compilation experiment
 
-Status: **header-free G1A runtime passed through editor and Compile Jelly Text by user report**.
+Status: **header-free and single-comment G1A runtime passed by user report**.
+The latest single-comment Compile Jelly Text experiment produced no random
+calculation blocks or similar anomalies and ran with EMPTY ABSENT then FILLED
+PRESENT. The original eight-comment header still fails. This supports the combined
+header for this fixture, without establishing a universal comment-count limit.
+See [the single-comment experiment](../tests/pipeline/README.md#single-large-header-comment-experiment).
 The user confirms the Calculate block is gone, all four If statements are correct,
 and execution shows EMPTY ABSENT followed by FILLED PRESENT as expected.
 This is the separate header-free candidate; the original headered G1A still fails.

@@ -2,6 +2,16 @@
 
 ## Latest pipeline evidence, 5 November 2026
 
+**Single-comment candidate: runtime passed by user report.** After the requested
+Compile Jelly Text experiment, the user reports no random calculation blocks or
+similar anomalies and EMPTY ABSENT then FILLED PRESENT. The candidate joins all
+eight original header comments into one physical // line; executable bytes are
+unchanged. The original headered failures remain valid observations. This supports
+the combined-comment variant for this input, but does not isolate comment count
+from changed line boundaries/separators. Exact build/hash, installed name,
+complete action/token inspection, versions and repair history remain unconfirmed.
+See [the experiment](../pipeline/README.md#single-large-header-comment-experiment).
+
 **Header-free candidate: editor generation and runtime passed by user report.**
 The Calculate block is gone, all four If statements are reported correct, and
 execution shows EMPTY ABSENT then FILLED PRESENT as expected. This implicates
