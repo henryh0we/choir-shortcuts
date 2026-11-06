@@ -1,0 +1,28 @@
+// Installed name: TEST - G1C Count Guards | Purpose/role: Inspect actual Count operands and equal/unequal branch behaviour; independent generation diagnostic. | Specification revision: 1; interface 1.0. Contract: No input; counts 2,2,1 then EQUAL CONTINUES and MISMATCH DETECTED; no explicit return | Dependencies: None. Exact installed targets must match source; export filenames do not set installed names. | Side effects: Previews/prompts only; no saves, renames, imports, metadata or setlist writes. | Target: iPadOS/Jellycuts versions must be recorded; previous profile iPadOS 26.6 / Jellycuts 2026.6.4. Local comparison Open-Jellycore e1ec31c / Swift 6.4.1. | Stage: Candidate, not iPad compiled/imported/executed. Local build results: generation-groups-builds.md. Test instructions/results: generation-groups.md. | Setup: No native fixture slots. Import unchanged first; do not repair before recording the untouched result.
+import Shortcuts
+
+list(items: ["A", "B"]) >> actualItems
+list(items: ["X", "Y"]) >> equalItems
+list(items: ["Z"]) >> differentItems
+count(type: Items, input: actualItems) >> actualCount
+count(type: Items, input: equalItems) >> equalCount
+count(type: Items, input: differentItems) >> differentCount
+quicklook(input: actualCount)
+quicklook(input: equalCount)
+quicklook(input: differentCount)
+if(actualCount == equalCount) {
+text(text: "G1C EQUAL CONTINUES") >> equalMarker
+quicklook(input: equalMarker)
+}
+if(actualCount != equalCount) {
+text(text: "FAIL G1C EQUAL REJECTED") >> equalFail
+quicklook(input: equalFail)
+}
+if(actualCount != differentCount) {
+text(text: "G1C MISMATCH DETECTED") >> mismatchMarker
+quicklook(input: mismatchMarker)
+}
+if(actualCount == differentCount) {
+text(text: "FAIL G1C MISMATCH ACCEPTED") >> mismatchFail
+quicklook(input: mismatchFail)
+}
