@@ -1,6 +1,32 @@
 # iPad generation results
 
-All device results start **Not run**. Use [the checklist](generation-groups.md)
+## Latest single-comment variants, 6 November 2026
+
+User-reported results following the supplied Compile Jelly Text request commands.
+These refer to the separate `.txt` fixtures in `../pipeline/fixtures/`, not the
+original multi-comment sources in the historical table below. Exact build IDs,
+consumed hashes, device versions, installed names and repair history were not
+provided; no immutable request is assigned these reports.
+
+| Single-comment fixture | Inspection reported | Actual runtime | Assessment |
+| --- | --- | --- | --- |
+| [G1B](../pipeline/fixtures/g1b-latest-value-single-comment.txt) | Everything looks good | Matches expected Alpha, Beta, Delta, Echo | Reported runtime pass for Text latest assignment |
+| [G1C](../pipeline/fixtures/g1c-count-guards-single-comment.txt) | Looks good | 2, 2, 1, FAIL G1C EQUAL REJECTED, G1C MISMATCH DETECTED | Runtime failure: equal counts rejected; mismatch detected |
+| [G1D](../pipeline/fixtures/g1d-file-assignment-single-comment.txt) | Looks good | Matches expected Count 2, PDF A, PDF B, PDF B | Reported runtime pass for File assignment |
+| [G2A](../pipeline/fixtures/g2a-append-text-single-comment.txt) | Not separately described | 0; no A/B/A previews | Runtime failure: collection observed empty |
+| [G2B](../pipeline/fixtures/g2b-append-files-single-comment.txt) | Not separately described | 2, 0; no further previews | Runtime failure: two selected Files, empty collection |
+
+Next inspect G1C's actual native operators and both Count-output operands, and
+G2A's first Repeat, Add to Variable actions, Count input and final Repeat input.
+All collection consumers must select the current named collection, not the
+Nothing initializer. Do not infer whether append generation or downstream token
+binding failed from zero alone. Diagnose G2A before native-File G2B or Score G2C.
+Preserve untouched outputs; any native edits belong on duplicates with separate
+before/after observations. No production source rule changes follow yet.
+
+## Original-source results table
+
+All original-source device results start **Not run**. Use [the checklist](generation-groups.md)
 for expected values and the full per-test result template. Record untouched
 compilation/export/runtime separately from native fixture setup or later repairs.
 Do not overwrite the source evidence or change production shortcuts based on

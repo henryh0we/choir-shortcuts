@@ -38,6 +38,13 @@ ignored exchange and verified without recording any device result.
 
 ## User-reported compilation observations, 5 November 2026
 
+Follow-up, **6 November 2026**: single-comment G1B and G1D match expected
+runtime. G1C displays 2, 2, 1, FAIL G1C EQUAL REJECTED, G1C MISMATCH DETECTED;
+G2A displays 0 with no item previews; G2B displays 2 then 0 with no further
+previews. These are three runtime failures despite G1C's reported good appearance.
+See [the separate variant results and next inspections](../ipad-investigation/generation-groups-results.md#latest-single-comment-variants-6-november-2026).
+Exact build linkage and repair history remain unconfirmed; originals are unchanged.
+
 **Latest single-comment result: runtime passed by user report.** Following the
 single-comment Compile Jelly Text experiment, the user reports no random
 calculation blocks or similar anomalies, and EMPTY ABSENT then FILLED PRESENT.
