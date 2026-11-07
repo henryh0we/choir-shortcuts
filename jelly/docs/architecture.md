@@ -1,5 +1,14 @@
 # Architecture and contracts
 
+## V3 architecture (7 November 2026)
+
+V3 is a fresh namespace and implementation, with no calls to legacy shortcuts
+and no compatibility-adapter requirement. Exact names use `V3 - ...`. The first
+increment is V3 - Preview Filenames -> V3 - Parse Filename, using a separate v3
+config snapshot. See [V3 contracts](v3-development.md) for current interfaces,
+implemented scope, future service-plan boundaries and unverified behavior.
+The legacy architecture below is historical and does not define V3 contracts.
+
 Design complete projects before individual files. Main Shortcuts own user interactions and orchestration. Reusable Shortcuts own focused behaviour with explicit native inputs/outputs. A shared component should justify the cost of compiling, installing, and testing it; no separate core layer is needed yet.
 
 The example flow is:

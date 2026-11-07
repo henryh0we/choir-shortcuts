@@ -1,5 +1,15 @@
 # Jellycuts workspace
 
+## V3: fresh implementation
+
+Start with [V3 development and contracts](docs/v3-development.md) and the
+[first manual iPad checkpoint](tests/v3/README.md). New installed names begin
+`V3 - ` and have no legacy shortcut dependencies. The initial filename parser
+and preview are drafted only; no builds or tests have been run. Configuration is
+separate: [v3-config.example.json](config/v3-config.example.json).
+
+The older workflows and evidence below remain historical reference material.
+
 This directory contains Jelly source for Apple Shortcuts. Each `.jelly` file represents one Shortcut to compile, import, and test on an iPhone. The sibling `manual creation/` directory keeps the separate manual-blueprint workflow.
 
 Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/jellycuts-reference.md), [architecture](docs/architecture.md), and [Shortcut inventory and installation order](docs/dependencies.md).

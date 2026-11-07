@@ -2,11 +2,13 @@
 
 Date: 7 November 2026  
 Authority: [v3 plan](nextcloud-forscore-plan-v3.md)  
-Status: Implementation roadmap only. No v3 source has been implemented, compiled or executed by this change. All checkpoints below are **not run**.
+Status: First filename-preview increment (stage 2A) drafted; no compilation or execution. All iPad checkpoints remain **not run**. See [current sources, configuration and contracts](jelly/docs/v3-development.md) and [the first manual checkpoint](jelly/tests/v3/README.md).
 
 We will build one small, usable increment, transfer its `.jelly` through Copyover, inspect the generated actions, and then you will test it on the iPad. Your results determine the next increment. We will resolve generation problems inside that increment rather than restart a broad diagnostic programme.
 
 I will review source, contracts, callers, documented signatures and recorded research. I will not run code, builds, automated tests or compilation to claim correctness. You will compile, inspect and execute on the iPad. This follows your current instruction over the repository's usual local-build requirement.
+
+V3 is a ground-up creation under **V3 - ...** installed names. It has no legacy shortcut dependencies, compatibility adapters or backup prerequisite. Reuse research only. This user direction supersedes the earlier migration approach.
 
 ## Sequence at a glance
 
@@ -14,16 +16,16 @@ These are development/test cycles, not calendar commitments. A failed checkpoint
 
 | Stage | Increment | Your iPad checkpoint | Dependency |
 | --- | --- | --- | --- |
-| 0 | Preserve the installed baseline and record actual names | Backups and disposable test area ready | None |
+| 0 | Establish the fresh V3 namespace and config | New names and disposable test area ready | None |
 | 1 | Freeze the first implementation contracts and native update requirements | Review representative parsing/identity examples and available insertion fields | 0 |
-| 2 | Shared config migration, parsing and read-only preview | Prefixes, dates, exclusions and canonical names agree | 1 |
+| 2 | New shared config, parsing and read-only preview | 2A filenames first; dates/order in the next increment | 1 |
 | 3 | Supplied-plan assembly route and score preparation | Native input survives; reuse/import and metadata behave correctly | 2 |
 | 4 | Create one new service and persist its identity | Exact A/B/A sequence, two scores, one setlist; record survives restart | 3 |
 | 5 | Additions-only reconciliation and interruption recovery | Unchanged rerun, A/C → A/B/C, manual edits and safe retry | 4 |
 | 6 | Specific service from Share Sheet | One combined service, one confirmation, no second file selection | 5 |
 | 7 | Weekly folder preview | Correct grouping, numeric order, dates and exclusions; no music writes | 2, 6 |
 | 8 | Weekly execution and batch recovery | Multiple services, partial results and resume | 7 |
-| 9 | Integrated acceptance and promotion | Both entry points target the same service; backups remain usable | 8 |
+| 9 | Integrated acceptance and promotion | Both entry points target the same service; V3 names/contracts are reviewed | 8 |
 
 The first end-to-end milestone is stage 4. The first v3-compliant update milestone is stage 5. Specific service is complete at stage 6; Weekly is complete after stages 8–9. Mass import remains deferred.
 
@@ -39,19 +41,17 @@ The [latest investigation results](jelly/tests/ipad-investigation/generation-gro
 | Indexed File candidate failed on `type: Item at Index`; earlier selector spellings also failed | Do not use either failed selector as an established solution. Use supported source forms or explicit native completion slots. |
 | Text assignments, two-Text extraction and some File assignments have narrow reported passes | Reuse those forms without extending their evidence to mixed dictionaries, nested values, Score transport or complete helpers. |
 | G1C rejected equal counts; generated token/default/polarity defects occurred | Inspect actual operands and operators. Count equality never proves identity or sequence. |
-| Repaired installed assembly can create services and offers replace/skip; archive-category/Genre draft is not fully device-tested | Preserve the working installation. Replace/clear behavior is incompatible with v3; category transfer and unattended handling need integrated checkpoints. |
+| Repaired installed assembly can create services and offers replace/skip; archive-category/Genre draft is not fully device-tested | Implement new components from this research. Replace/clear behavior is incompatible with v3; category transfer and unattended handling need integrated checkpoints. |
 
 Native forScore availability does not establish a Jelly binding, reliable identifier, arbitrary insertion position or recoverable error handling. Those remain implementation questions.
 
-## Stage 0 — preserve the installed baseline
+## Stage 0 - establish the fresh V3 workspace
 
-**Development work:** Inventory the active naming, archive, assembly and caller shortcuts, including their actual installed aliases and Run Shortcut targets. Start a migration ledger listing source revision, installed name, native repairs and backup name. Preserve the existing config and working installed shortcuts before regeneration.
+**Development work:** Give every new installed shortcut a V3 - name and independent contracts. Keep the new config separate. No old shortcut is required, renamed, upgraded or used as a dependency. Historical source and research stay available as reference.
 
-The known active assembly alias is `2-util-assemble-choir-service`, with a reported backup `2-util-assemble-choir-service 2`; inspect what is actually installed before choosing new backup names. Source names such as `UTIL - Assemble Choir Service` are intended contracts, not proof of installed names.
+**Your checkpoint:** When installing the first increment, confirm the two V3 names and the V3-only Run Shortcut target. Use disposable copies of PDFs for filename cases. Record iPadOS and Jellycuts versions; record forScore/provider versions when those integrations are introduced. No legacy backup or installation audit is required.
 
-**Your checkpoint:** Duplicate/export the working installed components and config, confirm the saved copies exist, and create a disposable forScore test area using synthetic/test music. Record iPadOS, Jellycuts, forScore and relevant file-provider versions. Confirm the active caller still points to the original assembly.
-
-**Advance when:** We can identify and restore the working installation and can distinguish every v3 development copy from it. Do not regenerate production to obtain a test copy.
+**Advance when:** The new items are distinguishable in the Shortcuts list and their calls/config are independent of old shortcuts. The initial sources and inventory establish this in source; generated names and wiring await your inspection.
 
 ## Stage 1 — contracts and the update capability boundary
 
@@ -61,7 +61,7 @@ The known active assembly alias is `2-util-assemble-choir-service`, with a repor
 - Plan envelope: `schemaVersion`, `serviceId`, `serviceDate`, `serviceSlot`, `serviceType`, `serviceName`, `sourceReference`, and ordered `items`, plus a documented link to the run's single config snapshot.
 - Item: stable occurrence key, numeric position, piece reference preserving edition/movement/variant, source reference, optional metadata/category and resolution status. Occurrence keys must survive discovery-order changes and missing items; identical filenames alone cannot identify two occurrences.
 - Keep a native PDF pool separate from occurrence records. Proposed transport is a native context List carrying a plan Dictionary, unique PDF Files, the config snapshot and required Folder context. Its exact cardinality/extraction is to be specified and checked in stage 3; do not assume nested values or native Files survive it.
-- Assembly gets an explicit supplied-plan mode while retaining the existing `interactive` input during migration. Define preflight and approved execution separately so one confirmation can cover the whole run.
+- Assembly is a new V3 supplied-plan component, independent of the old `interactive` interface. Define preflight and approved execution separately so one confirmation can cover the whole run.
 - Durable service records contain version, service ID, target locator, last confirmed request, occurrence mappings, unresolved positions and pending/verified progress. Store only serializable references, never native Score/Setlist objects or access tokens. A record is evidence of intent, not current contents.
 - Resolve by a verified persistent setlist identifier if available. Otherwise use recorded names with exact unique lookup in the intended library. Missing/renamed/duplicate targets require explicit relinking before confirmation; never create another service solely because its display name changed.
 
@@ -71,21 +71,23 @@ The known active assembly alias is `2-util-assemble-choir-service`, with a repor
 
 ## Stage 2 — shared configuration and parser preview
 
-**Development work:** Draft a versioned config successor alongside the existing v1 example; do not overwrite the live config. Arrange editable rules in v3's order: filename formats, week-folder dates, schedule, naming, then exceptions/run behavior. Preserve archive categories and folder settings.
+**Development work:** Create a separate versioned V3 config; no legacy config migration is needed. Arrange editable rules in v3's order: filename formats, week-folder dates, schedule, naming, then exceptions/run behavior. Preserve archive categories and folder settings.
 
-Implement one ordered parser result containing day, slot, numeric position and canonical payload. Grouping and canonical naming must consume that same interpretation. Explicit sessions precede bare-day and special-suffix fallback. Unknown/conflicting matches stay unresolved. Keep legacy two-Text naming callers working through an explicit adapter or coordinated interface migration; do not silently give them different prefix semantics.
+Implement one ordered parser result containing day, slot, numeric position and canonical payload. Grouping and canonical naming must consume that same interpretation. Explicit sessions precede bare-day and special-suffix fallback. Unknown/conflicting matches stay unresolved. V3 grouping and naming will share the new parser result; no legacy caller adapter is required.
 
 Use one config snapshot per run. Resolve saved week dates first, then explicit folder year, otherwise current year; persist resolved week context for reruns. Handle December/January explicitly without imposing historical weekday/year matching. No year prompt.
 
-**Your checkpoint:** Run a read-only preview on a small fixture folder containing Tuesday, Sunday bare/am/pm, `SunRemem`, a disabled Monday, aliases `Thu`/`Thur`/`Thurs`, positions 2 and 10, an unknown prefix and an edition-qualified name. Include one supported old/new format pair. Check grouping and canonical payload agree, qualifiers survive, and exclusions are called skipped. Check a date override, absent Mattins, a month boundary and a December/January week. Reload saved week context with a different default year and confirm unchanged service IDs.
+**Current delivery:** Stage 2A implements filename interpretation and recurring schedule switches only. Follow [its manual checkpoint](jelly/tests/v3/README.md) first. Dates, numeric sorting, saved context and dated overrides below belong to the next increment and are not implemented yet.
+
+**Full-stage checkpoint:** Run a read-only preview on a small fixture folder containing Tuesday, Sunday bare/am/pm, `SunRemem`, a disabled Monday, aliases `Thu`/`Thur`/`Thurs`, positions 2 and 10, an unknown prefix and an edition-qualified name. Include one supported old/new format pair. Check grouping and canonical payload agree, qualifiers survive, and exclusions are called skipped. Check a date override, absent Mattins, a month boundary and a December/January week. Reload saved week context with a different default year and confirm unchanged service IDs.
 
 **Advance when:** The preview is correct and performs no archive/import/metadata/setlist writes. Document exactly which conventions are supported; do not claim arbitrary naming schemes work.
 
 ## Stage 3 — supplied-plan assembly and preparation
 
-**Development work:** Add the plan route to a development assembly copy. Keep native Scores/Setlists inside it. First inspect the incoming plan and native file pool, then connect naming/archive/reuse/import and first-import Genre handling. An occurrence references its piece; it does not require duplicating native PDFs to represent A/B/A.
+**Development work:** Build the new V3 assembly supplied-plan route. Keep native Scores/Setlists inside it. First inspect the incoming plan and native file pool, then connect naming/archive/reuse/import and first-import Genre handling. An occurrence references its piece; it does not require duplicating native PDFs to represent A/B/A.
 
-Move unresolved category/title/composer choices into preflight, reuse saved decisions, or leave the occurrence unresolved. The current archive may prompt for a category, and current assembly has metadata questions: those paths cannot remain routine prompts after approval. Introduce an explicit prepared/batch contract rather than silently changing legacy callers. Unknown required category must not become an automatic guessed `Other`.
+Move unresolved category/title/composer choices into preflight, reuse saved decisions, or leave the occurrence unresolved. The legacy experiments reveal category and metadata prompt risks: design the new V3 archive and assembly to resolve these before approval. Define an explicit prepared/batch contract with no legacy callers. Unknown required category must not become an automatic guessed `Other`.
 
 **Your checkpoint A:** Supply two different PDFs and three occurrence records A/B/A. Inspect two usable native Files and three ordered occurrences at the receiver, then inspect the caller's actual return. Check malformed/missing plan fields are rejected before music writes. Check current named variables, Count operands, missing-value polarity and Run Shortcut targets.
 
@@ -105,7 +107,7 @@ Resolve existing targets during preflight. Show intended dates, target, sequence
 
 ## Stage 5 — additions-only updates and recovery
 
-**Development work:** Remove every clear/replace/reorder path from supplied-plan execution. Preserve legacy installed behavior separately during migration. Compare actual entries against requested occurrences and saved mappings. Match repeated occurrences one-to-one; do not reduce the request to unique scores.
+**Development work:** Do not introduce clear/replace/reorder paths into V3 execution. Legacy installed behavior has no role in this implementation. Compare actual entries against requested occurrences and saved mappings. Match repeated occurrences one-to-one; do not reduce the request to unique scores.
 
 Proposed conflict policy: prefer verified saved occurrence-to-entry mappings; otherwise match unambiguously in existing relative order. If repeated identities or reversed anchors make placement ambiguous, leave the affected insertion unresolved. If native gap insertion is unavailable, leave it pending. Do not append it elsewhere or rebuild the list. Other unambiguous additions and services may proceed. Preserve source removals and all pre-existing entries, including manual extras. If a saved entry disappeared manually, flag the intent conflict rather than guessing whether to restore it.
 
@@ -131,7 +133,7 @@ Read actual contents immediately before applying the approved additions. If they
 
 ## Stage 6 — Specific service
 
-**Development work:** Build the Share Sheet entry around the tested shared path. Target the Share Sheet title **Create Service**; record its exact installed name and every caller before delivery. Direct launch offers a file picker; shared input uses the received native Files. Reject/report links or unsupported objects without pretending they are PDFs.
+**Development work:** Build the Share Sheet entry around the tested shared path. Target the Share Sheet title **V3 - Create Service**; record its exact installed name and every caller before delivery. Direct launch offers a file picker; shared input uses the received native Files. Reject/report links or unsupported objects without pretending they are PDFs.
 
 Keep all selections in one service. Infer date/slot from usable context or let the user select an existing managed service. Its saved ID/date/slot populate the form. Ask once for genuinely missing context before the summary. Define a deterministic mixed/unprefixed order, expose it for adjustment, and persist occurrence identity independently of that adjustment. Suggested fallback: numeric positions where comparable, then canonical/source-name tie breakers; unresolved ties require an explicit order before approval.
 
@@ -157,7 +159,7 @@ Keep all selections in one service. Infer date/slot from usable context or let t
 
 ## Stage 9 — integrated acceptance and promotion
 
-**Development work:** Reconcile the source headers, contracts, configuration migration, dependency inventory, native repair guide and manual evidence. Preserve the original installation and historical failed research. Promote only the exact source revision plus documented native completions that you tested.
+**Development work:** Reconcile the V3 source headers, contracts, configuration setup, dependency inventory, native repair guide and manual evidence. Preserve historical research as evidence. Promote only the exact source revision plus documented native completions that you tested.
 
 **Your checkpoint:** Create through Specific service and update the same ID through Weekly, then reverse the direction on another service. Confirm one target, additions-only behavior, repeated occurrences, partial resolution and no duplicate score import. Check prefix/template edits preserve identity, saved week dates survive a changed current-year default, disabled slots require an exception and first-import Genre does not change existing score metadata. Revisit source removal, conflicting anchors and interruption once through the completed entry points.
 
@@ -186,4 +188,4 @@ Result: pass / fail / partial / not run:
 
 After a failed checkpoint, fix the first failing boundary and repeat that case plus directly affected earlier cases. Do not rerun unrelated diagnostics. A focused probe is warranted only when the integrated failure cannot be understood without isolating it.
 
-**Next work:** Stage 0's migration ledger and stage 1's concrete contract/config design. Then deliver stage 2's read-only implementation for your first new-code iPad checkpoint. No current source, config or installed behavior is replaced by this roadmap.
+**Next work:** You compile, inspect and run stage 2A using the [one-file checkpoint](jelly/tests/v3/README.md). Report the first error or the actual preview, plus any native repairs. Then extend the new shared parser/config with actual week-folder examples, dates and numeric ordering before continuing into the independent V3 assembly. No legacy implementation is a prerequisite.

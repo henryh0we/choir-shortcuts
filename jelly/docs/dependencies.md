@@ -1,5 +1,18 @@
 # Shortcut inventory and installation order
 
+## V3 installation order (7 November 2026)
+
+V3 is independent of every legacy Shortcut below. Install only:
+
+1. **V3 - Parse Filename**, [source](../shortcuts/reusable/v3-parse-filename.jelly), interface 1.0, no installed dependencies.
+2. **V3 - Preview Filenames**, [source](../shortcuts/main/v3-preview-filenames.jelly), interface 1.0, calls V3 - Parse Filename 1.0.
+
+Both are drafted only, not compiled/imported/tested. Use the separate
+[v3 config](../config/v3-config.example.json), [contracts](v3-development.md)
+and [manual checkpoint](../tests/v3/README.md). No local builds or tests are run
+under the user's current instructions. Names are exact Copyover targets; no
+rename of an old installed Shortcut is needed. The inventory below is legacy.
+
 4 November 2026: optional independent [generation test groups](../tests/ipad-investigation/generation-groups.md)
 are available. The checklist owns exact installed TEST names, inputs and
 dependencies. G3 Exit Echo/Context receivers install before their three callers;

@@ -6,6 +6,8 @@ Previous plan: [version 2](nextcloud-forscore-plan-v2.md)
 
 Development order: [staged implementation timeline and manual iPad checkpoints](nextcloud-forscore-v3-development-timeline.md). This is the working sequence for implementing this plan; runtime acceptance remains manual on the iPad.
 
+Implementation direction, 7 November 2026: build from the ground up under **V3 - ...** installed names. Reuse recorded research, not legacy shortcut dependencies or interfaces. No legacy migration, adapter or backup prerequisite is required. [Current implementation and contracts](jelly/docs/v3-development.md) describe the independent v3 sources and separate configuration.
+
 ## Purpose and scope
 
 Build two user-facing Apple Shortcuts for the initial release, with a third workflow reserved for a future addition:
@@ -31,15 +33,15 @@ All workflows must use the same rules for piece identity, service identity, orde
 - Combine all Share Sheet selections into one service, even when their original prefixes refer to different services.
 - Year accuracy is not important for these short-lived setlists. Use the current year by default without a year prompt; retain it for reruns of the same week.
 
-Move into implementation rather than extending the current programme of isolated diagnostics. Resolve remaining generation and runtime problems as they arise during construction and integrated use. Preserve the working installed shortcuts and their native repairs before replacing them.
+Move into implementation rather than extending the current programme of isolated diagnostics. Resolve remaining generation and runtime problems as they arise during construction and integrated use. Build independent V3 shortcuts without replacing or depending on the old installed shortcuts.
 
-This version establishes the overall structure. It does not claim that the proposed interfaces or all required actions are already implemented or device-verified. Earlier plans remain reference material; this document guides the proposed multi-entry-point structure. Existing source contracts remain in force until explicitly migrated.
+This version establishes the overall structure. It does not claim that the proposed interfaces or all required actions are already implemented or device-verified. Earlier plans remain reference material; this document guides the proposed multi-entry-point structure. V3 defines its own contracts without inheriting legacy interfaces.
 
 ## Editable formatting and weekly schedule
 
 Formatting and scheduling rules must be easy to find and change without editing the processing loops. Each user-facing shortcut starts, after its identifying comment, with a clearly labelled **SETTINGS / FORMATTING** section. This section exposes the shared configuration location and explains which settings control PDF prefixes, week-folder dates, service mappings, exclusions and setlist names. It must not maintain a separate copy of those rules in each shortcut.
 
-Keep the actual editable rules together near the top of the shared configuration, in this order:
+Keep the actual editable rules together near the top of the shared V3 configuration, in this order:
 
 1. **Filename formats:** supported prefix patterns, day aliases, session aliases, numeric position and where the piece-name payload begins.
 2. **Week-folder dates:** supported folder-name formats, year source and date interpretation.
@@ -47,7 +49,7 @@ Keep the actual editable rules together near the top of the shared configuration
 4. **Setlist naming:** date format and name template.
 5. **Exceptions and run behaviour:** dated overrides, previews and update policy.
 
-These are proposed configuration groups, not a claim that the existing config schema already supports them. Version and migrate that schema when implementing them.
+These are proposed configuration groups, not a claim that the existing config schema already supports them. Use a separately versioned V3 schema when implementing them.
 
 ### Filename formatting rules
 
@@ -119,9 +121,9 @@ Each entry point decides what belongs in a service and produces the same logical
 | Canonical naming utility | Apply consistent canonical piece naming across all entry points |
 | Archive utility | Save or reuse canonical PDFs using shared archive rules |
 
-Build on the existing naming, archive and assembly helpers. Initially keep score preparation and setlist updating together inside assembly so native forScore objects do not need to cross several helper boundaries. Extract further helpers only where there is a concrete reuse benefit.
+Create new V3 naming/parsing, archive and assembly components, informed by the recorded research. Initially keep score preparation and setlist updating together inside assembly so native forScore objects do not need to cross several helper boundaries. Extract further helpers only where there is a concrete reuse benefit.
 
-The labels above describe responsibilities, not newly agreed installed names. Preserve established installed names and caller contracts during migration; document exact names before adding new shortcuts.
+All new installed names begin V3 - . Exact implemented and planned names are documented in the [V3 contracts](jelly/docs/v3-development.md). No legacy caller contract needs to be maintained.
 
 ## Common service-plan contract
 
@@ -207,7 +209,7 @@ Implement this entry point first because it establishes the shared execution pat
 4. Show one summary and confirmation, with optional adjustments for a one-off service.
 5. Call shared assembly, preserve existing setlist entries and return the final result with unresolved items.
 
-Target the Share Sheet title **Create Service**; exact installed naming and supported input types must be recorded during implementation. File-provider support depends on receiving usable file objects; arbitrary URLs are not assumed to be PDFs. Unsupported inputs appear in the resolution report. A mixed selection always creates one combined service; where its target date or service cannot be inferred uniquely, collect those details once before the summary confirmation. Weekly remains the entry point that automatically splits music into services.
+Target the Share Sheet title **V3 - Create Service**; exact installed naming and supported input types must be recorded during implementation. File-provider support depends on receiving usable file objects; arbitrary URLs are not assumed to be PDFs. Unsupported inputs appear in the resolution report. A mixed selection always creates one combined service; where its target date or service cannot be inferred uniquely, collect those details once before the summary confirmation. Weekly remains the entry point that automatically splits music into services.
 
 The workflow should also allow targeting an existing service, using the same identity and update rules as Weekly. Define how a user selects an existing service and how its saved details populate the form.
 
@@ -234,7 +236,7 @@ CSV parsing must support quoted fields, including embedded commas. Splitting eve
 
 ## Shared configuration
 
-Keep common settings in one place and use one immutable configuration snapshot per run. Extend the existing configuration rather than introducing separate copies in each entry point.
+Keep common settings in one separate v3-config.json and use one immutable configuration snapshot per run. Neither entry point maintains a second copy, and no legacy config is required.
 
 Configuration should cover source/archive locations, filename-prefix parsing, service-prefix mappings, the weekly schedule and exclusions, dated overrides, setlist naming, piece-resolution policy, update policy and service-record storage. Put frequently changed formatting and schedule settings first, as specified above. Keep credentials out of committed source and example records.
 
@@ -247,7 +249,7 @@ Maintain `.jelly` only for Shortcut source and use Copyover for transfer. Do not
 ## Implementation sequence
 
 1. **Expand the contracts and policies.** Finalise service identity, item references, native transport, filename grouping, ordering, update review and reports.
-2. **Adapt shared assembly.** Add a supplied-service-plan route while preserving the established interactive caller during migration. Keep working installed copies backed up.
+2. **Build shared assembly.** Build a new supplied-service-plan assembly under the V3 namespace, with no legacy caller or helper dependency.
 3. **Complete Specific service.** Establish selection, ordering, preview, execution and updates end to end.
 4. **Add Weekly.** Implement folder reading, date resolution, parsing and grouping around the same assembly path.
 5. **Run integrated acceptance cases.** Exercise Share Sheet input, reruns, additions-only updates, preservation of manual edits, repetitions, special prefixes, unresolved music and interrupted execution, fixing issues encountered in the completed workflows.
@@ -279,7 +281,7 @@ Do not require another broad round of isolated probes before proceeding. Use foc
 - Ambiguous or missing music is reported and never silently omitted.
 - Future mass import will report invalid rows by service and row while processing valid independent services; it is not an initial-release acceptance requirement.
 - An interrupted run can resume by reconciling actual setlist contents.
-- Existing working installed helpers remain recoverable during migration.
+- V3 has its own installed namespace, configuration and contracts, with no legacy shortcut dependencies.
 
 ## Decisions to expand next
 
@@ -290,4 +292,4 @@ Do not require another broad round of isolated probes before proceeding. Use foc
 5. Service-record format, storage, setlist lookup and recovery checkpoints.
 6. Define occurrence matching and insertion-anchor conflict behaviour while preserving existing entries and their relative order. Gap insertion and partial services are confirmed requirements.
 7. Share Sheet fallback date/service selection and deterministic ordering for unprefixed or mixed-prefix music. Combining the selection into one service is confirmed. CSV template and parser decisions remain deferred.
-8. Exact installed shortcut names, dependency order and migration instructions.
+8. Exact V3 installed shortcut names, dependency order and installation instructions.

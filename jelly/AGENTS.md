@@ -1,5 +1,17 @@
 # Agent instructions for Jellycuts development
 
+## V3 user direction (7 November 2026)
+
+V3 is a ground-up implementation with exact installed names starting `V3 - `.
+It must not call or require legacy shortcuts, preserve their interfaces, or wait
+for backups of them. Existing files remain historical evidence; do not delete
+them or unrelated music. The user's instruction overrides the legacy migration
+and MAIN/UTIL naming guidance below for new V3 sources. Reuse recorded research,
+not installed legacy dependencies. See [V3 contracts](docs/v3-development.md).
+The user explicitly prohibits running code/builds/tests to establish correctness;
+use source review and provide manual iPad compilation/inspection/runtime checks.
+Do not run the usual local compiler checks for this V3 work or claim a pass.
+
 ## Source delivery policy (7 November 2026)
 
 Use `.jelly` only for Shortcut source. Copyover is the current transfer workflow. Do not create or regenerate `.txt` source twins. Historical text-only diagnostics are preserved as distinct `.jelly` fixtures with their original bytes; unrelated reference text and diagnostic logs remain text. Old immutable exchange bundles remain unchanged and readable. The optional pipeline now prepares a single `source.jelly` snapshot.

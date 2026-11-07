@@ -1,0 +1,77 @@
+// V3 - Preview Filenames | Purpose/role: Read-only first V3 entry increment | Specification revision: 1; interface 1.0 | Contract: Direct launch; pick v3 config then files; one preview and report Text; no archive or forScore writes; incoming input ignored | Dependencies: V3 - Parse Filename interface 1.0 | Stage: Drafted, not compiled or run; docs/v3-development.md and tests/v3/README.md
+import Shortcuts
+
+// SETTINGS / FORMATTING: Select the single v3-config.json copied from config/v3-config.example.json. Filename rules and schedule live there only. This first increment asks for that File each run; a fixed config Folder reference, dates, overrides, sorting and persistent week context are not implemented. Do not select legacy config.json. No dependency on an old installed shortcut.
+alert(alert: "Select v3-config.json, then choose the PDFs whose filenames you want to preview. This reads names only; it will not save music or change forScore.", title: "V3 filename preview", cancel: true)
+selectFile(type: Files, multiple: false) >> configFile
+if(configFile == nil) {
+output("V3 preview cancelled: no config selected.")
+}
+getTextFrom(input: configFile) >> configJson
+getDictionaryFrom(input: configJson) >> configSnapshot
+valueFor(key: "version", dictionary: configSnapshot) >> configVersion
+text(text: "${configVersion}") >> configVersionText
+if(configVersionText != "3") {
+output("ERROR: Select the separate v3-config.json with version 3.")
+}
+selectFile(type: Files, multiple: true) >> selectedFiles
+if(selectedFiles == nil) {
+output("V3 preview cancelled: no music selected.")
+}
+var report = """
+V3 FILENAME PREVIEW
+Filename and recurring schedule only. No dates, dated overrides, sorting, service plans or music writes in this increment.
+Rows follow the file provider's selection order; this is not a running order.
+"""
+// V3-PREVIEW-INPUT CHECK: Repeat input=original selectedFiles native Files, not a collected copy. Name and File Extension both consume THIS Repeat Item. File Extension is documented but app enum generation needs inspection. Do not infer a native PDF type from its filename; this preview only classifies names.
+repeatEach(selectedFiles) {
+fileDetail(input: RepeatItem, property: Name) >> sourceName
+fileDetail(input: RepeatItem, property: File Extension) >> sourceExtension
+matchText(text: "${sourceExtension}", regex: "^pdf$", caseSensitive: false) >> pdfExtension
+if(pdfExtension == nil) {
+text(text: """
+${report}
+
+FILE: ${sourceName}
+STATUS: unresolved
+REASON: Not a PDF filename; no service inferred.
+""") >> unsupportedReport
+report = unsupportedReport
+}
+if(pdfExtension != nil) {
+// V3-PREVIEW-CALL CHECK/RECONNECT: List must contain two actual Text tokens: sourceName and configJson snapshot. Run Shortcut target=V3 - Parse Filename, input=parseInput. No legacy helper; no bare variable-name Text entries. Parser return must be one native Dictionary (or deliberate ERROR Text), not a last-action side effect.
+list(items: ["${sourceName}", "${configJson}"]) >> parseInput
+runShortcut(name: "V3 - Parse Filename", input: parseInput, show: false) >> rawResult
+matchText(text: "${rawResult}", regex: "^ERROR:", caseSensitive: true) >> helperError
+if(helperError != nil) {
+output("${rawResult}")
+}
+getDictionaryFrom(input: rawResult) >> parsedResult
+valueFor(key: "schemaVersion", dictionary: parsedResult) >> resultVersion
+if(resultVersion != "1") {
+output("ERROR: V3 parser returned no supported result. Inspect its native Dictionary return.")
+}
+valueFor(key: "status", dictionary: parsedResult) >> parsedStatus
+valueFor(key: "dayKey", dictionary: parsedResult) >> dayKey
+valueFor(key: "serviceSlot", dictionary: parsedResult) >> slotKey
+valueFor(key: "serviceName", dictionary: parsedResult) >> serviceName
+valueFor(key: "position", dictionary: parsedResult) >> position
+valueFor(key: "canonicalName", dictionary: parsedResult) >> canonicalName
+valueFor(key: "reason", dictionary: parsedResult) >> reason
+text(text: """
+${report}
+
+FILE: ${sourceName}
+STATUS: ${parsedStatus}
+DAY / SLOT: ${dayKey} / ${slotKey}
+SERVICE: ${serviceName}
+POSITION: ${position}
+CANONICAL: ${canonicalName}
+REASON: ${reason}
+""") >> nextReport
+report = nextReport
+}
+}
+// V3-PREVIEW-REPORT CHECK: Quick Look and final Output consume current named report after the Repeat, not its introductory Text initializer. All parsing errors and skipped items must remain visible; no native forScore actions belong in this shortcut.
+quicklook(input: report)
+output("${report}")
