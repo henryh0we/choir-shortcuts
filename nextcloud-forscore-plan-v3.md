@@ -4,6 +4,8 @@ Date: 7 November 2026
 Status: Proposed architecture and implementation plan; ready for expansion.  
 Previous plan: [version 2](nextcloud-forscore-plan-v2.md)
 
+Development order: [staged implementation timeline and manual iPad checkpoints](nextcloud-forscore-v3-development-timeline.md). This is the working sequence for implementing this plan; runtime acceptance remains manual on the iPad.
+
 ## Purpose and scope
 
 Build two user-facing Apple Shortcuts for the initial release, with a third workflow reserved for a future addition:
