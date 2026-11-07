@@ -2,6 +2,16 @@
 
 ## G2B `var +=` File variant, 7 November 2026
 
+Double-add variant: the user selected the same Finzi and Harris PDFs and
+reports 2 selected, 4 collected, then index 1/PDF/Finzi and index 2/PDF/Harris,
+followed by completion. The variant contains two `var collectedFiles +=
+RepeatItem` statements inside the first Repeat and no post-loop addition. The
+reported runtime therefore still shows only two final iterations despite Count
+4. Generated action inspection, consumed hash and repairs are not reported;
+neither a compiler defect nor a specific deduplication mechanism is established.
+See [source](g2b-double-add-files.jelly) and
+[paste copy](../pipeline/fixtures/g2b-double-add-files.txt).
+
 With diagnostic Quick Looks of firstFile and the final Repeat Index, the user
 selected Finzi and Harris PDFs and observed: 2, Finzi preview, 3, index 1,
 PDF, Finzi preview, index 2, PDF, Harris preview, then completion. There was
