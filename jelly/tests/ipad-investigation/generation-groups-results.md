@@ -1,5 +1,32 @@
 # iPad generation results
 
+## G2A documented `var +=` variant, 7 November 2026
+
+The user confirms that `var collectedValues += RepeatItem` generated Add to
+Variable and returned 3, A, B, A without the previously required native insertion.
+This is a reported generation and runtime pass for this Text fixture. It does
+not establish File or Score behaviour, other contexts, exact consumed hash, app
+version, or broader compiler compatibility. The local build attempt was blocked
+by WSL access denial. See the [source](g2a-var-append-text.jelly) and
+[paste copy](../pipeline/fixtures/g2a-var-append-text.txt).
+
+## G2A generated-action inspection, 7 November 2026
+
+The user subsequently reports that inserting native Add to Variable inside the
+first Repeat produced 3, A, B, A. This is a repaired runtime pass, not an
+untouched generation pass. The documented alternate was subsequently tested as above.
+
+Two user-supplied screenshots show the revision-2 header, the A/B/A List,
+Nothing and initialization of named collectedValues, followed by a Repeat over
+sourceValues with **no action inside it**. The source calls for
+`collectedValues += RepeatItem` there, but no Add to Variable action is visible.
+The following Count and final Repeat visibly reference named collectedValues;
+the latter contains a Quick Look of Repeat Item. The empty first Repeat explains
+the reported zero for this export. The screenshots do not establish why the
+append was omitted, the consumed source hash, or any repair history. A duplicate
+with a native Add to Variable can test the remaining wiring separately; its
+outcome must not be attributed to untouched generation.
+
 ## Name-first clipboard follow-up, 7 November 2026
 
 The user confirms that the revised name-first G2A fixture and automatic naming

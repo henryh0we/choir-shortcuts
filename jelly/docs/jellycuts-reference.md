@@ -98,6 +98,14 @@ Functions/macros are supported in the inspected feature tests, but were not used
 
 ## Data types and collections
 
+For the user's Jellycuts app, prefer `var collectedValues += RepeatItem` when
+generating Add to Variable. On 7 November 2026 the user confirmed that this
+form generated the action inside a Repeat and returned Count 3 followed by A,
+B, A for Text. The otherwise equivalent form without `var` omitted the action.
+This confirms that Text fixture, not File, Score, other scopes or every app
+version. Preserve existing native repair slots until those cases are tested.
+The older local compiler is a separate profile. See [the test record](../tests/ipad-investigation/generation-groups-results.md).
+
 Text and Number declarations, variable references, string interpolation, and Boolean action arguments appear in the inspected material. Native contract types can additionally include Date, File, URL, List, and Dictionary when their actions and serialization are confirmed. These are not automatically all valid literal forms or Share Sheet filters.
 
 The inspected [Dictionary binding](https://github.com/OpenJelly/Open-Jellycore/blob/e1ec31c2ee192c8721749f9eb3b50108e38891cf/Sources/Open-Jellycore/Core/Compiler/Lookup%20Tables/Apps/Shortcuts/Actions/DictionaryParameter.swift) reads a `json` slot; the [List binding](https://github.com/OpenJelly/Open-Jellycore/blob/e1ec31c2ee192c8721749f9eb3b50108e38891cf/Sources/Open-Jellycore/Core/Compiler/Lookup%20Tables/Apps/Shortcuts/Actions/ListParameter.swift) reads `items`; [key retrieval](https://github.com/OpenJelly/Open-Jellycore/blob/e1ec31c2ee192c8721749f9eb3b50108e38891cf/Sources/Open-Jellycore/Core/Compiler/Lookup%20Tables/Apps/Shortcuts/Actions/ValueForParameter.swift) reads `key` and `dictionary`.

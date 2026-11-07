@@ -53,6 +53,10 @@ small tests needed to improve generation rather than repeatedly debug full runs.
    errors; do not claim Otherwise is universally broken or silently reintroduce
    that source form because a native Otherwise works.
 7. Collections use Add to Variable, one item per iteration, not Set Variable.
+   Prefer `var collectedValues += RepeatItem` for generated app source: a Text
+   A/B/A probe generated the action and returned 3, A, B, A by user report on
+   7 November 2026. Without `var` the action was omitted. File and Score
+   generation remain unverified; preserve existing production native slots.
    SCORE01/02 assign native lookup Items to workingScore; COL03 appends that
    named Score outside metadata Ifs. Editor Text labels alone neither prove nor
    disprove native preservation. Verify actual Score use; count equality is not
