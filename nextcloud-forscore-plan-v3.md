@@ -24,6 +24,10 @@ All workflows must use the same rules for piece identity, service identity, orde
 - Specific service is available from the Share Sheet for music shared from Nextcloud, Files or another provider that supplies usable files.
 - Mass import is a future addition.
 - Finish independent services and provide one final list of unresolved work.
+- Insert newly requested pieces into the appropriate gap without moving or removing existing entries.
+- Create/update a service with its available music even when a piece is missing, and flag the missing piece in the final report.
+- Combine all Share Sheet selections into one service, even when their original prefixes refer to different services.
+- Year accuracy is not important for these short-lived setlists. Use the current year by default without a year prompt; retain it for reruns of the same week.
 
 Move into implementation rather than extending the current programme of isolated diagnostics. Resolve remaining generation and runtime problems as they arise during construction and integrated use. Preserve the working installed shortcuts and their native repairs before replacing them.
 
@@ -86,11 +90,11 @@ Routine runs infer service type and name automatically. Use `{date} - {dayShort}
 
 Use date plus stable service-slot key for ordinary identity, for example `2026-11-08/evensong`. Changing the display template or source-prefix spelling must preserve that identity. Keep it independent of the enabled switch. Multiple exceptional services require distinct slot keys.
 
-The normal Weekly run should require selecting the folder and then process recognised, enabled services using the approved rules. Infer dates and year from explicit folder/parent information or a saved folder-to-week mapping. If the year is genuinely missing or dates conflict, ask once for the week context, remember it and derive all service dates from it. Do not silently choose the current year.
+The normal Weekly run should require selecting the folder and then process recognised, enabled services using the approved rules. Use saved week context or an explicit year when available; otherwise use the current year automatically. Year accuracy is not a blocker because the user cleans up setlists after use. Remember the resulting week dates so reruns across New Year still target the same service. Month/day boundaries must still be parsed consistently; a December-to-January week crosses into the next year. Show the assumed dates in the summary without requesting a separate year confirmation. Current-year defaulting is an implementation choice reflecting the user's preference, not a requirement to establish historical dates or infer years from weekday agreement.
 
-Show one summary before processing: inferred dates and setlist names, new versus existing targets, proposed additions, exclusions and known unresolved items. One confirmation starts the whole run. Routine recognised services need no per-service naming, ordering or confirmation prompts. Apply only additions to existing setlists; preserve their entries and order. Queue unresolved cases for the final report instead of interrupting the batch with questions. Missing context essential to interpreting the whole batch, such as its year, must be resolved before confirmation.
+Show one summary before processing: inferred dates and setlist names, new versus existing targets, proposed insertions, exclusions and known unresolved items. One confirmation starts the whole run. Routine recognised services need no per-service naming, ordering or confirmation prompts. Apply only additions to existing setlists; preserve existing entries and their relative order. Queue unresolved cases for the final report instead of interrupting the batch with questions. Ask before confirmation only for essential context that cannot be defaulted; a missing year does not require a prompt.
 
-Infer known metadata and reuse saved decisions. If an essential archive category or other required detail cannot be established, defer the affected service and record what needs resolving. An optional service such as Mattins with no matching music is simply absent; do not create an empty setlist. An expected regular service with no music may be noted in the report.
+Infer known metadata and reuse saved decisions. If a piece cannot be prepared because its file, archive category or another required detail is missing, continue with the remaining pieces and record the unresolved occurrence and intended position. An optional service such as Mattins with no matching music is simply absent; do not create an empty setlist. An expected regular service with no music may be noted in the report. If no usable pieces remain for an identified service, report it as pending rather than creating an empty setlist.
 
 ## Shared architecture
 
@@ -152,14 +156,16 @@ Shared assembly processes one complete service:
 2. Resolve the required music, archive PDFs where needed and prepare the ordered scores.
 3. Resolve the existing target setlist, or create it when appropriate.
 4. Compare actual entries with requested piece occurrences and determine which additions are missing.
-5. After the run's single summary confirmation, leave an unchanged service alone or append missing occurrences. For a new setlist, add the whole requested sequence in source order.
+5. After the run's single summary confirmation, leave an unchanged service alone or insert missing available occurrences into their intended gaps. For a new setlist, add the available requested sequence in source order and flag unresolved occurrences.
 6. Read back the entries, verify preservation of existing entries and the planned additions, and report the result.
 
 Updates are strictly additions-only. Never clear a setlist, remove entries, replace an existing score occurrence or reorder existing entries. If source music disappears or its positions change, retain the actual setlist contents. If a source piece changes identity, add the newly requested piece while retaining the old one. Manual cleanup is outside the shortcut.
 
-Use occurrence counts rather than simple membership when determining additions. For requested A/B/A and existing A/B, add one A. For an unchanged rerun, add nothing. If the actual list already contains extra occurrences, preserve them. Append missing occurrences in their requested relative order. How a manually added occurrence satisfies a requested occurrence, and whether a newly inserted source piece should be appended or inserted, are follow-up questions; the provisional rule is identity/count matching with append-only updates.
+Match piece identities and occurrences, rather than testing simple membership. For requested A/B/A and existing A/B, add one A. For an unchanged rerun, add nothing. If the actual list already contains extra occurrences, preserve them. Insert a newly requested piece between its matched source neighbours: existing A/C plus requested A/B/C becomes A/B/C. Insertions may change numeric entry indexes but must preserve the relative order of every pre-existing entry, including manual additions.
 
-Unresolved music leaves the affected service pending by default. Do not silently omit pieces. Finish other independent services and report unresolved references, conflicting targets and required decisions afterwards. Do not prompt for each problem during processing. Initial preflight should catch recoverable validation issues before native writes. Some native action errors can terminate a Shortcut without a recoverable result; continuing after such errors requires supported error handling and must not be claimed without device evidence. Save progress between services so an interrupted run can resume without duplicate additions.
+Keep occurrence mappings in the service record where possible so repeated pieces and later resolution of missing music target the correct gaps. Use actual setlist readback to verify that existing entries survived and new entries were inserted as planned. Conflicting anchors caused by manual reordering, or ambiguous repeated identities, must be reported without moving existing entries; unaffected insertions and other services may continue. Define a deterministic policy for these conflicts during implementation. If native actions cannot insert into the intended gap, report that limitation rather than clear/rebuild the setlist or silently substitute appending.
+
+Unresolved music produces a partial service containing the available pieces. Flag each missing occurrence with its service, source reference and intended position in the final report; do not silently omit it or assume a native placeholder feature is available. A later rerun inserts a resolved piece into its intended gap. Only a service-level blocker, such as an ambiguous target or no usable music, leaves the whole service pending. Finish other independent services and report unresolved references, conflicting targets and required decisions afterwards. Do not prompt for each problem during processing. Initial preflight should catch recoverable validation issues before native writes. Some native action errors can terminate a Shortcut without a recoverable result; continuing after such errors requires supported error handling and must not be claimed without device evidence. Save progress between services so an interrupted run can resume without duplicate additions.
 
 ### Service records and recovery
 
@@ -169,21 +175,21 @@ The record assists identity resolution and recovery; it is not proof of current 
 
 Prefer a verified persistent setlist identifier if one is available. Define a fallback lookup policy, including duplicate matches and renamed setlists, during implementation planning.
 
-Reports should distinguish unchanged, created, updated, pending, failed and unconfirmed services, and state whether actual entry identities and order were verified. Preserve useful per-piece outcomes such as reused, imported and metadata pending.
+Reports should distinguish unchanged, created, updated, partial, pending, failed and unconfirmed services, and state whether actual entry identities and order were verified. A partial result must identify each missing piece and intended position. Preserve useful per-piece outcomes such as reused, imported and metadata pending.
 
 ## Weekly workflow
 
 1. Select the week folder.
-2. Infer its dates and year from approved rules or saved context; ask once only if unresolved.
+2. Infer its dates using saved context or folder information, defaulting a missing year to the current year without prompting.
 3. Read the relevant PDFs.
 4. Parse filename prefixes into day, service/session and numeric position.
 5. Apply the weekly schedule and dated overrides, skip disabled services, and derive names and identities automatically.
 6. Group and numerically order recognised music. Show one summary, including planned additions, exclusions and known issues, and request one confirmation.
-7. Process enabled, resolvable services with additions-only updates, then return one final report and list of items to resolve.
+7. Process enabled services with available music, inserting additions into gaps and preserving existing entries, then return one final report and list of missing pieces or other items to resolve.
 
 Existing folder examples distinguish prefixes such as `Sun`, `Sunam` and `Sunpm`. Store their meanings in shared configuration. Sort positions numerically so item 10 follows item 9.
 
-Do not guess a year from a folder name that omits it. Use explicit parent context or saved week context where available, and define handling of year boundaries. Remember a supplied week date so reruns do not repeat the question.
+Year defaulting follows the routine-operation policy above. Retain the first resolved week context for reruns and handle month/year boundaries consistently. Historical year accuracy is not a requirement.
 
 On rerun, the current folder supplies requested music for each represented service. New occurrences become additions. Removed files and changed positions do not remove or reorder existing entries. The source is a basis for additions, not authority to overwrite manual edits.
 
@@ -194,12 +200,12 @@ If a previously processed service disappears entirely from the folder, flag it f
 Implement this entry point first because it establishes the shared execution path with the least input parsing:
 
 1. Select music in Nextcloud, Files or another app and choose Share > Create Service. Receive the shared native files without making the user select them again. Direct launch may offer a file picker as a fallback.
-2. Infer service grouping and numeric order from recognised prefixes where possible. Do not assume an app preserves share order. Unprefixed files need a defined ordering fallback; offer adjustment in the summary.
+2. Combine every selected piece into one service, regardless of its original day/service prefix. Use prefixes as ordering hints where useful, never as instructions to split this selection. Mixed prefixes or duplicate position numbers need a deterministic ordering fallback visible and adjustable in the summary. Do not assume an app preserves share order.
 3. Infer the date and service slot from available input and saved context, then derive the name automatically. A shared file may lack its parent folder/date context: ask for genuinely missing date or service details before confirmation, without guessing or repeatedly requesting known values.
 4. Show one summary and confirmation, with optional adjustments for a one-off service.
 5. Call shared assembly, preserve existing setlist entries and return the final result with unresolved items.
 
-Target the Share Sheet title **Create Service**; exact installed naming and supported input types must be recorded during implementation. File-provider support depends on receiving usable file objects; arbitrary URLs are not assumed to be PDFs. Unsupported inputs appear in the resolution report. If a shared selection spans multiple services, grouping versus creating one combined service remains a follow-up decision.
+Target the Share Sheet title **Create Service**; exact installed naming and supported input types must be recorded during implementation. File-provider support depends on receiving usable file objects; arbitrary URLs are not assumed to be PDFs. Unsupported inputs appear in the resolution report. A mixed selection always creates one combined service; where its target date or service cannot be inferred uniquely, collect those details once before the summary confirmation. Weekly remains the entry point that automatically splits music into services.
 
 The workflow should also allow targeting an existing service, using the same identity and update rules as Weekly. Define how a user selects an existing service and how its saved details populate the form.
 
@@ -220,7 +226,7 @@ Use canonical filenames or explicit source references initially. Free-text title
 
 Validate the whole import before applying changes, infer ordinary service names and identities using the same schedule as Weekly, and show one batch summary and confirmation. Validation must cover required columns, dates, service grouping, conflicting details for one service, exclusions, positions and piece references. Report issues by service and row. Process valid services without further routine prompts.
 
-A service containing unresolved music remains pending by default; other valid services can proceed. Rerunning the same file updates the same services by adding missing occurrences only. Removing a row or an entire service never removes existing setlist contents.
+A service containing unresolved music is created or updated with its available pieces and reported as partial; other services also proceed. Rerunning the same file inserts newly available occurrences into the intended gaps. Removing a row or an entire service never removes existing setlist contents.
 
 CSV parsing must support quoted fields, including embedded commas. Splitting every line on commas is insufficient. The template and parser must agree on encoding, delimiter and supported field contents.
 
@@ -248,6 +254,7 @@ Do not require another broad round of isolated probes before proceeding. Use foc
 - The same service plan creates the same initial ordered setlist from either entry point; subsequent runs preserve existing entries and manual edits.
 - An unchanged rerun creates no unintended duplicate scores or setlists.
 - Updates add missing occurrences and never remove, clear or reorder existing entries. Source removals and manual edits survive reruns.
+- Existing A/C plus requested A/B/C becomes A/B/C by inserting B, without moving the existing entries. A piece resolved on a later run fills its intended gap.
 - A/B/A preserves all three occurrences in the correct order while reusing scores.
 - Two distinct services on the same date remain distinct.
 - Weekly numeric ordering handles positions such as 2 and 10 correctly.
@@ -260,6 +267,9 @@ Do not require another broad round of isolated probes before proceeding. Use foc
 - Special prefixes such as `SunRemem` automatically produce names such as `2026-11-08 - Sun - Remem`.
 - Regular names use `yyyy-MM-dd - EEE - Service`, and optional Mattins is created only when music is present.
 - Share Sheet invocation receives selected music without asking the user to select the same files again.
+- Share Sheet selections with different service prefixes are combined into one service.
+- Missing pieces produce partial services and explicit final warnings; available music and other services are still processed.
+- A missing year defaults automatically without an extra prompt, and a saved week retains its identity across reruns.
 - Ambiguous or missing music is reported and never silently omitted.
 - Future mass import will report invalid rows by service and row while processing valid independent services; it is not an initial-release acceptance requirement.
 - An interrupted run can resume by reconciling actual setlist contents.
@@ -269,9 +279,9 @@ Do not require another broad round of isolated probes before proceeding. Use foc
 
 1. Exact service identity format and rules for sharing identities across entry points.
 2. Service-plan item fields, supported piece-reference forms and native input/output contracts.
-3. Confirm Sunday prefix mappings, special-service position/separator syntax and folder-date/year rules. The regular weekly schedule is recorded above.
+3. Confirm Sunday prefix mappings, special-service position/separator syntax and folder month/day rules. The regular weekly schedule and missing-year default are recorded above.
 4. Ordering interface, including repeated pieces and conflicting positions.
 5. Service-record format, storage, setlist lookup and recovery checkpoints.
-6. Confirm append versus insert for newly added music, duplicate occurrence matching, and whether an unresolved piece defers its whole service or allows a partial service. Preserve the confirmed no-removal/no-reordering rule.
-7. Share Sheet fallback date/service selection, unprefixed ordering and behaviour when selected files span several services. CSV template and parser decisions remain deferred.
+6. Define occurrence matching and insertion-anchor conflict behaviour while preserving existing entries and their relative order. Gap insertion and partial services are confirmed requirements.
+7. Share Sheet fallback date/service selection and deterministic ordering for unprefixed or mixed-prefix music. Combining the selection into one service is confirmed. CSV template and parser decisions remain deferred.
 8. Exact installed shortcut names, dependency order and migration instructions.
