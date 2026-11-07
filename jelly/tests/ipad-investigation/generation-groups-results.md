@@ -1,5 +1,39 @@
 # iPad generation results
 
+## G2B `var +=` File variant, 7 November 2026
+
+With diagnostic Quick Looks of firstFile and the final Repeat Index, the user
+selected Finzi and Harris PDFs and observed: 2, Finzi preview, 3, index 1,
+PDF, Finzi preview, index 2, PDF, Harris preview, then completion. There was
+no index 3. Thus the Count reports 3 while the final Repeat visibly executes
+twice. The screenshots show the intended named-variable tokens, but their
+appearance and the count do not establish the collection's internal structure
+or explain the discrepancy. These index and firstFile previews were inserted
+manually in a diagnostic duplicate.
+
+Baseline diagnostic: after removing only the post-loop Add firstFile from a
+duplicate, the user reports selected count 2, Finzi firstFile preview,
+collection count 2, index 1/PDF/Finzi and index 2/PDF/Harris, then completion.
+This confirms the two in-loop additions are individually consumed in that run;
+it does not identify the cause of the three-count/two-iteration discrepancy.
+
+Follow-up: screenshots show the expected If/Set Variable, both Add to Variable
+actions and final Repeat. The user added a Quick Look of named firstFile after
+the first Repeat and reports 2, PDF A, 3, PDF/A, PDF/B, then nothing else.
+Thus firstFile was a usable PDF at that point in this modified run; the third
+entry's behaviour remains unresolved. This diagnostic insertion is separate
+from the original generated export.
+
+The user reports selected count 2, collected count 3, then PDF type and preview
+for B, PDF type and preview for A, with no third PDF preview. Thus count alone
+does not establish three usable native Files or repeated identity. The order of
+the picker output is not independently recorded. Inspect the first-loop If and
+firstFile assignment, the post-loop Add to Variable input, and the final Repeat;
+the cause of the missing third preview remains unresolved. No native repair,
+device version or consumed hash has been reported. Candidate:
+[source](g2b-var-append-files.jelly),
+[paste copy](../pipeline/fixtures/g2b-var-append-files.txt).
+
 ## G2A documented `var +=` variant, 7 November 2026
 
 The user confirms that `var collectedValues += RepeatItem` generated Add to
