@@ -1,6 +1,6 @@
 # Small functional test drivers
 
-Four independent test Shortcuts; no production source changes. Each has a .jelly source and identical .txt copy for pasting into Jellycuts. Flush-left parenthesized If and positional Output follow the user-confirmed fixture; missing noResultBehaviour/response warnings may remain. These new drivers are Drafted, not compiled or run. Confirm installed names and inspect generated If inputs/output bodies. Do not infer successful tests from compilation alone.
+Four independent test Shortcuts; no production source changes. Each has one `.jelly` source for transfer through Copyover; `.txt` duplicates have been removed. Flush-left parenthesized If and positional Output follow the user-confirmed fixture; missing noResultBehaviour/response warnings may remain. These new drivers are Drafted, not compiled or run. Confirm installed names and inspect generated If inputs/output bodies. Do not infer successful tests from compilation alone.
 
 | Installed name | Source | Input | Dependencies |
 | --- | --- | --- | --- |

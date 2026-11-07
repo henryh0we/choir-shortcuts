@@ -1,5 +1,9 @@
 # Agent instructions for Jellycuts development
 
+## Source delivery policy (7 November 2026)
+
+Use `.jelly` only for Shortcut source. Copyover is the current transfer workflow. Do not create or regenerate `.txt` source twins. Historical text-only diagnostics are preserved as distinct `.jelly` fixtures with their original bytes; unrelated reference text and diagnostic logs remain text. Old immutable exchange bundles remain unchanged and readable. The optional pipeline now prepares a single `source.jelly` snapshot.
+
 ## Scope and non-negotiable rules
 
 These instructions apply to `jelly/` and its descendants. This is the code-based Apple Shortcuts workspace; `../manual creation/` is a separate manual-build workspace. Preserve that workspace and all unrelated reference files. Here, `.jelly` files are the authoritative implementation, not bracketed manual blueprints.
@@ -24,7 +28,7 @@ The [iPad investigation plan](tests/ipad-investigation/README.md) records the
 small tests needed to improve generation rather than repeatedly debug full runs.
 
 1. Every required native insertion or repair must have an adjacent single-line
-   `//` comment in the .jelly source and identical .txt copy. Include a stable ID,
+   `//` comment in the .jelly source. Include a stable ID,
    ADD/RECONNECT/CHECK, exact producing action or named variable, input type,
    consumers to reconnect, operator/default/settings, loop/branch placement and
    which placeholder to delete or initializer to preserve. A prose guide alone
@@ -84,17 +88,19 @@ Example comment format (one physical line per native Comment action):
 
 ## Local compiler workflow (21 October 2026)
 
-### File-based iPad feedback loop (5 November 2026)
+### Optional file-based iPad feedback loop (updated 7 November 2026)
 
 Use [the pipeline guide](docs/ipad-pipeline.md), [result contract](docs/ipad-pipeline-format.md)
 and [device instructions](docs/ipad-pipeline-device.md). Jellycuts Bridge is excluded
 from this workflow; do not configure it, contact it or depend on its subscription.
-After source work and the existing local compiler check below, prepare an immutable
-request with `python jelly/scripts/ipad_pipeline.py prepare <source.jelly>` from the
+Copyover is the current delivery route; an exchange request is not required for
+each delivery. If using the optional evidence pipeline after source work and the
+existing local compiler check below, prepare an immutable request with
+`python jelly/scripts/ipad_pipeline.py prepare <source.jelly>` from the
 repository root. Use `--exchange <shared-directory>` on each subcommand or
 `JELLY_EXCHANGE_ROOT`; the default is an ignored local test exchange, not device sync.
 Optionally capture the exact-source local build report with `--local-report`; local
-failure must not block app submission. Never alter G1A twins to hide their mismatch.
+failure must not block app submission. Never alter the preserved G1A variants to hide their historical mismatch.
 Report build ID, delivered hash and location, then await actual developer/device
 feedback. Use record/ingest followed by status/verify. Keep repaired execution,
 untouched generation, and simulated evidence distinct. No result folder or transfer
@@ -180,15 +186,14 @@ Do not install a guessed package or run a guessed compilation command. Detect th
 ## Source standards and required header
 
 For every new Jellycuts source, generated code/paste snippet, and source revised
-for delivery to the user (including `.jelly` and matching `.txt` copies), start
+for delivery to the user (as `.jelly` only), start
 the first physical line with
 `// <exact installed name> | Purpose/role: ...`. The name occupies the first
 pipe-separated segment, without an `Installed name:` label; reserve `|` for header
 separators. Keep remaining contract metadata on that same physical comment line
 as the name; do not add a preamble or blank line before it. Use the exact established
 installed name, preserving caller contracts, or a distinct TEST name for an
-independent diagnostic. Keep `.jelly`/`.txt` twins consistent when they are intended
-to match; retain explicitly documented historical differences. Do not mass-rewrite historical fixtures or
+independent diagnostic. Do not create `.txt` source twins; retain documented historical variants as distinct `.jelly` files. Do not mass-rewrite historical fixtures or
 working production sources just to adopt this convention. The native clipboard
 helper extracts a suggested name from a copy of this header; it must compile the
 complete, unchanged sourceText. See [the Copyover helper guide](docs/ipad-copyover-compiler.md).

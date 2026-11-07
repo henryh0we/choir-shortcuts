@@ -260,9 +260,9 @@ def read_request(root, build_id):
     request = parse_json(safe_path(folder, "request.json").read_bytes())
     require(isinstance(request, dict), "request must be an object")
     version = request.get("schema_version")
-    require(type(version) is int and version in (1, 2), "Unsupported request schema_version")
-    fields(request, NAMED_REQUEST_FIELDS if version == 2 else REQUEST_FIELDS, "request")
-    if version == 2:
+    require(type(version) is int and version in (1, 2, 3), "Unsupported request schema_version")
+    fields(request, NAMED_REQUEST_FIELDS if version >= 2 else REQUEST_FIELDS, "request")
+    if version >= 2:
         shortcut_name(request["shortcut_name"])
         if request["name_from_build_id"] is not None:
             valid_id(request["name_from_build_id"])
@@ -283,7 +283,9 @@ def read_request(root, build_id):
     local = request["local_validation"]
     fields(local, {"status", "success", "stage"}, "local_validation")
     require(local["status"] in ("not-provided", "captured"), "Invalid local-validation status")
-    expected = {"source.txt", "source.jelly", "feedback-template.json"}
+    expected = {"source.jelly", "feedback-template.json"}
+    if version < 3:
+        expected.add("source.txt")
     if local["status"] == "captured":
         expected.add("local-validation.json")
     else:
@@ -294,9 +296,11 @@ def read_request(root, build_id):
         require(isinstance(sha, str) and HASH.fullmatch(sha), "Invalid artifact hash")
         content[name] = safe_path(folder, name).read_bytes()
         require(digest(content[name]) == sha, f"Request artifact hash mismatch: {name}")
-    data = content["source.txt"]
+    data = content["source.jelly"]
     text = source_text(data)
-    require(data == content["source.jelly"] and len(data) == source["bytes"] and digest(data) == source["sha256"], "Source snapshots/hash/size disagree")
+    require(len(data) == source["bytes"] and digest(data) == source["sha256"], "Source snapshot/hash/size disagree")
+    if version < 3:
+        require(data == content["source.txt"], "Legacy source snapshots disagree")
     encoding = "utf-8-bom" if data.startswith(b"\xef\xbb\xbf") else "utf-8"
     require(source["encoding"] == encoding, "Source encoding declaration disagrees")
     require(text, "Empty source")
@@ -307,17 +311,16 @@ def read_request(root, build_id):
     return request
 
 
-def prepare(root, source_path, method="editor", local_report=None, allow_text=False,
+def prepare(root, source_path, method="editor", local_report=None,
             name=None, name_from_build=None):
     source_path = Path(source_path).expanduser().resolve(strict=True)
     require(source_path.is_file(), "Source is not a file")
-    require(source_path.suffix.lower() == ".jelly" or (allow_text and source_path.suffix.lower() == ".txt"),
-            "Choose a .jelly source (or explicitly use --allow-text-source for a historical .txt variant)")
+    require(source_path.suffix.lower() == ".jelly", "Choose a .jelly source")
     data = source_path.read_bytes()
     source_text(data)
     sha = digest(data)
     intended_name, inherited_from = select_shortcut_name(root, source_path, name, name_from_build)
-    request = {"schema_version": 2, "build_id": identifier(), "created_at_utc": now(),
+    request = {"schema_version": 3, "build_id": identifier(), "created_at_utc": now(),
                "shortcut_name": intended_name, "name_from_build_id": inherited_from,
                "status": "prepared", "target": "ipad-jellycuts", "requested_method": method,
                "source": {"filename": source_path.name, "original_path": str(source_path),
@@ -325,7 +328,7 @@ def prepare(root, source_path, method="editor", local_report=None, allow_text=Fa
                           "encoding": "utf-8-bom" if data.startswith(b"\xef\xbb\xbf") else "utf-8",
                           "transformation": "none"},
                "local_validation": {"status": "not-provided", "success": None, "stage": None}}
-    files = {"source.txt": data, "source.jelly": data,
+    files = {"source.jelly": data,
              "feedback-template.json": json_bytes(result_template(request))}
     if local_report:
         raw = Path(local_report).read_bytes()
@@ -459,7 +462,6 @@ def parser():
             sub.add_argument("source", type=Path)
             sub.add_argument("--method", choices=METHODS, default="editor")
             sub.add_argument("--local-report", type=Path, help="Capture an existing matching build.py report, including failures")
-            sub.add_argument("--allow-text-source", action="store_true", help="Explicitly snapshot a historical .txt variant")
             names = sub.add_mutually_exclusive_group()
             names.add_argument("--shortcut-name", help="Intended installed display name; otherwise inherit previous same-path build or derive from original filename")
             names.add_argument("--name-from-build", help="Reuse an existing request's name across a source-file rename/move")
@@ -485,10 +487,10 @@ def parser():
 def execute(args):
     root = args.exchange.expanduser().resolve()
     if args.command == "prepare":
-        request = prepare(root, args.source, args.method, args.local_report, args.allow_text_source,
+        request = prepare(root, args.source, args.method, args.local_report,
                           args.shortcut_name, args.name_from_build)
         return {"request": request, "exchange_root": str(root),
-                "ipad_instruction": f"In Files open requests/{request['build_id']}/source.txt; preview its CONTENTS, then use the documented {args.method} path. Intended shortcut name: {request['shortcut_name']}. Use this in the compiler name field when available; otherwise rename the newly generated test shortcut after installation. Check existing names/callers first. No iPad compilation has occurred."}
+                "ipad_instruction": f"In Files open requests/{request['build_id']}/source.jelly; preview its CONTENTS, then use the documented {args.method} path. Intended shortcut name: {request['shortcut_name']}. Use this in the compiler name field when available; otherwise rename the newly generated test shortcut after installation. Check existing names/callers first. No iPad compilation has occurred."}
     require(root.is_dir(), f"Exchange directory unavailable: {root}. Prepare creates it; list/status/verify never create it.")
     if args.command in ("list", "verify"):
         requests_dir = safe_path(root, "requests")

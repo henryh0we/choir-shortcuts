@@ -87,7 +87,7 @@ The assembly helper reads `config.json` once before PDF selection and all writes
 
 **Current naming extraction (revision 11):** NAME01/NAME02 insertion is no longer required. The helper loops through Shortcut Input and assigns its first/second Text items to named filename/prefixRegex using `RepeatIndex == "1"` / `"2"`. This follows the user-confirmed fixed-fixture and incoming-List tests in [extraction evidence](../tests/compatibility/name-item-extraction.md). Inspect consumers of the current named variables rather than initial empty Text actions. There is no noNameResult initializer or Exit binding; invalid input uses empty positional Output and the final Output must return canonicalName Text. Earlier NAME/Exit instructions apply only to historical skeletons. Full regenerated-helper device tests remain pending.
 
-Preserve renamed copies of your working installed shortcuts and their native edits. Compile/import in order: naming, archive, assembly, main. Keep exact installed names, reselect them in Run Shortcut actions and update all four as a set. Refreshing from `.jelly` reinstates guards and slots; `.txt` files are byte-identical transfer copies.
+Preserve renamed copies of your working installed shortcuts and their native edits. Compile/import in order: naming, archive, assembly, main. Keep exact installed names, reselect them in Run Shortcut actions and update all four as a set. Refreshing from `.jelly` reinstates guards and slots; deliver `.jelly` only through Copyover, without `.txt` twins.
 
 In the **assembly helper**, retain its first guard while completing:
 

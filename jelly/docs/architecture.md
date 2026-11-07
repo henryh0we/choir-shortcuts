@@ -31,8 +31,7 @@ The name is the first pipe-separated segment after `//`, without a label such as
 `Installed name:`. Do not put a blank line or preamble before it, or use `|` inside
 the name. Keep header metadata on that same physical comment line; editor soft
 wrapping is fine. Preserve existing exact installed names and native completion
-comments beside the actions they describe. Matching `.jelly`/`.txt` copies use the
-same header; intentional historical mismatches remain evidence, not migration targets.
+comments beside the actions they describe. Deliver only `.jelly` source through Copyover; do not create `.txt` twins. Historical differing variants remain separately named `.jelly` evidence.
 
 The [Copyover helper](ipad-copyover-compiler.md) extracts and trims this name to
 prefill an editable name prompt. Its compiler input remains the complete original

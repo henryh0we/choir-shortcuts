@@ -238,6 +238,10 @@ Configuration should cover source/archive locations, filename-prefix parsing, se
 
 Retain the existing metadata direction: archive music category becomes Genre for first-time imports; service type does not become permanent piece Tags or Labels. Existing archive and score reuse policies should be shared by all entry points.
 
+## Source delivery
+
+Maintain `.jelly` only for Shortcut source and use Copyover for transfer. Do not create `.txt` duplicates. Keep historical unique fixtures as `.jelly` variants, and preserve existing immutable build evidence.
+
 ## Implementation sequence
 
 1. **Expand the contracts and policies.** Finalise service identity, item references, native transport, filename grouping, ordering, update review and reports.

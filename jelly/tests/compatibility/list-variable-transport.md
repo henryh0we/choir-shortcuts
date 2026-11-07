@@ -53,7 +53,7 @@ applied. The later user confirmation now supports the production source changes.
 
 Independent device test:
 [TEST - List Text Interpolation](probe-list-text-interpolation.jelly)
-([transfer copy](probe-list-text-interpolation.txt)). It needs no dependencies
+([transfer copy](probe-list-text-interpolation.jelly)). It needs no dependencies
 and ignores caller input. Expected two previews, in order:
 
 1. `Fri4-Humfrey-InEminor.pdf`

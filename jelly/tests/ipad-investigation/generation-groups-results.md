@@ -11,7 +11,7 @@ four entries including repeated PDFs, while the final Repeat reported only two
 iterations, Finzi and Harris. Their precise internal representation and why
 the Repeat visits two remain unresolved. Four iterations are not confirmed.
 See [source](g2b-collection-preview.jelly) and
-[paste copy](../pipeline/fixtures/g2b-collection-preview.txt).
+[paste copy](g2b-collection-preview.jelly).
 
 Indexed variant compilation failed on iPad: each of the four documented
 `type: Item at Index` calls reported that variable `Item at Index` does not
@@ -27,7 +27,7 @@ reported runtime therefore still shows only two final iterations despite Count
 4. Generated action inspection, consumed hash and repairs are not reported;
 neither a compiler defect nor a specific deduplication mechanism is established.
 See [source](g2b-double-add-files.jelly) and
-[paste copy](../pipeline/fixtures/g2b-double-add-files.txt).
+[paste copy](g2b-double-add-files.jelly).
 
 With diagnostic Quick Looks of firstFile and the final Repeat Index, the user
 selected Finzi and Harris PDFs and observed: 2, Finzi preview, 3, index 1,
@@ -59,7 +59,7 @@ firstFile assignment, the post-loop Add to Variable input, and the final Repeat;
 the cause of the missing third preview remains unresolved. No native repair,
 device version or consumed hash has been reported. Candidate:
 [source](g2b-var-append-files.jelly),
-[paste copy](../pipeline/fixtures/g2b-var-append-files.txt).
+[paste copy](g2b-var-append-files.jelly).
 
 ## G2A documented `var +=` variant, 7 November 2026
 
@@ -69,7 +69,7 @@ This is a reported generation and runtime pass for this Text fixture. It does
 not establish File or Score behaviour, other contexts, exact consumed hash, app
 version, or broader compiler compatibility. The local build attempt was blocked
 by WSL access denial. See the [source](g2a-var-append-text.jelly) and
-[paste copy](../pipeline/fixtures/g2a-var-append-text.txt).
+[paste copy](g2a-var-append-text.jelly).
 
 ## G2A generated-action inspection, 7 November 2026
 
@@ -126,11 +126,11 @@ provided; no immutable request is assigned these reports.
 
 | Single-comment fixture | Inspection reported | Actual runtime | Assessment |
 | --- | --- | --- | --- |
-| [G1B](../pipeline/fixtures/g1b-latest-value-single-comment.txt) | Everything looks good | Matches expected Alpha, Beta, Delta, Echo | Reported runtime pass for Text latest assignment |
-| [G1C](../pipeline/fixtures/g1c-count-guards-single-comment.txt) | Looks good | 2, 2, 1, FAIL G1C EQUAL REJECTED, G1C MISMATCH DETECTED | Runtime failure: equal counts rejected; mismatch detected |
-| [G1D](../pipeline/fixtures/g1d-file-assignment-single-comment.txt) | Looks good | Matches expected Count 2, PDF A, PDF B, PDF B | Reported runtime pass for File assignment |
-| [G2A](../pipeline/fixtures/g2a-append-text-single-comment.txt) | Not separately described | 0; no A/B/A previews | Runtime failure: collection observed empty |
-| [G2B](../pipeline/fixtures/g2b-append-files-single-comment.txt) | Not separately described | 2, 0; no further previews | Runtime failure: two selected Files, empty collection |
+| [G1B](../pipeline/fixtures/g1b-latest-value-single-comment.jelly) | Everything looks good | Matches expected Alpha, Beta, Delta, Echo | Reported runtime pass for Text latest assignment |
+| [G1C](../pipeline/fixtures/g1c-count-guards-single-comment.jelly) | Looks good | 2, 2, 1, FAIL G1C EQUAL REJECTED, G1C MISMATCH DETECTED | Runtime failure: equal counts rejected; mismatch detected |
+| [G1D](../pipeline/fixtures/g1d-file-assignment-single-comment.jelly) | Looks good | Matches expected Count 2, PDF A, PDF B, PDF B | Reported runtime pass for File assignment |
+| [G2A](../pipeline/fixtures/g2a-append-text-single-comment.jelly) | Not separately described | 0; no A/B/A previews | Runtime failure: collection observed empty |
+| [G2B](../pipeline/fixtures/g2b-append-files-single-comment.jelly) | Not separately described | 2, 0; no further previews | Runtime failure: two selected Files, empty collection |
 
 Next inspect G1C's actual native operators and both Count-output operands, and
 G2A's first Repeat, Add to Variable actions, Count input and final Repeat input.

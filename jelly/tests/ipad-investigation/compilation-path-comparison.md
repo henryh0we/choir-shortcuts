@@ -57,7 +57,7 @@ The screenshot is in the conversation, not a checked-in image artifact.
 
 **Header-isolation experiment:** isolate the header while keeping every executable statement
 and all four If blocks unchanged. New fixture
-[g1a-presence-no-header.txt](../pipeline/fixtures/g1a-presence-no-header.txt)
+[g1a-presence-no-header.jelly](../pipeline/fixtures/g1a-presence-no-header.jelly)
 is the original .jelly minus its eight leading // comment lines, byte-for-byte
 identical otherwise. Original fixtures remain unchanged. First compile that
 candidate in a separate editor project. A pass implicates header processing for
@@ -106,7 +106,7 @@ editor always succeeds or identify what changed between those attempts.
 
 ## Original G1A symptoms and limits
 
-Compiling [g1a-presence.txt](g1a-presence.txt) through Compile Jelly Text produced
+Compiling [g1a-presence-text-variant.jelly](g1a-presence-text-variant.jelly) through Compile Jelly Text produced
 an unexpected Calculate/Divide action containing the Dependencies header text,
 followed by Stop This Shortcut, then remaining comments and functionality.
 Changing the specification comment wording produced a different incomplete

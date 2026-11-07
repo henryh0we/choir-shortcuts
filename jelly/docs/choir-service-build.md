@@ -42,7 +42,7 @@ Use the [current compatibility checklist](helper-compatibility-update.md) for AR
 | 3 | [UTIL - Assemble Choir Service](../shortcuts/reusable/util-assemble-choir-service.jelly) | Compile/import; complete CONF01-CONF02, COL01-COL03, SCORE01-SCORE02 and FS01-FS13. |
 | 4 | [MAIN - Build Choir Service](../shortcuts/main/main-build-choir-service.jelly) | Compile/import and reselect the completed assembly helper. |
 
-Preserve renamed working copies before replacement. Update the set together: old filename-Text and single-PDF callers are incompatible with the new utility contracts. The `.jelly` files are authoritative; matching `.txt` files are byte-identical transfer copies. No Mac is required. Keep each helper's initial ASSEMBLY GUARD until its native slots, control-flow markers and input/result tokens are checked.
+Preserve renamed working copies before replacement. Update the set together: old filename-Text and single-PDF callers are incompatible with the new utility contracts. The `.jelly` files are the sole source; use Copyover without `.txt` transfer copies. No Mac is required. Keep each helper's initial ASSEMBLY GUARD until its native slots, control-flow markers and input/result tokens are checked.
 
 ## Configure once
 

@@ -54,7 +54,6 @@ Unicode, apostrophes and shell punctuation are passed as path arguments.
 <exchange>/
   requests/<build-id>/
     request.json
-    source.txt
     source.jelly
     feedback-template.json
     local-validation.json             Only with --local-report
@@ -80,9 +79,7 @@ ready requests. Other permission failures are reported immediately.
 
 Source must be nonempty strict UTF-8, optionally with a UTF-8 BOM, without NUL
 characters. Source bytes are never normalized: comments, BOM and line endings
-are preserved in **both** snapshots. Both original and delivered SHA-256 are
-recorded and equal. `source.jelly` is an editor-opening candidate; `source.txt`
-is for explicit text extraction/preview. Neither is an exported Apple Shortcut.
+are preserved in the single `source.jelly` snapshot. Original and delivered SHA-256 are recorded and equal. Read its contents as Text when needed. It is not an exported Apple Shortcut.
 The source's original absolute path is recorded for traceability, so exchange
 folders contain source code and potentially private path information. Use a
 trusted shared location; hashes detect inconsistency, not malicious authorship.
@@ -90,7 +87,7 @@ trusted shared location; hashes detect inconsistency, not malicious authorship.
 ## Intended and installed names
 
 Version 2 separates `source.filename`, `shortcut_name` and `build_id`. Generic
-source.txt/source.jelly remain transport aliases; their basename must not be used
+`source.jelly` remains a transport alias; its basename must not be used
 as the intended installed name. No source bytes or installed shortcuts are renamed.
 
 ```powershell
@@ -140,11 +137,10 @@ observation can record the corrected name; earlier evidence remains intact.
 null. This is independent of compiler/action/runtime status. New version-2
 feedback works with old requests, without editing their manifests or templates.
 
-The original G1A `.txt` and `.jelly` have different comments. Both remain
-unchanged. To submit the historical text variant deliberately:
+The original G1A Text variant had different comments. It is now preserved byte-for-byte as `g1a-presence-text-variant.jelly`, alongside the unchanged original `.jelly`. To submit that historical variant deliberately:
 
 ```powershell
-python jelly/scripts/ipad_pipeline.py prepare jelly/tests/ipad-investigation/g1a-presence.txt --allow-text-source --exchange $exchangeRoot
+python jelly/scripts/ipad_pipeline.py prepare jelly/tests/ipad-investigation/g1a-presence-text-variant.jelly --exchange $exchangeRoot
 ```
 
 ## Record real observations manually

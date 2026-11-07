@@ -11,7 +11,7 @@ on if something differs. You do not need to import all 16 shortcuts at once.
 ## Install and record each test
 
 1. Keep the working `2-util-*` shortcuts and their backups unchanged.
-2. Open a source `.jelly` in Jellycuts, or paste its complete `.txt` twin. Use the
+2. Transfer the complete `.jelly` source through Copyover, or open it in Jellycuts. Use the
    **exact installed name in the first source comment** after export/import.
    Source filenames and comments do not automatically name the installed shortcut.
 3. Record the actual iPadOS, Jellycuts and forScore versions. The earlier recorded
@@ -28,7 +28,7 @@ on if something differs. You do not need to import all 16 shortcuts at once.
 7. Record the untouched result. If experimenting with a repair, duplicate the test
    first and record each change. A repaired pass does not establish generated success.
 
-Every test has a byte-identical `.txt` copy linked below. These are source files
+Tests use `.jelly` only; former `.txt` duplicates have been removed. These are source files
 to compile in the iPad app, not signed/import-ready local `.shortcut` artifacts.
 The older WSL compiler is a separate comparison profile. Even a local structural
 pass cannot validate all native action fields or establish iPad compatibility.
@@ -44,10 +44,10 @@ No dependencies or native completion slots. G1A–G1C need no input or provider 
 
 | Test / exact installed name | Files | Inspect before running | Expected sequence |
 | --- | --- | --- | --- |
-| G1A / `TEST - G1A Presence` | [source](g1a-presence.jelly), [paste copy](g1a-presence.txt) | Four Ifs: absent, present, present after assignment, absent after assignment. Each reads named currentValue. `== nil` = does not have any value; `!= nil` = has any value. | Exactly `G1A EMPTY ABSENT`, then `G1A FILLED PRESENT`. No `FAIL` marker. Missing, extra or reversed previews fail. |
-| G1B / `TEST - G1B Latest Value` | [source](g1b-latest-value.jelly), [paste copy](g1b-latest-value.txt) | All four Quick Looks use current named currentValue. The loop and branch assignments remain inside their blocks. | `Alpha`, `Beta`, `Delta`, `Echo`, in that order. A stale initial value fails. |
-| G1C / `TEST - G1C Count Guards` | [source](g1c-count-guards.jelly), [paste copy](g1c-count-guards.txt) | Three Count actions and four comparison Ifs. Both operands reference the correct Count outputs; check **is** versus **is not**. | `2`, `2`, `1`, `G1C EQUAL CONTINUES`, `G1C MISMATCH DETECTED`. No FAIL marker. |
-| G1D / `TEST - G1D File Assignment` | [source](g1d-file-assignment.jelly), [paste copy](g1d-file-assignment.txt) | Select File allows multiple. The assignment and first Quick Look are inside the Repeat; the last Quick Look uses current named currentFile outside it. | Select two different PDFs. Count `2`; full PDF A, full PDF B, then B again. |
+| G1A / `TEST - G1A Presence` | [source](g1a-presence.jelly) | Four Ifs: absent, present, present after assignment, absent after assignment. Each reads named currentValue. `== nil` = does not have any value; `!= nil` = has any value. | Exactly `G1A EMPTY ABSENT`, then `G1A FILLED PRESENT`. No `FAIL` marker. Missing, extra or reversed previews fail. |
+| G1B / `TEST - G1B Latest Value` | [source](g1b-latest-value.jelly) | All four Quick Looks use current named currentValue. The loop and branch assignments remain inside their blocks. | `Alpha`, `Beta`, `Delta`, `Echo`, in that order. A stale initial value fails. |
+| G1C / `TEST - G1C Count Guards` | [source](g1c-count-guards.jelly) | Three Count actions and four comparison Ifs. Both operands reference the correct Count outputs; check **is** versus **is not**. | `2`, `2`, `1`, `G1C EQUAL CONTINUES`, `G1C MISMATCH DETECTED`. No FAIL marker. |
+| G1D / `TEST - G1D File Assignment` | [source](g1d-file-assignment.jelly) | Select File allows multiple. The assignment and first Quick Look are inside the Repeat; the last Quick Look uses current named currentFile outside it. | Select two different PDFs. Count `2`; full PDF A, full PDF B, then B again. |
 
 For G1D, A/B mean the order returned by Select File. Record it from the first two
 previews; file-selection order must not be inferred from filenames. Select exactly
@@ -64,9 +64,9 @@ accumulator probe. Generated Add to Variable actions must remain untouched.
 
 | Test / exact installed name | Files | Setup | Expected sequence |
 | --- | --- | --- | --- |
-| G2A / `TEST - G2A Append Text` | [source](g2a-append-text.jelly), [paste copy](g2a-append-text.txt) | None. | Count `3`, then `A`, `B`, `A`. |
-| G2B / `TEST - G2B Append Files` | [source](g2b-append-files.jelly), [paste copy](g2b-append-files.txt) | Select exactly two different disposable PDFs. | Initial Count `2`; collection Count `3`; type and full PDF preview for A, B, A. |
-| G2C / `TEST - G2C Append Scores` | [source](g2c-append-scores.jelly), [paste copy](g2c-append-scores.txt) | Native fixture caller and one native Open score consumer described below. | Fixture Count `2`; collection Count `3`; three native score consumptions opening A, B, A. |
+| G2A / `TEST - G2A Append Text` | [source](g2a-append-text.jelly) | None. | Count `3`, then `A`, `B`, `A`. |
+| G2B / `TEST - G2B Append Files` | [source](g2b-append-files.jelly) | Select exactly two different disposable PDFs. | Initial Count `2`; collection Count `3`; type and full PDF preview for A, B, A. |
+| G2C / `TEST - G2C Append Scores` | [source](g2c-append-scores.jelly) | Native fixture caller and one native Open score consumer described below. | Fixture Count `2`; collection Count `3`; three native score consumptions opening A, B, A. |
 
 Inspect both `+= RepeatItem` and the final `+= firstFile/firstScore`: they must
 be **Add to Variable**, not Set Variable or numeric/text concatenation. Preserve
@@ -148,8 +148,8 @@ Import the two receivers first under these exact names:
 
 | Receiver | Files | Input → intended return |
 | --- | --- | --- |
-| `TEST - G3 Exit Echo` | [source](g3-exit-echo.jelly), [paste copy](g3-exit-echo.txt) | One Text or PDF → same native value. |
-| `TEST - G3 Exit Context` | [source](g3-exit-context.jelly), [paste copy](g3-exit-context.txt) | One PDF → two-item native List `[PDF, Anthems]`. |
+| `TEST - G3 Exit Echo` | [source](g3-exit-echo.jelly) | One Text or PDF → same native value. |
+| `TEST - G3 Exit Context` | [source](g3-exit-context.jelly) | One PDF → two-item native List `[PDF, Anthems]`. |
 
 Do not run receivers directly without input. Their code after Exit is a failure
 sentinel, not a success preview: `FAIL G3 ... EXIT DID NOT STOP` must never appear.
@@ -160,9 +160,9 @@ installed **test receiver**, not a production helper or similarly named old test
 
 | Caller / exact installed name | Files | Expected sequence |
 | --- | --- | --- |
-| G3A / `TEST - G3A Text Caller` | [source](g3a-text-caller.jelly), [paste copy](g3a-text-caller.txt) | Type Text, then `G3 ALPHA RETURN`. |
-| G3B / `TEST - G3B File Caller` | [source](g3b-file-caller.jelly), [paste copy](g3b-file-caller.txt) | Select one PDF. Its baseline type, returned type, then the same usable full PDF. |
-| G3C / `TEST - G3C Context Caller` | [source](g3c-context-caller.jelly), [paste copy](g3c-context-caller.txt) | Select one PDF. Returned Count `2`, extracted native PDF type, full PDF, category `Anthems`. |
+| G3A / `TEST - G3A Text Caller` | [source](g3a-text-caller.jelly) | Type Text, then `G3 ALPHA RETURN`. |
+| G3B / `TEST - G3B File Caller` | [source](g3b-file-caller.jelly) | Select one PDF. Its baseline type, returned type, then the same usable full PDF. |
+| G3C / `TEST - G3C Context Caller` | [source](g3c-context-caller.jelly) | Select one PDF. Returned Count `2`, extracted native PDF type, full PDF, category `Anthems`. |
 
 Inspect Exit's native return input, the context receiver's List rows, and every
 caller consumer. In G3C the File row must be a whole Shortcut Input token, never
@@ -184,10 +184,10 @@ No shortcut dependencies or native insertion slots. Run the literal controls fir
 
 | Test / exact installed name | Files | What to inspect and do |
 | --- | --- | --- |
-| G4C / `TEST - G4C Default Controls` | [source](g4c-default-controls.jelly), [paste copy](g4c-default-controls.txt) | First default is literal `Alpha`: accept unchanged, preview Alpha. Second must be genuinely blank, without quote characters: type `Delta`, preview Delta. |
-| G4A / `TEST - G4A Default Direct` | [source](g4a-default-direct.jelly), [paste copy](g4a-default-direct.txt) | Direct captured variable default should show `Alpha`; current named-variable default should show latest `Gamma`, not initial Beta. Accept unchanged; expect Alpha, Gamma. |
-| G4B / `TEST - G4B Default Interpolation` | [source](g4b-default-interpolated.jelly), [paste copy](g4b-default-interpolated.txt) | Same two cases using interpolation. Expect Alpha, Gamma, not `${capturedDefault}`, `${namedDefault}` or quote characters. |
-| G4D / `TEST - G4D Date Name` | [source](g4d-date-name.jelly), [paste copy](g4d-date-name.txt) | Native Date question, custom date format, generated name Text, interpolated editable default, then trim of the entered name. Run twice as below. |
+| G4C / `TEST - G4C Default Controls` | [source](g4c-default-controls.jelly) | First default is literal `Alpha`: accept unchanged, preview Alpha. Second must be genuinely blank, without quote characters: type `Delta`, preview Delta. |
+| G4A / `TEST - G4A Default Direct` | [source](g4a-default-direct.jelly) | Direct captured variable default should show `Alpha`; current named-variable default should show latest `Gamma`, not initial Beta. Accept unchanged; expect Alpha, Gamma. |
+| G4B / `TEST - G4B Default Interpolation` | [source](g4b-default-interpolated.jelly) | Same two cases using interpolation. Expect Alpha, Gamma, not `${capturedDefault}`, `${namedDefault}` or quote characters. |
+| G4D / `TEST - G4D Date Name` | [source](g4d-date-name.jelly) | Native Date question, custom date format, generated name Text, interpolated editable default, then trim of the entered name. Run twice as below. |
 
 Inspect Default Answer **before accepting** each question. A correct final value
 typed manually into a broken default does not pass. Record actual field contents
@@ -249,3 +249,7 @@ Jelly_WFAskActionDefaultAnswer, FormatDateParameter, Jelly_WFInputType,
 Jelly_WFDateFormatStyle and Jelly_WFTimeFormatStyle. The old default-answer binding
 is enum-based and can omit unsupported values, so even an accepted local export
 must be inspected for actual default/type fields. Local compilation is not enough.
+
+## Source cleanup, 7 November 2026
+
+Copyover uses `.jelly` only. Exact `.txt` twins were removed. The historical differing G1A comments survive unchanged in [the Text variant](g1a-presence-text-variant.jelly); this is a source-path migration, not new compiler/device evidence. Unique pipeline fixtures were renamed to `.jelly` with their original bytes. Pipeline fixtures identical to investigation sources now reference those sources directly. The removed append-helper Text copy differed only in explanatory comments; the authoritative `.jelly` was retained unchanged. Existing immutable request bundles and historical hashes remain untouched.

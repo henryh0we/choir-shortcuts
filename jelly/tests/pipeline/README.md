@@ -1,5 +1,7 @@
 # Pipeline tests and physical-iPad integration plan
 
+Current delivery policy (7 November 2026): use `.jelly` source through Copyover; no `.txt` source twins. The pipeline now prepares request schema 3 with only `source.jelly`. Instructions below referring to `source.txt` describe the historical schema 1/2 helper and evidence; a helper used for new requests must retrieve `source.jelly` instead. Old request bundles remain immutable. Unique former Text fixtures now have `.jelly` paths with unchanged bytes.
+
 Windows transport/evidence code is tested independently of the iPad. Device
 evidence now includes a reported expected minimal-variable action sequence after
 local folder copying; exact build linkage remains unconfirmed. Reports are recorded
@@ -184,10 +186,10 @@ source under test. Submit these deliberately with `--allow-text-source`.
 | Case | Exact input relative to jelly/ | SHA-256 |
 | --- | --- | --- |
 | H: Hello World | tests/compiler/hello-world.jelly | `047a8e5c1be1b02ce24af98730ef307988f683c945ee68dcb8498faa620e4b42` |
-| M: minimal variables | tests/pipeline/fixtures/minimal-variable.txt | `02e6099570c2aa5af935e95c4055b9b5e7ddfa72875a1a4cfb150cb0793a3cd2` |
+| M: minimal variables | tests/pipeline/fixtures/minimal-variable.jelly | `02e6099570c2aa5af935e95c4055b9b5e7ddfa72875a1a4cfb150cb0793a3cd2` |
 | G: original G1A Jelly | tests/ipad-investigation/g1a-presence.jelly | `9052558758e35e63d3928d3ae79bbe5fa0a2094da87c5c5169bcc87c1b86496c` |
-| C: changed-header G1A Text | tests/ipad-investigation/g1a-presence.txt | `d5ba9a4ed11b56636d1169c8b397815942e846971a519699eb1f9ad3e9684a83` |
-| I: intentionally invalid | tests/pipeline/fixtures/invalid-syntax.txt | `876d8a940530266109f873be12704bcb972ad5dea9ebdb857862e7e4a889e2a3` |
+| C: changed-header G1A Text | tests/ipad-investigation/g1a-presence-text-variant.jelly | `d5ba9a4ed11b56636d1169c8b397815942e846971a519699eb1f9ad3e9684a83` |
+| I: intentionally invalid | tests/pipeline/fixtures/invalid-syntax.jelly | `876d8a940530266109f873be12704bcb972ad5dea9ebdb857862e7e4a889e2a3` |
 
 Expected delivered hash equals the input hash; no transformation is performed.
 Stop and review if a request reports another hash. Future deliberate source
@@ -229,7 +231,7 @@ for the app by this plan.
 
 ## Header isolation after both paths failed
 
-New independent candidate: `tests/pipeline/fixtures/g1a-presence-no-header.txt`.
+New independent candidate: `tests/pipeline/fixtures/g1a-presence-no-header.jelly`.
 It removes exactly the eight leading // header-comment lines from the original
 g1a-presence.jelly. An automated test checks that **every noncomment byte remains
 identical**, including all executable statements, blank lines and If bodies.
@@ -266,7 +268,7 @@ action inspection remain unconfirmed. Preserve the original headered failures.
 To prepare a reproducible candidate request rather than editing an immutable build:
 
 ```powershell
-python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/g1a-presence-no-header.txt --allow-text-source --shortcut-name 'TEST - G1A Presence No Header' --method compile-jelly-text --exchange $exchangeRoot
+python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/g1a-presence-no-header.jelly --shortcut-name 'TEST - G1A Presence No Header' --method compile-jelly-text --exchange $exchangeRoot
 ```
 
 The candidate is already a deliberate source variant; the pipeline still delivers
@@ -276,7 +278,7 @@ establishes this candidate's noncomment-byte identity, not app compilation.
 
 ## Single large header comment experiment
 
-At the user's request, `tests/pipeline/fixtures/g1a-presence-single-comment.txt`
+At the user's request, `tests/pipeline/fixtures/g1a-presence-single-comment.jelly`
 combines all eight original header comments into **one physical `//` line**,
 joining their text with ` | `. All original header wording is retained; this
 includes historical status and installed-name text, not current result metadata.
@@ -297,7 +299,7 @@ is a hypothesis, not an established cause. The separators also differ from the
 original line breaks, so a pass alone cannot isolate the parser mechanism.
 
 ```powershell
-python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/g1a-presence-single-comment.txt --allow-text-source --shortcut-name 'TEST - G1A Presence Single Comment' --method compile-jelly-text --exchange $exchangeRoot
+python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/g1a-presence-single-comment.jelly --shortcut-name 'TEST - G1A Presence Single Comment' --method compile-jelly-text --exchange $exchangeRoot
 ```
 
 ## Prepare a separate request per method and case
@@ -305,9 +307,9 @@ python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/g1a-
 ```powershell
 $exchangeRoot = Join-Path $PWD 'jelly\build\ipad-exchange'
 python jelly/scripts/ipad_pipeline.py prepare jelly/tests/compiler/hello-world.jelly --shortcut-name 'TEST - Local Compiler Hello' --method editor --exchange $exchangeRoot
-python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/minimal-variable.txt --allow-text-source --shortcut-name 'TEST - Pipeline Minimal Variable' --method editor --exchange $exchangeRoot
+python jelly/scripts/ipad_pipeline.py prepare jelly/tests/pipeline/fixtures/minimal-variable.jelly --shortcut-name 'TEST - Pipeline Minimal Variable' --method editor --exchange $exchangeRoot
 # Repeat with --method compile-jelly-text, then --method compile-jelly-file.
-# G uses .jelly normally; C and I require --allow-text-source.
+# G uses .jelly normally; C and I require.
 ```
 
 For H/M/G/C, the source.txt and source.jelly aliases must match the same expected

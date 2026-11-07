@@ -1,6 +1,6 @@
 # Daily local development
 
-For authoritative iPad compilation requests, use the complementary
+Use `.jelly` sources with [Copyover](ipad-copyover-compiler.md); do not generate `.txt` twins. For optional recorded iPad compilation requests, use the complementary
 [file-based pipeline](ipad-pipeline.md), its [JSON format](ipad-pipeline-format.md)
 and [manual iPad instructions](ipad-pipeline-device.md). It preserves exact bytes,
 separates local checks from app evidence, and supports feedback without Bridge.
@@ -12,8 +12,7 @@ Save one Shortcut per `.jelly` file, preserving the existing `shortcuts/main/`,
 For new source, paste snippets and source revised for delivery, the first physical
 line must be `// <exact installed shortcut name> | Purpose/role: ... | ...`.
 Put the name before metadata, without an `Installed name:` label or preceding
-blank line. Keep header metadata on the same physical comment line and intended
-`.jelly`/`.txt` twins consistent. See [the header contract](architecture.md#required-first-line-shortcut-name)
+blank line. Keep header metadata on the same physical comment line. Use `.jelly` only. See [the header contract](architecture.md#required-first-line-shortcut-name)
 and [the user-confirmed Copyover naming flow](ipad-copyover-compiler.md).
 See [AGENTS.md](../AGENTS.md) for naming, dependency and device evidence rules.
 Use exact installed names for reusable helpers and build them before callers.

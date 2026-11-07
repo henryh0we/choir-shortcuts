@@ -2,7 +2,7 @@
 
 21 October 2026. Independent test:
 [probe-name-items-indexed.jelly](probe-name-items-indexed.jelly), also available
-as the byte-identical [text transfer copy](probe-name-items-indexed.txt).
+as the byte-identical [text transfer copy](probe-name-items-indexed.jelly).
 Intended installed name: `TEST - Jelly Name Items Indexed`.
 
 This first test is self-contained. Its fixed List models the naming helper's
@@ -109,7 +109,7 @@ test alone does not validate that boundary or native File/Score extraction.
 
 ## Next candidate: declare the selector identifier
 
-Use [probe-name-items-declared-selector.txt](probe-name-items-declared-selector.txt)
+Use [probe-name-items-declared-selector.jelly](probe-name-items-declared-selector.jelly)
 ([Jelly source](probe-name-items-declared-selector.jelly)), installed name
 `TEST - Jelly Declared Selector`. It keeps the same fixture, two indexed calls
 and previews, but adds this declaration before the List:
@@ -169,7 +169,7 @@ not a justified repair. Native NAME01/NAME02 remain required in production.
 
 ## Next candidate: avoid selectors with a loop
 
-Use [probe-name-items-loop.txt](probe-name-items-loop.txt)
+Use [probe-name-items-loop.jelly](probe-name-items-loop.jelly)
 ([Jelly source](probe-name-items-loop.jelly)); intended name
 `TEST - Jelly Name Items Loop`. The fixed two-Text fixture is unchanged, but
 there is no enum declaration and no Get Item from List call. It initializes
@@ -227,7 +227,7 @@ Text-only test.
 
 ## Next candidate: quoted loop-index comparisons
 
-Use [probe-name-items-loop-text.txt](probe-name-items-loop-text.txt)
+Use [probe-name-items-loop-text.jelly](probe-name-items-loop-text.jelly)
 ([Jelly source](probe-name-items-loop-text.jelly)), installed name
 `TEST - Jelly Name Items Text Index`. It keeps the loop algorithm but changes
 only the executable comparison operands to documented Strings:
@@ -279,13 +279,13 @@ values, or the complete production naming helper.
 
 Two independent diagnostic Shortcuts are provided, in installation order:
 
-1. [probe-name-items-input.txt](probe-name-items-input.txt)
+1. [probe-name-items-input.jelly](probe-name-items-input.jelly)
    ([source](probe-name-items-input.jelly)), exact installed name
    **TEST - Jelly Name Items Input**. Same successful quoted-index loop, but it
    repeats over Shortcut Input with no fixed fixture or fallback. It expects
    exactly two Text items and previews them separately. Direct no-input execution
    is unsupported; use the caller for this test.
-2. [probe-name-items-caller.txt](probe-name-items-caller.txt)
+2. [probe-name-items-caller.jelly](probe-name-items-caller.jelly)
    ([source](probe-name-items-caller.jelly)), installed name
    **TEST - Jelly Name Items Caller**. Creates a List with deliberately different
    values and passes the native List through Run Shortcut to the receiver.

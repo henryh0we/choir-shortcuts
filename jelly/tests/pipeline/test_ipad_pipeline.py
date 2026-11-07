@@ -54,8 +54,10 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(request["source"]["encoding"], "utf-8-bom")
         self.assertEqual(request["source"]["sha256"], pipeline.digest(data))
         self.assertEqual(request["source"]["delivered_sha256"], pipeline.digest(data))
-        for name in ("source.txt", "source.jelly"):
-            self.assertEqual((self.root / "requests" / request["build_id"] / name).read_bytes(), data)
+        folder = self.root / "requests" / request["build_id"]
+        self.assertEqual((folder / "source.jelly").read_bytes(), data)
+        self.assertFalse((folder / "source.txt").exists())
+        self.assertEqual(request["schema_version"], 3)
         self.assertEqual(self.source.read_bytes(), data)
 
     def test_filename_names_overrides_and_same_path_persistence(self):
@@ -117,6 +119,8 @@ class PipelineTests(unittest.TestCase):
         folder = self.root / "requests" / request["build_id"]
         legacy = dict(request)
         legacy["schema_version"] = 1
+        (folder / "source.txt").write_bytes(self.data)
+        legacy["artifacts"]["source.txt"] = pipeline.digest(self.data)
         del legacy["shortcut_name"], legacy["name_from_build_id"]
         template = pipeline.result_template(legacy)
         template["schema_version"] = 1
@@ -136,12 +140,26 @@ class PipelineTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Legacy request"):
             self.prepare(name_from_build=legacy["build_id"])
 
+    def test_legacy_v2_request_preserves_and_checks_both_snapshots(self):
+        request = self.prepare()
+        folder = self.root / "requests" / request["build_id"]
+        request["schema_version"] = 2
+        (folder / "source.txt").write_bytes(self.data)
+        request["artifacts"]["source.txt"] = pipeline.digest(self.data)
+        (folder / "request.json").write_bytes(pipeline.json_bytes(request))
+        before = {p.name: p.read_bytes() for p in folder.iterdir()}
+        self.assertTrue(self.cli("verify")["consistent"])
+        self.cli("record", request["build_id"], "--status", "not-attempted")
+        self.assertEqual(before, {p.name: p.read_bytes() for p in folder.iterdir()})
+        (folder / "source.txt").write_bytes(b"tampered legacy source")
+        self.cli("verify", expected=1)
+
     def test_existing_g1a_variants_remain_distinct_and_unchanged(self):
         jelly = SCRIPT.parents[1] / "tests/ipad-investigation/g1a-presence.jelly"
-        text = jelly.with_suffix(".txt")
+        text = jelly.with_name("g1a-presence-text-variant.jelly")
         before = {p: p.read_bytes() for p in (jelly, text)}
         one = pipeline.prepare(self.root, jelly)
-        two = pipeline.prepare(self.root, text, allow_text=True)
+        two = pipeline.prepare(self.root, text)
         self.assertNotEqual(one["source"]["sha256"], two["source"]["sha256"])
         self.assertEqual(before, {p: p.read_bytes() for p in before})
 
@@ -158,7 +176,7 @@ class PipelineTests(unittest.TestCase):
 
     def test_header_free_g1a_preserves_every_noncomment_byte(self):
         original = SCRIPT.parents[1] / "tests/ipad-investigation/g1a-presence.jelly"
-        candidate = Path(__file__).with_name("fixtures") / "g1a-presence-no-header.txt"
+        candidate = Path(__file__).with_name("fixtures") / "g1a-presence-no-header.jelly"
         lines = original.read_bytes().splitlines(keepends=True)
         self.assertEqual(sum(line.startswith(b"//") for line in lines), 8)
         self.assertEqual(candidate.read_bytes(), b"".join(line for line in lines if not line.startswith(b"//")))
@@ -178,7 +196,6 @@ class PipelineTests(unittest.TestCase):
         other = self.source.with_suffix(".txt")
         other.write_bytes(self.data)
         self.cli("prepare", str(other), expected=1)
-        self.cli("prepare", str(other), "--allow-text-source")
 
     def test_unavailable_exchange(self):
         self.root.write_text("This is a file, not a directory")
@@ -342,7 +359,7 @@ class PipelineTests(unittest.TestCase):
 
     def test_source_tampering_and_missing_artifact_are_detected(self):
         request = self.prepare()
-        source = self.root / "requests" / request["build_id"] / "source.txt"
+        source = self.root / "requests" / request["build_id"] / "source.jelly"
         source.write_bytes(b"wrong source")
         self.cli("verify", expected=1)
         self.cli("record", request["build_id"], "--status", "not-attempted", expected=1)
@@ -392,7 +409,7 @@ class PipelineTests(unittest.TestCase):
 
     def test_symlink_escape_is_rejected_when_supported(self):
         request = self.prepare()
-        original = self.root / "requests" / request["build_id"] / "source.txt"
+        original = self.root / "requests" / request["build_id"] / "source.jelly"
         original.unlink()
         try:
             original.symlink_to(self.source)

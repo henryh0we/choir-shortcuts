@@ -1,9 +1,9 @@
-# iPad exchange format, schema versions 1 and 2
+# iPad exchange format, request schemas 1-3; result schemas 1-2
 
 This is the normative JSON contract validated by `scripts/ipad_pipeline.py`.
-New requests/results use version 2. Version 1 remains readable without rewriting
+New requests use version 3 with one `source.jelly` snapshot; results still use version 2. Request versions 1 and 2 remain readable without rewriting
 old requests, templates, results or receipts. Fields marked v2 are required only
-in version 2; other listed fields are required in both versions. Unknown fields
+in request versions 2/3 and result version 2; other listed fields are required in all versions. Unknown fields
 and duplicate keys are rejected. A v2 result can report on a v1 request; a v1
 result remains accepted with its installed name unknown. Receipts remain version 1.
 JSON is UTF-8 (an input JSON BOM is accepted); NaN/Infinity are rejected. A JSON
@@ -19,7 +19,7 @@ strings ending in `Z`. Booleans are JSON true/false, never 0/1 or strings.
 
 | Field | Type / constraint |
 | --- | --- |
-| schema_version | Integer `1` or `2`; newly prepared requests use `2` |
+| schema_version | Integer `1`, `2` or `3`; newly prepared requests use `3` |
 | build_id | Unique ID, matching its request folder |
 | created_at_utc | UTC timestamp |
 | status | Literal `prepared`, permanently unchanged |
@@ -49,9 +49,7 @@ report's Boolean success, and its text stage. Both passing and failing reports
 are accepted if `source_sha256` matches. This is captured local evidence, not
 fresh compiler execution or proof of app compatibility.
 
-`artifacts` has exactly `source.txt`, `source.jelly`, `feedback-template.json`,
-and optionally `local-validation.json`. Both source files contain identical
-original bytes. Every artifact hash is checked. The feedback template is a valid
+For request version 3, `artifacts` has exactly `source.jelly`, `feedback-template.json`, and optionally `local-validation.json`. Versions 1/2 additionally require the original identical `source.txt` snapshot. Every artifact hash is checked; existing requests are not rewritten. The feedback template is a valid
 not-attempted result with the request identity prefilled. The template timestamp
 starts at request creation; replace it in a result copy with the actual report time.
 

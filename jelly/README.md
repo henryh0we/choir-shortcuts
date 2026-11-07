@@ -4,9 +4,13 @@ This directory contains Jelly source for Apple Shortcuts. Each `.jelly` file rep
 
 Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/jellycuts-reference.md), [architecture](docs/architecture.md), and [Shortcut inventory and installation order](docs/dependencies.md).
 
-## File-based iPad compilation pipeline
+## Source delivery
 
-For clipboard-only transfer, use the [Copyover compiler helper](docs/ipad-copyover-compiler.md).
+Use `.jelly` only and transfer its contents with Copyover. Do not create `.txt` source duplicates. Historical unique diagnostics are retained as `.jelly` variants; old immutable exchange evidence is preserved.
+
+## Optional file-based iPad compilation pipeline
+
+For current source transfer, use the [Copyover compiler helper](docs/ipad-copyover-compiler.md).
 The user confirms retrieval, prompts, shortcut creation and the G2A
 name-from-first-comment default working; G2A runtime still returns only 0.
 New source/paste snippets and source revised for delivery must start with

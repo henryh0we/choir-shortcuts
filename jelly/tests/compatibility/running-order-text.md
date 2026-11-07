@@ -1,7 +1,7 @@
 # Running-order Text accumulator candidate
 
 Source: [probe-running-order-text.jelly](probe-running-order-text.jelly).
-Transfer: [probe-running-order-text.txt](probe-running-order-text.txt).
+Transfer: [probe-running-order-text.jelly](probe-running-order-text.jelly).
 Intended installed name: `TEST - Jelly Running Order Text`, interface 1.0.
 No dependencies, input, file access or forScore operations; only a synthetic
 Text fixture and a Quick Look preview. Production COL02 is not changed.

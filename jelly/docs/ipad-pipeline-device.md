@@ -1,5 +1,7 @@
 # iPad setup and first compilation experiment
 
+Current delivery policy (7 November 2026): use `.jelly` source through Copyover; no `.txt` source twins. The pipeline now prepares request schema 3 with only `source.jelly`. Instructions below referring to `source.txt` describe the historical schema 1/2 helper and evidence; a helper used for new requests must retrieve `source.jelly` instead. Old request bundles remain immutable. Unique former Text fixtures now have `.jelly` paths with unchanged bytes.
+
 For the separate clipboard-only helper, see [Copyover receive and compile](ipad-copyover-compiler.md),
 including the first-comment name extraction and editable default. That route
 does not require this guide's request folders or manifests.
@@ -220,7 +222,7 @@ The `source` field is a nested Dictionary. Access it first; do not enter
 Expected values for the selected test are:
 
 ```text
-originalSourceFilename: minimal-variable.txt
+originalSourceFilename: minimal-variable.jelly
 expectedHash: 02e6099570c2aa5af935e95c4055b9b5e7ddfa72875a1a4cfb150cb0793a3cd2
 ```
 
