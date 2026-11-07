@@ -9,6 +9,12 @@ Run its independent Windows tests with
 
 Save one Shortcut per `.jelly` file, preserving the existing `shortcuts/main/`,
 `shortcuts/reusable/`, `examples/` and `tests/` layout and header/contracts.
+For new source, paste snippets and source revised for delivery, the first physical
+line must be `// <exact installed shortcut name> | Purpose/role: ... | ...`.
+Put the name before metadata, without an `Installed name:` label or preceding
+blank line. Keep header metadata on the same physical comment line and intended
+`.jelly`/`.txt` twins consistent. See [the header contract](architecture.md#required-first-line-shortcut-name)
+and [the user-confirmed Copyover naming flow](ipad-copyover-compiler.md).
 See [AGENTS.md](../AGENTS.md) for naming, dependency and device evidence rules.
 Use exact installed names for reusable helpers and build them before callers.
 Imports expose action libraries; they do not include or install helper sources.

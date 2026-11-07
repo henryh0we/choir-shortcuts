@@ -1,5 +1,9 @@
 # iPad setup and first compilation experiment
 
+For the separate clipboard-only helper, see [Copyover receive and compile](ipad-copyover-compiler.md),
+including the first-comment name extraction and editable default. That route
+does not require this guide's request folders or manifests.
+
 Status: **header-free and single-comment G1A runtime passed by user report**.
 The latest single-comment Compile Jelly Text experiment produced no random
 calculation blocks or similar anomalies and ran with EMPTY ABSENT then FILLED

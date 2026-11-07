@@ -1,5 +1,33 @@
 # iPad generation results
 
+## Name-first clipboard follow-up, 7 November 2026
+
+The user confirms that the revised name-first G2A fixture and automatic naming
+worked as intended through the Copyover helper. The generated shortcut still
+outputs only `0`. Name extraction/default naming is therefore confirmed by user
+report for this attempt; correct collection generation is not. No exact consumed
+hash, installed action/token inspection, native repair history or current device
+versions were supplied. The remaining extraction edge cases in the helper guide
+are not established by this report. Preserve the earlier attempt below separately.
+
+## Copyover clipboard attempt, 7 November 2026
+
+The user reports that the Copyover receive/preview/name/Compile Jelly Text helper
+showed all expected popups and created the G2A shortcut. Its only observed runtime
+output was `0`, repeating the earlier single-comment collection failure below;
+expected output remains Count 3 then A, B, A. This establishes reported transport
+and shortcut creation, not correct collection generation. Exact received bytes,
+installed action/token inspection, installed name, versions and repairs were not
+confirmed. Do not attribute the failure to Copyover or Jellycuts from this alone.
+
+The selected source at the time had the legacy `// Installed name: ... | ...`
+header. The repository file's pre-edit SHA-256 was
+`a64c6b6785de0d891030e90e3e3edb2dfcd15723e0e7d3a3e3bacde47ea0ac7d`;
+this is a local reference, not a device-verified consumed hash. It is now a
+revision-2 name-first header candidate; executable bytes after the first line
+remain unchanged. The revised header and automatic name default are not yet
+device-tested. Preserve the installed output for wiring inspection before repairs.
+
 ## Latest single-comment variants, 6 November 2026
 
 User-reported results following the supplied Compile Jelly Text request commands.

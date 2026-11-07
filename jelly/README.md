@@ -6,6 +6,13 @@ Start with [AGENTS.md](AGENTS.md). Read the [language/toolchain reference](docs/
 
 ## File-based iPad compilation pipeline
 
+For clipboard-only transfer, use the [Copyover compiler helper](docs/ipad-copyover-compiler.md).
+The user confirms retrieval, prompts, shortcut creation and the G2A
+name-from-first-comment default working; G2A runtime still returns only 0.
+New source/paste snippets and source revised for delivery must start with
+`// <exact installed shortcut name> | Purpose/role: ... | ...` on the first physical
+line. See [the required header format](docs/architecture.md#required-first-line-shortcut-name).
+
 Use [the pipeline CLI](docs/ipad-pipeline.md) to snapshot exact source into a
 configurable exchange folder and collect append-only compilation feedback.
 Windows preparation/recording/ingestion works without a device; the

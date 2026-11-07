@@ -175,6 +175,23 @@ Do not install a guessed package or run a guessed compilation command. Detect th
 
 ## Source standards and required header
 
+For every new Jellycuts source, generated code/paste snippet, and source revised
+for delivery to the user (including `.jelly` and matching `.txt` copies), start
+the first physical line with
+`// <exact installed name> | Purpose/role: ...`. The name occupies the first
+pipe-separated segment, without an `Installed name:` label; reserve `|` for header
+separators. Keep remaining contract metadata on that same physical comment line
+as the name; do not add a preamble or blank line before it. Use the exact established
+installed name, preserving caller contracts, or a distinct TEST name for an
+independent diagnostic. Keep `.jelly`/`.txt` twins consistent when they are intended
+to match; retain explicitly documented historical differences. Do not mass-rewrite historical fixtures or
+working production sources just to adopt this convention. The native clipboard
+helper extracts a suggested name from a copy of this header; it must compile the
+complete, unchanged sourceText. See [the Copyover helper guide](docs/ipad-copyover-compiler.md).
+This is a helper convention, not Jelly compiler metadata or an installed rename.
+The user confirmed name extraction/default naming works on the G2A name-first
+fixture on 7 November 2026. This does not establish correct G2A collection runtime.
+
 For the user's Jellycuts 2026.6.4 build, use only `//` line comments. Each physical commented source line becomes one separate native Comment block; `/* ... */` block comments do not work. When related instructions should appear in one Comment block, put the entire text on one physical `//` line, including long assembly-slot instructions; do not hard-wrap it into consecutive comment lines. Separate lines are appropriate only for intentionally separate Comment blocks (such as individual header fields). Editor soft wrapping does not add source newlines. This device report takes precedence over older compiler-source claims of block-comment support.
 
 Use UTF-8, one action call per line, and blank lines between coherent phases. For the installed Jellycuts 2026.6.4 profile, keep executable source and braces flush left, including If/Repeat bodies: the user confirmed the flush-left parenthesized-If Output probe works, while indented bodies disappear. Preserve intentional whitespace inside multiline string literals. This device-evidence exception overrides the usual four-space indentation convention. Use positional output("message") for Text returns in this profile; notes: becomes literal payload. Missing noResultBehaviour/response warnings remain unresolved; do not reintroduce previously rejected named arguments as a guessed repair. Match verified case-sensitive function and parameter names. Use descriptive lowerCamelCase variables without spaces. Prefer captured action outputs for values not reassigned; use mutable `var` values where branch assignments or repeated changes are needed. Comments should explain responsibility, non-obvious behaviour, or compatibility constraints rather than narrating every line.

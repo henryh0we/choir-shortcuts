@@ -18,6 +18,32 @@ The utility is independently useful with its default. The main is a fixed-input 
 
 Source headers own each contract. Specify cardinality, native type, missing/empty/whitespace behaviour, direct/called execution, output, side effects, dependencies, and unsupported contexts. Missing input does not prove direct launch; neither example attempts to infer its caller.
 
+## Required first-line shortcut name
+
+Every new source or Jellycuts code/paste snippet, and source revised for delivery,
+starts on its first physical line with this ordinary comment:
+
+```text
+// <exact installed shortcut name> | Purpose/role: ... | Specification revision: ...; interface ... | Contract: ... | Dependencies: ...
+```
+
+The name is the first pipe-separated segment after `//`, without a label such as
+`Installed name:`. Do not put a blank line or preamble before it, or use `|` inside
+the name. Keep header metadata on that same physical comment line; editor soft
+wrapping is fine. Preserve existing exact installed names and native completion
+comments beside the actions they describe. Matching `.jelly`/`.txt` copies use the
+same header; intentional historical mismatches remain evidence, not migration targets.
+
+The [Copyover helper](ipad-copyover-compiler.md) extracts and trims this name to
+prefill an editable name prompt. Its compiler input remains the complete original
+sourceText. The user's edited answer supplies the existing naming field. This
+does not rename dependencies, set Jelly metadata, or change the file-based
+pipeline's explicit/history-based name selection. Do not rewrite historical
+fixtures or working installed shortcuts merely to apply the convention.
+
+7 November 2026: automatic naming from the G2A first comment is confirmed by user
+report. G2A still outputs only `0`; collection runtime remains unresolved.
+
 For richer interfaces, pass one native Dictionary with explicit case-sensitive keys, field types/defaults, and output/error rules. Prefer lowerCamelCase keys for new contracts; preserve existing conventions when reusing established components. Verify Jelly Dictionary construction and key operations on the actual compiler. Do not use JSON serialization merely to connect native Shortcuts.
 
 Simple components return simple values. A structured success/error envelope is optional; define its native Boolean/value representations and omitted-versus-present fields before implementation. Native action failures can abort a run without returning an envelope. Type conversion, cancellation, missing permissions, and missing dependency behaviour must be documented and tested.
