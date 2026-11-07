@@ -2,6 +2,23 @@
 
 ## G2B `var +=` File variant, 7 November 2026
 
+Collection-preview variant: the user reports selecting two PDFs and seeing 2,
+4, Finzi in the whole-collection Quick Look, then index 1/PDF/Finzi and index
+2/PDF/Harris, followed by completion. The shortcut compiled and ran, but the
+user subsequently clarified that the whole-collection preview showed four files:
+two Finzi and two Harris. Count and the collection preview therefore support
+four entries including repeated PDFs, while the final Repeat reported only two
+iterations, Finzi and Harris. Their precise internal representation and why
+the Repeat visits two remain unresolved. Four iterations are not confirmed.
+See [source](g2b-collection-preview.jelly) and
+[paste copy](../pipeline/fixtures/g2b-collection-preview.txt).
+
+Indexed variant compilation failed on iPad: each of the four documented
+`type: Item at Index` calls reported that variable `Item at Index` does not
+exist in scope (lines 19, 21, 23 and 25). No export or runtime result. Prior
+bare `ItemAtIndex` probes also failed; do not treat either spelling as verified.
+The separate collection-preview candidate avoids this selector.
+
 Double-add variant: the user selected the same Finzi and Harris PDFs and
 reports 2 selected, 4 collected, then index 1/PDF/Finzi and index 2/PDF/Harris,
 followed by completion. The variant contains two `var collectedFiles +=
