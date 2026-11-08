@@ -18,14 +18,14 @@ Build two user-facing Apple Shortcuts for the initial release, with a third work
 2. **Specific service:** select a series of pieces, arrange them and create or update one service setlist.
 3. **Mass import (future):** supply a spreadsheet export containing dates, services and pieces, then create or update multiple setlists. Consider compatibility now, but defer implementation and template decisions.
 
-All workflows must use the same rules for piece identity, service identity, ordering, archiving, score reuse/import, metadata and setlist updates. Existing setlists default to Add to existing: preserve all existing entries and their order, including manual edits. An explicitly selected Replace contents mode may replace only that target setlist's entries with the approved proposal; it never deletes library scores or annotations. Repeating the same request must not create unintended duplicate scores, entries or setlists. Exact source order applies when first creating a setlist; later runs may intentionally retain a different order or extra entries.
+All workflows must use the same rules for piece identity, service identity, ordering, archiving, score reuse/import, metadata and setlist updates. Existing setlists default to Add to existing: preserve all existing entries and their order, including manual edits. An explicitly selected Overwrite contents mode may replace only that target setlist's entries with the approved proposal; it never deletes library scores or annotations. Repeating the same request must not create unintended duplicate scores, entries or setlists. Exact source order applies when first creating a setlist; later runs may intentionally retain a different order or extra entries.
 
 ### Confirmed user decisions
 
 - Show one summary of the proposed work, then one confirmation starts processing without routine per-service prompts.
 - Regular services: Tuesday, Thursday, Friday and Saturday Evensong; Sunday Eucharist and Evensong, with Mattins when present. Monday is excluded; Wednesday has no regular service in the supplied schedule.
 - Derive special-service names from filename suffixes: `SunRemem` means Sunday service `Remem`.
-- Add to existing is the default and preserves manual entries/order. The later target-review decision explicitly permits Replace contents for a chosen existing setlist; replacement must be selected for that run and shown in the final confirmation. It does not delete library scores or annotations.
+- Add to existing is the default and preserves manual entries/order. The later target-review decision explicitly permits Overwrite contents for a chosen existing setlist; replacement must be selected for that run and shown in the final confirmation. It does not delete library scores or annotations.
 - Setlist names follow `yyyy-MM-dd - EEE - Service`, for example `2026-11-08 - Sun - Eucharist`.
 - Specific service is available from the Share Sheet for music shared from Nextcloud, Files or another provider that supplies usable files.
 - Mass import is a future addition.
@@ -94,7 +94,7 @@ Support date-specific overrides for cancellations, extra services and a differen
 
 Routine runs infer service type and name automatically. Use `{date} - {dayShort} - {serviceName}`, with date format `yyyy-MM-dd` and English weekday abbreviations. Examples: `2026-11-08 - Sun - Eucharist`, `2026-11-10 - Tue - Evensong` and `2026-11-08 - Sun - Remem`. Users do not re-enter these names for every week.
 
-Use date plus stable service-slot key for ordinary identity, for example `2026-11-08/evensong`. Changing the display template or source-prefix spelling must preserve that identity. Keep it independent of the enabled switch. Multiple exceptional services require distinct slot keys.
+Use date plus stable service-slot key for ordinary identity, for example `2026-11-08/evensong`. Changing the display template or source-prefix spelling must preserve that identity. Keep it independent of the enabled switch. At most one service of a given name occurs on a date; do not add a same-name service instance/disambiguation workflow.
 
 The normal Weekly run should require selecting the folder and then process recognised, enabled services using the approved rules. Use saved week context or an explicit year when available; otherwise use the current year automatically. Year accuracy is not a blocker because the user cleans up setlists after use. Remember the resulting week dates so reruns across New Year still target the same service. Month/day boundaries must still be parsed consistently; a December-to-January week crosses into the next year. Show the assumed dates in the summary without requesting a separate year confirmation. Current-year defaulting is an implementation choice reflecting the user's preference, not a requirement to establish historical dates or infer years from weekday agreement.
 
@@ -140,48 +140,59 @@ All entry points produce the following logical structure:
 | `serviceType` | Eucharist, Evensong or another configured service type, normally inferred |
 | `serviceName` | Display name for the setlist |
 | `sourceReference` | Originating folder or import reference |
-| `items` | Ordered list of piece occurrences |
+| `items` | Ordered list of requested piece occurrences, including the final user-approved order |
+| `updateMode` | Explicit create/add/overwrite mode for this target; Add is the existing-target default |
+| `serviceNameOverride` | Optional edited display name; does not by itself change service identity |
+| `targetReference` | Resolved target association and lookup context, or explicit new-target intent |
+| `reviewedEntries` | Read-only snapshot of actual target entries/occurrences/order shown in the proposal, or empty for a new target |
+| `proposedEntries` | Mode-specific resulting sequence shown for approval, including Add preservation/restored occurrences |
+| `metadataDecisions` | Approved new-score metadata and any explicit existing-score corrections, with affected shared Scores identified |
+| `proposalRevision` | Revision of the reviewed proposal; edits invalidate previous approval |
+| `approvalState` | Draft/approved status tied to that exact proposal revision |
+| `configSnapshotReference` | The immutable configuration snapshot used throughout this run |
 
-Each item needs a piece reference, an explicit position and any supplied metadata. Piece resolution must preserve edition, movement, variant and other identity-bearing qualifiers.
+Each item carries a piece reference, a distinct occurrence key, its original source position/reference, the final requested order position, and its metadata-decision reference. Repeated uses of one piece remain separate occurrences; changing order does not change the piece identity or silently drop a repeat. Piece resolution must preserve edition, movement, variant and other identity-bearing qualifiers.
 
 This is a logical contract, not a requirement to serialize everything into JSON. Choose concrete native Dictionary/List transport while expanding the implementation design. Keep native PDF Files native where needed, and retain native Score and Setlist objects inside assembly where practical. Do not assume unverified nested-value transport works.
 
 ### Identity and ordering
 
 - Service identity is separate from its display name. Renaming a setlist must not accidentally create another service.
-- Date plus an explicit service identifier is the proposed basis for ordinary service identity. Multiple services of the same type on one date require a distinguishing value.
+- Date plus the stable configured service-slot key identifies the ordinary service. There will not be two services with the same name on the same date; no extra instance ID, time discriminator or additional-service UI is required. Different service names on the same date remain distinct.
 - The same service must resolve to the same identity whether supplied by Weekly, Specific service or Mass import.
 - A piece and its occurrences are separate: A/B/A means three setlist entries using two scores.
 - Ordering is explicit. Neither file-picker order nor alphabetical filename order is a reliable musical running order.
 
 ## Common execution and update behaviour
 
-Shared assembly processes one complete service:
+Execution has four explicit phases; every entry point follows the same write boundary:
 
-1. Validate the service plan.
-2. Resolve the required music, archive PDFs where needed and prepare the ordered scores.
-3. Resolve the existing target setlist, or create it when appropriate.
-4. Compare actual entries with requested occurrences and the selected update mode: compute missing additions for Add to existing, or the old/new sequence difference for explicit Replace contents.
-5. After the run's single summary confirmation, apply the approved mode: leave unchanged/add missing available occurrences in Add mode, create a new ordered setlist, or apply an explicitly approved complete replacement under the replacement policy. New/Add services may be partial; incomplete replacements stay pending without clearing.
-6. Read back entries against the mode-specific expected result: preservation plus insertions for Add, or exact approved sequence for Replace/new. Report the mode and verification outcome.
+1. **Read-only preflight:** validate input/config, resolve requested music and existing Scores, read existing setlists/entries, and prepare metadata suggestions and target/order comparisons. Reading provider Files may materialise them for access, but no clean-archive save, score import, Composer/Genre creation, metadata/rename/setlist change is permitted. Resolve targets now; do not create them yet.
+2. **Proposal and approval:** show the exact target, name/date, selected Add/Overwrite mode, reviewed old entries, proposed resulting order, reuse/import plans, metadata effects and unresolved work. Name/Date/Order edits invalidate the prior proposal revision and regenerate it. One final confirmation approves that specific plan (or all reviewed plans for Weekly); Cancel performs no music writes.
+3. **Approved execution:** recheck the actual target, then archive/import only absent pieces, resolve/create approved metadata objects, apply approved metadata, and create/update the setlist in the selected mode. An existing matched forScore Score always supplies the performance copy, including its annotations; no source-version substitution. New/Add services may be partial; incomplete Overwrite stays pending without clearing. A changed target/content snapshot is returned for review or deferred, never silently broadened beyond approval.
+4. **Readback and report:** compare actual entries with the mode-specific result and inspect supported metadata outcomes. Report completed, partial, pending, failed or unconfirmed results. If interrupted, the user reruns the ordinary workflow, reviews current contents and chooses Overwrite/Add to/Cancel; no separate restore or resume wizard is required.
 
-In Add to existing mode, updates are strictly additions-only: never clear a setlist, remove entries, replace an existing score occurrence or reorder existing entries. Explicit Replace contents is the sole exception, governed by the replacement policy below. If source music disappears or its positions change, retain the actual setlist contents. If a source piece changes identity, add the newly requested piece while retaining the old one. Manual cleanup is outside the shortcut.
+In Add to existing mode, updates are strictly additions-only: never clear a setlist, remove entries, replace an existing score occurrence or reorder existing entries. Explicit Overwrite contents is the sole exception, governed by the replacement policy below. If source music disappears or its positions change, retain the actual setlist contents. If a source piece changes identity, add the newly requested piece while retaining the old one. Manual cleanup is outside the shortcut.
 
-For Add to existing, match piece identities and occurrences, rather than testing simple membership. For requested A/B/A and existing A/B, add one A. For an unchanged rerun, add nothing. If the actual list already contains extra occurrences, preserve them. Insert a newly requested piece between its matched source neighbours: existing A/C plus requested A/B/C becomes A/B/C. Insertions may change numeric entry indexes but must preserve the relative order of every pre-existing entry, including manual additions.
+For Add to existing, match piece identities and occurrences, rather than testing simple membership. For requested A/B/A and existing A/B, add one A. For an unchanged rerun with all requested occurrences present, add nothing. If the user deleted a requested entry and reruns service creation, add that occurrence back; deletion is not a persistent omission preference. Use actual current entries rather than an old record to decide what is missing. If the actual list already contains extra occurrences, preserve them. Insert a newly requested piece between its matched source neighbours: existing A/C plus requested A/B/C becomes A/B/C. Insertions may change numeric entry indexes but must preserve the relative order of every pre-existing entry, including manual additions.
 
-Keep occurrence mappings in the service record where possible so repeated pieces and later resolution of missing music target the correct gaps. Use actual setlist readback to verify that existing entries survived and new entries were inserted as planned. Conflicting anchors caused by manual reordering, or ambiguous repeated identities, must be reported without moving existing entries; unaffected insertions and other services may continue. Define a deterministic policy for these conflicts during implementation. If native actions cannot insert into the intended gap, report that limitation rather than clear/rebuild the setlist or silently substitute appending.
+Keep occurrence mappings in the service record where possible so repeated pieces and later resolution of missing music target the correct gaps. Use actual setlist readback to verify that existing entries survived and new entries were inserted as planned. Conflicting anchors caused by manual reordering, or ambiguous repeated identities, must be reported without moving existing entries; unaffected insertions and other services may continue. Define a deterministic policy for these conflicts during implementation. If native actions cannot insert into the intended gap, report that limitation rather than clear/rebuild the setlist or silently substitute appending; the user can use the separate manual insertion/repair workflow.
 
-For new services and Add to existing, unresolved music produces a partial service containing the available pieces. Replace contents is held pending if requested music is unresolved; keep its existing entries until the full approved replacement can be prepared. Flag each missing occurrence with its service, source reference and intended position in the final report; do not silently omit it or assume a native placeholder feature is available. A later rerun inserts a resolved piece into its intended gap. Only a service-level blocker, such as an ambiguous target or no usable music, leaves the whole service pending. Finish other independent services and report unresolved references, conflicting targets and required decisions afterwards. Do not prompt for each problem during processing. Initial preflight should catch recoverable validation issues before native writes. Some native action errors can terminate a Shortcut without a recoverable result; continuing after such errors requires supported error handling and must not be claimed without device evidence. Save progress between services so an interrupted run can resume without duplicate additions.
+For new services and Add to existing, unresolved music produces a partial service containing the available pieces. Overwrite contents is held pending if requested music is unresolved; keep its existing entries until the full approved replacement can be prepared. Flag each missing occurrence with its service, source reference and intended position in the final report; do not silently omit it or assume a native placeholder feature is available. A later rerun inserts a resolved piece into its intended gap. Only a service-level blocker, such as an ambiguous target or no usable music, leaves the whole service pending. Finish other independent services and report unresolved references, conflicting targets and required decisions afterwards. Do not prompt for each problem during processing. Initial preflight should catch recoverable validation issues before native writes. Some native action errors can terminate a Shortcut without a recoverable result; continuing after such errors requires supported error handling and must not be claimed without device evidence. On rerun, read actual current contents and use the ordinary Overwrite/Add to/Cancel choice; Add must avoid duplicate occurrences and restore requested deletions.
 
-### Service records and recovery
+### Service records, cleanup and interruption
 
-Introduce a small persistent service record linking `serviceId` to the target setlist and the last confirmed plan. This is a proposed addition: the current architecture does not yet maintain such a manifest.
+A small service record may retain the service ID, edited display-name/target association and last confirmed plan. It is a convenience for current requests, not an independent queue of work or authority over forScore contents. Actual live readback determines whether a target/occurrence currently exists.
 
-The record assists identity resolution and recovery; it is not proof of current forScore contents. After an interrupted update, read the actual setlist before deciding what remains to do. There is no assumed transaction or automatic rollback.
+If the user deletes a forScore setlist, treat that service as finished. Ignore/invalidate any stale association; do not resurrect it, access it again as a recovery task, or scan history to recreate deleted services. If the user explicitly requests creation for that date/service again later, resolve it as a new current request, without trying to restore the deleted object's identity/history. Absence caused by a failed lookup must still be distinguished from confirmed absence.
 
-Prefer a verified persistent setlist identifier if one is available. Define a fallback lookup policy, including duplicate matches and renamed setlists, during implementation planning.
+If a music Score is deleted, import it again from the available clean archive/current source when a current request needs it. Missing/stale piece records may be rebuilt as needed, reusing approved metadata where available; they must not block a fresh lookup/import. Reimport cannot recreate annotations that were deleted with the old Score. Never replace a Score that still exists merely because the source PDF or saved record differs.
 
-Reports should distinguish unchanged, created, updated, partial, pending, failed and unconfirmed services, and state whether actual entry identities and order were verified. A partial result must identify each missing piece and intended position. Preserve useful per-piece outcomes such as reused, imported and metadata pending.
+After interruption, rerun the normal shortcut: choose date/service or week folder, show actual current contents, then choose Overwrite, Add to or Cancel. Add reconciles missing requested occurrences; Overwrite uses the complete approved requested sequence. Do not require a separate previous/current/intended recovery screen, rollback engine, deletion tombstones or automatic replay. Preserve normal completeness checks before overwriting; native failures may still leave partial contents and there is no transaction guarantee.
+
+Prefer a verified persistent setlist identifier where available, with supported unique lookup fallback for current requests. Unexpected duplicate matches remain an error to report, not a reason to build a multiple-instance service feature or select the first match.
+
+Reports distinguish unchanged, created, updated, partial, pending, failed and unconfirmed results, and state whether actual identities/order were verified. Missing occurrences retain their intended positions; metadata-pending is separate from missing music.
 
 ## Weekly workflow
 
@@ -199,7 +210,7 @@ Year defaulting follows the routine-operation policy above. Retain the first res
 
 On rerun, the current folder supplies requested music for each represented service. New occurrences become additions. Removed files and changed positions do not remove or reorder existing entries. The source is a basis for additions, not authority to overwrite manual edits.
 
-If a previously processed service disappears entirely from the folder, flag it for review rather than automatically deleting its setlist. Unrecognised filenames and unrelated PDFs need explicit treatment in the preview.
+If a previously processed service disappears entirely from the selected folder, do not alter it or recreate it from saved history. A current-folder report may note that absence, but it does not create a recovery task for an old/deleted setlist. Unrecognised filenames and unrelated PDFs need explicit treatment in the preview.
 
 ## Specific-service workflow
 
@@ -208,8 +219,8 @@ Implement this entry point first because it establishes the shared execution pat
 1. Select music in Nextcloud, Files or another app and choose Share > Create Service. Receive the shared native files without making the user select them again. Direct launch may offer a file picker as a fallback.
 2. Combine every selected piece into one service, regardless of its original day/service prefix. Use prefixes as ordering hints where useful, never as instructions to split this selection. Mixed prefixes or duplicate position numbers need a deterministic ordering fallback visible and adjustable in the summary. Do not assume an app preserves share order.
 3. Use a native date picker and a configured service list (Evensong, Eucharist, Mattins) to select the target, prefilled from reliable context where available. Derive the name automatically; do not ask for the whole setlist name. A shared file may lack its date context, so collect the date once rather than guess. Special services use configured/suffix-derived options or an explicit custom-service route.
-4. Read any uniquely resolved existing target contents, then offer Add to existing, Replace contents or Cancel. Present the proposal and an optional Edit proposal menu; after each edit rebuild the proposal and target comparison. One final confirmation starts writes.
-5. Call shared assembly, preserve existing setlist entries and return the final result with unresolved items.
+4. Read any uniquely resolved existing target contents, then offer Add to existing, Overwrite contents or Cancel. Present the proposal and an optional Edit proposal menu; after each edit rebuild the proposal and target comparison. One final confirmation starts writes.
+5. After confirmation, call shared assembly, apply the explicitly approved Add/Overwrite mode and return the final result with unresolved items.
 
 Target the Share Sheet title **V3 - Create Service**; exact installed naming and supported input types must be recorded during implementation. File-provider support depends on receiving usable file objects; arbitrary URLs are not assumed to be PDFs. Unsupported inputs appear in the resolution report. A mixed selection always creates one combined service; where its target date or service cannot be inferred uniquely, collect those details once before the summary confirmation. Weekly remains the entry point that automatically splits music into services.
 
@@ -222,24 +233,21 @@ Specific service uses a native Date input followed by a native Choose from List/
 Resolve by saved service identity/target association, with unique name lookup only as the supported fallback. If a target already exists, show its actual entries in Manual order, including repetitions and manual additions, then offer:
 
 - **Add to existing** (default): preserve old entries/order; propose only missing occurrences in supported gaps.
-- **Replace contents**: propose the exact requested occurrence sequence instead of the current entries. Show both sequences and the entries that will be removed from this setlist.
+- **Overwrite contents**: propose the exact requested occurrence sequence instead of the current entries. Show both sequences and the entries that will be removed from this setlist.
 - **Cancel**: finish without music, metadata or setlist writes. The final execution confirmation remains separate from this mode choice.
 
 An empty lookup is not proof of absence if the native action failed; duplicate/ambiguous matches never select the first. Target contents/readback and ambiguity behavior remain device checks. Re-query after a date/service change, and revalidate immediately before execution. If actual contents changed after approval, defer that service rather than silently applying an obsolete plan.
 
-The main review screen shows date, service, derived/overridden name, new/existing target, chosen mode, existing sequence, proposed resulting sequence, imports/reuse and unresolved metadata/music. Offer **Proceed**, **Edit proposal**, **Cancel**. The edit menu contains:
+The main review screen shows date, service, derived/overridden name, new/existing target, chosen mode, existing sequence, proposed resulting sequence, imports/reuse and unresolved metadata/music. Offer **Proceed**, **Edit proposal**, **Cancel**. The edit menu has only three editing options: Change Name, Change Date and Change Order (plus Back). Service is chosen initially; Overwrite/Add to/Cancel belongs to target review, not another edit submenu. Music additions/removals are done separately, not in this proposal editor. Essential first-import metadata review remains part of read-only preflight, not a broad optional Edit Music/Metadata menu. The options are:
 
 | Edit option | Result |
 | --- | --- |
 | Change Date | Date picker; recompute service ID/name and resolve the new target. Never move or delete the old service as a side effect. |
-| Change Service | Configured chooser/custom route; recompute slot/identity/name, exclusions and target lookup. |
 | Change Name | Optional display-name override; retain the date/slot identity. For an existing target, show an explicit proposed rename of the same associated setlist rather than creating a duplicate; apply only after confirmation and supported native behavior is checked. |
-| Change Order | Rebuild the proposed requested occurrence sequence with native list choices; allow repeated pieces as distinct occurrences. |
-| Review Music / Metadata | Resolve/adjust selected occurrences and approved Title/Composer/Type values, without writes. |
-| Change Update Mode | For a uniquely resolved existing target, revisit Add to existing / Replace contents. |
-| Back to Proposal | Return without changing the proposal. |
+| Change Order | Rebuild the proposed requested occurrence sequence with native list choices; preserve the already-requested occurrences, including repetitions; this editor reorders rather than adds/removes pieces. |
+| Back | Return to the proposal without an edit. |
 
-After each completed edit, regenerate the full proposal and return to the same review screen. The user can make another edit or proceed; no mandatory sequence of edit questions. Cancelling an individual editor returns to the proposal where native cancellation behavior supports that; cancelling the overall run makes no music writes. A change that resolves a different target resets the old target's mode selection to Add to existing and requires a fresh explicit Replace selection if wanted. An earlier Replace choice must never carry over invisibly to another target or later run.
+After each completed edit, regenerate the full proposal and return to the same review screen. The user can make another edit or proceed; no mandatory sequence of edit questions. Cancelling an individual editor returns to the proposal where native cancellation behavior supports that; cancelling the overall run makes no music writes. A change that resolves a different target resets the old target's mode selection to Add to existing and requires a fresh explicit Overwrite selection if wanted. An earlier Overwrite choice must never carry over invisibly to another target or later run.
 
 This is the intended UI behavior, not an invented Jelly while/break/return feature. Choose an implementation compatible with the app's supported control flow and normal-completion strategy; validate edit/review navigation during the actual entry-point build.
 
@@ -247,13 +255,13 @@ This is the intended UI behavior, not an invented Jelly while/break/return featu
 
 Use recognised numeric file positions when they are comparable within the requested service: 2 precedes 10; gaps are retained and do not imply missing music. For unnumbered music or mixed/noncomparable prefixes, use the order delivered by the file provider/Share Sheet as the initial proposal and show it explicitly. Actual tap order is a useful preference only when that provider preserves it; do not claim the shortcut can reconstruct unavailable selection order. Duplicate positions and other ties must be visible, with received order as the proposed tie-breaker and user adjustment available.
 
-Change Order edits the requested proposal before confirmation. For a new or explicitly replaced setlist, the approved proposal defines the final occurrence order. For Add to existing, preserve all existing relative order even if the proposal is rearranged; preview the actual merged result and identify unsupported/conflicting insertions. If the user wants a wholly different existing order, they must choose Replace contents explicitly. Date/type/name/order edits must not discard piece metadata decisions or flatten repeated occurrences.
+Change Order edits the requested proposal before confirmation. For a new or explicitly replaced setlist, the approved proposal defines the final occurrence order. For Add to existing, preserve all existing relative order even if the proposal is rearranged; preview the actual merged result and identify unsupported/conflicting insertions. If the user wants a wholly different existing order, they must choose Overwrite contents explicitly. Name/date/order edits must not discard piece metadata decisions or flatten repeated occurrences.
 
 ### Explicit replacement policy
 
-Replace contents changes the chosen setlist's entries only. Preserve library Scores, PDFs, annotations, unrelated setlists and metadata. Do not delete/reimport Scores merely to rebuild entries. Prepare all requested usable Scores and metadata requirements before clearing/removing any old entry. If any requested occurrence is unresolved, leave replacement pending with the original setlist intact; the user may edit the proposal to a deliberately smaller complete list before confirming. An empty replacement is blocked rather than interpreted as a request to clear the service.
+Overwrite contents changes the chosen setlist's entries only. Preserve library Scores, PDFs, annotations, unrelated setlists and metadata. Do not delete/reimport Scores merely to rebuild entries. Prepare all requested usable Scores and metadata requirements before clearing/removing any old entry. If any requested occurrence is unresolved, leave replacement pending with the original setlist intact; the user can correct/reselect the input music separately and start a new proposal, since the edit menu does not add/remove pieces. An empty replacement is blocked rather than interpreted as a request to clear the service.
 
-Record the chosen mode, approved old/new sequences and progress before mutation. Recheck target identity and contents, then use only device-verified native replacement actions, verify the clear/remove result before population where applicable, add the complete approved sequence and read it back. A failed/interrupted replacement may leave partial contents; no transaction, automatic rollback or reliable native entry IDs are assumed. Recovery must compare actual state with saved old/new intent, identify whether operations are unambiguous and report pending/manual recovery when they are not. Do not relabel a partial replacement as complete or blindly clear again on retry.
+Retain the chosen mode and reviewed old/proposed sequences for this execution and its report; saved history is not a prerequisite for later reruns. Recheck target identity and contents, then use only device-verified native replacement actions, verify the clear/remove result before population where applicable, add the complete approved sequence and read it back. A failed/interrupted replacement may leave partial contents; no transaction, automatic rollback or reliable native entry IDs are assumed. The user can rerun, inspect actual current contents and explicitly choose Overwrite/Add to/Cancel to repair the service. No separate recovery wizard or automatic replay of the previous attempt is required. Do not relabel partial replacement as complete, and never clear again without a fresh explicit Overwrite approval.
 
 Weekly continues to infer dates/slots and default to Add to existing without per-service questions. Its batch review offers Edit service, then this same editing/mode interface for the selected service. All edits return to the regenerated batch proposal, and one final batch confirmation covers its explicit per-service modes. Routine automatic Weekly runs never enable replacement globally.
 
@@ -338,6 +346,14 @@ Native action research confirms lookup with Continue if not found and Create com
 
 Acceptance during the stage-3 metadata increment: existing approved name returns the existing Composer; new approved name creates one item and returns a usable Composer; repeated/trimmed-name calls reuse it; blank input creates nothing; ambiguous matches create nothing; an interrupted/unconfirmed create is retried by lookup; and the returned object can actually be assigned to the intended test Score without touching another Score/Bookmark. Creation occurs only after confirmation, never while merely previewing metadata.
 
+### Existing score reuse and shared metadata
+
+When a matching piece already exists in forScore, always use that saved Score as the performance copy, preserving annotations from previous performances. Do not introduce revised-PDF comparison, content-hash/version review, automatic source replacement or an extra edition-conflict wizard. A different source PDF with the same canonical reference does not replace an existing Score. If the chosen saved music is wrong, the user can correct the insertion/import separately through a manually invoked repair shortcut/workflow; this is outside normal service creation and is not a new dependency of the current preview.
+
+Only a genuinely absent Score needed by the current request is imported/readded. Distinct explicit canonical qualifiers continue to identify distinct references; do not invent aliases or merge pieces to force a match. Unexpected duplicate/ambiguous existing-score matches need manual resolution, not guessed selection or another import.
+
+Title, Composer and Genre corrections on a reused Score affect every service containing that same Score. State that shared effect in preflight and apply only explicitly approved fields, preserving other metadata and annotations. Use approved composer aliases centrally rather than automatically expanding surnames. Multiple composer/arranger handling, if supported, must preserve existing assignments and use explicitly supplied roles/names; do not invent authorship or overwrite a composer's entry with an arranger. Essential first-import metadata decisions still occur before confirmation even though the optional edit menu is limited to Name/Date/Order.
+
 ### Canonical identity and persistence
 
 Introduce a small V3 piece-metadata record keyed by the full canonical piece reference, separate from service records and occurrence positions. Proposed fields: record/schema version, canonical reference, source references, approved title, composer reference/display name, type key, relevant qualifiers, provenance/review status per field, verified Score locator where available, last applied/verified values and pending issues. Store serializable references, not native Score/Composer/Genre objects or access tokens. Shared plans reference this piece record; A/B/A still means three occurrences and two piece records.
@@ -377,10 +393,10 @@ Do not require another broad round of isolated probes before proceeding. Use foc
 
 - The same service plan creates the same initial ordered setlist from either entry point; subsequent runs preserve existing entries and manual edits.
 - An unchanged rerun creates no unintended duplicate scores or setlists.
-- Add to existing adds missing occurrences without removing, clearing or reordering old entries. Source removals/manual edits survive default reruns. Explicit Replace contents instead requires an approved complete sequence, affects only target entries and preserves Scores/annotations.
+- Add to existing adds missing occurrences without removing, clearing or reordering old entries. Source removals/manual edits survive default reruns. Explicit Overwrite contents instead requires an approved complete sequence, affects only target entries and preserves Scores/annotations.
 - Existing A/C plus requested A/B/C becomes A/B/C by inserting B, without moving the existing entries. A piece resolved on a later run fills its intended gap.
 - A/B/A preserves all three occurrences in the correct order while reusing scores.
-- Two distinct services on the same date remain distinct.
+- Differently named services on the same date remain distinct. Two services with the same name on the same date are outside the user's workflow and require no separate instance UI.
 - Weekly numeric ordering handles positions such as 2 and 10 correctly.
 - Prefix formats, aliases and separators can be changed in shared configuration without editing processing loops; supported old and new formats can coexist.
 - After initial structure approval, recognised weekly services receive their names, identities and order automatically, without per-service prompts.
@@ -396,21 +412,23 @@ Do not require another broad round of isolated probes before proceeding. Use foc
 - A missing year defaults automatically without an extra prompt, and a saved week retains its identity across reruns.
 - Ambiguous or missing music is reported and never silently omitted.
 - Future mass import will report invalid rows by service and row while processing valid independent services; it is not an initial-release acceptance requirement.
-- An interrupted run can resume by reconciling actual setlist contents.
+- After interruption, an ordinary rerun shows actual contents and offers Overwrite/Add to/Cancel. No dedicated recovery wizard or automatic rollback is required.
 - V3 has its own installed namespace, configuration and contracts, with no legacy shortcut dependencies.
 - First-time imports receive approved Title, Composer where known, and Type as Genre. Verify actual forScore values and target identity; unknown Composer is metadata pending, not an invented value.
 - Reusing a piece across services or rerunning does not duplicate Composer/Genre objects, repeat approved metadata questions, overwrite manual metadata or import another Score after a Title change.
 - Explicit metadata corrections affect only approved fields on the verified Score, preserve annotations and other assignments, and leave the clean archive PDF unchanged.
 
-Additional UI acceptance: Specific service uses Date + Service controls rather than mandatory full-name typing; actual existing contents are shown before choosing Add/Replace/Cancel; edit options return to a refreshed proposal and permit repeated edits; changing target resets replacement selection; received-order fallback is honestly labelled; Add preserves old order while Replace follows the approved complete order. Cancellation before final approval causes no music writes. Replacement with unresolved/empty music leaves old entries intact. Verify interrupted replacement recovery separately from additions-only retries.
+Additional lifecycle acceptance: no music writes occur during preflight; the exact target/mode/old/new sequences and edited order/name are carried into execution; an existing matched Score is always reused rather than replaced by a newer source; a requested entry deleted from a live setlist is restored on rerun; a deleted needed Score can be reimported from available source/archive; deleted setlists are not resurrected from history. Shared metadata changes are explicitly shown before approval.
+
+Additional UI acceptance: Specific service uses Date + Service controls rather than mandatory full-name typing; actual existing contents are shown before choosing Overwrite/Add to/Cancel; edit options return to a refreshed proposal and permit repeated edits; changing target resets replacement selection; received-order fallback is honestly labelled; Add preserves old order while Overwrite follows the approved complete order. Cancellation before final approval causes no music writes. Replacement with unresolved/empty music leaves old entries intact. Verify interrupted replacement recovery separately from additions-only retries.
 
 ## Decisions to expand next
 
 1. Exact service identity format and rules for sharing identities across entry points.
 2. Service-plan item fields, supported piece-reference forms and native input/output contracts.
 3. Confirm Sunday prefix mappings, special-service position/separator syntax and folder month/day rules. The regular weekly schedule and missing-year default are recorded above.
-4. Ordering interface, including repeated pieces and conflicting positions.
-5. Service-record format, storage, setlist lookup and recovery checkpoints.
+4. Ordering interface, including preserving existing requested repetitions and resolving conflicting positions without adding/removing pieces in the editor.
+5. Minimal service-record storage and live lookup: deleted targets are retired, missing pieces/records rebuild only on current demand, and interrupted runs use ordinary Overwrite/Add to/Cancel.
 6. Define occurrence matching and insertion-anchor conflict behaviour while preserving existing entries and their relative order. Gap insertion and partial services are confirmed requirements.
 7. Share Sheet fallback date/service selection and deterministic ordering for unprefixed or mixed-prefix music. Combining the selection into one service is confirmed. CSV template and parser decisions remain deferred.
 8. Exact V3 installed shortcut names, dependency order and installation instructions.

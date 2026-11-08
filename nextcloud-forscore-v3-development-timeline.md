@@ -45,7 +45,7 @@ The [latest investigation results](jelly/tests/ipad-investigation/generation-gro
 | Indexed File candidate failed on `type: Item at Index`; earlier selector spellings also failed | Do not use either failed selector as an established solution. Use supported source forms or explicit native completion slots. |
 | Text assignments, two-Text extraction and some File assignments have narrow reported passes | Reuse those forms without extending their evidence to mixed dictionaries, nested values, Score transport or complete helpers. |
 | G1C rejected equal counts; generated token/default/polarity defects occurred | Inspect actual operands and operators. Count equality never proves identity or sequence. |
-| Repaired installed assembly can create services and offers replace/skip; archive-category/Genre draft is not fully device-tested | Implement new components from this research. Legacy automatic replacement is not the V3 default; explicitly chosen Replace contents is now part of the reviewed design and needs fresh native verification. Category transfer and unattended handling also need integrated checkpoints. |
+| Repaired installed assembly can create services and offers replace/skip; archive-category/Genre draft is not fully device-tested | Implement new components from this research. Legacy automatic replacement is not the V3 default; explicitly chosen Overwrite contents is now part of the reviewed design and needs fresh native verification. Category transfer and unattended handling also need integrated checkpoints. |
 
 Native forScore availability does not establish a Jelly binding, reliable identifier, arbitrary insertion position or recoverable error handling. Those remain implementation questions.
 
@@ -61,13 +61,13 @@ Native forScore availability does not establish a Jelly binding, reliable identi
 
 **Development work:** Write the concrete contracts before changing executable source. Keep these proposed defaults explicit until checked against the examples:
 
-- Service identity: `YYYY-MM-DD/slot-key`; display names and prefix spellings are excluded. Distinct exceptional services require distinct slot keys.
+- Service identity: `YYYY-MM-DD/slot-key`; display names and prefix spellings are excluded. There is at most one service with a given name on a date; no extra instance-disambiguation feature is required.
 - Plan envelope: `schemaVersion`, `serviceId`, `serviceDate`, `serviceSlot`, `serviceType`, `serviceName`, `sourceReference`, and ordered `items`, plus a documented link to the run's single config snapshot.
 - Item: stable occurrence key, numeric position, piece reference preserving edition/movement/variant, source reference, optional metadata/category and resolution status. Occurrence keys must survive discovery-order changes and missing items; identical filenames alone cannot identify two occurrences.
 - Keep a native PDF pool separate from occurrence records. Proposed transport is a native context List carrying a plan Dictionary, unique PDF Files, the config snapshot and required Folder context. Its exact cardinality/extraction is to be specified and checked in stage 3; do not assume nested values or native Files survive it.
 - Assembly is a new V3 supplied-plan component, independent of the old `interactive` interface. Define preflight and approved execution separately so one confirmation can cover the whole run.
 - Durable service records contain version, service ID, target locator, last confirmed request, occurrence mappings, unresolved positions and pending/verified progress. Store only serializable references, never native Score/Setlist objects or access tokens. A record is evidence of intent, not current contents.
-- Resolve by a verified persistent setlist identifier if available. Otherwise use recorded names with exact unique lookup in the intended library. Missing/renamed/duplicate targets require explicit relinking before confirmation; never create another service solely because its display name changed.
+- Resolve by a verified persistent setlist identifier if available. Otherwise use recorded names with exact unique lookup in the intended library. Resolve renamed current targets without creating duplicates. Deleted targets are retired: ignore their stale association and never recreate from history. A fresh explicit creation request may create a new live target. Unexpected duplicate matches need manual resolution, not an extra instance UI.
 
 **Your checkpoint:** Review the Sunday examples (`Sun` Eucharist, `Sunam` Mattins, `Sunpm` Evensong), special example `SunRemem1-Piece.pdf`, actual week-folder names, and their proposed parsed dates. Confirm separators and ambiguous examples before encoding those rules. Inspect native add/readback actions for insertion/anchor settings and usable score, entry and setlist identity information; record the actual fields rather than inferring them from action names.
 
@@ -86,6 +86,12 @@ Use one config snapshot per run. Resolve saved week dates first, then explicit f
 **Full-stage checkpoint:** Run a read-only preview on a small fixture folder containing Tuesday, Sunday bare/am/pm, `SunRemem`, a disabled Monday, aliases `Thu`/`Thur`/`Thurs`, positions 2 and 10, an unknown prefix and an edition-qualified name. Include one supported old/new format pair. Check grouping and canonical payload agree, qualifiers survive, and exclusions are called skipped. Check a date override, absent Mattins, a month boundary and a December/January week. Reload saved week context with a different default year and confirm unchanged service IDs.
 
 **Advance when:** The preview is correct and performs no archive/import/metadata/setlist writes. Document exactly which conventions are supported; do not claim arbitrary naming schemes work.
+
+### Updated plan-review checkpoints
+
+Implement the now-expanded service-plan contract carrying updateMode, display-name override, target association, reviewed/proposed entries, final occurrence order, metadata decisions and proposal-specific approval. Preflight must not save/import/create metadata/change setlists; Cancel before approval performs no music writes.
+
+Native score preparation checks must establish that an existing matching forScore Score is always reused (including annotations), regardless of a changed source PDF; missing Scores/records may be readded/rebuilt only when currently requested. Wrong saved music is handled separately by manual repair. Metadata correction preflight states its shared effect on every setlist using that Score. UI checks offer only Name/Date/Order edits, with Overwrite/Add to/Cancel in target review and no membership editing/recovery wizard.
 
 ## Stage 3 — supplied-plan assembly and preparation
 
@@ -121,9 +127,9 @@ Resolve existing targets during preflight. Show intended dates, target, sequence
 
 ## Stage 5 — additions-only updates and recovery
 
-**Development work:** Implement Add to existing as the default plus an explicitly selected, confirmed Replace contents route under the [replacement policy](nextcloud-forscore-plan-v3.md#explicit-replacement-policy). Legacy installed behavior is research only, not a dependency. Add must never fall back to clear/rebuild when insertion is unavailable. Compare actual entries against requested occurrences and saved mappings. Match repeated occurrences one-to-one; do not reduce the request to unique scores.
+**Development work:** Implement Add to existing as the default plus an explicitly selected, confirmed Overwrite contents route under the [replacement policy](nextcloud-forscore-plan-v3.md#explicit-replacement-policy). Legacy installed behavior is research only, not a dependency. Add must never fall back to clear/rebuild when insertion is unavailable. Compare actual entries against requested occurrences and saved mappings. Match repeated occurrences one-to-one; do not reduce the request to unique scores.
 
-Proposed conflict policy: prefer verified saved occurrence-to-entry mappings; otherwise match unambiguously in existing relative order. If repeated identities or reversed anchors make placement ambiguous, leave the affected insertion unresolved. If native gap insertion is unavailable, leave it pending. Do not append it elsewhere or rebuild the list. Other unambiguous additions and services may proceed. Preserve source removals and all pre-existing entries, including manual extras. If a saved entry disappeared manually, flag the intent conflict rather than guessing whether to restore it.
+Proposed conflict policy: prefer verified saved occurrence-to-entry mappings; otherwise match unambiguously in existing relative order. If repeated identities or reversed anchors make placement ambiguous, leave the affected insertion unresolved. If native gap insertion is unavailable, leave it pending. Do not append it elsewhere or rebuild the list. Other unambiguous additions and services may proceed. Preserve source removals and all pre-existing entries, including manual extras. If a requested entry was deleted manually, add it back on the next approved rerun using actual current contents; no omission-preference or restore prompt is required.
 
 Read actual contents immediately before applying the approved additions. If they changed after preview, do not silently broaden the approved work: leave the affected service pending and continue independent services. Checkpoint writes and read back after each operation whose result could otherwise be ambiguous on retry. Record an attempt separately from a verified result. A native action may still halt the shortcut; recovery on relaunch is required even where continuing within that run is impossible.
 
@@ -132,20 +138,20 @@ Read actual contents immediately before applying the approved additions. If they
 | Existing / request | Required result |
 | --- | --- |
 | A/B/A / identical rerun | No new scores, entries or setlist |
-| A/C / A/B/C | Insert B in the gap; original A and C retain relative order |
+| A/C / A/B/C, including user-deleted B | Add B back in the gap; original A and C retain relative order; no restore-choice prompt |
 | A/B / A/B/A | Add exactly the missing A occurrence |
 | A/X/C, with manual X / A/B/C | Preserve X and all old entries; apply the documented unambiguous gap policy |
 | A/B/C / A/C, or changed source positions | Retain all old entries and their relative order |
 | Manually reordered C/A / A/B/C | Report conflicting anchors; do not move C or A |
 | Ambiguous repeated entries | Resolve only from verified mapping or report pending |
 | Same ID with changed display template | Reuse the same target |
-| Two services on one date; duplicate/renamed targets | Keep distinct IDs; do not select first match or silently create duplicates |
+| Different service names on one date; renamed/deleted targets | Keep named services distinct, reuse live renamed target associations and ignore deleted-target history; no same-name instance feature |
 
 **Your checkpoint B:** Interrupt after target creation, after one addition and after an addition before its record is confirmed. Relaunch, inspect actual contents and verify no duplicates. Resolve the previously missing B and confirm it fills A/C's gap. Change contents between preview and execution and check the service is deferred.
 
 **Advance when:** Gap insertion and preservation work using actual supported native actions, or the feature is explicitly blocked. An insertion limitation blocks the claim that v3 updates are complete; it does not justify weakening the policy. Other read-only construction can continue, but do not promote either entry point as v3-ready.
 
-Additional stage-5 replacement checks: show actual old/new contents; Cancel leaves music unchanged; incomplete/empty replacement preserves the old list; explicit complete replacement changes only that target's entries and preserves Scores/annotations; target changes reset mode to Add; interrupted replacement reconciles saved intent with actual entries without assumed rollback or blind clearing.
+Additional stage-5 replacement checks: show actual old/new contents; Cancel leaves music unchanged; incomplete/empty replacement preserves the old list; explicit complete replacement changes only that target's entries and preserves Scores/annotations; target changes reset mode to Add; after interrupted replacement, an ordinary rerun shows actual contents and offers Overwrite/Add to/Cancel, without a dedicated recovery wizard or rollback engine. Missing needed Scores can be reimported; deleted setlists remain retired rather than restored from history.
 
 ## Stage 6 — Specific service
 
@@ -157,7 +163,7 @@ Keep all selections in one service. Infer date/slot from usable context or let t
 
 **Advance when:** Create, unchanged rerun and gap update work through the real Share Sheet path. Record support per provider and delivered input type; one provider's success does not establish all providers.
 
-Stage-6 review checks: native Date + Service choice derives the full name; existing target contents appear before Add/Replace/Cancel; Edit proposal supports repeated name/date/service/order/metadata edits and returns to a refreshed proposal; Add preview preserves existing order, Replace/new uses the approved sequence; received-order fallback does not claim unavailable tap order. Weekly later reuses the interface per service without mandatory per-service gates.
+Stage-6 review checks: native Date + Service choice derives the full name; existing target contents appear before Overwrite/Add to/Cancel; Edit proposal supports only repeated Name/Date/Order edits and returns to a refreshed proposal; Add preview preserves existing order, Replace/new uses the approved sequence; received-order fallback does not claim unavailable tap order. Weekly later reuses the interface per service without mandatory per-service gates.
 
 ## Stage 7 — Weekly preview
 
@@ -171,7 +177,7 @@ Stage-6 review checks: native Date + Service choice derives the full name; exist
 
 **Development work:** Submit the approved plans through the same assembly path, checkpoint between services, and aggregate unchanged/created/updated/partial/pending/failed/unconfirmed results. Known unresolved pieces must not prevent available music or independent services from processing. Distinguish validation issues that return a result from native fatal errors that can stop the run.
 
-**Your checkpoint:** Approve a week with two usable services and one partial service. Verify no routine prompts during processing and one final report naming every unresolved occurrence and intended position. Rerun unchanged, then add music, remove a source file, change source positions and resolve the missing piece. Existing manual edits survive. Interrupt between services and within a write, then resume from actual readback. Check earlier services are not duplicated. If a native error halts the run, confirm durable progress and report recovery on relaunch rather than claim uninterrupted continuation.
+**Your checkpoint:** Approve a week with two usable services and one partial service. Verify no routine prompts during processing and one final report naming every unresolved occurrence and intended position. Rerun unchanged, then add music, remove a source file, change source positions and resolve the missing piece. Existing manual edits survive. Interrupt between services and within a write, then rerun through ordinary Overwrite/Add to/Cancel with actual readback. Check earlier services are not duplicated. If a native error halts the run, confirm durable progress and report the ordinary rerun outcome rather than claim uninterrupted continuation.
 
 **Advance when:** Batch behavior and resume are confirmed, including an honest account of action failures the runtime cannot catch.
 
