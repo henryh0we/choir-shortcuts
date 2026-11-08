@@ -17,7 +17,7 @@ Stage 2A implements filename parsing and recurring-schedule preview only. The ea
 | V3 - Parse Filename | [v3-parse-filename.jelly](../shortcuts/reusable/v3-parse-filename.jelly) | None | 2.0 |
 | V3 - Preview Filenames | [v3-preview-filenames.jelly](../shortcuts/main/v3-preview-filenames.jelly) | V3 - Parse Filename 2.0 | 3.0 |
 
-Planned names, not yet implemented: `V3 - Create Service`, `V3 - Weekly`, `V3 - Assemble Service`, and `V3 - Archive PDF`. Only add further installed helpers when reuse warrants them. V3 - Create Service is the new Share Sheet title; this supersedes the earlier unprefixed title. There is no implicit naming/archive dependency on `UTIL - ...`, `MAIN - ...`, `2-util-...` or any TEST shortcut.
+Planned names, not yet implemented: `V3 - Create Service`, `V3 - Weekly`, `V3 - Assemble Service`, `V3 - Archive PDF`, and `V3 - Resolve Composer`. Only add further installed helpers when reuse warrants them. V3 - Create Service is the new Share Sheet title; this supersedes the earlier unprefixed title. There is no implicit naming/archive dependency on `UTIL - ...`, `MAIN - ...`, `2-util-...` or any TEST shortcut.
 
 ## Configuration ownership
 
@@ -120,6 +120,20 @@ The earlier listing contained ExtraServices event folders such as Fri9Oct,11am-C
 5. Defer RSC collection parsing and historical event-folder expansion unless needed by an authorised entry-point increment. Initial release still consists of Weekly and Specific service; mass import remains deferred.
 
 Open questions: meaning of folder letters and AP/CJR; which collection names are true aliases; exact out-of-range weekday conflict handling; further folder formats at month/year boundaries. No answers are assumed from this listing. Current service-prefix source/config stays unchanged: the new findings primarily affect dates, ordering, scope and later metadata resolution.
+
+## Piece metadata requirement (8 November 2026)
+
+The initial V3 release must save human-readable Title, Composer where known, and music Type in forScore. Type maps to native Genre; for example internal psalm -> configured Psalms archive folder/Genre. Keep spelling/singular-plural aliases in one shared mapping. Service type remains setlist context. See the [full metadata policy, record and acceptance criteria](../../nextcloud-forscore-plan-v3.md#piece-metadata-in-forscore).
+
+Preflight reviews new/uncertain metadata once per distinct piece before the run's single confirmation. Preserve approved decisions in a new V3 piece-metadata record, shared across service occurrences; no routine metadata prompts during execution. New Scores get approved metadata. Reused Scores preserve manual values by default, with explicit per-field correction only. Unknown Composer stays unassigned/pending; an unresolved required archive category leaves the occurrence unresolved while independent music continues.
+
+Do not confuse display Title with canonical identity. Establish native Rename/title/filename behavior and a verified Score association before applying title edits, so later reruns do not import duplicates. Native IDs, target resolution, write/readback and Composer/Genre reuse remain V3 integrated-check requirements. No metadata-writing source or config keys are implemented by this planning update; current previews remain read-only.
+
+### Planned native Composer resolver
+
+**V3 - Resolve Composer** takes one approved composer-name Text and returns one native forScore Composer object: reuse an unambiguous existing item, otherwise create and return it. Blank/ambiguous input yields no usable Composer; truly unknown authorship remains pending rather than creating a placeholder. It never assigns metadata to Scores/Bookmarks; assembly consumes its result through Add metadata after confirmation.
+
+The [full utility contract](../../nextcloud-forscore-plan-v3.md#shared-utility-v3---resolve-composer) covers whitespace, duplicates, unconfirmed creation/retry and native action checks. Native object return/transport and standalone creation remain unverified. Implement this utility before wiring assembly's Composer assignment, and install it before any caller that requires it. It is planned, not an additional dependency of the current filename preview.
 
 ## Next contracts and implementation boundaries
 

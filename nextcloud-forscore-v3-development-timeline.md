@@ -99,6 +99,16 @@ Move unresolved category/title/composer choices into preflight, reuse saved deci
 
 **Advance when:** The actual transport and preparation paths work in this integrated context. Keep any native additions documented with adjacent stable ADD/RECONNECT/CHECK source comments. If native transport fails, change that boundary and retest it rather than stringify Files.
 
+### Stage 3 Composer utility dependency
+
+Implement and verify **V3 - Resolve Composer** before assembly Composer assignment. Input is an approved name Text; output is the native existing/new Composer object. Check standalone create without Score/Bookmark attachment, unique lookup, native return consumption, blank/ambiguous names, repeat calls and retry after unconfirmed creation. It must not fabricate unknown authorship or create objects during preflight. See the [utility contract](nextcloud-forscore-plan-v3.md#shared-utility-v3---resolve-composer). Current preview shortcuts have no new dependency.
+
+### Stage 3 metadata requirement
+
+Title, Composer and music Type are initial-release requirements. Type maps to forScore Genre using the shared archive/category mapping. See the [metadata plan](nextcloud-forscore-plan-v3.md#piece-metadata-in-forscore). Add the V3 piece-record contract and preflight metadata review to this stage, without routine execution-time prompts or legacy dependencies.
+
+**Additional iPad checkpoint:** Prepare a new test Score with reviewed title/composer/type and inspect those actual values in forScore. Reuse it in another service and rerun: no duplicate Score/Composer/Genre, repeated review prompt or overwrite of manual edits. Test unknown Composer as pending, a required unknown category as unresolved, and an explicit per-field correction. Before enabling Title edits, establish whether native Rename changes filename as well, verify the saved Score association still resolves the same annotated Score after editing its title, and inspect supported metadata readback. Any unavailable readback remains unconfirmed, not a pass. The clean archived PDF must remain unchanged.
+
 ## Stage 4 — create a new service and its record
 
 **Development work:** Create an unused target, add available occurrences individually in requested order and read back Manual order. Drive the write loop from occurrence records, not an assumed repeated-File/Score collection. Confirm deliberate repetitions are allowed. Persist the target association and verified occurrence mappings; keep pending intent before writes so a crash does not erase what was attempted.

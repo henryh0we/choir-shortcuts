@@ -13,6 +13,8 @@ and [manual checkpoint](../tests/v3/README.md). No local builds or tests are run
 under the user's current instructions. Names are exact Copyover targets; no
 rename of an old installed Shortcut is needed. The inventory below is legacy.
 
+Planned metadata utility, not yet implemented or installed: **V3 - Resolve Composer**. It will accept one approved name Text and return a native Composer by lookup or creation. Install/verify it before the future V3 assembly caller; current filename previews do not call it. See the [contract](../../nextcloud-forscore-plan-v3.md#shared-utility-v3---resolve-composer).
+
 4 November 2026: optional independent [generation test groups](../tests/ipad-investigation/generation-groups.md)
 are available. The checklist owns exact installed TEST names, inputs and
 dependencies. G3 Exit Echo/Context receivers install before their three callers;

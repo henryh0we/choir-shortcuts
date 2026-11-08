@@ -244,6 +244,78 @@ Configuration should cover source/archive locations, filename-prefix parsing, se
 
 Retain the existing metadata direction: archive music category becomes Genre for first-time imports; service type does not become permanent piece Tags or Labels. Existing archive and score reuse policies should be shared by all entry points.
 
+## Piece metadata in forScore
+
+Title, Composer and music Type are part of the initial release, shared by Weekly and Specific service. Metadata belongs to the reusable piece/score, not to one service occurrence. Service names, dates and service types such as Evensong or Eucharist remain setlist context.
+
+| Piece information | forScore destination | Policy |
+| --- | --- | --- |
+| Title | Score Title, using the native title/rename capability once its exact behavior is checked | Human-readable work/movement name; retain edition, voice, key and other distinguishing details. Keep the canonical source reference separately. |
+| Composer | Native Composer metadata | Reuse an unambiguous existing Composer object or create an approved one, then assign it to the exact Score. Do not infer full names, authorship or hymn composers from numbers/surnames alone. |
+| Type | Native Genre metadata | Use one configured primary music category, such as Psalms, Hymns, Canticles, Anthems, Gloria, SanctusBenedictus, AgnusDei or Kyrie. Archive category and forScore Genre must follow the same approved mapping. |
+
+Use stable internal type keys with configured display, archive-folder and Genre names. For example, key psalm may display Psalm while mapping to existing Psalms folder/Genre. Do not create both Psalm and Psalms, or Anthem and Anthems, simply because callers use different wording. Additional categories can be added centrally. Service type must not become a permanent piece Genre, Tag or Label.
+
+### Resolve and review before execution
+
+1. Resolve the piece and intended existing/new Score using its full canonical identity, independently of editable Title. First preserve existing forScore metadata; an explicit current-run user correction takes precedence only for its approved fields. Saved approved piece decisions provide defaults for new/missing fields, then supported filename/category inference provides suggestions. Conflicts and ambiguous matches require review rather than silent overwrite.
+2. Derive suggestions using explicit reference rules before generic composer/title splitting: NEH/AMR/OH identifiers, psalms and verse ranges, movements such as Gloria/Kyrie, then supported composer-work conventions. Preserve the original payload and qualifiers. A generic trailing number/token is not proof of a composer, category or edition meaning.
+3. Include a metadata review section in preflight: piece, suggested Title, Composer, Type, source of each suggestion, unresolved/conflicting fields and intended changes. Let the user adjust new or uncertain values before the single run confirmation. Do not ask routine metadata questions while approved services are being processed. Review each distinct piece once per run, even if several services use it.
+4. If Composer is unknown, leave it unassigned and report metadata pending; do not fabricate a value or block otherwise usable music. A readable Title can initially fall back to the full canonical payload. A required archive Type must be approved or resolved from a verified category before archive/import; otherwise leave that occurrence unresolved and continue independent usable music.
+5. After confirmation, archive the unchanged clean PDF, reuse/import its working Score, and apply approved Title/Composer/Genre to a new Score. Existing Scores retain existing metadata by default; later corrections need an explicit per-field approved change. Do not remove unrelated Composer/Genre assignments or replace annotated Scores as a metadata update strategy.
+6. Verify the exact target and the written fields using supported native readback where available. If a field cannot be read back reliably, mark its assignment unconfirmed and include an iPad inspection step; continuing past an action alone is not proof of a metadata write.
+7. Persist approved piece-level decisions and their provenance/status in the V3 piece record. Reruns reuse those decisions without repeating questions, while preserving later forScore manual edits. Saved metadata does not prove current forScore contents or supersede those edits silently.
+
+### Shared utility: V3 - Resolve Composer
+
+Add an independently installed V3 utility used by shared assembly whenever an approved composer name needs a native forScore Composer object. Both Weekly and Specific service use this same path through assembly. This utility is part of the initial-release design, not a legacy dependency.
+
+| Contract | Required behavior |
+| --- | --- |
+| Exact installed name | V3 - Resolve Composer |
+| Input | Exactly one nonblank Text composer name, already approved/resolved by its caller. Direct use with supplied input follows the same rules. No interactive name prompt. |
+| Success output | Exactly one native forScore Composer object, suitable for the Composers field of Add metadata. Never return the name Text as if it were that object. |
+| Controlled unresolved result | No Composer value on blank/invalid input or ambiguous lookup; caller records composer metadata pending. Exact native empty-return wiring remains an implementation/device check. Native action failures can abort instead of returning. |
+| Side effects | Create a Composer only when lookup establishes no existing match. Do not attach it to a Score/Bookmark, rename composers, merge entries or alter unrelated metadata. |
+| Dependencies | forScore native lookup/create capabilities; no other installed shortcut dependency is currently required. |
+
+Required flow:
+
+1. Trim leading/trailing whitespace; reject empty input before lookup/creation. Do not guess full names, expand initials, remove accents/punctuation or apply surname aliases here. Preflight/shared approved mappings resolve spelling and identity before calling.
+2. Look up the supplied name in the intended forScore context, with Continue if not found enabled where supported. Establish actual exact-match and zero/one/multiple behavior during integrated construction. Do not assume a first lookup result is unique or that a loose match is the intended person.
+3. One unambiguous approved-name match: return that native Composer object unchanged.
+4. No matches: create a Composer using that approved name, with Scores and Bookmarks unset. Return its native Composer output if supported and verified. If creation supplies no usable Composer output, re-query the same name and return only a unique verified result; do not run creation a second time just because its output was empty.
+5. Multiple/ambiguous matches: do not create another item, choose the first, merge entries or prompt mid-run. Return no usable Composer; assembly reports pending resolution. Complete independent music where runtime control allows.
+6. On retry, always look up again before creating, including after interrupted/unconfirmed creation. A failed/uncertain action is not proof that nothing was created. Concurrent-run uniqueness is not assumed; avoid overlapping creation attempts.
+
+Assembly passes the returned native Composer to Add metadata for its exact verified Score only after the run's approval. Reuse the same resolved object for repeated occurrences/names within the run where native caching is verified; no native Composer serialization in saved records. The utility may be called once per distinct approved name per run, not once per occurrence. Persist the approved name/reference, not the live object, for subsequent runs.
+
+A genuinely unknown composer remains unassigned/pending and is not sent to this utility as a fabricated name. A known composer absent from forScore is created by this utility. The resolver is not an author-identification service and does not infer a composer from hymn numbers or unclear filenames.
+
+Native action research confirms lookup with Continue if not found and Create composer with optional Scores/Bookmarks fields. Standalone creation with those fields empty, lookup ambiguity, native Composer return, caller transport and Add metadata consumption still require device evidence. Do not invent Jelly forScore bindings or assume the older create-and-assign-to-Score path proves this utility's standalone return contract.
+
+Acceptance during the stage-3 metadata increment: existing approved name returns the existing Composer; new approved name creates one item and returns a usable Composer; repeated/trimmed-name calls reuse it; blank input creates nothing; ambiguous matches create nothing; an interrupted/unconfirmed create is retried by lookup; and the returned object can actually be assigned to the intended test Score without touching another Score/Bookmark. Creation occurs only after confirmation, never while merely previewing metadata.
+
+### Canonical identity and persistence
+
+Introduce a small V3 piece-metadata record keyed by the full canonical piece reference, separate from service records and occurrence positions. Proposed fields: record/schema version, canonical reference, source references, approved title, composer reference/display name, type key, relevant qualifiers, provenance/review status per field, verified Score locator where available, last applied/verified values and pending issues. Store serializable references, not native Score/Composer/Genre objects or access tokens. Shared plans reference this piece record; A/B/A still means three occurrences and two piece records.
+
+forScore title changes must not break score reuse. The existing research has not established whether native Rename changes Title, filename or both, nor a reliable persistent Score identifier. During assembly construction, establish that behavior and store a usable target association before enabling title edits. Never depend only on the edited human-readable Title for identity or treat a failed old-name lookup as permission to import a duplicate. Ambiguous/unavailable target resolution is pending work. Canonical archive PDFs remain unchanged by score metadata edits.
+
+### Initial metadata examples
+
+These are review suggestions, not validated authorship/catalogue data:
+
+| Canonical reference | Suggested Title | Composer proposal | Type proposal |
+| --- | --- | --- | --- |
+| Rose-Responses(SATTB) | Responses (SATTB) | Rose; expand only through an approved mapping | Responses |
+| Sumsion-InG | In G, retaining more work detail when known | Sumsion; approved mapping if available | Canticles, subject to review because key alone does not establish work/type |
+| NEH485-ThyHandOGodHasGuided | NEH 485 - Thy Hand, O God, Has Guided; user-reviewed spacing | Unknown unless supplied/approved; NEH485 is not a composer | Hymns |
+| Ps119vv49-64 | Psalm 119, verses 49-64 | Unknown unless supplied/approved | Psalms |
+| Mozart-Spatzenmesse-Gloria | Spatzenmesse - Gloria | Mozart; approved mapping if available | Gloria |
+
+Implement metadata preparation and persistence in the new V3 shared assembly path, not as a legacy-shortcut dependency. Native Composer/Genre action fields have recorded research, but the V3 writes, title/filename semantics, lookup persistence and readback still need integrated manual iPad acceptance. Current filename-preview sources do not yet edit metadata.
+
 ## Source delivery
 
 Maintain `.jelly` only for Shortcut source and use Copyover for transfer. Do not create `.txt` duplicates. Keep historical unique fixtures as `.jelly` variants, and preserve existing immutable build evidence.
@@ -284,6 +356,9 @@ Do not require another broad round of isolated probes before proceeding. Use foc
 - Future mass import will report invalid rows by service and row while processing valid independent services; it is not an initial-release acceptance requirement.
 - An interrupted run can resume by reconciling actual setlist contents.
 - V3 has its own installed namespace, configuration and contracts, with no legacy shortcut dependencies.
+- First-time imports receive approved Title, Composer where known, and Type as Genre. Verify actual forScore values and target identity; unknown Composer is metadata pending, not an invented value.
+- Reusing a piece across services or rerunning does not duplicate Composer/Genre objects, repeat approved metadata questions, overwrite manual metadata or import another Score after a Title change.
+- Explicit metadata corrections affect only approved fields on the verified Score, preserve annotations and other assignments, and leave the clean archive PDF unchanged.
 
 ## Decisions to expand next
 
