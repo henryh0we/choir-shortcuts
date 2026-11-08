@@ -1,6 +1,8 @@
 # V3 first manual iPad checkpoint — filenames
 
-Next source delivery: [Stage 2B dated/grouped/ordered service preview](stage-2b-services.md). Revision 1 crashed in editor loading and at Compile Jelly Text; revision 2 splits the workflow into smaller installed helpers and has no successful device result yet. Start with its renderer-only compilation checkpoint. Working filename shortcuts are unchanged; the evidence below remains the Stage 2A record.
+Next source delivery: [Stage 2B dated/grouped/ordered service preview](stage-2b-services.md). Revision 1 crashed in editor loading and at Compile Jelly Text; revision 2's split sources now load correctly by user report. Follow the native setup checklist before integrated runtime. Working filename shortcuts are unchanged; the evidence below remains the Stage 2A record.
+
+Latest Stage 2B report, 8 November: all newly supplied split shortcuts load correctly by user confirmation. Native setup and integrated runtime are not yet reported. Use the [rewritten per-shortcut setup checklist](stage-2b-services.md#what-to-change-now), which supersedes the earlier renderer-only next step. It identifies three total placeholder replacements and the existing settings/connections to inspect. No source/config replacement is needed for this documentation update.
 
 Status: **The current filename-preview checkpoint has reported passes for its working paths, report cleanup, saved config, Thursday aliases, conflicting rules and wrong config version. Normal config is restored.** Ready to begin the date/order increment; unknown-prefix/non-PDF results and broader matrix cases remain unconfirmed rather than implied passes. No local compilation or automated/runtime tests were performed. [Contracts and known limits](../../docs/v3-development.md) apply.
 

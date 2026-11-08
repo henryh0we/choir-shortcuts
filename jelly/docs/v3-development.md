@@ -14,6 +14,8 @@ Worked design examples: [V3 workflow walkthroughs](v3-workflow-walkthroughs.md),
 
 ## Current delivery
 
+8 November follow-up: the user confirms all newly supplied Stage 2B split shortcuts load correctly. This is loading evidence only; exact compilation/import actions and runtime are not separately established. Next is the [per-shortcut native setup checklist](../tests/v3/stage-2b-services.md#what-to-change-now): three placeholder replacements plus existing action settings/connections. No source/config update is needed for this guide clarification.
+
 Stage 2A's filename parser/preview remain available. Stage 2B now adds supported folder dates, date/slot grouping, numeric ordering, duplicate-position diagnostics and separate saved folder-date context. No music/forScore writes or executable service plan are present. The new sources are source-reviewed only. Dated schedule overrides and complete Stage 2 acceptance remain future work; exact native boundaries require the linked manual checkpoint.
 
 | Exact installed name | Source | Dependency | Interface |
