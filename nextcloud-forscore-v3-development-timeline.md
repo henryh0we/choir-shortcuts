@@ -10,6 +10,8 @@ I will review source, contracts, callers, documented signatures and recorded res
 
 V3 is a ground-up creation under **V3 - ...** installed names. It has no legacy shortcut dependencies, compatibility adapters or backup prerequisite. Reuse research only. This user direction supersedes the earlier migration approach.
 
+Current stage-2A return correction: [revision-3 history review and output resolution](jelly/docs/v3-output-resolution.md). It replaces the rejected manual-stop proposal with guarded processing and natural completion. Install both revision-3/interface-2.0 shortcuts together; no manual stop blocks are required. Compilation and caller-result behavior remain unverified.
+
 ## Sequence at a glance
 
 These are development/test cycles, not calendar commitments. A failed checkpoint adds a repair cycle to its stage. Some stages deliberately have two checkpoints so a failure does not require debugging the entire workflow.

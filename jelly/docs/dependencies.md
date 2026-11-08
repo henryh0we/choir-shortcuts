@@ -4,10 +4,10 @@
 
 V3 is independent of every legacy Shortcut below. Install only:
 
-1. **V3 - Parse Filename**, [source](../shortcuts/reusable/v3-parse-filename.jelly), interface 1.0, no installed dependencies.
-2. **V3 - Preview Filenames**, [source](../shortcuts/main/v3-preview-filenames.jelly), interface 1.0, calls V3 - Parse Filename 1.0.
+1. **V3 - Parse Filename**, [source](../shortcuts/reusable/v3-parse-filename.jelly), interface 2.0, no installed dependencies.
+2. **V3 - Preview Filenames**, [source](../shortcuts/main/v3-preview-filenames.jelly), interface 2.0, calls V3 - Parse Filename 2.0.
 
-Both are drafted only, not compiled/imported/tested. Use the separate
+Current sources are revision 3 and remain uncompiled/untested. They use normal completion, with no manual stop blocks; see [output resolution](v3-output-resolution.md). Revision 1 has a reported Notes-action generation failure. Use the separate
 [v3 config](../config/v3-config.example.json), [contracts](v3-development.md)
 and [manual checkpoint](../tests/v3/README.md). No local builds or tests are run
 under the user's current instructions. Names are exact Copyover targets; no

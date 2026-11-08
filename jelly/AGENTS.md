@@ -12,6 +12,14 @@ The user explicitly prohibits running code/builds/tests to establish correctness
 use source review and provide manual iPad compilation/inspection/runtime checks.
 Do not run the usual local compiler checks for this V3 work or claim a pass.
 
+Current V3 device report: Jelly output calls generated Move Notes to Folder.
+Do not use output or exit as generated V3 returns until exact new evidence
+supersedes this. The user rejects bulk manual stop insertion. Revision 3 uses
+named error state, guarded processing and a final native value-producing action
+on natural completion; see docs/v3-output-resolution.md. Check caller returns
+on iPad; do not claim this boundary is already verified. No native stop slots
+are required by this V3 design.
+
 ## Source delivery policy (7 November 2026)
 
 Use `.jelly` only for Shortcut source. Copyover is the current transfer workflow. Do not create or regenerate `.txt` source twins. Historical text-only diagnostics are preserved as distinct `.jelly` fixtures with their original bytes; unrelated reference text and diagnostic logs remain text. Old immutable exchange bundles remain unchanged and readable. The optional pipeline now prepares a single `source.jelly` snapshot.

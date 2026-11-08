@@ -1,6 +1,18 @@
 # V3 first manual iPad checkpoint — filenames
 
-Status: **Not run** for both new shortcuts. No local compilation or automated/runtime tests were performed. [Contracts and known limits](../../docs/v3-development.md) apply.
+Status: **First runtime attempt blocked by unexpected Notes UI, by user report.** No local compilation or automated/runtime tests were performed. [Contracts and known limits](../../docs/v3-development.md) apply.
+
+## Current delivery: revision 3, no manual stop blocks
+
+The user identified the revision-1 output calls as Move Notes to Folder. Revision 2's bulk native-stop proposal was rejected. **Do not add its 27 blocks.** Revision 3 uses error-state gates and normal completion with a final Dictionary/Text action. Read the [history review and focused checkpoint](../../docs/v3-output-resolution.md).
+
+Install both revision-3 sources together: parser interface 2.0 and preview interface 2.0. Parser schemaVersion is now Text 2 and controlled failures return status=error in the same Dictionary shape. No generated output/exit calls or manual stop slots remain. This source-level solution has not been compiled or executed; first confirm the final Dictionary reaches the actual caller.
+
+## Reported first attempt: unexpected Notes selection
+
+The user selected the config, then a file named Fri1-Clucas-Responses. A Notes folder picker appeared, followed by a notes list with Cancel/Done. Selecting a note and Done opened it and immediately prompted for a Notes folder again. No filename report or successful parser result was reported. The user referred to Parse Filename, but the config/music pickers belong to Preview Filenames in source; actual installed names, Run Shortcut target, source revisions, generated actions, versions and repair history remain unconfirmed.
+
+Neither V3 source intentionally calls Notes. The follow-up identifies output-to-Move-Notes generation as the failing boundary; its internal compiler cause remains unknown. Repeated prompts do not establish recursion or an infinite loop. Keep this failed observation separate from any later repair/pass; the matrix below remains unverified.
 
 ## Install this delivery
 
@@ -17,10 +29,12 @@ These sources each begin with the exact installed name for Copyover. No `.txt` s
 - Rule Repeat: Dictionary key reads from its Repeat Item; Match Text uses that rule's pattern. Inside its match If, **Add to Variable** appends ruleKey to named matchedRuleKeys. Following Count uses the current named collection. Keep its Nothing initializer.
 - Operators: missing value means **does not have any value**; present means **has any value**. Counts are converted to Text and compared to quoted 0/1/2. Inspect the actual native operators and both operands.
 - Regex Replace actions: replacement fields are literal `$1`, `$2`, `$3`; input and find fields are actual filenameStem/selectedPattern tokens. The suffix lowercase action must say lowercase; its input is capture 1, while the readable name keeps its original case.
-- Result chain: each Set Dictionary Value consumes the previous result Dictionary and real Text tokens. The last action must return the final Dictionary. The documented `exit(var: finalResult)` return is unverified here; if needed insert native Stop and Output with **finalResult**, no-recipient behavior Do Nothing. Record that as a repair, not generated success.
-- Preview: Name and File Extension read the current selected native File; File Extension must be the real detail, not a literal word or wrong default. Run Shortcut returns the helper result; key reads use that result. Quick Look and final Output must read current named report after the Repeat, not its initial heading.
+- Result chain: each Set Dictionary Value consumes the previous Dictionary and actual Text tokens. The final Get Dictionary consumes finalResult and is the last executable action outside all If/Repeat blocks. Caller must receive schemaVersion 2 and status/reason. No manual return action is required.
+- Preview: Name and File Extension read the current selected native File; File Extension must be the real detail, not a literal word or wrong default. Run Shortcut returns the helper result; key reads use that result. Quick Look and final Get Text must read current named report after the Repeat, not its initial heading.
 
-If one of these is wrong, record the untouched export before editing. Native completions/reconnections have stable `V3-...` comments at the relevant source actions.
+If one of these is wrong, record the untouched export before editing. Generation inspection points have stable `V3-...` comments at the relevant source actions.
+
+First use the focused Fri1-Clucas-Responses and invalid-config checks in the [output resolution](../../docs/v3-output-resolution.md#manual-ipad-check-without-inserting-blocks). In particular, verify runState gates later phases after an error and every cross-phase consumer reads its current named variable. The broader checks below remain pending.
 
 ## Run the smallest useful case
 
@@ -66,9 +80,9 @@ Then edit only a **disposable copy** of the config and select that copy:
 | --- | --- |
 | Helper compilation and generated-action inspection | Not run |
 | Preview compilation and target/List inspection | Not run |
-| One-file parser call and native Dictionary return | Not run |
+| One-file parser call and native Dictionary return, revision 3 | Not run |
 | Filename/schedule matrix and qualifier preservation | Not run |
 | Config-only format change, exclusions and overlap | Not run |
 | Invalid config and cancellation | Not run |
 
-Send back the source revision (both currently 1), actual installed names, app versions, first error if any, native repairs and actual preview rows. Distinguish untouched-source success from success after a native repair. Please also supply one or two actual week-folder names for the next date-parsing increment; dates are deliberately absent here.
+Send back the source revision (both currently 3), actual installed names, app versions, first error if any, any unexpected generated actions and actual preview rows. No bulk manual stop completion is part of revision 3. Please also supply one or two actual week-folder names for the next date-parsing increment; dates are deliberately absent here.

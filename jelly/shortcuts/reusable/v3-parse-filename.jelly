@@ -1,14 +1,42 @@
-// V3 - Parse Filename | Purpose/role: Shared read-only filename parser | Specification revision: 1; interface 1.0 | Contract: List of filename Text and v3 config JSON Text; native result Dictionary or ERROR Text; no prompts or writes | Dependencies: None | Stage: Drafted, not compiled or run; docs/v3-development.md and tests/v3/README.md
+// V3 - Parse Filename | Purpose/role: Shared read-only filename parser | Specification revision: 3; interface 2.0 | Contract: Two Text List items filename/config JSON; one native Dictionary including error status; no prompts or writes | Dependencies: None | Stage: Source reviewed only; natural completion requires iPad check; docs/v3-output-resolution.md
 import Shortcuts
 
-// SETTINGS / FORMATTING: Rules come only from the supplied snapshot of v3-config.json; edit filenameFormats and weeklySchedule there. This helper does not load legacy config or call legacy shortcuts. Capture groups 1/2/3 are prefix-or-suffix/position/payload. Reserved date/override settings are not applied in this filename-only increment.
+// SETTINGS / FORMATTING: Supplied v3-config.json snapshot owns filenameFormats and weeklySchedule. Dates/overrides remain outside this increment. There are no generated stop/return bindings or manual completion slots: runState gates processing and the final Get Dictionary supplies the result on normal completion.
+nothing() >> emptyContext
+var config = emptyContext
+var formats = emptyContext
+var schedule = emptyContext
+var rules = emptyContext
+var extensionPattern = emptyContext
+var filenameStem = emptyContext
+var configuredDay = emptyContext
+var configuredSlot = emptyContext
+var runState = "ready"
+var errorMessage = ""
+var filename = ""
+var configJson = ""
+var status = "unresolved"
+var reason = "No configured filename rule matched. No service was guessed."
+var dayKey = ""
+var slotKey = ""
+var serviceName = ""
+var position = ""
+var canonicalName = ""
+var resultRuleKey = ""
+var selectedRuleKey = ""
+var selectedPattern = ""
+var selectedDay = ""
+var selectedSlot = ""
+var selectedSpecial = ""
+nothing() >> emptyMatches
+var matchedRuleKeys = emptyMatches
 count(type: Items, input: ShortcutInput) >> argumentCount
 text(text: "${argumentCount}") >> argumentCountText
 if(argumentCountText != "2") {
-output("ERROR: V3 - Parse Filename needs two Text items: filename and v3 config JSON.")
+runState = "error"
+errorMessage = "Supply two Text items: filename and v3 config JSON."
 }
-var filename = ""
-var configJson = ""
+if(runState == "ready") {
 repeatEach(ShortcutInput) {
 if(RepeatIndex == "1") {
 filename = RepeatItem
@@ -18,65 +46,90 @@ configJson = RepeatItem
 }
 }
 if(filename == nil) {
-output("ERROR: V3 filename is empty.")
+runState = "error"
+errorMessage = "V3 filename is empty."
 }
 if(configJson == nil) {
-output("ERROR: V3 config JSON is empty.")
+runState = "error"
+errorMessage = "V3 config JSON is empty."
 }
-getDictionaryFrom(input: configJson) >> config
+}
+if(runState == "ready") {
+getDictionaryFrom(input: configJson) >> configResult
+config = configResult
 valueFor(key: "version", dictionary: config) >> version
 text(text: "${version}") >> versionText
 if(versionText != "3") {
-output("ERROR: V3 requires its separate config version 3.")
+runState = "error"
+errorMessage = "V3 requires its separate config version 3."
 }
-valueFor(key: "filenameFormats", dictionary: config) >> formats
-valueFor(key: "weeklySchedule", dictionary: config) >> schedule
-valueFor(key: "rules", dictionary: formats) >> rules
-valueFor(key: "terminalExtensionPattern", dictionary: formats) >> extensionPattern
-valueFor(key: "caseSensitive", dictionary: formats) >> caseSetting
-if(rules == nil) {
-output("ERROR: V3 filenameFormats.rules is missing or empty.")
+}
+if(runState == "ready") {
+valueFor(key: "filenameFormats", dictionary: config) >> formatsResult
+formats = formatsResult
+valueFor(key: "weeklySchedule", dictionary: config) >> scheduleResult
+schedule = scheduleResult
+if(formats == nil) {
+runState = "error"
+errorMessage = "V3 filenameFormats is missing or empty."
 }
 if(schedule == nil) {
-output("ERROR: V3 weeklySchedule is missing or empty.")
+runState = "error"
+errorMessage = "V3 weeklySchedule is missing or empty."
+}
+}
+if(runState == "ready") {
+valueFor(key: "rules", dictionary: formats) >> rulesResult
+rules = rulesResult
+valueFor(key: "terminalExtensionPattern", dictionary: formats) >> extensionPatternResult
+extensionPattern = extensionPatternResult
+valueFor(key: "caseSensitive", dictionary: formats) >> caseSetting
+if(rules == nil) {
+runState = "error"
+errorMessage = "V3 filenameFormats.rules is missing or empty."
 }
 if(extensionPattern != "[.]pdf$") {
-output("ERROR: This V3 increment supports terminalExtensionPattern [.]pdf$ only.")
+runState = "error"
+errorMessage = "This increment supports terminalExtensionPattern [.]pdf$ only."
 }
 if(caseSetting != "off") {
-output("ERROR: This V3 increment requires filenameFormats.caseSensitive off.")
+runState = "error"
+errorMessage = "This increment requires filenameFormats.caseSensitive off."
 }
-replaceText(input: "${filename}", find: "${extensionPattern}", replace: "", isRegex: true, caseSensitive: false) >> filenameStem
-nothing() >> emptyMatches
-var matchedRuleKeys = emptyMatches
-var selectedRuleKey = ""
-var selectedPattern = ""
-var selectedDay = ""
-var selectedSlot = ""
-var selectedSpecial = ""
-// V3-PARSE-MATCH CHECK: Repeat input=rules List from config; each iteration reads its Dictionary. Add to Variable must append ruleKey Text to named matchedRuleKeys. Preserve emptyMatches initializer; following Count reads current matchedRuleKeys, not Nothing. No nested Repeat or numeric selector is used.
+}
+if(runState == "ready") {
+replaceText(input: "${filename}", find: "${extensionPattern}", replace: "", isRegex: true, caseSensitive: false) >> filenameStemResult
+filenameStem = filenameStemResult
+// V3-PARSE-RULES CHECK: Each Repeat reads rules; all dependent rule actions are gated by current named runState. Add ruleKey Text to current named matchedRuleKeys; keep emptyMatches initializer. No stop action is needed to skip later rules after an error.
 repeatEach(rules) {
+if(runState == "ready") {
 valueFor(key: "key", dictionary: RepeatItem) >> ruleKey
 valueFor(key: "pattern", dictionary: RepeatItem) >> rulePattern
 valueFor(key: "dayKey", dictionary: RepeatItem) >> ruleDay
 valueFor(key: "slotKey", dictionary: RepeatItem) >> ruleSlot
 valueFor(key: "special", dictionary: RepeatItem) >> ruleSpecial
 if(ruleKey == nil) {
-output("ERROR: A V3 filename rule has no key.")
+runState = "error"
+errorMessage = "A V3 filename rule has no key."
 }
 if(rulePattern == nil) {
-output("ERROR: V3 rule ${ruleKey} has no pattern.")
+runState = "error"
+errorMessage = "V3 rule ${ruleKey} has no pattern."
 }
 if(ruleDay == nil) {
-output("ERROR: V3 rule ${ruleKey} has no dayKey.")
+runState = "error"
+errorMessage = "V3 rule ${ruleKey} has no dayKey."
 }
 if(ruleSlot == nil) {
-output("ERROR: V3 rule ${ruleKey} has no slotKey.")
+runState = "error"
+errorMessage = "V3 rule ${ruleKey} has no slotKey."
 }
 matchText(text: "${ruleSpecial}", regex: "^(on|off)$", caseSensitive: true) >> validSpecialSetting
 if(validSpecialSetting == nil) {
-output("ERROR: V3 rule ${ruleKey} needs special on or off.")
+runState = "error"
+errorMessage = "V3 rule ${ruleKey} needs special on or off."
 }
+if(runState == "ready") {
 matchText(text: "${filenameStem}", regex: "${rulePattern}", caseSensitive: false) >> ruleMatch
 if(ruleMatch != nil) {
 var matchedRuleKeys += ruleKey
@@ -87,16 +140,12 @@ selectedSlot = ruleSlot
 selectedSpecial = ruleSpecial
 }
 }
+}
+}
+}
+if(runState == "ready") {
 count(type: Items, input: matchedRuleKeys) >> matchCount
 text(text: "${matchCount}") >> matchCountText
-var status = "unresolved"
-var reason = "No configured filename rule matched. No service was guessed."
-var dayKey = ""
-var slotKey = ""
-var serviceName = ""
-var position = ""
-var canonicalName = ""
-var resultRuleKey = ""
 if(matchCountText != "0") {
 reason = "Multiple configured rules matched. Resolve the conflict in v3-config.json."
 }
@@ -107,36 +156,60 @@ replaceText(input: "${filenameStem}", find: "${selectedPattern}", replace: "$3",
 matchText(text: "${parsedPosition}", regex: "^[1-9][0-9]*$", caseSensitive: true) >> validPosition
 matchText(text: "${parsedPayload}", regex: "[^[:space:]]", caseSensitive: true) >> usablePayload
 if(validPosition == nil) {
-output("ERROR: V3 rule ${selectedRuleKey} did not yield a positive position in capture group 2.")
+runState = "error"
+errorMessage = "V3 rule ${selectedRuleKey} did not yield a positive position in capture group 2."
 }
 if(usablePayload == nil) {
-output("ERROR: V3 rule ${selectedRuleKey} yielded an empty payload in capture group 3.")
+runState = "error"
+errorMessage = "V3 rule ${selectedRuleKey} yielded an empty payload in capture group 3."
 }
+if(runState == "ready") {
 dayKey = selectedDay
 slotKey = selectedSlot
 position = parsedPosition
 canonicalName = parsedPayload
 resultRuleKey = selectedRuleKey
-valueFor(key: "${dayKey}", dictionary: schedule) >> configuredDay
+valueFor(key: "${dayKey}", dictionary: schedule) >> configuredDayResult
+configuredDay = configuredDayResult
 if(configuredDay == nil) {
-output("ERROR: V3 rule ${selectedRuleKey} names a day missing from weeklySchedule.")
+runState = "error"
+errorMessage = "V3 rule ${selectedRuleKey} names a day missing from weeklySchedule."
 }
+}
+if(runState == "ready") {
 valueFor(key: "enabled", dictionary: configuredDay) >> dayEnabled
+matchText(text: "${dayEnabled}", regex: "^(on|off)$", caseSensitive: true) >> validDaySwitch
+if(validDaySwitch == nil) {
+runState = "error"
+errorMessage = "V3 day ${dayKey} needs enabled on or off."
+}
 if(selectedSpecial == "off") {
 valueFor(key: "slots", dictionary: configuredDay) >> configuredSlots
-valueFor(key: "${slotKey}", dictionary: configuredSlots) >> configuredSlot
-if(configuredSlot == nil) {
-output("ERROR: V3 rule ${selectedRuleKey} names an unconfigured regular slot.")
+if(configuredSlots == nil) {
+runState = "error"
+errorMessage = "V3 day ${dayKey} needs regular slots."
 }
+if(runState == "ready") {
+valueFor(key: "${slotKey}", dictionary: configuredSlots) >> configuredSlotResult
+configuredSlot = configuredSlotResult
+if(configuredSlot == nil) {
+runState = "error"
+errorMessage = "V3 rule ${selectedRuleKey} names an unconfigured regular slot."
+}
+}
+if(runState == "ready") {
 valueFor(key: "name", dictionary: configuredSlot) >> configuredName
 valueFor(key: "enabled", dictionary: configuredSlot) >> slotEnabled
 if(configuredName == nil) {
-output("ERROR: V3 slot ${slotKey} needs a name.")
+runState = "error"
+errorMessage = "V3 slot ${slotKey} needs a name."
 }
 matchText(text: "${slotEnabled}", regex: "^(on|off)$", caseSensitive: true) >> validSlotSwitch
 if(validSlotSwitch == nil) {
-output("ERROR: V3 slot ${slotKey} needs enabled on or off.")
+runState = "error"
+errorMessage = "V3 slot ${slotKey} needs enabled on or off."
 }
+if(runState == "ready") {
 serviceName = configuredName
 status = "parsed"
 reason = "Recognised regular service; filename position is not yet sorted or date-resolved."
@@ -145,29 +218,39 @@ status = "skipped"
 reason = "Service slot disabled by configuration."
 }
 }
+}
+}
+if(runState == "ready") {
 if(selectedSpecial == "on") {
-// V3-PARSE-CASE CHECK: Change Case input=prefixOrSuffix Text from capture 1; setting=lowercase. Lowercase output feeds specialSlotText; do not lowercase readable serviceName or canonical payload. Existing source uses this spelling; generation for this V3 revision remains unverified.
 changeCase(text: "${prefixOrSuffix}", case: lowercase) >> lowerSuffix
 text(text: "${selectedSlot}${lowerSuffix}") >> specialSlotText
 slotKey = specialSlotText
 serviceName = prefixOrSuffix
 status = "parsed"
-reason = "Recognised special suffix on a configured day; date overrides are not yet applied."
-}
-matchText(text: "${dayEnabled}", regex: "^(on|off)$", caseSensitive: true) >> validDaySwitch
-if(validDaySwitch == nil) {
-output("ERROR: V3 day ${dayKey} needs enabled on or off.")
+reason = "Recognised special suffix; date overrides are not yet applied."
 }
 if(dayEnabled == "off") {
 status = "skipped"
 reason = "Day disabled by configuration."
 }
 }
+}
+}
+}
+if(runState == "error") {
+status = "error"
+reason = errorMessage
+dayKey = ""
+slotKey = ""
+serviceName = ""
+position = ""
+canonicalName = ""
+resultRuleKey = ""
+}
 var resultTemplate = """
-{"schemaVersion":"1","status":"unresolved","sourceName":"","ruleKey":"","dayKey":"","serviceSlot":"","serviceName":"","position":"","canonicalName":"","reason":""}
+{"schemaVersion":"2","status":"unresolved","sourceName":"","ruleKey":"","dayKey":"","serviceSlot":"","serviceName":"","position":"","canonicalName":"","reason":""}
 """
 getDictionaryFrom(input: resultTemplate) >> resultBase
-// V3-PARSE-RESULT CHECK: Every Set Dictionary Value must preserve the preceding Dictionary and insert actual Text tokens. Do not interpolate dynamic names into JSON source. All fields, including position, are Text in interface 1.0; numeric sorting is a later responsibility.
 setValue(key: "status", value: "${status}", dictionary: resultBase) >> resultStatus
 setValue(key: "sourceName", value: "${filename}", dictionary: resultStatus) >> resultSource
 setValue(key: "ruleKey", value: "${resultRuleKey}", dictionary: resultSource) >> resultRule
@@ -177,5 +260,5 @@ setValue(key: "serviceName", value: "${serviceName}", dictionary: resultSlot) >>
 setValue(key: "position", value: "${position}", dictionary: resultService) >> resultPosition
 setValue(key: "canonicalName", value: "${canonicalName}", dictionary: resultPosition) >> resultCanonical
 setValue(key: "reason", value: "${reason}", dictionary: resultCanonical) >> finalResult
-// V3-PARSE-RETURN CHECK/RECONNECT: Exit Shortcut must return finalResult as one native Dictionary to V3 - Preview Filenames; input=finalResult output of last Set Dictionary Value, never sourceName or literal finalResult. No-recipient behavior=Do Nothing. This documented variable return is unverified on this app profile; inspect before execution and record any native replacement separately.
-exit(var: finalResult)
+// V3-PARSE-COMPLETION CHECK: Last executable action must be Get Dictionary from finalResult native Dictionary, outside all branches/loops. Natural completion supplies its result to the caller; no Stop/Output/Exit binding, manual slot, display or following action. Confirm the actual caller receives schemaVersion 2 plus status/reason on iPad.
+getDictionaryFrom(input: finalResult)

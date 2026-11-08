@@ -4,14 +4,16 @@
 
 Development sequence: [timeline](../../nextcloud-forscore-v3-development-timeline.md). Requirements: [v3 plan](../../nextcloud-forscore-plan-v3.md). Device instructions and results: [first checkpoint](../tests/v3/README.md).
 
+Current source delivery: **revision 3, interface 2.0**, with guarded processing and natural completion; no manual stop blocks. See the [commit-history review and output resolution](v3-output-resolution.md). Revision 1 generated unwanted Move Notes actions by user report. The untested revision-2 manual-slot proposal is retired.
+
 ## Current delivery
 
-**Stage 2A: filename parsing and recurring-schedule preview. Drafted only; not compiled, imported or executed.** No builds or tests were run, following the user's instruction. This is the first implementation slice, not a complete Weekly preview.
+**Stage 2A: filename parsing and recurring-schedule preview. First runtime attempt blocked by unexpected Notes folder/note selection, by user report; no successful filename result.** Exact installed source and generated actions are unconfirmed; see the [incident and next inspection](../tests/v3/README.md#reported-first-attempt-unexpected-notes-selection). No local builds or tests were run, following the user's instruction. This is the first implementation slice, not a complete Weekly preview.
 
 | Exact installed name | Source | Dependency | Interface |
 | --- | --- | --- | --- |
-| V3 - Parse Filename | [v3-parse-filename.jelly](../shortcuts/reusable/v3-parse-filename.jelly) | None | 1.0 |
-| V3 - Preview Filenames | [v3-preview-filenames.jelly](../shortcuts/main/v3-preview-filenames.jelly) | V3 - Parse Filename 1.0 | 1.0 |
+| V3 - Parse Filename | [v3-parse-filename.jelly](../shortcuts/reusable/v3-parse-filename.jelly) | None | 2.0 |
+| V3 - Preview Filenames | [v3-preview-filenames.jelly](../shortcuts/main/v3-preview-filenames.jelly) | V3 - Parse Filename 2.0 | 2.0 |
 
 Planned names, not yet implemented: `V3 - Create Service`, `V3 - Weekly`, `V3 - Assemble Service`, and `V3 - Archive PDF`. Only add further installed helpers when reuse warrants them. V3 - Create Service is the new Share Sheet title; this supersedes the earlier unprefixed title. There is no implicit naming/archive dependency on `UTIL - ...`, `MAIN - ...`, `2-util-...` or any TEST shortcut.
 
@@ -37,16 +39,16 @@ Initial defaults remain candidates for the user's real naming conventions: Sun =
 
 Config editing can add rules or change aliases/separators without modifying loops, provided the same capture contract is retained. Case-sensitive parsing and non-PDF terminal extension conventions are explicitly rejected by this increment. Date-specific exclusions cannot be evaluated before date resolution; this preview must not be treated as authorization to process a service.
 
-## V3 - Parse Filename interface 1.0
+## V3 - Parse Filename interface 2.0
 
-Input: exactly two **Text** List items, in order: filename and full v3 config JSON snapshot. This is intentional Text transport of configuration data only; it does not serialize native music Files. The helper is called without prompts. Direct launch with no input returns an explanatory ERROR Text.
+Input: exactly two **Text** List items, in order: filename and full v3 config JSON snapshot. This is intentional Text transport of configuration data only; it does not serialize native music Files. The helper is called without prompts. When its receiving settings allow missing input, direct launch returns a Dictionary with status=error and an explanatory reason. Native receiving rules may stop before source execution.
 
-Output on a valid config: one native Dictionary, built from a static JSON template plus Set Dictionary Value actions. All result values are **Text**, including numeric position and schemaVersion:
+Output on controlled success or validation failure: one native Dictionary, built from a static JSON template plus Set Dictionary Value actions. All result values are **Text**, including numeric position and schemaVersion:
 
 | Field | Meaning |
 | --- | --- |
-| schemaVersion | `1` |
-| status | `parsed`, `skipped` or `unresolved` |
+| schemaVersion | `2` |
+| status | `parsed`, `skipped`, `unresolved` or `error` |
 | sourceName | Original supplied name |
 | ruleKey | Unique matched rule; empty for unresolved match count |
 | dayKey | mon/tue/wed/thu/fri/sat/sun |
@@ -56,15 +58,15 @@ Output on a valid config: one native Dictionary, built from a static JSON templa
 | canonicalName | Full payload without prefix or terminal PDF extension |
 | reason | Explanation; explicitly states this is not date-resolved |
 
-Skipped rows keep their parsed identity/payload so exclusions can be explained. Unmatched/conflicting rows have empty parsed fields. Invalid input, unsupported config version/settings, incomplete rules or invalid extraction return `ERROR: ...` Text. A native JSON/regex/action failure may terminate without returning. This is focused validation, not a complete JSON schema validator; user-authored regex capture meanings still require inspection.
+Skipped rows keep their parsed identity/payload so exclusions can be explained. Unmatched/conflicting rows have empty parsed fields. Invalid input, unsupported config version/settings, incomplete rules or invalid extraction set status=error and reason, clear parsed fields, and skip dependent phases. There is no ERROR Text alternative return. A native JSON/regex/action failure may terminate without returning. This is focused validation, not a complete JSON schema validator; user-authored regex capture meanings still require inspection.
 
-Native Dictionary creation, dynamic Set Dictionary Value interpolation, lowercase generation and native Dictionary return are documentation/source-backed candidates, **not device-confirmed v3 behavior**. The first checkpoint deliberately exercises them in the real caller. Inspect the generated return and its caller before attributing success to the helper. If `exit(var: finalResult)` is rejected or wired incorrectly, replace only that boundary with native Stop and Output returning finalResult, and record the repair. Do not convert the result to interpolated Text to hide a transport failure.
+Native Dictionary creation, dynamic Set Dictionary Value interpolation, lowercase generation and the normal-completion Dictionary result remain unverified for this V3 revision. The helper ends with Get Dictionary from finalResult; the caller must receive that native Dictionary. No output/exit binding or manual native stop insertion is used. See the focused checkpoint before assuming the whole-shortcut result boundary works.
 
-## V3 - Preview Filenames interface 1.0
+## V3 - Preview Filenames interface 2.0
 
 Direct launch only; ignores incoming input. Shows a cancellable explanation, selects one config File and then multiple Files. It reads the config to Text once and reuses those same bytes for every helper call. JSON decoding inside the helper does not reload the file. It reads Name and File Extension directly from the original selection and never constructs a duplicate native File collection.
 
-Each PDF name is sent to the helper. Non-PDF extensions become unresolved report rows. ERROR Text from the helper aborts the preview; malformed configuration is a run-level problem. The report includes every processed file's status, day/slot, service name, position, canonical name and reason. Output is one report Text, also displayed in Quick Look. Picker cancellation may terminate natively without a final report; no handling of a native-abort exception is claimed.
+Each PDF name is sent to the helper. Non-PDF extensions become unresolved report rows. An error status from the helper sets the preview error state, preserves earlier report rows and skips later selections; invalid configuration is a run-level problem. The report includes every processed file's status, day/slot, service name, position, canonical name and reason. The final Get Text supplies report Text on natural completion, after Quick Look. This caller result path still requires device confirmation. Picker cancellation may terminate natively without a final report; no handling of a native-abort exception is claimed.
 
 Rows use provider order only. There is **no numeric sort, grouping, date, service ID, occurrence plan, native PDF type validation, archive write, score import, metadata edit, setlist lookup/write or persistent state** in this delivery. A preview status of parsed means only that this filename matched the recurring rules, not that a service is ready to execute.
 
@@ -83,6 +85,6 @@ The next delivery after this checkpoint will extend the shared parsing/config pa
 
 ## Source evidence used for this delivery
 
-The pinned local documentation supplies candidate signatures: [JSON decoding](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/getDictionaryFrom.md), [key reads](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/valueFor.md), [key writes](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/setValue.md), [regex match](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/matchText.md), [regex replacement](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/replaceText.md), [case conversion](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/changeCase.md), [File details](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/fileDetail.md), [Get Text](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/getTextFrom.md), [selection](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/selectFile.md), [List](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/list.md), [Run Shortcut](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/runShortcut.md), and [variable return](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/exit.md). Existing source uses lowercase; the documentation does not itself enumerate that case option, so its generated setting needs checking.
+The pinned local documentation supplies candidate signatures: [JSON decoding](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/getDictionaryFrom.md), [key reads](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/valueFor.md), [key writes](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/setValue.md), [regex match](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/matchText.md), [regex replacement](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/replaceText.md), [case conversion](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/changeCase.md), [File details](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/fileDetail.md), [Get Text](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/getTextFrom.md), [selection](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/selectFile.md), [List](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/list.md), [Run Shortcut](../vendor/jellycuts-docs/markdown/Documentation/Shortcuts/runShortcut.md). Existing source uses lowercase; the documentation does not itself enumerate that case option, so its generated setting needs checking.
 
 The [Text List evidence](../tests/compatibility/list-variable-transport.md) supports explicit interpolated Text tokens. [Quoted-index extraction](../tests/compatibility/name-item-extraction.md) and [recent generation results](../tests/ipad-investigation/generation-groups-results.md) support the selected candidate loop forms. None establishes compilation or execution of these new sources. No old helper is called to obtain their behavior.
