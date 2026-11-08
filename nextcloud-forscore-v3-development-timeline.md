@@ -45,7 +45,7 @@ The [latest investigation results](jelly/tests/ipad-investigation/generation-gro
 | Indexed File candidate failed on `type: Item at Index`; earlier selector spellings also failed | Do not use either failed selector as an established solution. Use supported source forms or explicit native completion slots. |
 | Text assignments, two-Text extraction and some File assignments have narrow reported passes | Reuse those forms without extending their evidence to mixed dictionaries, nested values, Score transport or complete helpers. |
 | G1C rejected equal counts; generated token/default/polarity defects occurred | Inspect actual operands and operators. Count equality never proves identity or sequence. |
-| Repaired installed assembly can create services and offers replace/skip; archive-category/Genre draft is not fully device-tested | Implement new components from this research. Replace/clear behavior is incompatible with v3; category transfer and unattended handling need integrated checkpoints. |
+| Repaired installed assembly can create services and offers replace/skip; archive-category/Genre draft is not fully device-tested | Implement new components from this research. Legacy automatic replacement is not the V3 default; explicitly chosen Replace contents is now part of the reviewed design and needs fresh native verification. Category transfer and unattended handling also need integrated checkpoints. |
 
 Native forScore availability does not establish a Jelly binding, reliable identifier, arbitrary insertion position or recoverable error handling. Those remain implementation questions.
 
@@ -121,7 +121,7 @@ Resolve existing targets during preflight. Show intended dates, target, sequence
 
 ## Stage 5 — additions-only updates and recovery
 
-**Development work:** Do not introduce clear/replace/reorder paths into V3 execution. Legacy installed behavior has no role in this implementation. Compare actual entries against requested occurrences and saved mappings. Match repeated occurrences one-to-one; do not reduce the request to unique scores.
+**Development work:** Implement Add to existing as the default plus an explicitly selected, confirmed Replace contents route under the [replacement policy](nextcloud-forscore-plan-v3.md#explicit-replacement-policy). Legacy installed behavior is research only, not a dependency. Add must never fall back to clear/rebuild when insertion is unavailable. Compare actual entries against requested occurrences and saved mappings. Match repeated occurrences one-to-one; do not reduce the request to unique scores.
 
 Proposed conflict policy: prefer verified saved occurrence-to-entry mappings; otherwise match unambiguously in existing relative order. If repeated identities or reversed anchors make placement ambiguous, leave the affected insertion unresolved. If native gap insertion is unavailable, leave it pending. Do not append it elsewhere or rebuild the list. Other unambiguous additions and services may proceed. Preserve source removals and all pre-existing entries, including manual extras. If a saved entry disappeared manually, flag the intent conflict rather than guessing whether to restore it.
 
@@ -145,6 +145,8 @@ Read actual contents immediately before applying the approved additions. If they
 
 **Advance when:** Gap insertion and preservation work using actual supported native actions, or the feature is explicitly blocked. An insertion limitation blocks the claim that v3 updates are complete; it does not justify weakening the policy. Other read-only construction can continue, but do not promote either entry point as v3-ready.
 
+Additional stage-5 replacement checks: show actual old/new contents; Cancel leaves music unchanged; incomplete/empty replacement preserves the old list; explicit complete replacement changes only that target's entries and preserves Scores/annotations; target changes reset mode to Add; interrupted replacement reconciles saved intent with actual entries without assumed rollback or blind clearing.
+
 ## Stage 6 — Specific service
 
 **Development work:** Build the Share Sheet entry around the tested shared path. Target the Share Sheet title **V3 - Create Service**; record its exact installed name and every caller before delivery. Direct launch offers a file picker; shared input uses the received native Files. Reject/report links or unsupported objects without pretending they are PDFs.
@@ -154,6 +156,8 @@ Keep all selections in one service. Infer date/slot from usable context or let t
 **Your checkpoint:** Share from Files and Nextcloud separately; include mixed service prefixes, duplicate positions, unprefixed music and an unsupported link. Check no second file selection, exactly one combined service, editable order and one confirmation. Test direct launch, cancellation, missing date/slot, targeting an existing service, a repeated piece and an explicitly approved disabled-slot exception. An unrelated entry point must not bypass exclusions.
 
 **Advance when:** Create, unchanged rerun and gap update work through the real Share Sheet path. Record support per provider and delivered input type; one provider's success does not establish all providers.
+
+Stage-6 review checks: native Date + Service choice derives the full name; existing target contents appear before Add/Replace/Cancel; Edit proposal supports repeated name/date/service/order/metadata edits and returns to a refreshed proposal; Add preview preserves existing order, Replace/new uses the approved sequence; received-order fallback does not claim unavailable tap order. Weekly later reuses the interface per service without mandatory per-service gates.
 
 ## Stage 7 — Weekly preview
 

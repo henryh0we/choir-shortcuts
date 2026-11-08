@@ -135,6 +135,14 @@ Do not confuse display Title with canonical identity. Establish native Rename/ti
 
 The [full utility contract](../../nextcloud-forscore-plan-v3.md#shared-utility-v3---resolve-composer) covers whitespace, duplicates, unconfirmed creation/retry and native action checks. Native object return/transport and standalone creation remain unverified. Implement this utility before wiring assembly's Composer assignment, and install it before any caller that requires it. It is planned, not an additional dependency of the current filename preview.
 
+## Target controls, proposal editing and explicit replacement (8 November 2026)
+
+User direction: Specific service selects Date with a native picker and Service with a configured Evensong/Eucharist/Mattins chooser, deriving the full name automatically. For an existing unique target, show actual contents then offer Add to existing / Replace contents / Cancel. The review screen offers Proceed / Edit proposal / Cancel; Edit contains Change Name, Change Date, Change Service, Change Order and music/metadata/mode options. Each edit returns to the regenerated proposal, allowing another edit without a mandatory sequence of prompts. Weekly offers these edits per selected service within its batch preview and retains one final confirmation.
+
+This explicitly supersedes the earlier universal no-replace policy. Add remains the default, preserving manual entries/order. Replace affects only the selected target's entries and requires a complete nonempty approved sequence; preserve Scores, annotations, archive PDFs and unrelated metadata/setlists. Incomplete replacement stays pending without clearing. Changing target resets mode to Add; explicit Replace is never persisted as an invisible default. Readback and interruption recovery differ by mode and require device checks.
+
+Prefer comparable numeric file positions; otherwise propose the received provider order. Actual tap order cannot be guaranteed without provider evidence. Change Order affects new/Replace sequences; Add must show the merged result while preserving existing relative order. Display-name overrides retain service identity; date/slot changes re-resolve identity/target. See the [full review/ordering/replacement policy](../../nextcloud-forscore-plan-v3.md#target-selection-and-proposal-editing-8-november-2026). This is design only: current filename preview/config still does not create services or replace entries.
+
 ## Next contracts and implementation boundaries
 
 These decisions guide the next increments but are not executable contracts yet:
@@ -143,7 +151,7 @@ These decisions guide the next increments but are not executable contracts yet:
 - Occurrences are separate from unique native PDF/Score objects: A/B/A remains three occurrence records and two pieces. Define durable occurrence matching before enabling reruns; picker order is not stable identity.
 - Entry points provide the same plan schema. Assembly owns native Score and Setlist objects. The concrete plan/context transport remains to be implemented and checked on the iPad; this Text-only parser input does not validate native mixed transport.
 - Preflight gathers essential context and unresolved work before one confirmation. No routine category/metadata prompts during approved batch execution. Unknown required details leave the occurrence unresolved.
-- Updates only add verified missing occurrences into supported gaps. No clear/replace path will be implemented. Unavailable insertion, conflicting anchors or ambiguous targets remain pending.
+- Default Add mode inserts verified missing occurrences into supported gaps while preserving old entries/order. Explicit per-service Replace contents is now authorised in the design, following the complete-sequence policy. Unavailable insertion, conflicting anchors or ambiguous targets remain pending; no silent replacement fallback.
 - Records under the separately configured V3 records location link service ID to a verified locator and progress. Native readback, not a record, decides what already exists after interruption. Persistent identifiers and insertion fields require actual native-action inspection during assembly construction.
 
 The next delivery after this checkpoint will extend the shared parsing/config path with actual week-folder date examples and numeric ordering, then connect the new supplied-plan assembly. No legacy adapter is needed.
