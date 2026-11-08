@@ -1,9 +1,7 @@
-// V3 - Preview Filenames | Purpose/role: Read-only V3 entry increment | Specification revision: 3; interface 2.0 | Contract: Direct launch; pick config/files; report Text by natural completion; input ignored; no music writes | Dependencies: V3 - Parse Filename interface 2.0 | Stage: Source reviewed only, not compiled or run; docs/v3-output-resolution.md
+// V3 - Preview Filenames | Purpose/role: Read-only V3 entry increment | Specification revision: 5; interface 3.0 | Contract: Direct launch; fixed config File set after import; pick music only; report Text by natural completion; input ignored; no music writes | Dependencies: V3 - Parse Filename interface 2.0 | Stage: Source reviewed only, not compiled or run; docs/v3-output-resolution.md
 import Shortcuts
 
-// SETTINGS / FORMATTING: Select the separate v3-config.json snapshot; filenameFormats and weeklySchedule own the rules. Dates/overrides/sorting remain unimplemented. No stop/return bindings or manual blocks are required: runState gates processing and final Get Text supplies the report on normal completion.
-nothing() >> emptySelectedFiles
-var selectedFiles = emptySelectedFiles
+// SETTINGS / FORMATTING: Set the native File at V3-CONFIG-FILE once after import to the separate v3-config.json. Each run reads that File without a config picker; filenameFormats and weeklySchedule own the rules. Dates/overrides/sorting remain unimplemented. No manual stop blocks are needed; one native File reference requires setup.
 var configJson = ""
 var runState = "ready"
 var report = """
@@ -11,11 +9,12 @@ V3 FILENAME PREVIEW
 Filename and recurring schedule only. No dates, dated overrides, sorting, service plans or music writes in this increment.
 Rows follow the provider selection order; this is not a running order.
 """
-alert(alert: "Select v3-config.json, then PDFs to preview. This reads names only; no archive or forScore changes.", title: "V3 filename preview", cancel: true)
-selectFile(type: Files, multiple: false) >> configFile
+alert(alert: "Select PDFs to preview. The saved v3-config.json File supplies the rules. This reads names only; no archive or forScore changes.", title: "V3 filename preview", cancel: true)
+// V3-CONFIG-FILE ADD/RECONNECT: Replace ONLY the next Nothing with native File (a fixed reference, NOT Select File). Tap its empty file field and choose v3-config.json once in the editor after import. Reconnect the following missing-value If and Get Text from Input to this File output, then delete only the placeholder. Keep here before config validation and outside every If/Repeat. Following If operator=does not have any value. No runtime config picker or stop/return insertion is required.
+nothing() >> configFile
 if(configFile == nil) {
 runState = "error"
-report = "V3 preview cancelled: no config selected."
+report = "V3 setup required: set the V3-CONFIG-FILE native File action to v3-config.json in the shortcut editor."
 }
 if(runState == "ready") {
 getTextFrom(input: configFile) >> configJsonResult
@@ -25,20 +24,26 @@ valueFor(key: "version", dictionary: configSnapshot) >> configVersion
 text(text: "${configVersion}") >> configVersionText
 if(configVersionText != "3") {
 runState = "error"
-report = "ERROR: Select the separate v3-config.json with version 3."
+report = "ERROR: The saved config File must be the separate v3-config.json with version 3."
 }
 }
 if(runState == "ready") {
 selectFile(type: Files, multiple: true) >> selectedFilesResult
-selectedFiles = selectedFilesResult
-if(selectedFiles == nil) {
+// V3-PREVIEW-SELECTION CHECK: Count input=THIS Select File selectedFilesResult output. Following If left=selectedFileCountText, operator=is, right=literal Text 0. No named File collection, Nothing initializer or has-value guard is used. The Repeat below consumes the same picker output within this scope.
+count(type: Items, input: selectedFilesResult) >> selectedFileCount
+text(text: "${selectedFileCount}") >> selectedFileCountText
+if(selectedFileCountText == "0") {
 runState = "error"
-report = "V3 preview cancelled: no music selected."
-}
+report = "V3 selection error: the music picker returned 0 items. No filename parsing attempted."
 }
 if(runState == "ready") {
-// V3-PREVIEW-FILES CHECK: Repeat over original selectedFiles; Name and File Extension consume this native Repeat Item. Error state gates further iterations without any early-return action. Provider extension is name classification, not PDF content validation.
-repeatEach(selectedFiles) {
+text(text: """
+${report}
+Music picker item count: ${selectedFileCountText}
+""") >> selectionReport
+report = selectionReport
+// V3-PREVIEW-FILES CHECK: Repeat input=selectedFilesResult native output from Select File above, not a Set Variable or Nothing. Name and File Extension consume this Repeat Item. File extensions classify names only; dependent processing is gated by runState.
+repeatEach(selectedFilesResult) {
 if(runState == "ready") {
 fileDetail(input: RepeatItem, property: Name) >> sourceName
 fileDetail(input: RepeatItem, property: File Extension) >> sourceExtension
@@ -65,7 +70,7 @@ runState = "error"
 text(text: """
 ${report}
 
-ERROR: V3 parser returned an unsupported result. Install both revision-3 shortcuts together and inspect the final Dictionary and Run Shortcut connection.
+ERROR: V3 parser returned an unsupported result. Use V3 - Parse Filename interface 2.0 with this preview and inspect the final Dictionary and Run Shortcut connection.
 Remaining selections were not processed.
 """) >> invalidResultReport
 report = invalidResultReport
@@ -113,6 +118,7 @@ CANONICAL: ${canonicalName}
 REASON: ${reason}
 """) >> nextReport
 report = nextReport
+}
 }
 }
 }

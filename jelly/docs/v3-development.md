@@ -4,22 +4,24 @@
 
 Development sequence: [timeline](../../nextcloud-forscore-v3-development-timeline.md). Requirements: [v3 plan](../../nextcloud-forscore-plan-v3.md). Device instructions and results: [first checkpoint](../tests/v3/README.md).
 
-Current source delivery: **revision 3, interface 2.0**, with guarded processing and natural completion; no manual stop blocks. See the [commit-history review and output resolution](v3-output-resolution.md). Revision 1 generated unwanted Move Notes actions by user report. The untested revision-2 manual-slot proposal is retired.
+Current source delivery: **parser revision 3/interface 2.0; preview revision 5/interface 3.0**, with guarded processing and natural completion; no manual stop blocks. See the [commit-history review and output resolution](v3-output-resolution.md). Revision 1 generated unwanted Move Notes actions by user report. The untested revision-2 manual-slot proposal is retired.
+
+Latest device results: **reported one-file and four-file integration passes**. The four-file report correctly separates Sunam/Mattins, Sunpm/Evensong and bare Sun/Eucharist, skips Monday, extracts position 11 and preserves voice/verse qualifiers. Four selected items produced four report rows. Later individual reports also confirm Thur as Thursday Evensong and SunRemem as Remem/special-remem with the hymn payload preserved. Quote-pair display artifacts remain. See the [exact four-file evidence and limits](../tests/v3/README.md#reported-pass-four-file-sunday-and-monday-preview-8-november-2026). The latest consumed revision and saved-config persistence are not explicitly confirmed. No local build or runtime tests were run; wider acceptance remains pending.
 
 ## Current delivery
 
-**Stage 2A: filename parsing and recurring-schedule preview. First runtime attempt blocked by unexpected Notes folder/note selection, by user report; no successful filename result.** Exact installed source and generated actions are unconfirmed; see the [incident and next inspection](../tests/v3/README.md#reported-first-attempt-unexpected-notes-selection). No local builds or tests were run, following the user's instruction. This is the first implementation slice, not a complete Weekly preview.
+Stage 2A implements filename parsing and recurring-schedule preview only. The earlier Notes generation and false no-selection results remain historical failed attempts. The reported one-file/four-file results supersede their blocking status only for those fixtures, not all branches. Exact hashes, app versions, installed-source identities and repairs remain unconfirmed.
 
 | Exact installed name | Source | Dependency | Interface |
 | --- | --- | --- | --- |
 | V3 - Parse Filename | [v3-parse-filename.jelly](../shortcuts/reusable/v3-parse-filename.jelly) | None | 2.0 |
-| V3 - Preview Filenames | [v3-preview-filenames.jelly](../shortcuts/main/v3-preview-filenames.jelly) | V3 - Parse Filename 2.0 | 2.0 |
+| V3 - Preview Filenames | [v3-preview-filenames.jelly](../shortcuts/main/v3-preview-filenames.jelly) | V3 - Parse Filename 2.0 | 3.0 |
 
 Planned names, not yet implemented: `V3 - Create Service`, `V3 - Weekly`, `V3 - Assemble Service`, and `V3 - Archive PDF`. Only add further installed helpers when reuse warrants them. V3 - Create Service is the new Share Sheet title; this supersedes the earlier unprefixed title. There is no implicit naming/archive dependency on `UTIL - ...`, `MAIN - ...`, `2-util-...` or any TEST shortcut.
 
 ## Configuration ownership
 
-Copy [v3-config.example.json](../config/v3-config.example.json) to one user-controlled Files location as **v3-config.json**. Do not replace the legacy config. The preview asks for this file each run; a pinned native Folder/config reference will follow in a later increment. Only the selected file supplies rules; neither source embeds a second copy.
+Copy [v3-config.example.json](../config/v3-config.example.json) to one user-controlled Files location as **v3-config.json**. Do not replace the legacy config. Preview revision 5 uses one fixed native File reference configured once after import at V3-CONFIG-FILE. It rereads that file each run without a config picker. See the [one-time setup](../tests/v3/README.md#current-setup-preview-revision-5-saved-config-file). Only the selected file supplies rules; neither source embeds a second copy.
 
 The config uses version **3**, independently of interface and result versions. Enable switches are literal Text **on/off**, not JSON Boolean values. This avoids assuming how native Boolean coercion is represented by the current action bindings. Malformed JSON or invalid regex may halt a native action; no catch mechanism is claimed.
 
@@ -62,9 +64,9 @@ Skipped rows keep their parsed identity/payload so exclusions can be explained. 
 
 Native Dictionary creation, dynamic Set Dictionary Value interpolation, lowercase generation and the normal-completion Dictionary result remain unverified for this V3 revision. The helper ends with Get Dictionary from finalResult; the caller must receive that native Dictionary. No output/exit binding or manual native stop insertion is used. See the focused checkpoint before assuming the whole-shortcut result boundary works.
 
-## V3 - Preview Filenames interface 2.0
+## V3 - Preview Filenames interface 3.0
 
-Direct launch only; ignores incoming input. Shows a cancellable explanation, selects one config File and then multiple Files. It reads the config to Text once and reuses those same bytes for every helper call. JSON decoding inside the helper does not reload the file. It reads Name and File Extension directly from the original selection and never constructs a duplicate native File collection.
+Direct launch only; ignores incoming input. Shows a cancellable explanation, reads its configured native config File and selects multiple music Files. Its single native File-reference slot must be completed once after import; no runtime config chooser remains. It reads the config to Text once and reuses those same bytes for every helper call. JSON decoding inside the helper does not reload the file. It reads Name and File Extension directly from the original selection and never constructs a duplicate native File collection.
 
 Each PDF name is sent to the helper. Non-PDF extensions become unresolved report rows. An error status from the helper sets the preview error state, preserves earlier report rows and skips later selections; invalid configuration is a run-level problem. The report includes every processed file's status, day/slot, service name, position, canonical name and reason. The final Get Text supplies report Text on natural completion, after Quick Look. This caller result path still requires device confirmation. Picker cancellation may terminate natively without a final report; no handling of a native-abort exception is claimed.
 

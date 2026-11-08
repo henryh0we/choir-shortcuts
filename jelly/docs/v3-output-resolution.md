@@ -1,6 +1,12 @@
 # V3 output resolution: revision 3
 
+Follow-up: parser remains revision 3; preview is now revision 4 to address a reported false no-music-selected result. Interface 2.0 and the no-output/exit strategy are unchanged. See the [latest selection checkpoint](../tests/v3/README.md#latest-checkpoint-preview-revision-4-8-november); only preview needs replacing for that correction.
+
 8 November 2026. Source-level replacement for the rejected manual-stop proposal. Both installed names stay the same. Both sources are specification revision **3**, interface **2.0**; replace the parser first, then the preview. No manually inserted blocks are required by this design. No compilation or execution has been performed here.
+
+## Latest device evidence
+
+The user reports the intended Friday parsed row and picker count 1 with preview revision 4. This supports the parser-to-preview result and report path for that one file. Standalone quote-pair display artifacts remain. Native return type, exact hashes/versions/repairs and other branches were not independently recorded. See the [reported pass](../tests/v3/README.md#reported-pass-friday-filename-8-november-2026). Older not-tested statements below describe the original proposal; this narrow result supersedes them only for the reported integration.
 
 ## What the commit history actually establishes
 
