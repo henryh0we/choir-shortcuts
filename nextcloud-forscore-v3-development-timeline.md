@@ -2,7 +2,7 @@
 
 Date: 7 November 2026  
 Authority: [v3 plan](nextcloud-forscore-plan-v3.md)  
-Status: Stage 2A has reported one-file/multi-file filename-preview passes, including Sunday slots, Monday exclusion, Thur and SunRemem. Quote-line artifacts and broader acceptance cases remain pending. No local builds or tests have been run. See [current sources/contracts](jelly/docs/v3-development.md) and [device evidence](jelly/tests/v3/README.md).
+Status: The current Stage 2A checkpoint has reported passes for one-file/multi-file parsing, Sunday slots, Monday exclusion, Thu/Thur/Thurs, SunRemem, report cleanup, saved-config persistence/rereading, conflicting rules and unsupported config version. Normal config is restored. Begin the date/grouping/numeric-order increment next; unknown-prefix/non-PDF results and broader matrix cases remain unconfirmed. No local builds or tests have been run. See [current sources/contracts](jelly/docs/v3-development.md) and [device evidence](jelly/tests/v3/README.md).
 
 Naming evidence, 8 November: [updated Nextcloud listing analysis](jelly/docs/v3-development.md#nextcloud-naming-evidence-and-implementation-implications-8-november-2026) now informs the next date/ordering increment: single-date and range folders, preserved qualifiers, gaps that do not imply missing PDFs, and constrained discovery. Collection-specific and historical event formats remain separate from current weekly rules.
 

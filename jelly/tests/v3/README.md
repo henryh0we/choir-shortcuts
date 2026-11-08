@@ -1,6 +1,38 @@
 # V3 first manual iPad checkpoint — filenames
 
-Status: **One-file and four-file preview paths passed by user report. Preview revision 6 adds quote-line cleanup; its iPad acceptance remains pending.** No local compilation or automated/runtime tests were performed. [Contracts and known limits](../../docs/v3-development.md) apply.
+Status: **The current filename-preview checkpoint has reported passes for its working paths, report cleanup, saved config, Thursday aliases, conflicting rules and wrong config version. Normal config is restored.** Ready to begin the date/order increment; unknown-prefix/non-PDF results and broader matrix cases remain unconfirmed rather than implied passes. No local compilation or automated/runtime tests were performed. [Contracts and known limits](../../docs/v3-development.md) apply.
+
+## Reported pass: conflicting rules and wrong config version, 8 November 2026
+
+Using the supplied configs, the user reports (1) unresolved with Multiple configured rules matched and (2) the expected error for the unsupported version. The user confirms the normal config is restored. Record both targeted checks as passes, without assuming an exact full report or source hash. No source/config repair is needed. This supersedes older pending statements for these checks below.
+
+The next implementation increment is read-only folder-date resolution, service grouping and numeric position ordering, using the real single-date/range examples. Unknown-prefix/non-PDF checks can be carried into its manual matrix; no additional broad diagnostic cycle is required before construction.
+
+## Reported pass: Thu and Thurs aliases, 8 November 2026
+
+Following the requested Thu1-Piece.pdf and Thurs1-Piece.pdf checks, the user reports that both work as described. Record both as Thursday Evensong passes. The same message does not separately identify the unknown-prefix or non-PDF results; leave those unconfirmed rather than infer a pass. Next are overlapping-rule and unsupported-version checks using a disposable config copy, followed by restoration of the normal config reference. No source change is required.
+
+## Ready-made config files for the remaining checks
+
+The user cannot edit JSON on the iPad. All future config changes must be prepared in the repo as complete copy/paste files for Copyover. These files supersede instructions below to edit individual config values/rules manually. Transfer JSON contents as config data, not as Jelly Shortcut source.
+
+1. Copy [conflicting-rules config](../../config/v3-config.test-conflicting-rules.json) through Copyover into a separate JSON file in Files. Point V3-CONFIG-FILE at it and select a Tuesday PDF. It is the normal version-3 config plus a second matching Tuesday rule with distinct key tue-conflict. Expected: unresolved rather than a guessed service.
+2. Copy [wrong-version config](../../config/v3-config.test-wrong-version.json) through Copyover into another separate JSON file. Point V3-CONFIG-FILE at it and run. It contains the normal rules, without the conflict, but top-level version 2. Expected: config error before the music picker.
+3. Restore V3-CONFIG-FILE to your normal v3-config.json. If a fresh normal copy is needed, use [the normal config](../../config/v3-config.example.json), with version 3 and Monday off.
+
+No source rebuild is needed. These are prepared fixtures, not reported test passes. No local builds or tests were run.
+
+## Reported pass: saved config persistence and rereading, 8 November 2026
+
+The user confirms the requested saved-config check works: rerun without selecting config again, temporarily enable Monday in the saved config, rerun the same Monday PDF expecting parsed, then restore Monday to off. This establishes persistence and rereading for the reported installed setup. No source change is needed. It does not establish moved/deleted config recovery, remaining Thursday aliases, overlapping rules, invalid config versions or raw return-type inspection.
+
+Next: finish the remaining alias/invalid-input checks in the checkpoint-finalisation list below. Dates, grouping and numeric ordering remain the following implementation increment. This result supersedes older pending saved-config statements below.
+
+## Reported pass: revision 6 report cleanup, 8 November 2026
+
+After the revision-6 replacement delivery, the user confirms that it ran correctly, the output looks good, Monday files are skipped and the quote marks are gone. This confirms the cleanup and Monday exclusion in the reported run. No source change is needed from this result. Exact selected files/count, source hash, app versions, native repair history, saved-config repeat-run persistence and config/error cases were not supplied; do not infer those passes. Raw helper return type and preview output to a separate caller remain uninspected.
+
+Next checkpoint action: run again without reselecting config, then temporarily change Monday enabled from off to on in the saved config, rerun the same Monday PDF and expect parsed, and restore off. Continue the remaining alias/invalid-input checks below before marking full Stage 2A acceptance complete. The revision-6 preparation notes below describe the pre-result source review; this newer report supersedes their untested status only for the observed behavior.
 
 ## Current replacement: preview revision 6, checkpoint finalisation
 
@@ -17,7 +49,7 @@ Finish this checkpoint on the iPad:
 3. Cover the remaining Thursday aliases Thu/Thurs, an unknown prefix, a non-PDF selection and an edition-qualified payload. Unknown/non-PDF rows must be unresolved and qualifiers preserved. Provider order remains intentional.
 4. Using a disposable config copy, test an overlapping rule (unresolved, no guessed service), then valid JSON with version 2 (error before music selection). Restore the normal config reference. Malformed JSON/regex can abort natively; no recoverable-error guarantee is claimed.
 
-Record the installed revision, any native repairs and the resulting report. Only actual device results can close Stage 2A; revision 6 is not yet a reported pass. The broader matrix below remains available for additional cases.
+Record the installed revision, any native repairs and the resulting report. Revision 6 now has the reported cleanup/Monday pass above; saved-config and remaining config/error results are still needed for full Stage 2A acceptance. The broader matrix below remains available for additional cases.
 
 ## Reported pass: SunRemem special service, 8 November 2026
 

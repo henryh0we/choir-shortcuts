@@ -1,0 +1,55 @@
+{
+  "version": 3,
+  "filenameFormats": {
+    "rules": [
+      { "key": "tue-conflict", "pattern": "^(Tue)([1-9][0-9]*)-(.+)$", "dayKey": "tue", "slotKey": "evensong", "special": "off" },
+      { "key": "mon-evensong", "pattern": "^(Mon)([1-9][0-9]*)-(.+)$", "dayKey": "mon", "slotKey": "evensong", "special": "off" },
+      { "key": "tue-evensong", "pattern": "^(Tue)([1-9][0-9]*)-(.+)$", "dayKey": "tue", "slotKey": "evensong", "special": "off" },
+      { "key": "thu-evensong", "pattern": "^((?:Thurs|Thur|Thu))([1-9][0-9]*)-(.+)$", "dayKey": "thu", "slotKey": "evensong", "special": "off" },
+      { "key": "fri-evensong", "pattern": "^(Fri)([1-9][0-9]*)-(.+)$", "dayKey": "fri", "slotKey": "evensong", "special": "off" },
+      { "key": "sat-evensong", "pattern": "^(Sat)([1-9][0-9]*)-(.+)$", "dayKey": "sat", "slotKey": "evensong", "special": "off" },
+      { "key": "sun-eucharist", "pattern": "^(Sun)([1-9][0-9]*)-(.+)$", "dayKey": "sun", "slotKey": "eucharist", "special": "off" },
+      { "key": "sun-mattins", "pattern": "^(Sunam)([1-9][0-9]*)-(.+)$", "dayKey": "sun", "slotKey": "mattins", "special": "off" },
+      { "key": "sun-evensong", "pattern": "^(Sunpm)([1-9][0-9]*)-(.+)$", "dayKey": "sun", "slotKey": "evensong", "special": "off" },
+      { "key": "mon-special", "pattern": "^Mon([A-Za-z]+)([1-9][0-9]*)-(.+)$", "dayKey": "mon", "slotKey": "special-", "special": "on" },
+      { "key": "tue-special", "pattern": "^Tue([A-Za-z]+)([1-9][0-9]*)-(.+)$", "dayKey": "tue", "slotKey": "special-", "special": "on" },
+      { "key": "wed-special", "pattern": "^Wed([A-Za-z]+)([1-9][0-9]*)-(.+)$", "dayKey": "wed", "slotKey": "special-", "special": "on" },
+      { "key": "thu-special", "pattern": "^Thurs([A-Za-z]+)([1-9][0-9]*)-(.+)$", "dayKey": "thu", "slotKey": "special-", "special": "on" },
+      { "key": "fri-special", "pattern": "^Fri([A-Za-z]+)([1-9][0-9]*)-(.+)$", "dayKey": "fri", "slotKey": "special-", "special": "on" },
+      { "key": "sat-special", "pattern": "^Sat([A-Za-z]+)([1-9][0-9]*)-(.+)$", "dayKey": "sat", "slotKey": "special-", "special": "on" },
+      { "key": "sun-special", "pattern": "^Sun((?!(?:am|pm)[1-9])[A-Za-z]+)([1-9][0-9]*)-(.+)$", "dayKey": "sun", "slotKey": "special-", "special": "on" }
+    ],
+    "captureConvention": "Group 1 = prefix or special suffix; group 2 = positive numeric position; group 3 = complete piece payload",
+    "caseSensitive": "off",
+    "terminalExtensionPattern": "[.]pdf$"
+  },
+  "weekFolderDates": {
+    "formats": [],
+    "yearSource": "saved-context-then-explicit-then-current",
+    "timezone": "Europe/London",
+    "status": "Not implemented; configure formats from real folder examples in the date increment"
+  },
+  "weeklySchedule": {
+    "mon": { "enabled": "off", "slots": { "evensong": { "enabled": "on", "name": "Evensong" } } },
+    "tue": { "enabled": "on", "slots": { "evensong": { "enabled": "on", "name": "Evensong" } } },
+    "wed": { "enabled": "off", "slots": {} },
+    "thu": { "enabled": "on", "slots": { "evensong": { "enabled": "on", "name": "Evensong" } } },
+    "fri": { "enabled": "on", "slots": { "evensong": { "enabled": "on", "name": "Evensong" } } },
+    "sat": { "enabled": "on", "slots": { "evensong": { "enabled": "on", "name": "Evensong" } } },
+    "sun": { "enabled": "on", "slots": {
+      "eucharist": { "enabled": "on", "name": "Eucharist" },
+      "evensong": { "enabled": "on", "name": "Evensong" },
+      "mattins": { "enabled": "on", "name": "Mattins", "optional": "on" }
+    } }
+  },
+  "setlistNaming": { "dateFormat": "yyyy-MM-dd", "template": "{date} - {dayShort} - {serviceName}", "locale": "en_GB" },
+  "runBehaviour": {
+    "datedOverrides": [],
+    "updatePolicy": "additions-only",
+    "previewRequired": "on",
+    "specialSuffixPolicy": "Use readable suffix as name and lowercase special- suffix as slot key; enabled day required",
+    "status": "Date overrides and execution policies are reserved; this increment previews filename parsing only"
+  },
+  "storage": { "configFilename": "v3-config.json", "libraryFolder": "Library", "recordsFolder": "V3 Services" },
+  "categories": ["Introits", "Responses", "Hymns", "Psalms", "Canticles", "Anthems", "Kyrie", "Gloria", "SanctusBenedictus", "AgnusDei", "TeDeum", "Jubilate", "Other"]
+}

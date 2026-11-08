@@ -22,6 +22,8 @@ are required by this V3 design.
 
 ## Source delivery policy (7 November 2026)
 
+User direction, 8 November 2026: Always prepare configuration changes in the repo as complete JSON files ready to copy/paste through Copyover. The user cannot edit JSON on the iPad. For manual checks, supply separate ready-made test configs and link the normal config for restoration; do not ask the user to edit, duplicate or remove individual JSON fields/rules on the iPad. Keep deliberately invalid/conflicting fixtures clearly named and separate from the normal config.
+
 Use `.jelly` only for Shortcut source. Copyover is the current transfer workflow. Do not create or regenerate `.txt` source twins. Historical text-only diagnostics are preserved as distinct `.jelly` fixtures with their original bytes; unrelated reference text and diagnostic logs remain text. Old immutable exchange bundles remain unchanged and readable. The optional pipeline now prepares a single `source.jelly` snapshot.
 
 ## Scope and non-negotiable rules
