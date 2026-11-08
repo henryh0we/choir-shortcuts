@@ -2,7 +2,9 @@
 
 Date: 7 November 2026  
 Authority: [v3 plan](nextcloud-forscore-plan-v3.md)  
-Status: First filename-preview increment (stage 2A) drafted; no compilation or execution. All iPad checkpoints remain **not run**. See [current sources, configuration and contracts](jelly/docs/v3-development.md) and [the first manual checkpoint](jelly/tests/v3/README.md).
+Status: Stage 2A has reported one-file/multi-file filename-preview passes, including Sunday slots, Monday exclusion, Thur and SunRemem. Quote-line artifacts and broader acceptance cases remain pending. No local builds or tests have been run. See [current sources/contracts](jelly/docs/v3-development.md) and [device evidence](jelly/tests/v3/README.md).
+
+Naming evidence, 8 November: [updated Nextcloud listing analysis](jelly/docs/v3-development.md#nextcloud-naming-evidence-and-implementation-implications-8-november-2026) now informs the next date/ordering increment: single-date and range folders, preserved qualifiers, gaps that do not imply missing PDFs, and constrained discovery. Collection-specific and historical event formats remain separate from current weekly rules.
 
 We will build one small, usable increment, transfer its `.jelly` through Copyover, inspect the generated actions, and then you will test it on the iPad. Your results determine the next increment. We will resolve generation problems inside that increment rather than restart a broad diagnostic programme.
 
@@ -10,7 +12,7 @@ I will review source, contracts, callers, documented signatures and recorded res
 
 V3 is a ground-up creation under **V3 - ...** installed names. It has no legacy shortcut dependencies, compatibility adapters or backup prerequisite. Reuse research only. This user direction supersedes the earlier migration approach.
 
-Current stage-2A return correction: [revision-3 history review and output resolution](jelly/docs/v3-output-resolution.md). It replaces the rejected manual-stop proposal with guarded processing and natural completion. Install both revision-3/interface-2.0 shortcuts together; no manual stop blocks are required. Compilation and caller-result behavior remain unverified.
+Current source pair: parser revision 3/interface 2.0 and preview revision 5/interface 3.0. Guarded processing and natural completion replace generated Output/Exit calls. Preview uses one native config File reference configured after import; no manual stop blocks are needed. Reported fixtures work, while exact installed revisions and saved-config persistence remain unconfirmed. See the [return history](jelly/docs/v3-output-resolution.md) and [current setup](jelly/tests/v3/README.md#current-setup-preview-revision-5-saved-config-file).
 
 ## Sequence at a glance
 

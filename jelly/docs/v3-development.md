@@ -72,6 +72,55 @@ Each PDF name is sent to the helper. Non-PDF extensions become unresolved report
 
 Rows use provider order only. There is **no numeric sort, grouping, date, service ID, occurrence plan, native PDF type validation, archive write, score import, metadata edit, setlist lookup/write or persistent state** in this delivery. A preview status of parsed means only that this filename matched the recurring rules, not that a service is ready to execute.
 
+## Nextcloud naming evidence and implementation implications (8 November 2026)
+
+Source: [updated Nextcloud listing](../../2026-11-08%20project_file_structure.txt). Compared with the [earlier listing](../../nextcloud%20file%20structure.txt). This is static listing analysis, not execution evidence, and does not modify source/config or expand initial-release scope. File/folder presence does not establish file contents, completeness or metadata meanings.
+
+### Folder dates and discovery scope
+
+| Observed convention | Examples | Planning implication |
+| --- | --- | --- |
+| Single-date folders | HNov7(ATB), HNov8 | Accept a single date as well as a range. A recognised day prefix must agree with the selected folder's resolved date/range before assignment; report conflicts rather than silently moving to another week. |
+| Date-range folders | INov9-15, JNov16-22, KNov23-29 | Parse start/end explicitly, then assign service dates inside that range. Preserve current-year defaulting, saved context and month/year rollover rules. |
+| Leading folder letter | H, I, J, K | Appears to be an organisational sequence; its meaning is unconfirmed. Do not treat it as a year or unique week ID. HNov7(ATB) and HNov8 already share H. |
+| Folder qualifier | HNov7(ATB) | Preserve ATB as source context. Do not append it automatically to every canonical name or use it alone to split service identity. |
+| Nonweekly collections | YouthChoir, NewMusic, ReadySteadyChoir!, Theory, Other Concerts, InstantUpload | A parsable filename does not authorise inclusion. Keep Weekly within the selected supported date folder; no unrestricted recursive sweep through ScannedChoirMusic. YouthChoir contains Sat-prefixed music that would otherwise look valid. |
+
+A shared date/slot across separately selected folders should resolve through the normal service identity policy, not create another service because the folder letter or qualifier differs. Parent-folder context may be unavailable from the Share Sheet; Specific service still needs explicit missing context rather than an invented date.
+
+### Piece names, ordering and metadata
+
+| Observed convention | Examples | Planning implication |
+| --- | --- | --- |
+| Gaps in source positions | Fri1, Fri3, Fri4, Fri5; noncontiguous Sunday positions | Sort the available positions numerically without renumbering. Missing position numbers alone are not evidence of missing PDFs. Report missing occurrences only when an actual plan/reference or saved unresolved occurrence establishes one. |
+| Multi-digit positions | Sun10, Sun11 | Numeric sort is required; current extraction of 11 is not a sorting pass. |
+| Same piece across positions/services | Ps150-Talbot at Sun10 in HNov8 and Sun11 in INov9-15; Clucas-Responses under Tue/Fri/Sunpm | Position and source folder belong to occurrences, not score identity. Reuse scores while preserving distinct service occurrences and deliberate repetitions. |
+| Hymn/source identifiers | NEH485, AMR577, OH01/OH02 | Reserve these ahead of generic composer/title inference. AMR is additional explicit evidence in this listing. Preserve leading zeros and do not label AMR577/OH01 as composers. |
+| Tune/variant suffixes | NunDanket, Meirionydd, Blaenwern-CJR, AP | Keep the complete payload. AP/CJR meanings are unconfirmed; do not discard or expand them or merge different variants automatically. |
+| Voice/key/movement qualifiers | Responses(SATTB), InG(ATB), LittleOrganMass-Gloria, InE-AgnusDei | Keep these identity-bearing distinctions, including attached SATB text in Tallis-IfYeLoveMeSATB. Folder voice context does not replace explicit piece qualifiers. |
+| Psalm numbers/extracts | Ps070, Ps89vv19-29, Ps119vv137-160 | Preserve exact references and ranges. Do not automatically merge padded/unpadded numbering, whole psalms and extracts, or Moore-Psalm24 with a plain numbered psalm. An explicit future alias decision would be needed. |
+| Numeric/dotted payload | Sun5-64.2ndBeforeAdvent.pdf | Payload is 64.2ndBeforeAdvent. Do not strip its leading number/dot or infer a composer from it. Its category/meaning is unresolved. |
+| Numbered collection pieces | 1.RSC-ATallStory.pdf, 2.RSC-OverTheRainbow.pdf | Separate, context-specific ordering convention. Do not globally strip number-dot prefixes: that would damage other names such as 64.2ndBeforeAdvent. Supporting this collection is outside current Weekly parsing. |
+| Possible collection aliases | Plumstead-AGratefulHeart.pdf and RSC-Plumstead-AGratefulHeart.pdf | Similar names are candidates for review, not proof of identical PDFs/editions. Keep references distinct until explicitly resolved. |
+| Unprefixed pieces | Mozart-Spatzenmesse-Gloria.pdf, Jesus Walking On The Waves.pdf, Ave Maria elgar.pdf | Specific service must be able to accept usable files without a service prefix, supplying date/slot/order separately. Weekly must report unresolved/unassigned music rather than guess. No generic composer/title format is guaranteed. |
+| Punctuation and spaces | World'sTrueLight, StJohn'sService, Responses(SATTB), complete-score names with commas/spaces | Preserve punctuation and payload text. Do not split all hyphens into a fixed number of fields or treat apostrophes/parentheses as disposable formatting. |
+
+### Nonmusic and historical conventions
+
+Ignore sync logs/databases, Desktop.ini and directories as music candidates. Reject the bare ScannedChoirMusic/.pdf as an empty-name candidate. Date PDFs, term dates, theory workbooks and schedules demonstrate that PDF extension alone is insufficient evidence of service music; use discovery scope and explicit review, not content claims inferred from filenames.
+
+The earlier listing contained ExtraServices event folders such as Fri9Oct,11am-ChristopherDayRIP and Sat17Oct,11am-Wedding-BruceHargrave&Irene, with unprefixed music and a running-order document. The updated listing shows ExtraServices without those children; that does not prove deletion. Retain the historical convention for later event-context support: date/time/service can come from the folder, while ordering needs an explicit source or user input. Do not implement this format or revive removed selections automatically in the current increment.
+
+### Implementation order and remaining decisions
+
+1. Extend the shared config/date path with the evidenced single-date/range forms, optional leading letter and folder qualifier. Determine exact supported month/separator/rollover boundaries before writing the date parser; historical year accuracy is not a new requirement.
+2. Add numeric ordering that tolerates gaps, with duplicate-position ambiguity handled separately from missing music. Keep occurrence identity independent of position.
+3. Add explicit metadata/reference recognition for NEH, AMR, OH and psalms before generic composer/title suggestions, preserving variants and qualifiers throughout.
+4. Keep folder discovery constrained and make unsupported collections/unprefixed inputs visible. Specific service's unprefixed-file route remains part of its planned implementation, not a new Weekly guessing rule.
+5. Defer RSC collection parsing and historical event-folder expansion unless needed by an authorised entry-point increment. Initial release still consists of Weekly and Specific service; mass import remains deferred.
+
+Open questions: meaning of folder letters and AP/CJR; which collection names are true aliases; exact out-of-range weekday conflict handling; further folder formats at month/year boundaries. No answers are assumed from this listing. Current service-prefix source/config stays unchanged: the new findings primarily affect dates, ordering, scope and later metadata resolution.
+
 ## Next contracts and implementation boundaries
 
 These decisions guide the next increments but are not executable contracts yet:

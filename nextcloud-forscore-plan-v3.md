@@ -8,6 +8,8 @@ Development order: [staged implementation timeline and manual iPad checkpoints](
 
 Implementation direction, 7 November 2026: build from the ground up under **V3 - ...** installed names. Reuse recorded research, not legacy shortcut dependencies or interfaces. No legacy migration, adapter or backup prerequisite is required. [Current implementation and contracts](jelly/docs/v3-development.md) describe the independent v3 sources and separate configuration.
 
+Naming evidence update, 8 November 2026: [Nextcloud listing findings and implementation implications](jelly/docs/v3-development.md#nextcloud-naming-evidence-and-implementation-implications-8-november-2026) cover single-date/range folders, qualifiers, noncontiguous numeric order, hymn/psalm references, collection scope and historical event folders. These are planning notes; source/config behavior is unchanged.
+
 ## Purpose and scope
 
 Build two user-facing Apple Shortcuts for the initial release, with a third workflow reserved for a future addition:
@@ -191,7 +193,7 @@ Reports should distinguish unchanged, created, updated, partial, pending, failed
 6. Group and numerically order recognised music. Show one summary, including planned additions, exclusions and known issues, and request one confirmation.
 7. Process enabled services with available music, inserting additions into gaps and preserving existing entries, then return one final report and list of missing pieces or other items to resolve.
 
-Existing folder examples distinguish prefixes such as `Sun`, `Sunam` and `Sunpm`. Store their meanings in shared configuration. Sort positions numerically so item 10 follows item 9.
+Existing folder examples distinguish prefixes such as `Sun`, `Sunam` and `Sunpm`. Store their meanings in shared configuration. Sort positions numerically so item 10 follows item 9. Preserve gaps without inferring missing music solely from absent numbers. The updated listing includes single-date folders such as HNov8 and HNov7(ATB), plus ranges such as INov9-15; folder letters and voice qualifiers do not themselves define a service identity. Keep discovery within the selected supported folder rather than recursively collecting unrelated collections.
 
 Year defaulting follows the routine-operation policy above. Retain the first resolved week context for reruns and handle month/year boundaries consistently. Historical year accuracy is not a requirement.
 

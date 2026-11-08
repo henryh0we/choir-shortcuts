@@ -1,0 +1,130 @@
+.nextcloudsync.log
+.sync_d0c7abb06a3c.db
+.sync_d0c7abb06a3c.db-shm
+.sync_d0c7abb06a3c.db-wal
+Ave Maria elgar.pdf
+Compline Booklet.pdf
+Desktop.ini
+InstantUpload\
+InstantUpload\St John Passion (Barenrheiter).pdf
+KS-Lullaby.pdf
+Morning, Evening and Communion Service in A major, Op.12 (Stanford, Charles Villiers) - Complete Score.pdf
+Other Concerts\
+Other Concerts\Follow-That-Star.pdf
+Other Concerts\Its-the-most-wonderful-time-of-the-year.pdf
+Other Concerts\Marys-Boy-Child.pdf
+Other Concerts\November 2024.pdf
+Postman-Pat.pdf
+ScannedChoirMusic\
+ScannedChoirMusic\.pdf
+ScannedChoirMusic\2027-2032FutureMusicDepartmentConcertDates.pdf
+ScannedChoirMusic\72 Autumn 2026 with music.pdf
+ScannedChoirMusic\ExtraServices\
+ScannedChoirMusic\HNov7(ATB)\
+ScannedChoirMusic\HNov7(ATB)\Sat1-Ashfield-Responses(ATB).pdf
+ScannedChoirMusic\HNov7(ATB)\Sat2-OH01.pdf
+ScannedChoirMusic\HNov7(ATB)\Sat3-Ps119vv1-24(Plainsong).pdf
+ScannedChoirMusic\HNov7(ATB)\Sat4-Sumsion-InG(ATB).pdf
+ScannedChoirMusic\HNov7(ATB)\Sat5-Lassus-OculiOmniumInTeSperant.pdf
+ScannedChoirMusic\HNov7(ATB)\Sat6-NEH252-TheDaythouGavestLord-AP.pdf
+ScannedChoirMusic\HNov8\
+ScannedChoirMusic\HNov8\Sun1-NEH494-ChristIsTheWorld'sTrueLight-NunDanket.pdf
+ScannedChoirMusic\HNov8\Sun10-Ps150-Talbot.pdf
+ScannedChoirMusic\HNov8\Sun2-Darke-InE-Gloria.pdf
+ScannedChoirMusic\HNov8\Sun3-Ps070.pdf
+ScannedChoirMusic\HNov8\Sun5-NEH400-LightOfTheMindsThatKnowHim-Meirionydd.pdf
+ScannedChoirMusic\HNov8\Sun6-Darke-InE-SanctusBenedictus.pdf
+ScannedChoirMusic\HNov8\Sun7-Darke-InE-AgnusDei.pdf
+ScannedChoirMusic\HNov8\Sun8-Tavener-TheLamb.pdf
+ScannedChoirMusic\HNov8\Sun9-NEH305-SoulOfMySaviour.pdf
+ScannedChoirMusic\HNov8\Sunpm1-Rose-Responses(SATTB).pdf
+ScannedChoirMusic\HNov8\Sunpm2-OH02.pdf
+ScannedChoirMusic\HNov8\Sunpm3-Ps082.pdf
+ScannedChoirMusic\HNov8\Sunpm4-Moore-ThirdService.pdf
+ScannedChoirMusic\HNov8\Sunpm5-Aston-SoTheyGaveTheirBodies.pdf
+ScannedChoirMusic\HNov8\Sunpm6-NEH498-SonOfGodEternalSaviour.pdf
+ScannedChoirMusic\HNov8\SunRemem1-NEH485-ThyHandOGodHasGuided.pdf
+ScannedChoirMusic\HNov8\SunRemem2-Ps134.pdf
+ScannedChoirMusic\HNov8\SunRemem3-NEH417-OGodOurHelpInAgesPast-AP.pdf
+ScannedChoirMusic\HNov8\SunRemem4-Briggs-TruroEucharist-AgnusDei.pdf
+ScannedChoirMusic\HNov8\SunRemem5-Murrill-TheSoulsOfTheRighteous.pdf
+ScannedChoirMusic\HNov8\SunRemem6-NEH408-LoveDivineAllLovesExcelling-Blaenwern-CJR.pdf
+ScannedChoirMusic\HNov8\SunRemem7-AMR577-GodSaveOurGraciousKing.pdf
+ScannedChoirMusic\INov9-15\
+ScannedChoirMusic\INov9-15\Fri1-Clucas-Responses.pdf
+ScannedChoirMusic\INov9-15\Fri3-Ps119vv137-160.pdf
+ScannedChoirMusic\INov9-15\Fri4-Humfrey-InEMinor.pdf
+ScannedChoirMusic\INov9-15\Fri5-Moore-ItIsAThingMostWonderful.pdf
+ScannedChoirMusic\INov9-15\Mon1-Marshall-Responses.pdf
+ScannedChoirMusic\INov9-15\Mon3-Ps119vv49-64.pdf
+ScannedChoirMusic\INov9-15\Mon4-Harris-InD.pdf
+ScannedChoirMusic\INov9-15\Mon5-LloydWebber-PieJesu.pdf
+ScannedChoirMusic\INov9-15\Sun11-Ps150-Talbot.pdf
+ScannedChoirMusic\INov9-15\Sun3-Haydn-LittleOrganMass-Gloria.pdf
+ScannedChoirMusic\INov9-15\Sun4-Ps090vv1-8.pdf
+ScannedChoirMusic\INov9-15\Sun5-64.2ndBeforeAdvent.pdf
+ScannedChoirMusic\INov9-15\Sun7-Haydn-LittleOrganMass-SanctusBenedictus.pdf
+ScannedChoirMusic\INov9-15\Sun8-Haydn-LittleOrganMass-AgnusDei.pdf
+ScannedChoirMusic\INov9-15\Sun9-Tallis-IfYeLoveMeSATB.pdf
+ScannedChoirMusic\INov9-15\Sunam1-Rose-Responses(SATTB).pdf
+ScannedChoirMusic\INov9-15\Sunam2-Ps095.pdf
+ScannedChoirMusic\INov9-15\Sunam3-Ps098.pdf
+ScannedChoirMusic\INov9-15\Sunam4-Stanford-TeDeum-InC.pdf
+ScannedChoirMusic\INov9-15\Sunam5-Ps100.pdf
+ScannedChoirMusic\INov9-15\Sunam6-Harris-HolyIsTheTrueLight.pdf
+ScannedChoirMusic\INov9-15\Sunpm1-Clucas-Responses.pdf
+ScannedChoirMusic\INov9-15\Sunpm3-Ps89vv19-29.pdf
+ScannedChoirMusic\INov9-15\Sunpm4-Sumsion-InG.pdf
+ScannedChoirMusic\INov9-15\Sunpm5-Moore-Psalm24.pdf
+ScannedChoirMusic\INov9-15\Thur1-Rose-Responses(SATTB).pdf
+ScannedChoirMusic\INov9-15\Thur3-Ps119vv113-136.pdf
+ScannedChoirMusic\INov9-15\Thur4-Watson-InE.pdf
+ScannedChoirMusic\INov9-15\Thur5-Mozart-Lacrymosa.pdf
+ScannedChoirMusic\INov9-15\Tue1-Clucas-Responses.pdf
+ScannedChoirMusic\INov9-15\Tue3-Ps119vv65-88.pdf
+ScannedChoirMusic\INov9-15\Tue4-Dove-StJohn'sService.pdf
+ScannedChoirMusic\INov9-15\Tue5-Finzi-MyLovelyOne.pdf
+ScannedChoirMusic\Jesus Walking On The Waves.pdf
+ScannedChoirMusic\JNov16-22\
+ScannedChoirMusic\KNov23-29\
+ScannedChoirMusic\NewMusic\
+ScannedChoirMusic\NewMusic\Mozart-Spatzenmesse-AgnusDei.pdf
+ScannedChoirMusic\NewMusic\Mozart-Spatzenmesse-Gloria.pdf
+ScannedChoirMusic\NewMusic\Mozart-Spatzenmesse-Kyrie.pdf
+ScannedChoirMusic\NewMusic\Mozart-Spatzenmesse-SanctusBenedictus.pdf
+ScannedChoirMusic\ReadySteadyChoir!\
+ScannedChoirMusic\ReadySteadyChoir!\1.RSC-ATallStory.pdf
+ScannedChoirMusic\ReadySteadyChoir!\2.RSC-OverTheRainbow.pdf
+ScannedChoirMusic\ReadySteadyChoir!\3.RSC-Wesley-LeadmeLord.pdf
+ScannedChoirMusic\ReadySteadyChoir!\4.RSC-TheLittleSpanishTown.pdf
+ScannedChoirMusic\ReadySteadyChoir!\Plumstead-AGratefulHeart.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-AGaelicBlessing.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-AmazingGrace!.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-Edelweiss.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-LightOfTheWorld.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-MakeMeAChannel.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-MyFavouriteThings.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-NowTheSunIsShining.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-OWhenTheSaints.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-Plumstead-AGratefulHeart.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-SingOfTheLord'sGoodness.pdf
+ScannedChoirMusic\ReadySteadyChoir!\RSC-TheOwls.pdf
+ScannedChoirMusic\TermDates2026-28.pdf
+ScannedChoirMusic\Theory\
+ScannedChoirMusic\Theory\TG006509e Theory of Music Workbook Grade 1.pdf
+ScannedChoirMusic\Theory\TG006516e Theory of Music Workbook Grade 2.pdf
+ScannedChoirMusic\Theory\TG006516e Theory of Music Workbook Grade 3.pdf
+ScannedChoirMusic\Theory\TG006523e Theory of Music Workbook Grade 3.pdf
+ScannedChoirMusic\Theory\TG006530e Theory of Music Workbook Grade 4.pdf
+ScannedChoirMusic\Theory\TG006547e Theory of Music Workbook Grade 5.pdf
+ScannedChoirMusic\Theory\TheoryGrade1.pdf
+ScannedChoirMusic\Theory\TheoryGrade2.pdf
+ScannedChoirMusic\YouthChoir\
+ScannedChoirMusic\YouthChoir\Handel-ZadokThePriest.pdf
+ScannedChoirMusic\YouthChoir\Parry-IWasGlad.pdf
+ScannedChoirMusic\YouthChoir\Ps025vv1-9.pdf
+ScannedChoirMusic\YouthChoir\Sat1-Martin-Responses.pdf
+ScannedChoirMusic\YouthChoir\Sat3-Ps119vv161-176.pdf
+ScannedChoirMusic\YouthChoir\Sat4-Moeran-InD.pdf
+ScannedChoirMusic\YouthChoir\Sat5-Haydn-TheHeavensAreTelling.pdf
+Song for athene.pdf
