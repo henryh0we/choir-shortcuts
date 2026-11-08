@@ -7,7 +7,14 @@ V3 is independent of every legacy Shortcut below. Install only:
 1. **V3 - Parse Filename**, [source](../shortcuts/reusable/v3-parse-filename.jelly), interface 2.0, no installed dependencies.
 2. **V3 - Preview Filenames**, [source](../shortcuts/main/v3-preview-filenames.jelly), interface 3.0, calls V3 - Parse Filename 2.0.
 
-Current sources are parser revision 3 and preview revision 6. Preview 6 retains the fixed native File reference introduced in revision 5; configure it again after fresh import. Revision 6 adds final cleanup of standalone quote-pair report lines and awaits iPad acceptance. Replace only the preview; parser and config are unchanged. Friday one-file and Sunday/Monday four-file integrations pass by user report on earlier attempts, with quote-line display artifacts; remaining cases, config persistence and exact source identities remain unverified. Preview revision 3 has a reported false no-selection result. They use normal completion, with no manual stop blocks; see [output resolution](v3-output-resolution.md). Revision 1 has a reported Notes-action generation failure. Use the separate
+Stage 2B adds (source-reviewed only; iPad acceptance pending):
+
+3. **V3 - Resolve Folder Dates**, [source](../shortcuts/reusable/v3-resolve-folder-dates.jelly), revision 1/interface 1.0, no installed dependencies.
+4. **V3 - Preview Services**, [source](../shortcuts/main/v3-preview-services.jelly), revision 1/interface 1.0, calls Resolve Folder Dates 1.0 and Parse Filename 2.0. Install its date helper first. Keep the working filename preview/parser unchanged.
+
+Use the complete updated version-3 config and [Stage 2B setup/checkpoint](../tests/v3/stage-2b-services.md). The new preview reads one folder, groups dated occurrences and sorts numeric positions; its only write is a separate saved-date context JSON. Current Date, fixed config File and single-folder picker have three native setup slots total. Inspect the common Get/Save File base folder and date/numeric settings. No forScore, archive, metadata, setlist or legacy dependency is introduced.
+
+Stage 2A sources remain parser revision 3 and filename preview revision 6. Parsing, report cleanup, config persistence/rereading, Thursday aliases, conflict and version-error checks now have user-reported passes; see the latest evidence rather than older pending notes. Exact source hashes/raw return types and broader matrix cases remain unverified. Preview revision 3 has a reported false no-selection result. They use normal completion, with no manual stop blocks; see [output resolution](v3-output-resolution.md). Revision 1 has a reported Notes-action generation failure. Use the separate
 [v3 config](../config/v3-config.example.json), [contracts](v3-development.md)
 and [manual checkpoint](../tests/v3/README.md). No local builds or tests are run
 under the user's current instructions. Names are exact Copyover targets; no

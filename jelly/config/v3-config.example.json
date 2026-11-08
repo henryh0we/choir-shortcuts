@@ -23,11 +23,17 @@
     "terminalExtensionPattern": "[.]pdf$"
   },
   "weekFolderDates": {
-    "formats": [],
+    "pattern": "^[A-Z]?(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)([12][0-9]|3[01]|[1-9])(?:-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)?([12][0-9]|3[01]|[1-9]))?(?:-([0-9]{4}))?([(][^()]+[)])?$",
+    "captureConvention": "1 start month; 2 start day; 3 optional end month; 4 optional end day; 5 optional start year after hyphen; 6 optional parenthesized qualifier",
+    "months": { "jan": "01", "feb": "02", "mar": "03", "apr": "04", "may": "05", "jun": "06", "jul": "07", "aug": "08", "sep": "09", "oct": "10", "nov": "11", "dec": "12" },
+    "weekdayKeys": { "mon": "mon", "tue": "tue", "wed": "wed", "thu": "thu", "fri": "fri", "sat": "sat", "sun": "sun" },
+    "sourceNamespace": "ScannedChoirMusic",
+    "contextPath": "V3-week-context.json",
     "yearSource": "saved-context-then-explicit-then-current",
     "timezone": "Europe/London",
-    "status": "Not implemented; configure formats from real folder examples in the date increment"
+    "status": "Stage 2B candidate: English abbreviated months; optional single leading letter; 1-7 inclusive dates; explicit end month required across month boundaries; optional -YYYY and (qualifier). iPad verification pending."
   },
+  "servicePreview": { "maxFiles": "100", "discovery": "selected-folder-direct-contents-only" },
   "weeklySchedule": {
     "mon": { "enabled": "off", "slots": { "evensong": { "enabled": "on", "name": "Evensong" } } },
     "tue": { "enabled": "on", "slots": { "evensong": { "enabled": "on", "name": "Evensong" } } },
@@ -47,7 +53,7 @@
     "updatePolicy": "additions-only",
     "previewRequired": "on",
     "specialSuffixPolicy": "Use readable suffix as name and lowercase special- suffix as slot key; enabled day required",
-    "status": "Date overrides and execution policies are reserved; this increment previews filename parsing only"
+    "status": "Dated overrides and execution policies remain reserved. Preview Filenames reads names/schedule only; Preview Services also resolves folder dates, groups and sorts, saving separate folder-date context only."
   },
   "storage": { "configFilename": "v3-config.json", "libraryFolder": "Library", "recordsFolder": "V3 Services" },
   "categories": ["Introits", "Responses", "Hymns", "Psalms", "Canticles", "Anthems", "Kyrie", "Gloria", "SanctusBenedictus", "AgnusDei", "TeDeum", "Jubilate", "Other"]

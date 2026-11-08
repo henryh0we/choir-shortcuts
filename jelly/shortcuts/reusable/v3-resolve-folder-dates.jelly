@@ -1,0 +1,245 @@
+// V3 - Resolve Folder Dates | Purpose/role: Shared V3 folder-date resolver | Specification revision: 1; interface 1.0 | Contract: Three Text List items folder name/config JSON/saved context JSON; one Dictionary on natural completion; no writes or prompts | Dependencies: None | Stage: Source reviewed only; iPad compilation, wiring and runtime pending
+import Shortcuts
+
+var folderName = ""
+var configJson = ""
+var contextJson = ""
+var runState = "ready"
+var reason = "Folder dates resolved; no service execution is authorised."
+var yearSource = ""
+var startIso = ""
+var endIso = ""
+var qualifier = ""
+var contextKey = ""
+var complete = "off"
+var offset = 0
+text(text: "{}") >> emptyJson
+getDictionaryFrom(input: emptyJson) >> emptyDictionary
+var result = emptyDictionary
+count(type: Items, input: ShortcutInput) >> inputCount
+text(text: "${inputCount}") >> inputCountText
+if(inputCountText != "3") {
+runState = "error"
+reason = "Supply three Text items: folder name, V3 config JSON and saved folder-context JSON."
+}
+if(runState == "ready") {
+repeatEach(ShortcutInput) {
+if(RepeatIndex == "1") {
+folderName = RepeatItem
+}
+if(RepeatIndex == "2") {
+configJson = RepeatItem
+}
+if(RepeatIndex == "3") {
+contextJson = RepeatItem
+}
+}
+getDictionaryFrom(input: configJson) >> config
+getDictionaryFrom(input: contextJson) >> contexts
+valueFor(key: "version", dictionary: config) >> configVersion
+text(text: "${configVersion}") >> configVersionText
+if(configVersionText != "3") {
+runState = "error"
+reason = "Folder resolver requires config version 3."
+}
+valueFor(key: "weekFolderDates", dictionary: config) >> dateSettings
+valueFor(key: "pattern", dictionary: dateSettings) >> folderPattern
+valueFor(key: "months", dictionary: dateSettings) >> months
+valueFor(key: "weekdayKeys", dictionary: dateSettings) >> weekdayKeys
+valueFor(key: "sourceNamespace", dictionary: dateSettings) >> sourceNamespace
+valueFor(key: "yearSource", dictionary: dateSettings) >> yearPolicy
+valueFor(key: "timezone", dictionary: dateSettings) >> timezone
+if(yearPolicy != "saved-context-then-explicit-then-current") {
+runState = "error"
+reason = "This resolver requires saved-context-then-explicit-then-current year policy."
+}
+if(timezone != "Europe/London") {
+runState = "error"
+reason = "This checkpoint supports Europe/London only; inspect native date settings."
+}
+if(folderPattern == nil) {
+runState = "error"
+reason = "Use the Stage 2B config: weekFolderDates.pattern is missing."
+}
+if(months == nil) {
+runState = "error"
+reason = "weekFolderDates.months is missing."
+}
+if(weekdayKeys == nil) {
+runState = "error"
+reason = "weekFolderDates.weekdayKeys is missing."
+}
+if(sourceNamespace == nil) {
+runState = "error"
+reason = "weekFolderDates.sourceNamespace is missing."
+}
+}
+if(runState == "ready") {
+matchText(text: "${folderName}", regex: "${folderPattern}", caseSensitive: false) >> folderMatch
+if(folderMatch == nil) {
+runState = "unresolved"
+reason = "Unsupported date-folder name; no contents were assigned to services."
+}
+}
+if(runState == "ready") {
+replaceText(input: "${folderName}", find: "${folderPattern}", replace: "$1", isRegex: true, caseSensitive: false) >> startMonthName
+replaceText(input: "${folderName}", find: "${folderPattern}", replace: "$2", isRegex: true, caseSensitive: false) >> startDay
+replaceText(input: "${folderName}", find: "${folderPattern}", replace: "$3", isRegex: true, caseSensitive: false) >> endMonthName
+replaceText(input: "${folderName}", find: "${folderPattern}", replace: "$4", isRegex: true, caseSensitive: false) >> endDayCapture
+replaceText(input: "${folderName}", find: "${folderPattern}", replace: "$5", isRegex: true, caseSensitive: false) >> explicitYear
+replaceText(input: "${folderName}", find: "${folderPattern}", replace: "$6", isRegex: true, caseSensitive: false) >> qualifierCapture
+qualifier = qualifierCapture
+text(text: "${sourceNamespace}/${folderName}") >> contextKeyText
+contextKey = contextKeyText
+valueFor(key: "${contextKey}", dictionary: contexts) >> savedRange
+if(savedRange != nil) {
+matchText(text: "${savedRange}", regex: "^[0-9]{4}-[0-9]{2}-[0-9]{2}/[0-9]{4}-[0-9]{2}-[0-9]{2}$", caseSensitive: true) >> validSavedRange
+if(validSavedRange == nil) {
+runState = "error"
+reason = "Saved folder dates are invalid; do not silently replace saved context with another year."
+}
+if(runState == "ready") {
+replaceText(input: "${savedRange}", find: "^([^/]+)/([^/]+)$", replace: "$1", isRegex: true, caseSensitive: true) >> savedStart
+replaceText(input: "${savedRange}", find: "^([^/]+)/([^/]+)$", replace: "$2", isRegex: true, caseSensitive: true) >> savedEnd
+startIso = savedStart
+endIso = savedEnd
+yearSource = "saved-context"
+}
+}
+if(savedRange == nil) {
+var resolvedYear = explicitYear
+yearSource = "explicit-folder-year"
+if(explicitYear == nil) {
+// V3-DATES-CURRENT ADD/RECONNECT: Replace ONLY the next Nothing with native Date set to Current Date. Reconnect its following missing-value If and current-year Format Date to that native Date output before deleting the placeholder. Keep inside this no-saved/no-explicit-year branch. Format Date uses Custom yyyy, Gregorian calendar and Europe/London time zone where exposed; there is no year prompt.
+nothing() >> currentDate
+if(currentDate == nil) {
+runState = "error"
+reason = "Setup required: complete V3-DATES-CURRENT with native Current Date."
+}
+if(runState == "ready") {
+formatDate(date: "${currentDate}", dStyle: Custom, tStyle: None, custom: "yyyy", isoTime: false) >> currentYear
+resolvedYear = currentYear
+yearSource = "current-year"
+}
+}
+if(runState == "ready") {
+changeCase(text: "${startMonthName}", case: lowercase) >> lowerStartMonth
+valueFor(key: "${lowerStartMonth}", dictionary: months) >> startMonth
+var endMonth = startMonth
+var endDay = startDay
+var endYear = resolvedYear
+if(endDayCapture != nil) {
+endDay = endDayCapture
+}
+if(endMonthName != nil) {
+changeCase(text: "${endMonthName}", case: lowercase) >> lowerEndMonth
+valueFor(key: "${lowerEndMonth}", dictionary: months) >> explicitEndMonth
+endMonth = explicitEndMonth
+}
+if(startMonth == nil) {
+runState = "error"
+reason = "Start month has no configured numeric mapping."
+}
+if(endMonth == nil) {
+runState = "error"
+reason = "End month has no configured numeric mapping."
+}
+if(runState == "ready") {
+calculate(input: "${startMonth}") >> startMonthNumber
+calculate(input: "${endMonth}") >> endMonthNumber
+if(endMonthNumber < startMonthNumber) {
+calculate(input: "${resolvedYear} + 1") >> nextYear
+endYear = nextYear
+}
+replaceText(input: "${startDay}", find: "^([0-9])$", replace: "0$1", isRegex: true, caseSensitive: true) >> paddedStartDay
+replaceText(input: "${endDay}", find: "^([0-9])$", replace: "0$1", isRegex: true, caseSensitive: true) >> paddedEndDay
+text(text: "${resolvedYear}-${startMonth}-${paddedStartDay}") >> constructedStart
+text(text: "${endYear}-${endMonth}-${paddedEndDay}") >> constructedEnd
+startIso = constructedStart
+endIso = constructedEnd
+}
+}
+}
+}
+if(runState == "ready") {
+// V3-DATES-PARSE CHECK: Both Get Dates actions consume their exact ISO yyyy-MM-dd plus local 12:00 Text. Count must be 1 for EACH. All Format Date actions use Custom, Gregorian calendar, English (United Kingdom) locale and Europe/London time zone where exposed; inspect actual tokens. Roundtrip must equal the requested ISO date; native invalid-date errors may abort rather than return a controlled result.
+text(text: "${startIso} 12:00") >> startDateText
+text(text: "${endIso} 12:00") >> endDateText
+getDateFrom(input: startDateText) >> nativeStart
+getDateFrom(input: endDateText) >> nativeEnd
+count(type: Items, input: nativeStart) >> startCount
+count(type: Items, input: nativeEnd) >> endCount
+text(text: "${startCount}/${endCount}") >> dateCounts
+if(dateCounts != "1/1") {
+runState = "unresolved"
+reason = "Folder dates did not each resolve to one native Date."
+}
+if(runState == "ready") {
+formatDate(date: "${nativeStart}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> checkedStart
+formatDate(date: "${nativeEnd}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> checkedEnd
+if(checkedStart != startIso) {
+runState = "unresolved"
+reason = "Start date failed exact calendar roundtrip."
+}
+if(checkedEnd != endIso) {
+runState = "unresolved"
+reason = "End date failed exact calendar roundtrip."
+}
+}
+}
+if(runState == "ready") {
+var cursorDate = nativeStart
+// V3-DATES-RANGE CHECK: Repeat exactly 7; current named cursorDate feeds every Format/Adjust action. Custom EEE must produce configured English weekday keys. Adjust Date is Add 1 day (calendar day, not seconds). All Get/Set Dictionary consumers read current named result; a single date stops after its first iteration. No repeated weekday may overwrite a previous date.
+repeat(7) {
+if(runState == "ready") {
+if(complete == "off") {
+formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> cursorIso
+formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "EEE", isoTime: false) >> cursorShort
+changeCase(text: "${cursorShort}", case: lowercase) >> lowerWeekday
+valueFor(key: "${lowerWeekday}", dictionary: weekdayKeys) >> dayKey
+if(dayKey == nil) {
+runState = "error"
+reason = "Unmapped formatted weekday; inspect Format Date locale/calendar before assigning dates."
+}
+if(runState == "ready") {
+setValue(key: "date-${dayKey}", value: "${cursorIso}", dictionary: result) >> resultDate
+result = resultDate
+setValue(key: "ordinal-${dayKey}", value: "${offset}", dictionary: result) >> resultOrdinal
+result = resultOrdinal
+setValue(key: "short-${dayKey}", value: "${cursorShort}", dictionary: result) >> resultShort
+result = resultShort
+if(cursorIso == endIso) {
+complete = "on"
+}
+if(complete == "off") {
+adjustDate(operation: Add, duration: 1 day, date: "${cursorDate}") >> nextDate
+cursorDate = nextDate
+calculate(input: "${offset} + 1") >> nextOffset
+offset = nextOffset
+}
+}
+}
+}
+}
+if(complete != "on") {
+if(runState == "ready") {
+runState = "unresolved"
+reason = "Range is reversed or exceeds 7 inclusive days; no dates will be used or saved. Specify the end month explicitly at month boundaries."
+}
+}
+}
+var status = runState
+if(runState == "ready") {
+status = "resolved"
+}
+setValue(key: "schemaVersion", value: "1", dictionary: result) >> resultVersion
+setValue(key: "status", value: "${status}", dictionary: resultVersion) >> resultStatus
+setValue(key: "reason", value: "${reason}", dictionary: resultStatus) >> resultReason
+setValue(key: "folderName", value: "${folderName}", dictionary: resultReason) >> resultFolder
+setValue(key: "qualifier", value: "${qualifier}", dictionary: resultFolder) >> resultQualifier
+setValue(key: "contextKey", value: "${contextKey}", dictionary: resultQualifier) >> resultKey
+setValue(key: "yearSource", value: "${yearSource}", dictionary: resultKey) >> resultYear
+setValue(key: "startDate", value: "${startIso}", dictionary: resultYear) >> resultStart
+setValue(key: "endDate", value: "${endIso}", dictionary: resultStart) >> finalResult
+// V3-DATES-RETURN CHECK: Last executable action=Get Dictionary from finalResult outside all branches. Caller must receive schemaVersion 1 and status resolved/error/unresolved; only resolved permits date use and context save. No Output/Exit/manual stop.
+getDictionaryFrom(input: finalResult)

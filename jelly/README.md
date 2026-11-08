@@ -4,9 +4,12 @@
 
 Start with [V3 development and contracts](docs/v3-development.md) and the
 [first manual iPad checkpoint](tests/v3/README.md). New installed names begin
-`V3 - ` and have no legacy shortcut dependencies. The initial filename parser
-and preview are drafted only; no builds or tests have been run. Configuration is
-separate: [v3-config.example.json](config/v3-config.example.json).
+`V3 - ` and have no legacy shortcut dependencies. The filename parser/preview
+have reported iPad passes. Stage 2B adds source-reviewed folder dates, grouping
+and numeric ordering in **V3 - Preview Services**, with separate saved date
+context. Follow its [installation and iPad checkpoint](tests/v3/stage-2b-services.md).
+No local builds or tests are run under the current V3 instruction. Configuration
+is separate: [v3-config.example.json](config/v3-config.example.json).
 
 The older workflows and evidence below remain historical reference material.
 

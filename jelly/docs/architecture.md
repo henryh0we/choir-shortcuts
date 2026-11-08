@@ -9,6 +9,8 @@ config snapshot. See [V3 contracts](v3-development.md) for current interfaces,
 implemented scope, future service-plan boundaries and unverified behavior.
 The legacy architecture below is historical and does not define V3 contracts.
 
+Stage 2B adds **V3 - Preview Services -> V3 - Resolve Folder Dates + V3 - Parse Filename**. The first helper shares folder-date interpretation and saved-context precedence; the original filename helper is unchanged. The main reads only direct folder contents and stores serializable numbered occurrence rows for date/slot grouping and numeric sorting. It saves only separate folder-date context, with readback; no music or forScore writes, executable plan or native File transport is introduced. New sources await the [manual iPad checkpoint](../tests/v3/stage-2b-services.md).
+
 Design complete projects before individual files. Main Shortcuts own user interactions and orchestration. Reusable Shortcuts own focused behaviour with explicit native inputs/outputs. A shared component should justify the cost of compiling, installing, and testing it; no separate core layer is needed yet.
 
 The example flow is:
