@@ -1,4 +1,4 @@
-// V3 - Resolve Folder Dates | Purpose/role: Shared V3 folder-date resolver | Specification revision: 1; interface 1.0 | Contract: Three Text List items folder name/config JSON/saved context JSON; one Dictionary on natural completion; no writes or prompts | Dependencies: None | Stage: Source reviewed only; iPad compilation, wiring and runtime pending
+// V3 - Resolve Folder Dates | Purpose/role: Shared V3 folder-date resolver | Specification revision: 2; interface 1.0 | Contract: Three Text List items folder name/config JSON/saved context JSON; one Dictionary on natural completion; no writes or prompts | Dependencies: None | Stage: Source review only; optional-capture count correction awaits iPad check
 import Shortcuts
 
 var folderName = ""
@@ -91,6 +91,7 @@ replaceText(input: "${folderName}", find: "${folderPattern}", replace: "$6", isR
 qualifier = qualifierCapture
 text(text: "${sourceNamespace}/${folderName}") >> contextKeyText
 contextKey = contextKeyText
+// V3-DATES-CONTEXT-KEY CHECK: Get Dictionary Value Key=current named contextKey Text or immediately preceding contextKeyText output, never its empty initializer; Dictionary=contexts. HNov8 normal key=ScannedChoirMusic/HNov8. Missing entry is valid; empty lookup Key is not. For manual diagnosis only, add Show Alert immediately before this lookup with literal DATE KEY plus actual Key token and after it with literal DATE CONTEXT LOOKUP RETURNED; preserve savedRange consumers and remove only these temporary alerts afterwards.
 valueFor(key: "${contextKey}", dictionary: contexts) >> savedRange
 if(savedRange != nil) {
 matchText(text: "${savedRange}", regex: "^[0-9]{4}-[0-9]{2}-[0-9]{2}/[0-9]{4}-[0-9]{2}-[0-9]{2}$", caseSensitive: true) >> validSavedRange
@@ -109,7 +110,11 @@ yearSource = "saved-context"
 if(savedRange == nil) {
 var resolvedYear = explicitYear
 yearSource = "explicit-folder-year"
-if(explicitYear == nil) {
+// V3-DATES-YEAR CHECK: Match input=explicitYear capture Text, Count Items input=yearMatches output; If uses yearMatchCountText is literal Text 0. Empty optional captures must take current-year fallback, not native has-value tests on Replace Text output.
+matchText(text: "${explicitYear}", regex: "^[0-9]{4}$", caseSensitive: true) >> yearMatches
+count(type: Items, input: yearMatches) >> yearMatchCount
+text(text: "${yearMatchCount}") >> yearMatchCountText
+if(yearMatchCountText == "0") {
 // V3-DATES-CURRENT ADD/RECONNECT: Replace ONLY the next Nothing with native Date set to Current Date. Reconnect its following missing-value If and current-year Format Date to that native Date output before deleting the placeholder. Keep inside this no-saved/no-explicit-year branch. Format Date uses Custom yyyy, Gregorian calendar and Europe/London time zone where exposed; there is no year prompt.
 nothing() >> currentDate
 if(currentDate == nil) {
@@ -124,15 +129,25 @@ yearSource = "current-year"
 }
 if(runState == "ready") {
 changeCase(text: "${startMonthName}", case: lowercase) >> lowerStartMonth
+// V3-DATES-TRACE-START ADD TEMPORARILY: Show Alert immediately before next Get Value, message START MONTH KEY plus its actual lowerStartMonth Key token, Cancel OFF. Keep in this ready branch; Dictionary=months. Preserve startMonth consumers; remove only temporary alert after diagnosis.
 valueFor(key: "${lowerStartMonth}", dictionary: months) >> startMonth
 var endMonth = startMonth
 var endDay = startDay
 var endYear = resolvedYear
-if(endDayCapture != nil) {
+// V3-DATES-END-DAY CHECK: Match input=endDayCapture Text; Count input=endDayMatches output. If=endDayMatchCountText is literal Text 1. Preserve endDay=startDay default for a single-date folder; update only from a valid day capture.
+matchText(text: "${endDayCapture}", regex: "^([12][0-9]|3[01]|[1-9])$", caseSensitive: true) >> endDayMatches
+count(type: Items, input: endDayMatches) >> endDayMatchCount
+text(text: "${endDayMatchCount}") >> endDayMatchCountText
+if(endDayMatchCountText == "1") {
 endDay = endDayCapture
 }
-if(endMonthName != nil) {
+// V3-DATES-END-MONTH CHECK: Match input=endMonthName Text; Count input=endMonthMatches output. If=endMonthMatchCountText is literal Text 1. Keep endMonth=startMonth default; for INov9-15 count MUST be 0 and the following lowercase/Get Value branch MUST be skipped.
+matchText(text: "${endMonthName}", regex: "^[A-Za-z]{3}$", caseSensitive: true) >> endMonthMatches
+count(type: Items, input: endMonthMatches) >> endMonthMatchCount
+text(text: "${endMonthMatchCount}") >> endMonthMatchCountText
+if(endMonthMatchCountText == "1") {
 changeCase(text: "${endMonthName}", case: lowercase) >> lowerEndMonth
+// V3-DATES-TRACE-END ADD TEMPORARILY: Show Alert immediately before next Get Value inside endMonthMatchCountText-is-1 branch, message END MONTH KEY plus actual lowerEndMonth Key token, Cancel OFF. Preserve Dictionary=months/explicitEndMonth consumers. INov9-15 should skip this branch. Remove only temporary alert after diagnosis.
 valueFor(key: "${lowerEndMonth}", dictionary: months) >> explicitEndMonth
 endMonth = explicitEndMonth
 }
@@ -196,6 +211,7 @@ if(complete == "off") {
 formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> cursorIso
 formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "EEE", isoTime: false) >> cursorShort
 changeCase(text: "${cursorShort}", case: lowercase) >> lowerWeekday
+// V3-DATES-TRACE-DAY ADD TEMPORARILY: Show Alert immediately before next Get Value inside active range Repeat, message WEEKDAY KEY plus actual lowerWeekday Key token, Cancel OFF. Preserve Dictionary=weekdayKeys/dayKey consumers. Remove only temporary alert after diagnosis; keep original loop and result actions.
 valueFor(key: "${lowerWeekday}", dictionary: weekdayKeys) >> dayKey
 if(dayKey == nil) {
 runState = "error"

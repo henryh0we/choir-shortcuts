@@ -58,7 +58,9 @@ report = "ERROR: Unsupported V3 folder-context file; it was not overwritten."
 }
 if(runState == "ready") {
 list(items: ["${folderName}", "${configJson}", "${contextJson}"]) >> dateInput
+// V3-CONTEXT-TRACE-BEFORE ADD TEMPORARILY: Native Show Alert with literal Text CONTEXT 1 - calling date helper, Cancel OFF, immediately before next Run Shortcut inside this ready branch. Preserve Run Shortcut input=dateInput List output, not Alert result. Add manually to installed shortcut for diagnosis; remove only this temporary alert afterwards. No reimport is required.
 runShortcut(name: "V3 - Resolve Folder Dates", input: dateInput, show: false) >> dateRaw
+// V3-CONTEXT-TRACE-AFTER ADD TEMPORARILY: Native Show Alert with literal Text CONTEXT 2 - date helper returned, Cancel OFF, immediately after Run Shortcut and before next Get Dictionary inside same branch. Preserve/reconnect Get Dictionary input=Run Shortcut dateRaw output, not Alert result. Remove only this temporary alert after diagnosis; keep final return unchanged.
 getDictionaryFrom(input: dateRaw) >> resolvedDates
 dates = resolvedDates
 valueFor(key: "schemaVersion", dictionary: dates) >> dateSchema

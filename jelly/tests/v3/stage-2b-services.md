@@ -4,7 +4,15 @@
 
 ## What to change now
 
-Make the changes below in the **Apple Shortcuts editor after generation/import**. The `.jelly` files already contain the current code; no source replacement or JSON editing is needed for this setup guide.
+**New targeted source delivery: Resolve Folder Dates revision 2.** The trace for local INov9-15 shows start-month key `nov`, followed by an empty end-month key inside a branch that should have been skipped. This identifies the failing optional end-month lookup; it does not establish whether native has-value semantics, generated If polarity or token wiring caused the branch to run.
+
+Replace ONLY [V3 - Resolve Folder Dates](../../shortcuts/reusable/v3-resolve-folder-dates.jelly) with revision 2/interface 1.0 through Copyover. Complete its single V3-DATES-CURRENT native Current Date slot again, reconnecting the adjacent missing-value If and year Format Date. Keep all other shortcuts/config/context unchanged. Keep the two context-call alerts temporarily if useful. The [revision-1 resolver](fixtures/v3-resolve-folder-dates-revision-1-empty-month.jelly) is preserved as evidence.
+
+Revision 2 replaces optional year/end-day/end-month presence tests with Match Text -> Count Items -> Text comparisons. Inspect the new V3-DATES-END-MONTH block: Match input=endMonthName; Count input=that Match output; If=count Text **is 1**. For INov9-15 this count must be 0, preserving November and skipping the empty-key lookup. Year count 0 selects current year; end-day count 1 selects 15. Source review only; no local builds/tests or device pass are claimed.
+
+Rerun the same local INov9-15 folder. Expected resolved range is 2026-11-09 through 2026-11-15 (unless saved context supplies the year); no end-month lookup should execute. Report the next result/error. Once this passes, check a single-date folder and an explicit end-month range to cover both default and supplied captures.
+
+The general setup below is performed in the **Apple Shortcuts editor after generation/import**. It still applies to the replacement date helper. No JSON editing is required.
 
 There are **three Nothing placeholders to replace in total**, plus existing action settings/connections to inspect. The latter need changing only if the generated actions differ from the settings below. Keep every other Nothing/initializer. There are no Stop/Output blocks to insert.
 
@@ -16,7 +24,7 @@ There are **three Nothing placeholders to replace in total**, plus existing acti
 | V3 - Render Service Preview | None | Numeric comparisons and final Text result |
 | V3 - Preview Services | One fixed File action; one single-folder picker | Three helper targets; folder recursion off |
 
-Keep exact installed names as shown. **V3 - Parse Filename** remains the existing revision 3/interface 2.0. Main Preview Services is revision 2/interface 1.0; the four other Stage 2B sources are revision 1/interface 1.0.
+Keep exact installed names as shown. **V3 - Parse Filename** remains revision 3/interface 2.0. Main Preview Services and Resolve Folder Dates are now revision 2/interface 1.0; the three split helpers remain revision 1/interface 1.0.
 
 ## 1. Put the two JSON files in place
 
@@ -126,6 +134,26 @@ Check the existing Run Shortcut actions in this order:
 Use actual variable tokens in each List. Do not select Resolve Folder Dates directly in this main: Load Folder Context owns that call. Keep JSON serialization/Get Dictionary connections as generated unless inspection shows a missing/wrong token. The final Quick Look and Get Text both use current named report.
 
 ## 7. Run the first check
+
+Latest date trace, 8 November: using local **INov9-15**, the user sees `DATE KEY: ScannedChoirMusic/INov9-15`, then `DATE CONTEXT LOOKUP RETURNED`. The dynamic context-key lookup is therefore populated and completes; do not change it or infer that the saved entry exists. The remaining missing-key failure lies later in the date resolver, subject to the continuing same-error report. Remaining Get Dictionary Value actions use lowerStartMonth, optional lowerEndMonth, and lowerWeekday. For INov9-15 normal flow expects nov, no end-month lookup (month omitted), then English weekday keys beginning mon in 2026. Temporary before-action alerts at those three lookups can identify the last reached action and actual key without changing source/config logic.
+
+Trace result, 8 November: **CONTEXT 1 appears, then failure; CONTEXT 2 does not appear.** This localises the missing-key error to the nested **V3 - Resolve Folder Dates** call. Load Folder Context's post-return lookups/readback are not reached.
+
+Next focused check: in the installed date resolver, find its first dynamic Get Dictionary Value after the Text joining sourceNamespace/folderName and Set Variable contextKey. This lookup's Key must use current named contextKey (or the immediately producing combined Text output), Dictionary=contexts; for HNov8 with normal config the key is ScannedChoirMusic/HNov8. A missing saved entry is allowed and must not be repaired by inventing a context key. Inspect both the key field and actual produced Text. If the key field is blank or linked to the initial empty contextKey value, reconnect it to the immediately preceding combined Text result. If still unclear, temporary Show Alerts immediately before/after this lookup distinguish earlier literal-key failure, this lookup, and later month/weekday lookups; preserve all existing output connections. No source/config replacement is inferred from the first trace alone.
+
+Latest inspection: the user confirms the first two lookup Key fields in Load Folder Context appear correct, but the parent main only highlights Run Load Folder Context. The exact child lookup remains unknown. To locate the boundary without reimporting, add two temporary native Show Alert actions in the installed **V3 - Load Folder Context**, inside its ready-state branch: immediately BEFORE Run Resolve Folder Dates, literal `CONTEXT 1 - calling date helper`; immediately AFTER that Run and before Get Dictionary, literal `CONTEXT 2 - date helper returned`. Disable Cancel. Preserve Run input=the preceding dateInput List and Get Dictionary input=that Run's output, never either alert's output. Adjacent source comments V3-CONTEXT-TRACE-BEFORE/AFTER record this manual-only diagnostic; executable source is unchanged.
+
+Rerun the normal main with the local folder. No first alert means failure in Load Folder Context before the nested date call (inspect the next literal `_schemaVersion` lookup as well as the already checked keys). First alert only means the error propagates from Resolve Folder Dates. Both alerts mean the helper returned and the failing lookup is later in Load Folder Context. Report which alerts appeared before changing keys/config. Remove only these temporary alerts after diagnosis. Do not run the helpers alone without their input Lists.
+
+Latest follow-up, 8 November: a copied folder under On My iPad passes the earlier Select Files boundary. The next reported error is at the main's Run V3 - Load Folder Context: **No key was provided to the Get Dictionary Value action**. This is a missing lookup-Key input, not proof that a named JSON field is absent. The exact failing child action is not yet identified; the error may propagate from Resolve Folder Dates. Date resolution/context save and downstream rows/render remain unverified. No config/source repair is inferred yet.
+
+Inspect the installed Load Folder Context Get Dictionary Value actions in order: literal keys `weekFolderDates`, `contextPath`, `_schemaVersion`, then (after Run Resolve Folder Dates) `schemaVersion`, `status`, `reason`, `startDate`, `endDate`, `qualifier`, `yearSource`, `contextKey`. The last readback lookup uses the actual current named `contextKey` token, not a literal expression or empty initializer. If the error comes from its nested Run Resolve Folder Dates, inspect that helper instead; do not replace all keys or regenerate every shortcut. Identify the first blank Key field and its position before choosing a lasting source repair.
+
+Latest runtime attempt, 8 November: after completing the native reconnections, the user selected a folder in **Nextcloud in Files** and received **Select Files finished with an error. The operation couldn't be completed. Select Files finished with an error.** Treat folder selection as the first reported failing boundary; successful return of a Folder and downstream date/context/row/render execution are not established. No source repair or compiler failure is inferred from this native picker error.
+
+Next diagnostic: in Files, COPY a small HNov8 folder (or create a local HNov8 folder containing copies of two or three of its PDFs) under **On My iPad**. Preserve its folder name and PDF names. Launch the unchanged main and choose that local folder. Keep config and context references as configured; no reimport or JSON edit is needed. If folder selection succeeds, continue to the next actual result/error. If the same Select Files error occurs locally, inspect the single-folder native picker/settings next. This is a provider-isolation check, not a permanent replacement for Nextcloud discovery.
+
+Research: [Nextcloud iOS issue 3261](https://github.com/nextcloud/ios/issues/3261) reports Shortcuts folder-access failures through its File Provider, with later discussion of other providers and Apple changes. Its reproduction uses other actions/versions, so it is related evidence only; it does not prove this exact picker failure's cause or that every Nextcloud folder operation fails.
 
 Launch **V3 - Preview Services** and choose **HNov8**. Expect 2026-11-08, Sunday Eucharist, and numeric positions with 10 after 9. Run again: the same dates/order should return with year source **saved-context**. The detailed expected output is below.
 
