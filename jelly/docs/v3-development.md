@@ -8,6 +8,8 @@ Current source delivery: **parser revision 3/interface 2.0; preview revision 5/i
 
 Latest device results: **reported one-file and four-file integration passes**. The four-file report correctly separates Sunam/Mattins, Sunpm/Evensong and bare Sun/Eucharist, skips Monday, extracts position 11 and preserves voice/verse qualifiers. Four selected items produced four report rows. Later individual reports also confirm Thur as Thursday Evensong and SunRemem as Remem/special-remem with the hymn payload preserved. Quote-pair display artifacts remain. See the [exact four-file evidence and limits](../tests/v3/README.md#reported-pass-four-file-sunday-and-monday-preview-8-november-2026). The latest consumed revision and saved-config persistence are not explicitly confirmed. No local build or runtime tests were run; wider acceptance remains pending.
 
+Worked design examples: [V3 workflow walkthroughs](v3-workflow-walkthroughs.md), covering new reordered services, existing-target Add/Overwrite, deleted pieces, interruption, date changes and a mixed Weekly batch. These do not expand the current preview's implemented scope.
+
 ## Current delivery
 
 Stage 2A implements filename parsing and recurring-schedule preview only. The earlier Notes generation and false no-selection results remain historical failed attempts. The reported one-file/four-file results supersede their blocking status only for those fixtures, not all branches. Exact hashes, app versions, installed-source identities and repairs remain unconfirmed.

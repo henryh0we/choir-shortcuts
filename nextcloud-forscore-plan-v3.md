@@ -10,6 +10,8 @@ Implementation direction, 7 November 2026: build from the ground up under **V3 -
 
 Naming evidence update, 8 November 2026: [Nextcloud listing findings and implementation implications](jelly/docs/v3-development.md#nextcloud-naming-evidence-and-implementation-implications-8-november-2026) cover single-date/range folders, qualifiers, noncontiguous numeric order, hymn/psalm references, collection scope and historical event folders. These are planning notes; source/config behavior is unchanged.
 
+Worked examples: [service creation, reordering, Add, Overwrite and rerun walkthroughs](jelly/docs/v3-workflow-walkthroughs.md). These illustrate the intended design rather than completed features or test results.
+
 ## Purpose and scope
 
 Build two user-facing Apple Shortcuts for the initial release, with a third workflow reserved for a future addition:

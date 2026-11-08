@@ -14,6 +14,8 @@ V3 is a ground-up creation under **V3 - ...** installed names. It has no legacy 
 
 Current source pair: parser revision 3/interface 2.0 and preview revision 5/interface 3.0. Guarded processing and natural completion replace generated Output/Exit calls. Preview uses one native config File reference configured after import; no manual stop blocks are needed. Reported fixtures work, while exact installed revisions and saved-config persistence remain unconfirmed. See the [return history](jelly/docs/v3-output-resolution.md) and [current setup](jelly/tests/v3/README.md#current-setup-preview-revision-5-saved-config-file).
 
+Use the [worked service-creation walkthroughs](jelly/docs/v3-workflow-walkthroughs.md) as design examples when building stages 4–8; each scenario still needs actual implementation and manual acceptance.
+
 ## Sequence at a glance
 
 These are development/test cycles, not calendar commitments. A failed checkpoint adds a repair cycle to its stage. Some stages deliberately have two checkpoints so a failure does not require debugging the entire workflow.
