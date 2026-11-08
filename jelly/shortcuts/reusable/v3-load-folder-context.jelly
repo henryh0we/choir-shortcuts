@@ -1,0 +1,118 @@
+// V3 - Load Folder Context | Purpose/role: Persistent folder dates | Specification revision: 1; interface 1.0 | Contract: Two Text items folder name/config JSON; date Dictionary on natural completion; writes separate context only | Dependencies: V3 - Resolve Folder Dates 1.0 | Stage: Source review only; crash workaround unverified
+import Shortcuts
+var runState = "ready"
+var report = ""
+var folderName = ""
+var configJson = ""
+var contextJson = "{}"
+var keepDateResult = "off"
+text(text: "{}") >> emptyJson
+getDictionaryFrom(input: emptyJson) >> emptyDictionary
+var contexts = emptyDictionary
+var dates = emptyDictionary
+count(type: Items, input: ShortcutInput) >> argumentCount
+text(text: "${argumentCount}") >> argumentCountText
+if(argumentCountText != "2") {
+runState = "error"
+report = "Load Folder Context requires folder name/config JSON Text."
+}
+if(runState == "ready") {
+repeatEach(ShortcutInput) {
+if(RepeatIndex == "1") {
+folderName = RepeatItem
+}
+if(RepeatIndex == "2") {
+configJson = RepeatItem
+}
+}
+getDictionaryFrom(input: configJson) >> config
+valueFor(key: "weekFolderDates", dictionary: config) >> dateSettings
+valueFor(key: "contextPath", dictionary: dateSettings) >> contextPath
+if(contextPath == nil) {
+runState = "error"
+report = "Missing V3 context path."
+}
+}
+if(runState == "ready") {
+// V3-SERVICES-CONTEXT-READ CHECK: Get File has Show Document Picker OFF, Error If Not Found OFF and Select Multiple OFF; path=current contextPath Text from config. Set/inspect its base folder as iCloud Drive/Shortcuts, the SAME base folder as V3-SERVICES-CONTEXT-SAVE. Missing file must yield zero items, not halt. Keep the V3 context separate from config and all music.
+getFile(picker: false, path: "${contextPath}", error: false, multiple: false) >> contextFile
+count(type: Items, input: contextFile) >> contextFileCount
+text(text: "${contextFileCount}") >> contextFileCountText
+if(contextFileCountText != "0") {
+if(contextFileCountText != "1") {
+runState = "error"
+report = "ERROR: Folder context lookup did not return exactly one file."
+}
+if(runState == "ready") {
+getTextFrom(input: contextFile) >> savedContextText
+contextJson = savedContextText
+getDictionaryFrom(input: contextJson) >> loadedContexts
+contexts = loadedContexts
+valueFor(key: "_schemaVersion", dictionary: contexts) >> contextVersion
+text(text: "${contextVersion}") >> contextVersionText
+if(contextVersionText != "1") {
+runState = "error"
+report = "ERROR: Unsupported V3 folder-context file; it was not overwritten."
+}
+}
+}
+if(runState == "ready") {
+list(items: ["${folderName}", "${configJson}", "${contextJson}"]) >> dateInput
+runShortcut(name: "V3 - Resolve Folder Dates", input: dateInput, show: false) >> dateRaw
+getDictionaryFrom(input: dateRaw) >> resolvedDates
+dates = resolvedDates
+valueFor(key: "schemaVersion", dictionary: dates) >> dateSchema
+text(text: "${dateSchema}") >> dateSchemaText
+valueFor(key: "status", dictionary: dates) >> dateStatus
+valueFor(key: "reason", dictionary: dates) >> dateReason
+if(dateSchemaText != "1") {
+runState = "error"
+report = "ERROR: Inspect V3 - Resolve Folder Dates interface 1.0 and its Dictionary return."
+}
+if(dateStatus != "resolved") {
+runState = "error"
+report = "FOLDER: ${folderName} | STATUS: ${dateStatus} | REASON: ${dateReason}"
+if(dateSchemaText == "1") {
+if(dateStatus == "unresolved") {
+keepDateResult = "on"
+}
+if(dateStatus == "error") {
+keepDateResult = "on"
+}
+}
+}
+}
+if(runState == "ready") {
+valueFor(key: "startDate", dictionary: dates) >> startDate
+valueFor(key: "endDate", dictionary: dates) >> endDate
+valueFor(key: "qualifier", dictionary: dates) >> qualifier
+valueFor(key: "yearSource", dictionary: dates) >> yearSource
+valueFor(key: "contextKey", dictionary: dates) >> contextKey
+if(yearSource != "saved-context") {
+setValue(key: "_schemaVersion", value: "1", dictionary: contexts) >> versionedContexts
+setValue(key: "${contextKey}", value: "${startDate}/${endDate}", dictionary: versionedContexts) >> updatedContexts
+getTextFrom(input: updatedContexts) >> contextToSave
+// V3-SERVICES-CONTEXT-SAVE CHECK: Save File input=contextToSave JSON Text, Ask Where To Save OFF, Overwrite ON, subpath=current contextPath. Set/inspect base folder as iCloud Drive/Shortcuts, EXACTLY the same as CONTEXT-READ. This is the ONLY write: folder-date bookkeeping, no music. Readback Get Text must consume THIS Save File output, not contextFile from before the save. Inspect Dictionary-to-Text JSON preservation; native save/JSON errors can abort.
+saveFile(input: contextToSave, ask: false, path: "${contextPath}", overwrite: true) >> savedContextFile
+getTextFrom(input: savedContextFile) >> contextReadbackText
+getDictionaryFrom(input: contextReadbackText) >> contextReadback
+valueFor(key: "${contextKey}", dictionary: contextReadback) >> savedRangeCheck
+text(text: "${startDate}/${endDate}") >> expectedRange
+if(savedRangeCheck != expectedRange) {
+runState = "error"
+report = "ERROR: Folder-context save did not read back the resolved range. Inspect read/save destinations; no music was processed."
+}
+}
+}
+
+}
+if(runState != "ready") {
+if(keepDateResult == "off") {
+setValue(key: "schemaVersion", value: "1", dictionary: emptyDictionary) >> errorVersion
+setValue(key: "status", value: "error", dictionary: errorVersion) >> errorStatus
+setValue(key: "reason", value: "${report}", dictionary: errorStatus) >> errorResult
+dates = errorResult
+}
+}
+// V3-CONTEXT-RETURN CHECK: Last Get Dictionary uses current named dates outside branches. Main accepts only schema 1/status resolved. No native File passes between shortcuts; no Output/Exit.
+getDictionaryFrom(input: dates)

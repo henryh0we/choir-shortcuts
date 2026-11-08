@@ -1,0 +1,158 @@
+// V3 - Render Service Preview | Purpose/role: Numeric ordering and report | Specification revision: 1; interface 1.0 | Contract: Two Text items rows JSON/report heading; Text on natural completion; no writes or display | Dependencies: None | Stage: Source review only; split crash workaround unverified
+import Shortcuts
+var runState = "ready"
+var rowsJson = ""
+var report = ""
+var lastServiceId = ""
+count(type: Items, input: ShortcutInput) >> argumentCount
+text(text: "${argumentCount}") >> argumentCountText
+if(argumentCountText != "2") {
+runState = "error"
+report = "Render Service Preview requires rows JSON and heading Text."
+}
+if(runState == "ready") {
+repeatEach(ShortcutInput) {
+if(RepeatIndex == "1") {
+rowsJson = RepeatItem
+}
+if(RepeatIndex == "2") {
+report = RepeatItem
+}
+}
+getDictionaryFrom(input: rowsJson) >> inputRows
+var rows = inputRows
+valueFor(key: "_schemaVersion", dictionary: rows) >> schema
+text(text: "${schema}") >> schemaText
+valueFor(key: "_runState", dictionary: rows) >> rowState
+valueFor(key: "_rowCount", dictionary: rows) >> rowCountText
+matchText(text: "${rowCountText}", regex: "^(0|[1-9][0-9]?)$|^100$", caseSensitive: true) >> validCount
+if(schemaText != "1") {
+runState = "error"
+report = "Unsupported preview-row schema."
+}
+if(rowState != "ready") {
+runState = "error"
+report = "Preview-row preparation failed; no ordered proposal."
+}
+if(validCount == nil) {
+runState = "error"
+report = "Preview-row count must be 0-100."
+}
+}
+if(runState == "ready") {
+calculate(input: "${rowCountText}") >> rowCount
+// V3-RENDER-SORT CHECK: Nested Repeats use named scanIndex, never RepeatIndex. If operands=Calculate Number outputs; sort by day ordinal/group ordinal/position. Each emitted row updates current named rows. Preserve duplicate-position unresolved flags; no native Files are sorted or deduplicated.
+var readyCount = 0
+repeat(rowCount) {
+var found = "off"
+var bestIndex = ""
+var bestDay = 0
+var bestGroup = 0
+var bestPosition = 0
+var scanIndex = 0
+repeat(rowCount) {
+calculate(input: "${scanIndex} + 1") >> nextScanIndex
+scanIndex = nextScanIndex
+valueFor(key: "row-${scanIndex}-status", dictionary: rows) >> scanStatus
+if(scanStatus == "ready") {
+valueFor(key: "row-${scanIndex}-dayOrdinal", dictionary: rows) >> scanDayText
+valueFor(key: "row-${scanIndex}-groupOrdinal", dictionary: rows) >> scanGroupText
+valueFor(key: "row-${scanIndex}-position", dictionary: rows) >> scanPositionText
+calculate(input: "${scanDayText}") >> scanDay
+calculate(input: "${scanGroupText}") >> scanGroup
+calculate(input: "${scanPositionText}") >> scanPosition
+var choose = "off"
+if(found == "off") {
+choose = "on"
+}
+if(found == "on") {
+if(scanDay < bestDay) {
+choose = "on"
+}
+if(scanDay == bestDay) {
+if(scanGroup < bestGroup) {
+choose = "on"
+}
+if(scanGroup == bestGroup) {
+if(scanPosition < bestPosition) {
+choose = "on"
+}
+}
+}
+}
+if(choose == "on") {
+found = "on"
+bestIndex = scanIndex
+bestDay = scanDay
+bestGroup = scanGroup
+bestPosition = scanPosition
+}
+}
+}
+if(found == "on") {
+valueFor(key: "row-${bestIndex}-serviceId", dictionary: rows) >> bestServiceId
+valueFor(key: "row-${bestIndex}-name", dictionary: rows) >> bestName
+valueFor(key: "row-${bestIndex}-source", dictionary: rows) >> bestSource
+valueFor(key: "row-${bestIndex}-canonical", dictionary: rows) >> bestCanonical
+valueFor(key: "row-${bestIndex}-position", dictionary: rows) >> bestPositionText
+if(bestServiceId != lastServiceId) {
+text(text: """
+${report}
+
+SERVICE: ${bestName}
+ID: ${bestServiceId}
+PROPOSED ORDER (available unambiguous music only):
+""") >> reportWithService
+report = reportWithService
+lastServiceId = bestServiceId
+}
+text(text: """
+${report}
+POSITION ${bestPositionText}: ${bestCanonical}
+SOURCE: ${bestSource}
+""") >> reportWithPiece
+report = reportWithPiece
+setValue(key: "row-${bestIndex}-status", value: "emitted", dictionary: rows) >> rowsAfterEmission
+rows = rowsAfterEmission
+calculate(input: "${readyCount} + 1") >> nextReadyCount
+readyCount = nextReadyCount
+}
+}
+text(text: """
+${report}
+
+UNASSIGNED / SKIPPED ITEMS:
+""") >> reportWithDiagnostics
+report = reportWithDiagnostics
+var diagnosticIndex = 0
+repeat(rowCount) {
+calculate(input: "${diagnosticIndex} + 1") >> nextDiagnosticIndex
+diagnosticIndex = nextDiagnosticIndex
+valueFor(key: "row-${diagnosticIndex}-status", dictionary: rows) >> diagnosticStatus
+if(diagnosticStatus != "emitted") {
+valueFor(key: "row-${diagnosticIndex}-source", dictionary: rows) >> diagnosticSource
+valueFor(key: "row-${diagnosticIndex}-reason", dictionary: rows) >> diagnosticReason
+valueFor(key: "row-${diagnosticIndex}-serviceId", dictionary: rows) >> diagnosticService
+valueFor(key: "row-${diagnosticIndex}-position", dictionary: rows) >> diagnosticPosition
+text(text: """
+${report}
+FILE: ${diagnosticSource}
+STATUS: ${diagnosticStatus}
+SERVICE / POSITION: ${diagnosticService} / ${diagnosticPosition}
+REASON: ${diagnosticReason}
+""") >> reportWithDiagnostic
+report = reportWithDiagnostic
+}
+}
+text(text: """
+${report}
+
+Direct folder items: ${rowCount}. Dated, ordered music: ${readyCount}.
+No execution plan, PDF content validation, dated schedule overrides, archive/import, metadata or setlist writes in this delivery. No empty setlists are created.
+""") >> reportWithSummary
+report = reportWithSummary
+}
+// V3-RENDER-RETURN CHECK: Final Get Text uses current report after quote-pair-only cleanup, outside branches; caller owns Quick Look. No Output/Exit or native slots.
+replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
+report = cleanedReport
+getTextFrom(input: report)

@@ -1,102 +1,55 @@
-// V3 - Preview Services | Purpose/role: Read-only dated and ordered service preview | Specification revision: 1; interface 1.0 | Contract: Direct launch; saved config File; select one folder; report Text on natural completion; saves folder-date context only; no music/forScore writes | Dependencies: V3 - Resolve Folder Dates 1.0; V3 - Parse Filename 2.0 | Stage: Source reviewed only; iPad compilation, wiring and runtime pending
+// V3 - Preview Services | Purpose/role: Dated service preview | Specification revision: 2; interface 1.0 | Contract: Direct launch; fixed config; select one folder; report Text; context writes only | Dependencies: V3 - Load Folder Context 1.0; V3 - Prepare Preview Rows 1.0; V3 - Render Service Preview 1.0 | Stage: Source review only; split crash workaround unverified
 import Shortcuts
-
 var runState = "ready"
-var configJson = ""
-var contextJson = "{}"
 var report = "V3 SERVICE PREVIEW"
-var lastServiceId = ""
 var fileIndex = 0
-var rowCount = 0
 text(text: "{}") >> emptyJson
-getDictionaryFrom(input: emptyJson) >> emptyDictionary
-var rows = emptyDictionary
-var groups = emptyDictionary
-var contexts = emptyDictionary
-alert(alert: "Select one supported date folder. Only its direct contents are read. Resolved folder dates are saved separately for reruns; no PDF, archive or forScore changes.", title: "V3 service preview", cancel: true)
-// V3-SERVICES-CONFIG ADD/RECONNECT: Replace ONLY the next Nothing with native File fixed to the Stage 2B v3-config.json. Reconnect following missing-value If and Get Text to this File output before deleting the placeholder. Keep outside all branches/loops; no runtime config chooser.
+getDictionaryFrom(input: emptyJson) >> emptyFiles
+var files = emptyFiles
+alert(alert: "Select one date folder. Direct contents only. Separate folder-date context is saved; no music or forScore changes.", title: "V3 service preview", cancel: true)
+// V3-SERVICES-CONFIG ADD/RECONNECT: Replace ONLY next Nothing with native fixed File=v3-config.json. Reconnect next missing-value If and Get Text to this File output before deleting placeholder. Keep here outside branches/loops; If=does not have any value.
 nothing() >> configFile
 if(configFile == nil) {
 runState = "error"
-report = "Setup required: set V3-SERVICES-CONFIG to the Stage 2B v3-config.json."
+report = "Setup: set V3-SERVICES-CONFIG to v3-config.json."
 }
 if(runState == "ready") {
-getTextFrom(input: configFile) >> configText
-configJson = configText
+getTextFrom(input: configFile) >> configJson
 getDictionaryFrom(input: configJson) >> config
-valueFor(key: "version", dictionary: config) >> version
-text(text: "${version}") >> versionText
+valueFor(key: "version", dictionary: config) >> configVersion
+text(text: "${configVersion}") >> versionText
 if(versionText != "3") {
 runState = "error"
-report = "ERROR: V3 config version 3 is required."
+report = "Config version 3 required."
 }
-valueFor(key: "weekFolderDates", dictionary: config) >> dateSettings
-valueFor(key: "contextPath", dictionary: dateSettings) >> contextPath
-valueFor(key: "setlistNaming", dictionary: config) >> naming
-valueFor(key: "template", dictionary: naming) >> nameTemplate
-valueFor(key: "dateFormat", dictionary: naming) >> nameDateFormat
-valueFor(key: "servicePreview", dictionary: config) >> previewSettings
-valueFor(key: "maxFiles", dictionary: previewSettings) >> maxFiles
-if(contextPath == nil) {
-runState = "error"
-report = "ERROR: Use the Stage 2B config with weekFolderDates.contextPath."
-}
-if(nameTemplate == nil) {
-runState = "error"
-report = "ERROR: setlistNaming.template is missing."
-}
-if(nameDateFormat == nil) {
-runState = "error"
-report = "ERROR: setlistNaming.dateFormat is missing."
-}
+valueFor(key: "servicePreview", dictionary: config) >> settings
+valueFor(key: "maxFiles", dictionary: settings) >> maxFiles
 matchText(text: "${maxFiles}", regex: "^[1-9][0-9]*$", caseSensitive: true) >> validLimit
 if(validLimit == nil) {
 runState = "error"
-report = "ERROR: servicePreview.maxFiles must be a positive integer."
+report = "Config servicePreview.maxFiles must be a positive integer."
 }
 }
 if(runState == "ready") {
-// V3-SERVICES-FOLDER ADD/RECONNECT: Replace ONLY the next Nothing with native Select File set to Folders, Select Multiple OFF. Reconnect following missing-value If, Get Details of Files Name and Get Contents of Folder below to that picker output before deleting placeholder. No second music picker. Keep here before context loading/date resolution. Get Contents must have Recursive OFF.
+// V3-SERVICES-FOLDER ADD/RECONNECT: Replace ONLY next Nothing with native Select File: Folders, Multiple OFF. Reconnect next missing-value If, Name and later Folder Contents to picker output before deleting placeholder. Keep in this branch before context call; If=does not have any value.
 nothing() >> selectedFolder
 if(selectedFolder == nil) {
 runState = "error"
-report = "Setup required: complete V3-SERVICES-FOLDER with a single-folder picker."
+report = "Setup: complete V3-SERVICES-FOLDER single-folder picker."
+}
 }
 if(runState == "ready") {
 fileDetail(input: selectedFolder, property: Name) >> folderName
-// V3-SERVICES-CONTEXT-READ CHECK: Get File has Show Document Picker OFF, Error If Not Found OFF and Select Multiple OFF; path=current contextPath Text from config. Set/inspect its base folder as iCloud Drive/Shortcuts, the SAME base folder as V3-SERVICES-CONTEXT-SAVE. Missing file must yield zero items, not halt. Keep the V3 context separate from config and all music.
-getFile(picker: false, path: "${contextPath}", error: false, multiple: false) >> contextFile
-count(type: Items, input: contextFile) >> contextFileCount
-text(text: "${contextFileCount}") >> contextFileCountText
-if(contextFileCountText != "0") {
-if(contextFileCountText != "1") {
-runState = "error"
-report = "ERROR: Folder context lookup did not return exactly one file."
-}
-if(runState == "ready") {
-getTextFrom(input: contextFile) >> savedContextText
-contextJson = savedContextText
-getDictionaryFrom(input: contextJson) >> loadedContexts
-contexts = loadedContexts
-valueFor(key: "_schemaVersion", dictionary: contexts) >> contextVersion
-text(text: "${contextVersion}") >> contextVersionText
-if(contextVersionText != "1") {
-runState = "error"
-report = "ERROR: Unsupported V3 folder-context file; it was not overwritten."
-}
-}
-}
-if(runState == "ready") {
-list(items: ["${folderName}", "${configJson}", "${contextJson}"]) >> dateInput
-runShortcut(name: "V3 - Resolve Folder Dates", input: dateInput, show: false) >> dateRaw
-getDictionaryFrom(input: dateRaw) >> dates
+list(items: ["${folderName}", "${configJson}"]) >> contextInput
+runShortcut(name: "V3 - Load Folder Context", input: contextInput, show: false) >> contextResult
+getDictionaryFrom(input: contextResult) >> dates
 valueFor(key: "schemaVersion", dictionary: dates) >> dateSchema
 text(text: "${dateSchema}") >> dateSchemaText
 valueFor(key: "status", dictionary: dates) >> dateStatus
 valueFor(key: "reason", dictionary: dates) >> dateReason
 if(dateSchemaText != "1") {
 runState = "error"
-report = "ERROR: Inspect V3 - Resolve Folder Dates interface 1.0 and its Dictionary return."
+report = "Folder-context schema mismatch; inspect helper return."
 }
 if(dateStatus != "resolved") {
 runState = "error"
@@ -108,284 +61,72 @@ valueFor(key: "startDate", dictionary: dates) >> startDate
 valueFor(key: "endDate", dictionary: dates) >> endDate
 valueFor(key: "qualifier", dictionary: dates) >> qualifier
 valueFor(key: "yearSource", dictionary: dates) >> yearSource
-valueFor(key: "contextKey", dictionary: dates) >> contextKey
-if(yearSource != "saved-context") {
-setValue(key: "_schemaVersion", value: "1", dictionary: contexts) >> versionedContexts
-setValue(key: "${contextKey}", value: "${startDate}/${endDate}", dictionary: versionedContexts) >> updatedContexts
-getTextFrom(input: updatedContexts) >> contextToSave
-// V3-SERVICES-CONTEXT-SAVE CHECK: Save File input=contextToSave JSON Text, Ask Where To Save OFF, Overwrite ON, subpath=current contextPath. Set/inspect base folder as iCloud Drive/Shortcuts, EXACTLY the same as CONTEXT-READ. This is the ONLY write: folder-date bookkeeping, no music. Readback Get Text must consume THIS Save File output, not contextFile from before the save. Inspect Dictionary-to-Text JSON preservation; native save/JSON errors can abort.
-saveFile(input: contextToSave, ask: false, path: "${contextPath}", overwrite: true) >> savedContextFile
-getTextFrom(input: savedContextFile) >> contextReadbackText
-getDictionaryFrom(input: contextReadbackText) >> contextReadback
-valueFor(key: "${contextKey}", dictionary: contextReadback) >> savedRangeCheck
-text(text: "${startDate}/${endDate}") >> expectedRange
-if(savedRangeCheck != expectedRange) {
-runState = "error"
-report = "ERROR: Folder-context save did not read back the resolved range. Inspect read/save destinations; no music was processed."
-}
-}
-}
-if(runState == "ready") {
 text(text: """
 V3 SERVICE PREVIEW
 FOLDER: ${folderName}
 QUALIFIER: ${qualifier}
 DATES: ${startDate} to ${endDate}
 YEAR SOURCE: ${yearSource}
-Folder-date context is saved separately. No music or forScore writes.
-Only direct folder contents are read. Services are grouped by date/slot; positions are numeric. Gaps are allowed. Duplicate positions remain unresolved.
+Context saved separately; no music or forScore writes.
+Direct folder contents only. Gaps allowed; duplicate positions unresolved.
 """) >> heading
 report = heading
+// V3-SERVICES-FILES CHECK: Folder Contents input=selectedFolder picker output, Recursive OFF. Count/Repeat both use THIS original output. Only Name/Extension Text is stored; do not rebuild/pass native Files.
 getFolderContents(folder: selectedFolder, recursive: false) >> folderFiles
 count(type: Items, input: folderFiles) >> fileCount
-calculate(input: "${maxFiles}") >> fileLimitNumber
-if(fileCount > fileLimitNumber) {
+calculate(input: "${maxFiles}") >> fileLimit
+calculate(input: "100") >> hardLimit
+if(fileCount > fileLimit) {
 runState = "error"
-report = "ERROR: Folder contains ${fileCount} direct items; preview limit is ${maxFiles}. Choose a smaller disposable fixture folder. No files were parsed."
+report = "Folder has ${fileCount} items; configured preview limit is ${maxFiles}."
+}
+if(fileCount > hardLimit) {
+runState = "error"
+report = "This preview supports at most 100 direct items."
+}
 }
 if(runState == "ready") {
-// V3-SERVICES-ROWS CHECK: Repeat consumes original nonrecursive Folder Contents output. Name/Extension consume its Repeat Item. Only serializable Text fields enter rows; no new native File collection or File index selector. Named counters avoid nested Repeat Item/Index references; inspect numeric Calculate outputs and If operators.
 repeatEach(folderFiles) {
-if(runState == "ready") {
 calculate(input: "${fileIndex} + 1") >> nextFileIndex
 fileIndex = nextFileIndex
 fileDetail(input: RepeatItem, property: Name) >> sourceName
 fileDetail(input: RepeatItem, property: File Extension) >> extension
-var rowStatus = "unresolved"
-var rowReason = "Not a PDF filename (or a directory); not used as music."
-var canonical = ""
-var position = ""
-var serviceId = ""
-var serviceDate = ""
-var serviceName = ""
-var proposedName = ""
-var dayOrdinal = ""
-var groupOrdinal = ""
-matchText(text: "${extension}", regex: "^pdf$", caseSensitive: false) >> isPdf
-var parseFile = "off"
-if(isPdf != nil) {
-parseFile = "on"
+setValue(key: "file-${fileIndex}-name", value: "${sourceName}", dictionary: files) >> filesWithName
+setValue(key: "file-${fileIndex}-extension", value: "${extension}", dictionary: filesWithName) >> filesWithExtension
+files = filesWithExtension
 }
-if(sourceName == nil) {
-parseFile = "off"
-rowReason = "Empty filename; not a usable music candidate."
-}
-if(parseFile == "on") {
-list(items: ["${sourceName}", "${configJson}"]) >> filenameInput
-runShortcut(name: "V3 - Parse Filename", input: filenameInput, show: false) >> filenameRaw
-getDictionaryFrom(input: filenameRaw) >> parsed
-valueFor(key: "schemaVersion", dictionary: parsed) >> parserSchema
-text(text: "${parserSchema}") >> parserSchemaText
-valueFor(key: "status", dictionary: parsed) >> parsedStatus
-matchText(text: "${parsedStatus}", regex: "^(parsed|skipped|unresolved|error)$", caseSensitive: true) >> validStatus
-if(parserSchemaText != "2") {
+setValue(key: "_count", value: "${fileIndex}", dictionary: files) >> countedFiles
+setValue(key: "_schemaVersion", value: "1", dictionary: countedFiles) >> finalFiles
+// V3-SERVICES-TEXT CHECK: Get Text must serialize finalFiles and dates Dictionaries to valid JSON. Lists below contain actual Text tokens only. No File/Folder objects cross shortcut boundaries.
+getTextFrom(input: finalFiles) >> filesJson
+getTextFrom(input: dates) >> datesJson
+list(items: ["${configJson}", "${datesJson}", "${filesJson}"]) >> rowsInput
+runShortcut(name: "V3 - Prepare Preview Rows", input: rowsInput, show: false) >> rowsResult
+getDictionaryFrom(input: rowsResult) >> rows
+valueFor(key: "_schemaVersion", dictionary: rows) >> rowSchema
+text(text: "${rowSchema}") >> rowSchemaText
+valueFor(key: "_runState", dictionary: rows) >> rowState
+valueFor(key: "_report", dictionary: rows) >> rowReport
+if(rowSchemaText != "1") {
 runState = "error"
-report = "${report} | ERROR: Filename parser interface mismatch; remaining items were not processed."
+report = "Preview-row schema mismatch; inspect helper return."
 }
-if(validStatus == nil) {
+if(rowState != "ready") {
 runState = "error"
-report = "${report} | ERROR: Filename parser returned no supported status; remaining items were not processed."
-}
-if(runState == "ready") {
-rowStatus = parsedStatus
-valueFor(key: "reason", dictionary: parsed) >> parsedReason
-rowReason = parsedReason
-if(parsedStatus == "error") {
-runState = "error"
-report = "${report} | FILE: ${sourceName} | ERROR: ${parsedReason} | Remaining items were not processed."
-}
-if(parsedStatus == "parsed") {
-valueFor(key: "dayKey", dictionary: parsed) >> dayKey
-valueFor(key: "serviceSlot", dictionary: parsed) >> slotKey
-valueFor(key: "serviceName", dictionary: parsed) >> parsedServiceName
-valueFor(key: "canonicalName", dictionary: parsed) >> parsedCanonical
-valueFor(key: "position", dictionary: parsed) >> parsedPosition
-serviceName = parsedServiceName
-canonical = parsedCanonical
-position = parsedPosition
-valueFor(key: "date-${dayKey}", dictionary: dates) >> resolvedServiceDate
-if(resolvedServiceDate == nil) {
-rowStatus = "unresolved"
-rowReason = "Filename weekday lies outside the resolved folder range; no other week was guessed."
-}
-if(resolvedServiceDate != nil) {
-serviceDate = resolvedServiceDate
-valueFor(key: "ordinal-${dayKey}", dictionary: dates) >> resolvedOrdinal
-dayOrdinal = resolvedOrdinal
-valueFor(key: "short-${dayKey}", dictionary: dates) >> dayShort
-text(text: "${serviceDate}/${slotKey}") >> resolvedServiceId
-serviceId = resolvedServiceId
-// V3-SERVICES-NAME CHECK: Format Date uses Custom=current nameDateFormat token, English UK/Gregorian/Europe London where exposed, input=current serviceDate ISO plus local noon. This changes display only; serviceId always uses the unformatted ISO date and stable slot. Literal replacements consume the chained current Text outputs, with serviceName substituted last.
-formatDate(date: "${serviceDate} 12:00", dStyle: Custom, tStyle: None, custom: "${nameDateFormat}", isoTime: false) >> displayDate
-replaceText(input: "${nameTemplate}", find: "{date}", replace: "${displayDate}", isRegex: false, caseSensitive: true) >> nameWithDate
-replaceText(input: "${nameWithDate}", find: "{dayShort}", replace: "${dayShort}", isRegex: false, caseSensitive: true) >> nameWithDay
-replaceText(input: "${nameWithDay}", find: "{serviceName}", replace: "${serviceName}", isRegex: false, caseSensitive: true) >> resolvedName
-proposedName = resolvedName
-valueFor(key: "${serviceId}", dictionary: groups) >> existingGroup
-if(existingGroup == nil) {
-setValue(key: "${serviceId}", value: "${fileIndex}", dictionary: groups) >> groupsWithNew
-groups = groupsWithNew
-groupOrdinal = fileIndex
-}
-if(existingGroup != nil) {
-groupOrdinal = existingGroup
-}
-rowStatus = "ready"
-rowReason = "Dated occurrence; numeric position preserved."
-// V3-SERVICES-DUPLICATES CHECK: Scan all earlier numbered Text rows; compare BOTH serviceId and position. Mark every matching previous row AND current row unresolved, including a third collision. Do not change canonical names, renumber gaps or choose the first file.
-var duplicateIndex = 0
-repeat(rowCount) {
-calculate(input: "${duplicateIndex} + 1") >> nextDuplicateIndex
-duplicateIndex = nextDuplicateIndex
-valueFor(key: "row-${duplicateIndex}-serviceId", dictionary: rows) >> earlierServiceId
-valueFor(key: "row-${duplicateIndex}-position", dictionary: rows) >> earlierPosition
-if(earlierServiceId == serviceId) {
-if(earlierPosition == position) {
-rowStatus = "unresolved"
-rowReason = "Duplicate position within one dated service; no order was guessed."
-setValue(key: "row-${duplicateIndex}-status", value: "unresolved", dictionary: rows) >> rowsWithConflict
-rows = rowsWithConflict
-setValue(key: "row-${duplicateIndex}-reason", value: "Duplicate position within one dated service; no order was guessed.", dictionary: rows) >> rowsWithConflictReason
-rows = rowsWithConflictReason
-}
-}
-}
-}
-}
+report = "${report} | ROW ERROR: ${rowReport}"
 }
 }
 if(runState == "ready") {
-setValue(key: "row-${fileIndex}-source", value: "${sourceName}", dictionary: rows) >> rowSource
-setValue(key: "row-${fileIndex}-status", value: "${rowStatus}", dictionary: rowSource) >> rowState
-setValue(key: "row-${fileIndex}-reason", value: "${rowReason}", dictionary: rowState) >> rowExplanation
-setValue(key: "row-${fileIndex}-canonical", value: "${canonical}", dictionary: rowExplanation) >> rowCanonical
-setValue(key: "row-${fileIndex}-position", value: "${position}", dictionary: rowCanonical) >> rowPosition
-setValue(key: "row-${fileIndex}-serviceId", value: "${serviceId}", dictionary: rowPosition) >> rowIdentity
-setValue(key: "row-${fileIndex}-name", value: "${proposedName}", dictionary: rowIdentity) >> rowName
-setValue(key: "row-${fileIndex}-dayOrdinal", value: "${dayOrdinal}", dictionary: rowName) >> rowDay
-setValue(key: "row-${fileIndex}-groupOrdinal", value: "${groupOrdinal}", dictionary: rowDay) >> rowGroup
-rows = rowGroup
-rowCount = fileIndex
+getTextFrom(input: rows) >> rowsJson
+list(items: ["${rowsJson}", "${report}"]) >> renderInput
+runShortcut(name: "V3 - Render Service Preview", input: renderInput, show: false) >> renderedReport
+getTextFrom(input: renderedReport) >> reportText
+report = reportText
+if(reportText == nil) {
+report = "Render Service Preview returned no Text; inspect its final action and caller target."
 }
 }
-}
-}
-}
-}
-}
-if(runState == "ready") {
-// V3-SERVICES-SORT CHECK: Repeated minimum selection uses Number outputs from Calculate, never lexical Text position comparison. Priority=date ordinal, group first-encounter ordinal, numeric position. Same-date service headings follow first encounter, not claimed tap order. Each emitted row is marked emitted in current named rows; one source occurrence is rendered once, with no File/Score deduplication.
-var readyCount = 0
-repeat(rowCount) {
-var found = "off"
-var bestIndex = ""
-var bestDay = 0
-var bestGroup = 0
-var bestPosition = 0
-var scanIndex = 0
-repeat(rowCount) {
-calculate(input: "${scanIndex} + 1") >> nextScanIndex
-scanIndex = nextScanIndex
-valueFor(key: "row-${scanIndex}-status", dictionary: rows) >> scanStatus
-if(scanStatus == "ready") {
-valueFor(key: "row-${scanIndex}-dayOrdinal", dictionary: rows) >> scanDayText
-valueFor(key: "row-${scanIndex}-groupOrdinal", dictionary: rows) >> scanGroupText
-valueFor(key: "row-${scanIndex}-position", dictionary: rows) >> scanPositionText
-calculate(input: "${scanDayText}") >> scanDay
-calculate(input: "${scanGroupText}") >> scanGroup
-calculate(input: "${scanPositionText}") >> scanPosition
-var choose = "off"
-if(found == "off") {
-choose = "on"
-}
-if(found == "on") {
-if(scanDay < bestDay) {
-choose = "on"
-}
-if(scanDay == bestDay) {
-if(scanGroup < bestGroup) {
-choose = "on"
-}
-if(scanGroup == bestGroup) {
-if(scanPosition < bestPosition) {
-choose = "on"
-}
-}
-}
-}
-if(choose == "on") {
-found = "on"
-bestIndex = scanIndex
-bestDay = scanDay
-bestGroup = scanGroup
-bestPosition = scanPosition
-}
-}
-}
-if(found == "on") {
-valueFor(key: "row-${bestIndex}-serviceId", dictionary: rows) >> bestServiceId
-valueFor(key: "row-${bestIndex}-name", dictionary: rows) >> bestName
-valueFor(key: "row-${bestIndex}-source", dictionary: rows) >> bestSource
-valueFor(key: "row-${bestIndex}-canonical", dictionary: rows) >> bestCanonical
-valueFor(key: "row-${bestIndex}-position", dictionary: rows) >> bestPositionText
-if(bestServiceId != lastServiceId) {
-text(text: """
-${report}
-
-SERVICE: ${bestName}
-ID: ${bestServiceId}
-PROPOSED ORDER (available unambiguous music only):
-""") >> reportWithService
-report = reportWithService
-lastServiceId = bestServiceId
-}
-text(text: """
-${report}
-POSITION ${bestPositionText}: ${bestCanonical}
-SOURCE: ${bestSource}
-""") >> reportWithPiece
-report = reportWithPiece
-setValue(key: "row-${bestIndex}-status", value: "emitted", dictionary: rows) >> rowsAfterEmission
-rows = rowsAfterEmission
-calculate(input: "${readyCount} + 1") >> nextReadyCount
-readyCount = nextReadyCount
-}
-}
-text(text: """
-${report}
-
-UNASSIGNED / SKIPPED ITEMS:
-""") >> reportWithDiagnostics
-report = reportWithDiagnostics
-var diagnosticIndex = 0
-repeat(rowCount) {
-calculate(input: "${diagnosticIndex} + 1") >> nextDiagnosticIndex
-diagnosticIndex = nextDiagnosticIndex
-valueFor(key: "row-${diagnosticIndex}-status", dictionary: rows) >> diagnosticStatus
-if(diagnosticStatus != "emitted") {
-valueFor(key: "row-${diagnosticIndex}-source", dictionary: rows) >> diagnosticSource
-valueFor(key: "row-${diagnosticIndex}-reason", dictionary: rows) >> diagnosticReason
-valueFor(key: "row-${diagnosticIndex}-serviceId", dictionary: rows) >> diagnosticService
-valueFor(key: "row-${diagnosticIndex}-position", dictionary: rows) >> diagnosticPosition
-text(text: """
-${report}
-FILE: ${diagnosticSource}
-STATUS: ${diagnosticStatus}
-SERVICE / POSITION: ${diagnosticService} / ${diagnosticPosition}
-REASON: ${diagnosticReason}
-""") >> reportWithDiagnostic
-report = reportWithDiagnostic
-}
-}
-text(text: """
-${report}
-
-Direct folder items: ${rowCount}. Dated, ordered music: ${readyCount}.
-No execution plan, PDF content validation, dated schedule overrides, archive/import, metadata or setlist writes in this delivery. No empty setlists are created.
-""") >> reportWithSummary
-report = reportWithSummary
-}
-// V3-SERVICES-CLEANUP CHECK: Same quote-pair-only cleanup as filename preview revision 6; named report receives result before Quick Look AND final Get Text. Both are outside all loops/branches; no generated Output/Exit.
+// V3-SERVICES-RETURN CHECK: Cleanup, Quick Look and final Get Text consume CURRENT named report, outside branches/loops. No Output/Exit/manual stop. Compiler workaround has no device pass yet.
 replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
 report = cleanedReport
 quicklook(input: report)

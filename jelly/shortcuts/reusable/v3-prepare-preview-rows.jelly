@@ -1,0 +1,199 @@
+// V3 - Prepare Preview Rows | Purpose/role: Dated preview rows | Specification revision: 1; interface 1.0 | Contract: Three Text items config/date-result/file-table JSON; Dictionary result; no writes | Dependencies: V3 - Parse Filename 2.0 | Stage: Source review only; split crash workaround unverified
+import Shortcuts
+var runState = "ready"
+var report = ""
+var configJson = ""
+var datesJson = ""
+var filesJson = ""
+var fileIndex = 0
+var rowCount = 0
+text(text: "{}") >> emptyJson
+getDictionaryFrom(input: emptyJson) >> emptyDictionary
+var rows = emptyDictionary
+var groups = emptyDictionary
+count(type: Items, input: ShortcutInput) >> argumentCount
+text(text: "${argumentCount}") >> argumentCountText
+if(argumentCountText != "3") {
+runState = "error"
+report = "Prepare Preview Rows requires config/date/file-table JSON Text."
+}
+if(runState == "ready") {
+repeatEach(ShortcutInput) {
+if(RepeatIndex == "1") {
+configJson = RepeatItem
+}
+if(RepeatIndex == "2") {
+datesJson = RepeatItem
+}
+if(RepeatIndex == "3") {
+filesJson = RepeatItem
+}
+}
+getDictionaryFrom(input: configJson) >> config
+getDictionaryFrom(input: datesJson) >> dates
+getDictionaryFrom(input: filesJson) >> files
+valueFor(key: "setlistNaming", dictionary: config) >> naming
+valueFor(key: "template", dictionary: naming) >> nameTemplate
+valueFor(key: "dateFormat", dictionary: naming) >> nameDateFormat
+valueFor(key: "_count", dictionary: files) >> fileCountText
+valueFor(key: "status", dictionary: dates) >> dateStatus
+valueFor(key: "schemaVersion", dictionary: dates) >> dateSchema
+valueFor(key: "_schemaVersion", dictionary: files) >> fileSchema
+valueFor(key: "version", dictionary: config) >> configVersion
+text(text: "${dateSchema}/${fileSchema}/${configVersion}") >> inputSchemas
+if(inputSchemas != "1/1/3") {
+runState = "error"
+report = "Expected date/file schemas 1 and config version 3."
+}
+matchText(text: "${fileCountText}", regex: "^(0|[1-9][0-9]?)$|^100$", caseSensitive: true) >> validCount
+if(validCount == nil) {
+runState = "error"
+report = "File table count must be 0-100."
+}
+if(dateStatus != "resolved") {
+runState = "error"
+report = "Folder dates are not resolved."
+}
+if(nameTemplate == nil) {
+runState = "error"
+report = "Missing setlist name template."
+}
+if(nameDateFormat == nil) {
+runState = "error"
+report = "Missing setlist date format."
+}
+}
+if(runState == "ready") {
+calculate(input: "${fileCountText}") >> fileCount
+// V3-ROWS-INPUT CHECK: Numbered name/extension Text comes from current files Dictionary; no native File transport. Repeat count=fileCount Number; named fileIndex advances once per row. Parser List=sourceName/configJson Text tokens.
+repeat(fileCount) {
+if(runState == "ready") {
+calculate(input: "${fileIndex} + 1") >> nextFileIndex
+fileIndex = nextFileIndex
+valueFor(key: "file-${fileIndex}-name", dictionary: files) >> sourceName
+valueFor(key: "file-${fileIndex}-extension", dictionary: files) >> extension
+var rowStatus = "unresolved"
+var rowReason = "Not a PDF filename (or a directory); not used as music."
+var canonical = ""
+var position = ""
+var serviceId = ""
+var serviceDate = ""
+var serviceName = ""
+var proposedName = ""
+var dayOrdinal = ""
+var groupOrdinal = ""
+matchText(text: "${extension}", regex: "^pdf$", caseSensitive: false) >> isPdf
+var parseFile = "off"
+if(isPdf != nil) {
+parseFile = "on"
+}
+if(sourceName == nil) {
+parseFile = "off"
+rowReason = "Empty filename; not a usable music candidate."
+}
+if(parseFile == "on") {
+list(items: ["${sourceName}", "${configJson}"]) >> filenameInput
+runShortcut(name: "V3 - Parse Filename", input: filenameInput, show: false) >> filenameRaw
+getDictionaryFrom(input: filenameRaw) >> parsed
+valueFor(key: "schemaVersion", dictionary: parsed) >> parserSchema
+text(text: "${parserSchema}") >> parserSchemaText
+valueFor(key: "status", dictionary: parsed) >> parsedStatus
+matchText(text: "${parsedStatus}", regex: "^(parsed|skipped|unresolved|error)$", caseSensitive: true) >> validStatus
+if(parserSchemaText != "2") {
+runState = "error"
+report = "${report} | ERROR: Filename parser interface mismatch; remaining items were not processed."
+}
+if(validStatus == nil) {
+runState = "error"
+report = "${report} | ERROR: Filename parser returned no supported status; remaining items were not processed."
+}
+if(runState == "ready") {
+rowStatus = parsedStatus
+valueFor(key: "reason", dictionary: parsed) >> parsedReason
+rowReason = parsedReason
+if(parsedStatus == "error") {
+runState = "error"
+report = "${report} | FILE: ${sourceName} | ERROR: ${parsedReason} | Remaining items were not processed."
+}
+if(parsedStatus == "parsed") {
+valueFor(key: "dayKey", dictionary: parsed) >> dayKey
+valueFor(key: "serviceSlot", dictionary: parsed) >> slotKey
+valueFor(key: "serviceName", dictionary: parsed) >> parsedServiceName
+valueFor(key: "canonicalName", dictionary: parsed) >> parsedCanonical
+valueFor(key: "position", dictionary: parsed) >> parsedPosition
+serviceName = parsedServiceName
+canonical = parsedCanonical
+position = parsedPosition
+valueFor(key: "date-${dayKey}", dictionary: dates) >> resolvedServiceDate
+if(resolvedServiceDate == nil) {
+rowStatus = "unresolved"
+rowReason = "Filename weekday lies outside the resolved folder range; no other week was guessed."
+}
+if(resolvedServiceDate != nil) {
+serviceDate = resolvedServiceDate
+valueFor(key: "ordinal-${dayKey}", dictionary: dates) >> resolvedOrdinal
+dayOrdinal = resolvedOrdinal
+valueFor(key: "short-${dayKey}", dictionary: dates) >> dayShort
+text(text: "${serviceDate}/${slotKey}") >> resolvedServiceId
+serviceId = resolvedServiceId
+// V3-SERVICES-NAME CHECK: Format Date uses Custom=current nameDateFormat token, English UK/Gregorian/Europe London where exposed, input=current serviceDate ISO plus local noon. This changes display only; serviceId always uses the unformatted ISO date and stable slot. Literal replacements consume the chained current Text outputs, with serviceName substituted last.
+formatDate(date: "${serviceDate} 12:00", dStyle: Custom, tStyle: None, custom: "${nameDateFormat}", isoTime: false) >> displayDate
+replaceText(input: "${nameTemplate}", find: "{date}", replace: "${displayDate}", isRegex: false, caseSensitive: true) >> nameWithDate
+replaceText(input: "${nameWithDate}", find: "{dayShort}", replace: "${dayShort}", isRegex: false, caseSensitive: true) >> nameWithDay
+replaceText(input: "${nameWithDay}", find: "{serviceName}", replace: "${serviceName}", isRegex: false, caseSensitive: true) >> resolvedName
+proposedName = resolvedName
+valueFor(key: "${serviceId}", dictionary: groups) >> existingGroup
+if(existingGroup == nil) {
+setValue(key: "${serviceId}", value: "${fileIndex}", dictionary: groups) >> groupsWithNew
+groups = groupsWithNew
+groupOrdinal = fileIndex
+}
+if(existingGroup != nil) {
+groupOrdinal = existingGroup
+}
+rowStatus = "ready"
+rowReason = "Dated occurrence; numeric position preserved."
+// V3-SERVICES-DUPLICATES CHECK: Scan all earlier numbered Text rows; compare BOTH serviceId and position. Mark every matching previous row AND current row unresolved, including a third collision. Do not change canonical names, renumber gaps or choose the first file.
+var duplicateIndex = 0
+repeat(rowCount) {
+calculate(input: "${duplicateIndex} + 1") >> nextDuplicateIndex
+duplicateIndex = nextDuplicateIndex
+valueFor(key: "row-${duplicateIndex}-serviceId", dictionary: rows) >> earlierServiceId
+valueFor(key: "row-${duplicateIndex}-position", dictionary: rows) >> earlierPosition
+if(earlierServiceId == serviceId) {
+if(earlierPosition == position) {
+rowStatus = "unresolved"
+rowReason = "Duplicate position within one dated service; no order was guessed."
+setValue(key: "row-${duplicateIndex}-status", value: "unresolved", dictionary: rows) >> rowsWithConflict
+rows = rowsWithConflict
+setValue(key: "row-${duplicateIndex}-reason", value: "Duplicate position within one dated service; no order was guessed.", dictionary: rows) >> rowsWithConflictReason
+rows = rowsWithConflictReason
+}
+}
+}
+}
+}
+}
+}
+if(runState == "ready") {
+setValue(key: "row-${fileIndex}-source", value: "${sourceName}", dictionary: rows) >> rowSource
+setValue(key: "row-${fileIndex}-status", value: "${rowStatus}", dictionary: rowSource) >> rowState
+setValue(key: "row-${fileIndex}-reason", value: "${rowReason}", dictionary: rowState) >> rowExplanation
+setValue(key: "row-${fileIndex}-canonical", value: "${canonical}", dictionary: rowExplanation) >> rowCanonical
+setValue(key: "row-${fileIndex}-position", value: "${position}", dictionary: rowCanonical) >> rowPosition
+setValue(key: "row-${fileIndex}-serviceId", value: "${serviceId}", dictionary: rowPosition) >> rowIdentity
+setValue(key: "row-${fileIndex}-name", value: "${proposedName}", dictionary: rowIdentity) >> rowName
+setValue(key: "row-${fileIndex}-dayOrdinal", value: "${dayOrdinal}", dictionary: rowName) >> rowDay
+setValue(key: "row-${fileIndex}-groupOrdinal", value: "${groupOrdinal}", dictionary: rowDay) >> rowGroup
+rows = rowGroup
+rowCount = fileIndex
+}
+}
+}
+}
+setValue(key: "_schemaVersion", value: "1", dictionary: rows) >> versionedRows
+setValue(key: "_rowCount", value: "${rowCount}", dictionary: versionedRows) >> countedRows
+setValue(key: "_runState", value: "${runState}", dictionary: countedRows) >> stateRows
+setValue(key: "_report", value: "${report}", dictionary: stateRows) >> finalRows
+// V3-ROWS-RETURN CHECK: Last action=Get Dictionary from finalRows outside branches. Caller checks schema 1/state ready before rendering; no Output/Exit or native slots.
+getDictionaryFrom(input: finalRows)

@@ -1,6 +1,6 @@
 # V3 first manual iPad checkpoint — filenames
 
-Next source delivery: [Stage 2B dated/grouped/ordered service preview](stage-2b-services.md), with exact Copyover files, native setup and first HNov8 checkpoint. It has no device results yet and leaves the working filename shortcuts unchanged. The filename evidence below remains the Stage 2A record.
+Next source delivery: [Stage 2B dated/grouped/ordered service preview](stage-2b-services.md). Revision 1 crashed in editor loading and at Compile Jelly Text; revision 2 splits the workflow into smaller installed helpers and has no successful device result yet. Start with its renderer-only compilation checkpoint. Working filename shortcuts are unchanged; the evidence below remains the Stage 2A record.
 
 Status: **The current filename-preview checkpoint has reported passes for its working paths, report cleanup, saved config, Thursday aliases, conflicting rules and wrong config version. Normal config is restored.** Ready to begin the date/order increment; unknown-prefix/non-PDF results and broader matrix cases remain unconfirmed rather than implied passes. No local compilation or automated/runtime tests were performed. [Contracts and known limits](../../docs/v3-development.md) apply.
 

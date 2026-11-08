@@ -8,6 +8,9 @@ Start with [V3 development and contracts](docs/v3-development.md) and the
 have reported iPad passes. Stage 2B adds source-reviewed folder dates, grouping
 and numeric ordering in **V3 - Preview Services**, with separate saved date
 context. Follow its [installation and iPad checkpoint](tests/v3/stage-2b-services.md).
+The initial service preview crashed in editor loading and Compile Jelly Text;
+revision 2 splits it into smaller helpers as an unverified workaround. Start by
+compiling Render Service Preview alone, as described in that checkpoint.
 No local builds or tests are run under the current V3 instruction. Configuration
 is separate: [v3-config.example.json](config/v3-config.example.json).
 

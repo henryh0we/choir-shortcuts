@@ -10,7 +10,12 @@ V3 is independent of every legacy Shortcut below. Install only:
 Stage 2B adds (source-reviewed only; iPad acceptance pending):
 
 3. **V3 - Resolve Folder Dates**, [source](../shortcuts/reusable/v3-resolve-folder-dates.jelly), revision 1/interface 1.0, no installed dependencies.
-4. **V3 - Preview Services**, [source](../shortcuts/main/v3-preview-services.jelly), revision 1/interface 1.0, calls Resolve Folder Dates 1.0 and Parse Filename 2.0. Install its date helper first. Keep the working filename preview/parser unchanged.
+4. **V3 - Load Folder Context**, [source](../shortcuts/reusable/v3-load-folder-context.jelly), revision 1/interface 1.0, calls Resolve Folder Dates 1.0; owns the separate context read/save/readback.
+5. **V3 - Prepare Preview Rows**, [source](../shortcuts/reusable/v3-prepare-preview-rows.jelly), revision 1/interface 1.0, calls Parse Filename 2.0; no native objects/writes.
+6. **V3 - Render Service Preview**, [source](../shortcuts/reusable/v3-render-service-preview.jelly), revision 1/interface 1.0, no dependencies/writes. Compile this small component first as the focused crash checkpoint; dependency order among independent helpers is otherwise flexible.
+7. **V3 - Preview Services**, [source](../shortcuts/main/v3-preview-services.jelly), revision 2/interface 1.0, calls Load Folder Context, Prepare Preview Rows and Render Service Preview 1.0. Keep working filename preview/parser unchanged.
+
+Preview Services revision 1 crashed on editor loading AND at Compile Jelly Text by user report. Its [source is preserved](../tests/v3/fixtures/v3-preview-services-revision-1-crash.jelly). Revision 2's split is an unverified workaround; no byte limit/root cause or compiler pass is claimed. Main retains native folder access; helper transport is Text JSON only. Config/date resolver are unchanged. Context read/save settings moved into Load Folder Context.
 
 Use the complete updated version-3 config and [Stage 2B setup/checkpoint](../tests/v3/stage-2b-services.md). The new preview reads one folder, groups dated occurrences and sorts numeric positions; its only write is a separate saved-date context JSON. Current Date, fixed config File and single-folder picker have three native setup slots total. Inspect the common Get/Save File base folder and date/numeric settings. No forScore, archive, metadata, setlist or legacy dependency is introduced.
 
