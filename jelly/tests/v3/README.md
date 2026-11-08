@@ -1,6 +1,23 @@
 # V3 first manual iPad checkpoint — filenames
 
-Status: **One-file and four-file preview paths passed by user report; quote-line formatting artifacts remain.** No local compilation or automated/runtime tests were performed. [Contracts and known limits](../../docs/v3-development.md) apply.
+Status: **One-file and four-file preview paths passed by user report. Preview revision 6 adds quote-line cleanup; its iPad acceptance remains pending.** No local compilation or automated/runtime tests were performed. [Contracts and known limits](../../docs/v3-development.md) apply.
+
+## Current replacement: preview revision 6, checkpoint finalisation
+
+Replace only **V3 - Preview Filenames** using [the updated source](../../shortcuts/main/v3-preview-filenames.jelly) through Copyover. Keep **V3 - Parse Filename** revision 3/interface 2.0 and your existing version-3 config. Preview interface remains 3.0. Complete V3-CONFIG-FILE again after fresh import using the saved-config setup below; confirm Run Shortcut still targets V3 - Parse Filename.
+
+Revision 6 preserves the tested selection, parsing and report accumulation. A final Replace Text removes only whole lines containing two double quotes with optional spaces, before Quick Look and the final Text return. Blank lines may remain. Quotes within field values are preserved. This is a targeted presentation cleanup, not a proven diagnosis or repair of the compiler's multiline-string handling. The binding is backed by the pinned Replace Text documentation and existing parser usage; this revision is source-reviewed only.
+
+Inspect V3-PREVIEW-CLEANUP: Replace Text must consume the current named report, with Regular Expression enabled and an empty replacement. Its result must set report, which feeds both Quick Look and final Get Text. The generated Find field must contain `(?m)^ *"{2} *$` (the source escape before the quote must not become report content).
+
+Finish this checkpoint on the iPad:
+
+1. Repeat the reported Sunday/Monday four-file selection, plus Thur and SunRemem. Confirm one row per file, unchanged parsed fields, Monday skipped and no standalone quote-pair lines. Report should still state that dates/sorting are absent.
+2. Run again: only the music picker should appear, using the same saved config. Edit a recurring schedule switch in that config, rerun and confirm the changed status; restore the original value afterwards.
+3. Cover the remaining Thursday aliases Thu/Thurs, an unknown prefix, a non-PDF selection and an edition-qualified payload. Unknown/non-PDF rows must be unresolved and qualifiers preserved. Provider order remains intentional.
+4. Using a disposable config copy, test an overlapping rule (unresolved, no guessed service), then valid JSON with version 2 (error before music selection). Restore the normal config reference. Malformed JSON/regex can abort natively; no recoverable-error guarantee is claimed.
+
+Record the installed revision, any native repairs and the resulting report. Only actual device results can close Stage 2A; revision 6 is not yet a reported pass. The broader matrix below remains available for additional cases.
 
 ## Reported pass: SunRemem special service, 8 November 2026
 

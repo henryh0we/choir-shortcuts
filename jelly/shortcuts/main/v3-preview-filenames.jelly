@@ -1,4 +1,4 @@
-// V3 - Preview Filenames | Purpose/role: Read-only V3 entry increment | Specification revision: 5; interface 3.0 | Contract: Direct launch; fixed config File set after import; pick music only; report Text by natural completion; input ignored; no music writes | Dependencies: V3 - Parse Filename interface 2.0 | Stage: Source reviewed only, not compiled or run; docs/v3-output-resolution.md
+// V3 - Preview Filenames | Purpose/role: Read-only V3 entry increment | Specification revision: 6; interface 3.0 | Contract: Direct launch; fixed config File set after import; pick music only; cleaned report Text by natural completion; input ignored; no music writes | Dependencies: V3 - Parse Filename interface 2.0 | Stage: Source reviewed only, not compiled or run; docs/v3-output-resolution.md
 import Shortcuts
 
 // SETTINGS / FORMATTING: Set the native File at V3-CONFIG-FILE once after import to the separate v3-config.json. Each run reads that File without a config picker; filenameFormats and weeklySchedule own the rules. Dates/overrides/sorting remain unimplemented. No manual stop blocks are needed; one native File reference requires setup.
@@ -125,6 +125,9 @@ report = nextReport
 }
 }
 }
+// V3-PREVIEW-CLEANUP CHECK: Replace Text input=current named report after all branches/loops; Regular Expression=on, Find=the supplied multiline pattern matching ONLY a whole line of two double quotes with optional spaces, Replace=empty. Set named report to cleanedReport before BOTH Quick Look and final Get Text. Preserve quotes inside FILE/CANONICAL fields. This targets observed display artifacts; multiline-generation cause and cleanup require iPad confirmation.
+replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
+report = cleanedReport
 quicklook(input: report)
 // V3-PREVIEW-COMPLETION CHECK: Last executable action=Get Text from current named report, after Quick Look and outside all branches/loops. Normal completion supplies the Text result. No generated output/exit binding or manual slot. Native picker cancellation/action failure can still abort before this point.
 getTextFrom(input: report)
