@@ -1,8 +1,26 @@
 # Stage 2B: dated, grouped and ordered preview
 
+**Current investigation, 9 November 2026:** use [the consolidated error record and separate test plan](stage-2b-error-isolation.md). It collates reported failures/repairs and starts with isolated Date conversion and advancement tests. The older troubleshooting paragraphs below are historical steps, not a sequence to keep applying. No new Shortcut source or config is delivered by that documentation update.
+
 8 November 2026. **The user confirms all newly supplied split shortcuts load correctly.** This records successful loading; exact compile/import actions, native setup and integrated runtime have not yet been reported. No local code/builds/automated tests were run to establish correctness. Stage 2A filename-preview passes remain separate evidence.
 
 ## What to change now
+
+**Latest concrete native defect:** revision-4 rerun still reports Please choose a value for each parameter; the user found the rollover If with left endMonthNumber and **blank right operand**, with Less Than highlighted red. Repair this installed action before further source changes: left is the Calculate output for endMonth (**endMonthNumber**), operator **is less than**, right is the earlier Calculate output for startMonth (**startMonthNumber**). Keep right-hand operand a Number token; do not type the variable name as literal Text. For INov9-15 both values should be 11, so the +1-year branch is skipped. Rerun the same main/local folder. This identifies a concrete missing parameter, but a successful full run is not yet recorded and other unset fields are not ruled out. Adjacent source comment V3-DATES-ROLLOVER records the manual repair. No reimport or config edit is needed; source already expresses the intended comparison. Do not attribute the earlier required-parameter error conclusively to blank optional Match input; that was an unverified candidate.
+
+**Latest correction candidate: Resolve Folder Dates revision 4.** CONTEXT 1 followed by the required-parameter error persists after revision 3's Date relocation. The precise failing native action remains unknown. Source review identifies a likely blank-input boundary introduced by revision 2: matching absent optional year/end-day/end-month directly. Revision 4 constructs nonempty Text (year:/day:/month: plus the original capture) before each Match and anchors its regex to that prefix. Counts/defaults are unchanged. This candidate has no device pass; no local builds/tests were run.
+
+To preserve installed Current Date wiring, apply three manual edits in **Resolve Folder Dates** instead of reimporting: add a Text immediately before each optional-capture Match Text action; use the literal prefix plus the original capture's actual variable token; connect Match Text input to that new Text output; change only its regex as follows. Leave Count connected to Match output and preserve existing 0/1 If comparisons.
+
+| Optional check | New Text content (prefix plus token) | Match regex |
+| --- | --- | --- |
+| Year | `year:` + explicitYear | `^year:[0-9]{4}$` |
+| End day | `day:` + endDayCapture | `^day:([12][0-9]|3[01]|[1-9])$` |
+| End month | `month:` + endMonthName | `^month:[A-Za-z]{3}$` |
+
+For INov9-15 with no saved context, expect year: (0 matches), day:15 (1), month: (0). Rerun the same main/local folder. If the error persists, identify the exact action with before/after alerts at these checks before further source changes. The full repo source also contains the edits; after replacement complete the top-level Current Date slot again. Other shortcuts/config/context remain unchanged.
+
+**Latest setup simplification: Resolve Folder Dates revision 3.** Current Date is now stored at the very top: native Date (Current Date) -> Set Variable currentDate. Replace only the date helper source if adopting this revision, complete that top-level slot, and keep Set Variable connected to the new Date output. Later consumers use named currentDate. Optional-capture count corrections from revision 2 remain. No config/other shortcut changes. This does not claim to resolve the subsequently reported unspecified missing-parameter error; its action is still unidentified. Source review only, no local builds/tests.
 
 **New targeted source delivery: Resolve Folder Dates revision 2.** The trace for local INov9-15 shows start-month key `nov`, followed by an empty end-month key inside a branch that should have been skipped. This identifies the failing optional end-month lookup; it does not establish whether native has-value semantics, generated If polarity or token wiring caused the branch to run.
 
@@ -24,7 +42,7 @@ There are **three Nothing placeholders to replace in total**, plus existing acti
 | V3 - Render Service Preview | None | Numeric comparisons and final Text result |
 | V3 - Preview Services | One fixed File action; one single-folder picker | Three helper targets; folder recursion off |
 
-Keep exact installed names as shown. **V3 - Parse Filename** remains revision 3/interface 2.0. Main Preview Services and Resolve Folder Dates are now revision 2/interface 1.0; the three split helpers remain revision 1/interface 1.0.
+Keep exact installed names as shown. **V3 - Parse Filename** remains revision 3/interface 2.0. Main Preview Services is revision 2/interface 1.0; Resolve Folder Dates is revision 4/interface 1.0; the three split helpers remain revision 1/interface 1.0. Earlier revision notes below are history, superseded by the latest delivery above.
 
 ## 1. Put the two JSON files in place
 
@@ -35,18 +53,18 @@ Normal config/context are unchanged by the shortcut split. If these files are al
 
 ## 2. V3 - Resolve Folder Dates
 
-Find the Comment beginning **V3-DATES-CURRENT**. It is inside the branch used when there is no saved date range and no explicit folder year. Leave the replacement in that branch.
+Find **V3-DATES-CURRENT** immediately after import at the top of revision 3. The Current Date action and its Set Variable now live outside all branches.
 
 1. Add native **Date**, set to **Current Date**, immediately before the Nothing directly below that comment.
-2. Change the following missing-value If to use the new **Date action's output**. Its condition must be **does not have any value**.
-3. In the following current-year **Format Date**, replace the old Nothing token with that same Date output. Keep Custom format **yyyy**. It sits inside the following ready-state If; preserve that placement.
-4. Delete only the replaced Nothing after reconnecting both consumers.
+2. Set the immediately following **Set Variable currentDate** input to the new Date action's actual output. Preserve this Set Variable.
+3. The later missing-value If and current-year Format Date must read the **named currentDate variable**. The If is **does not have any value**; Format Date uses Custom **yyyy**. No additional Date action belongs in that branch.
+4. Delete only the replaced top-level Nothing after reconnecting Set Variable.
 
 Inspect the other existing actions; add no further placeholders/actions:
 
 | Format Date output in source | Input | Custom format |
 | --- | --- | --- |
-| currentYear | New Current Date output | yyyy |
+| currentYear | Named currentDate set at the top | yyyy |
 | checkedStart | nativeStart from Get Dates | yyyy-MM-dd |
 | checkedEnd | nativeEnd from Get Dates | yyyy-MM-dd |
 | cursorIso | Current named cursorDate | yyyy-MM-dd |
@@ -134,6 +152,18 @@ Check the existing Run Shortcut actions in this order:
 Use actual variable tokens in each List. Do not select Resolve Folder Dates directly in this main: Load Folder Context owns that call. Keep JSON serialization/Get Dictionary connections as generated unless inspection shows a missing/wrong token. The final Quick Look and Get Text both use current named report.
 
 ## 7. Run the first check
+
+Newest native inspection: user reports both loop Format Date actions were not set to the expected Custom formats and changed them; the next error is Format Date cannot convert Text to Date. The exact failing Format Date/input value is not yet identified. Use Custom `yyyy-MM-dd` (four y) and `EEE`, but do not treat the format string as the cause of an input conversion failure. Inspect the failing action's actual input token; if it is the loop formatter it must receive current named cursorDate retaining a native Date from nativeStart/Adjusted Date, not a typed variable name, a formatted date Text initializer or another loop output. Temporary Quick Look immediately before that failing action, consuming the exact same input token, can reveal the actual value. Preserve the once-only cursorDate initializer and per-iteration native Date update. No passing advancement or new source repair is established.
+
+Latest loop trace for local INov9-15: user reports seven identical alerts, start 2026-11-09/current 2026-11-09/end 2026-11-15/complete off, then CONTEXT 2. This establishes correct displayed endpoints and no displayed cursor progression; it does not distinguish a stale Format Date input from a failed/incorrectly wired Adjust Date/Set Variable. Inspect BOTH loop Format Date inputs and Adjust Date input for CURRENT NAMED cursorDate. Adjust must Add 1 day; its following Set Variable cursorDate must consume that Adjusted Date result within the complete-is-off branch. Preserve the once-only cursorDate=nativeStart initializer outside Repeat. Add a missing update Set Variable only if inspection confirms it is absent. V3-DATES-CURSOR records these exact native connections; no reimport/config change is needed. Rerun for dates 9 through 15 and complete on at the last iteration; no pass is recorded yet.
+
+Newest range result: the user confirms the cursorIso/endIso equality was also broken and repaired, but INov9-15 still returns the same range-incomplete result. Four blank RHS comparisons are now reported (rollover, start roundtrip, end roundtrip, loop completion); do not infer that the remaining error is solved by those repairs. Next inspect actual loop values before changing the algorithm: add ONE temporary Show Alert inside the active Repeat, immediately after the cursorIso/endIso If ends and before the complete-is-off Adjust Date branch. Display startIso, cursorIso, endIso and CURRENT NAMED complete with actual tokens. Report alert count plus first/last values. Expected seven active iterations 2026-11-09 through 2026-11-15, with complete=on at the last. Constant cursor indicates advancement/consumer wiring; matching end with complete still off indicates equality/assignment wiring; complete on here but final unresolved indicates downstream guard reads the wrong value. These are diagnostic branches, not observed causes.
+
+Latest native wiring reports: the user found BOTH checkedStart-is-not-startIso and checkedEnd-is-not-endIso generated with blank right operands, in addition to the earlier rollover comparison. After reconnecting them, the next reported result for local INov9-15 is unresolved with Range is reversed or exceeds 7 inclusive days. This means the controlled range-incomplete path returned; it does not prove actual dates are reversed or overlong. Next inspect the loop's `cursorIso is endIso` comparison, especially its right operand, and its true-branch Set Variable complete=literal on. Adjacent V3-DATES-COMPLETE records exact wiring. If correctly connected and still incomplete, inspect actual startIso/endIso and per-iteration cursorIso plus cursorDate advancement before changing date policy.
+
+Latest result after the native rollover-If RHS repair: the user sees both CONTEXT 1 and CONTEXT 2 and receives `FOLDER: INov9-15 | STATUS: unresolved | REASON: End date failed exact calendar roundtrip`. This confirms the nested helper returned a controlled Dictionary-compatible result and the caller displayed its failure. It does not establish successful date resolution/context save or downstream row/render processing. The helper reached the native end-date roundtrip comparison; do not change folder conventions or remove that guard.
+
+Next targeted inspection: insert a temporary Text/Quick Look immediately before `if(checkedEnd != endIso)` in the installed date helper. Display current named endIso (expected), endDateText (native parse input), checkedEnd (formatted result), and optionally startIso/checkedStart, using actual tokens. Preserve If operands/connections; Quick Look must not replace either date token. For INov9-15 in current-year 2026 expect endIso=2026-11-15, endDateText=2026-11-15 12:00, checkedEnd=2026-11-15. If display values agree but the If still fires, inspect native If polarity/operands and whitespace before changing calendar logic. No source/config replacement is required for this diagnostic.
 
 Latest date trace, 8 November: using local **INov9-15**, the user sees `DATE KEY: ScannedChoirMusic/INov9-15`, then `DATE CONTEXT LOOKUP RETURNED`. The dynamic context-key lookup is therefore populated and completes; do not change it or infer that the saved entry exists. The remaining missing-key failure lies later in the date resolver, subject to the continuing same-error report. Remaining Get Dictionary Value actions use lowerStartMonth, optional lowerEndMonth, and lowerWeekday. For INov9-15 normal flow expects nov, no end-month lookup (month omitted), then English weekday keys beginning mon in 2026. Temporary before-action alerts at those three lookups can identify the last reached action and actual key without changing source/config logic.
 

@@ -9,7 +9,7 @@ V3 is independent of every legacy Shortcut below. Install only:
 
 Stage 2B adds (source-reviewed only; iPad acceptance pending):
 
-3. **V3 - Resolve Folder Dates**, [source](../shortcuts/reusable/v3-resolve-folder-dates.jelly), revision 2/interface 1.0, no installed dependencies. Optional capture guards now use explicit Match/Count/Text comparisons after a reported empty end-month lookup; device rerun pending. Replace only this helper for that correction and reconnect its Current Date slot.
+3. **V3 - Resolve Folder Dates**, [source](../shortcuts/reusable/v3-resolve-folder-dates.jelly), revision 4/interface 1.0, no installed dependencies. Optional-capture Match checks now consume nonempty prefixed Text. Current Date remains at the top via Set Variable currentDate. Required-parameter failure's exact action remains unknown; candidate awaits device check. Guide offers three manual edits preserving installed Date wiring, or replace only this helper and complete the top-level Date slot.
 4. **V3 - Load Folder Context**, [source](../shortcuts/reusable/v3-load-folder-context.jelly), revision 1/interface 1.0, calls Resolve Folder Dates 1.0; owns the separate context read/save/readback.
 5. **V3 - Prepare Preview Rows**, [source](../shortcuts/reusable/v3-prepare-preview-rows.jelly), revision 1/interface 1.0, calls Parse Filename 2.0; no native objects/writes.
 6. **V3 - Render Service Preview**, [source](../shortcuts/reusable/v3-render-service-preview.jelly), revision 1/interface 1.0, no dependencies/writes. Compile this small component first as the focused crash checkpoint; dependency order among independent helpers is otherwise flexible.

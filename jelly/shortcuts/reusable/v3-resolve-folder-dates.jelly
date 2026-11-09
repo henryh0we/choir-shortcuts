@@ -1,5 +1,9 @@
-// V3 - Resolve Folder Dates | Purpose/role: Shared V3 folder-date resolver | Specification revision: 2; interface 1.0 | Contract: Three Text List items folder name/config JSON/saved context JSON; one Dictionary on natural completion; no writes or prompts | Dependencies: None | Stage: Source review only; optional-capture count correction awaits iPad check
+// V3 - Resolve Folder Dates | Purpose/role: Shared V3 folder-date resolver | Specification revision: 4; interface 1.0 | Contract: Three Text List items folder name/config JSON/saved context JSON; one Dictionary on natural completion; no writes or prompts | Dependencies: None | Stage: Source review only; nonempty optional-field probes await iPad check
 import Shortcuts
+
+// V3-DATES-CURRENT ADD/RECONNECT: At this top-level position replace ONLY next Nothing with native Date set to Current Date. Reconnect immediately following Set Variable currentDate input to that native Date output before deleting placeholder. Preserve this Set Variable; later missing-value If and yyyy Format Date must read CURRENT NAMED currentDate, not the Nothing or an initial Text. Keep both actions here before all branches/loops; no year prompt.
+nothing() >> currentDateResult
+var currentDate = currentDateResult
 
 var folderName = ""
 var configJson = ""
@@ -110,13 +114,13 @@ yearSource = "saved-context"
 if(savedRange == nil) {
 var resolvedYear = explicitYear
 yearSource = "explicit-folder-year"
-// V3-DATES-YEAR CHECK: Match input=explicitYear capture Text, Count Items input=yearMatches output; If uses yearMatchCountText is literal Text 0. Empty optional captures must take current-year fallback, not native has-value tests on Replace Text output.
-matchText(text: "${explicitYear}", regex: "^[0-9]{4}$", caseSensitive: true) >> yearMatches
+// V3-DATES-YEAR CHECK: Text=literal year: followed by actual explicitYear token; Match input=THIS yearProbeText output, regex=^year:[0-9]{4}$. Count Items input=yearMatches; If uses yearMatchCountText is Text 0. Prefix keeps native Match input nonempty when capture is absent; preserve current-year fallback.
+text(text: "year:${explicitYear}") >> yearProbeText
+matchText(text: "${yearProbeText}", regex: "^year:[0-9]{4}$", caseSensitive: true) >> yearMatches
 count(type: Items, input: yearMatches) >> yearMatchCount
 text(text: "${yearMatchCount}") >> yearMatchCountText
 if(yearMatchCountText == "0") {
-// V3-DATES-CURRENT ADD/RECONNECT: Replace ONLY the next Nothing with native Date set to Current Date. Reconnect its following missing-value If and current-year Format Date to that native Date output before deleting the placeholder. Keep inside this no-saved/no-explicit-year branch. Format Date uses Custom yyyy, Gregorian calendar and Europe/London time zone where exposed; there is no year prompt.
-nothing() >> currentDate
+// V3-DATES-YEAR-INPUT CHECK: Both following missing-value If and yyyy Format Date read current named currentDate set at the top. No Date/Nothing insertion belongs in this branch. Format=Custom yyyy; Gregorian calendar/Europe London where exposed.
 if(currentDate == nil) {
 runState = "error"
 reason = "Setup required: complete V3-DATES-CURRENT with native Current Date."
@@ -134,15 +138,17 @@ valueFor(key: "${lowerStartMonth}", dictionary: months) >> startMonth
 var endMonth = startMonth
 var endDay = startDay
 var endYear = resolvedYear
-// V3-DATES-END-DAY CHECK: Match input=endDayCapture Text; Count input=endDayMatches output. If=endDayMatchCountText is literal Text 1. Preserve endDay=startDay default for a single-date folder; update only from a valid day capture.
-matchText(text: "${endDayCapture}", regex: "^([12][0-9]|3[01]|[1-9])$", caseSensitive: true) >> endDayMatches
+// V3-DATES-END-DAY CHECK: Text=literal day: followed by actual endDayCapture token; Match input=THIS endDayProbeText output, regex=^day:([12][0-9]|3[01]|[1-9])$. Count=endDayMatches; If=endDayMatchCountText is Text 1. Preserve endDay=startDay default; prefix prevents empty native Match input.
+text(text: "day:${endDayCapture}") >> endDayProbeText
+matchText(text: "${endDayProbeText}", regex: "^day:([12][0-9]|3[01]|[1-9])$", caseSensitive: true) >> endDayMatches
 count(type: Items, input: endDayMatches) >> endDayMatchCount
 text(text: "${endDayMatchCount}") >> endDayMatchCountText
 if(endDayMatchCountText == "1") {
 endDay = endDayCapture
 }
-// V3-DATES-END-MONTH CHECK: Match input=endMonthName Text; Count input=endMonthMatches output. If=endMonthMatchCountText is literal Text 1. Keep endMonth=startMonth default; for INov9-15 count MUST be 0 and the following lowercase/Get Value branch MUST be skipped.
-matchText(text: "${endMonthName}", regex: "^[A-Za-z]{3}$", caseSensitive: true) >> endMonthMatches
+// V3-DATES-END-MONTH CHECK: Text=literal month: followed by actual endMonthName token; Match input=THIS endMonthProbeText output, regex=^month:[A-Za-z]{3}$. Count=endMonthMatches; If=endMonthMatchCountText is Text 1. Keep endMonth=startMonth; INov9-15 yields month:, count 0 and skips lookup. Prefix prevents empty native Match input.
+text(text: "month:${endMonthName}") >> endMonthProbeText
+matchText(text: "${endMonthProbeText}", regex: "^month:[A-Za-z]{3}$", caseSensitive: true) >> endMonthMatches
 count(type: Items, input: endMonthMatches) >> endMonthMatchCount
 text(text: "${endMonthMatchCount}") >> endMonthMatchCountText
 if(endMonthMatchCountText == "1") {
@@ -162,6 +168,7 @@ reason = "End month has no configured numeric mapping."
 if(runState == "ready") {
 calculate(input: "${startMonth}") >> startMonthNumber
 calculate(input: "${endMonth}") >> endMonthNumber
+// V3-DATES-ROLLOVER RECONNECT: Installed If was reported with blank right operand. Left=Number output of Calculate endMonth (endMonthNumber); operator=is less than; right=Number output of preceding Calculate startMonth (startMonthNumber). For INov9-15 both=11, so branch must not run. Keep both Calculate actions and If here; inside branch Calculate resolvedYear+1 updates endYear. No action insertion/deletion. Source variable-to-variable comparison is unverified generation; inspect RHS after every reimport.
 if(endMonthNumber < startMonthNumber) {
 calculate(input: "${resolvedYear} + 1") >> nextYear
 endYear = nextYear
@@ -192,10 +199,12 @@ reason = "Folder dates did not each resolve to one native Date."
 if(runState == "ready") {
 formatDate(date: "${nativeStart}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> checkedStart
 formatDate(date: "${nativeEnd}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> checkedEnd
+// V3-DATES-START-ROUNDTRIP RECONNECT: User reports installed If RHS blank. Left=checkedStart from start Format Date, operator=is not, right=CURRENT NAMED startIso Text. Keep comparison here after both Format Date actions. For INov9-15 in 2026 expected start=2026-11-09. No action insertion/deletion.
 if(checkedStart != startIso) {
 runState = "unresolved"
 reason = "Start date failed exact calendar roundtrip."
 }
+// V3-DATES-END-ROUNDTRIP CHECK: Native If left=checkedEnd from Format Date of nativeEnd, operator=is not, right=CURRENT NAMED endIso. For INov9-15 in 2026 both=2026-11-15. Temporarily insert Text/Quick Look immediately before If showing named endIso, endDateText and checkedEnd actual tokens; preserve both If operands and remove only diagnostic actions afterwards. End Get Dates input=endDateText; end Format Date input=nativeEnd, Custom yyyy-MM-dd.
 if(checkedEnd != endIso) {
 runState = "unresolved"
 reason = "End date failed exact calendar roundtrip."
@@ -204,10 +213,12 @@ reason = "End date failed exact calendar roundtrip."
 }
 if(runState == "ready") {
 var cursorDate = nativeStart
+// V3-DATES-CURSOR RECONNECT: Preserve this cursorDate initializer OUTSIDE Repeat. Inside Repeat, BOTH Format Date inputs and Adjust Date input must use CURRENT NAMED cursorDate, not nativeStart/initializer token. Adjust=Add 1 day; following Set Variable cursorDate input=that Adjusted Date output, inside complete-is-off branch. If Set Variable is absent, add it there; keep initializer. User saw 2026-11-09 repeated seven times; repaired advancement is not yet verified.
 // V3-DATES-RANGE CHECK: Repeat exactly 7; current named cursorDate feeds every Format/Adjust action. Custom EEE must produce configured English weekday keys. Adjust Date is Add 1 day (calendar day, not seconds). All Get/Set Dictionary consumers read current named result; a single date stops after its first iteration. No repeated weekday may overwrite a previous date.
 repeat(7) {
 if(runState == "ready") {
 if(complete == "off") {
+// V3-DATES-FORMAT-INPUT CHECK: Loop Format Date inputs=current named cursorDate holding nativeStart/Adjusted Date, Custom yyyy-MM-dd and EEE. User reports Text-to-Date conversion error after setting Custom; exact failing input is unverified. For manual diagnosis add temporary Quick Look immediately before failing formatter using the EXACT SAME input token; preserve formatter input/output connections and remove only diagnostic afterwards. Do not type cursorDate/nativeStart as literal Text or store formatted Text back into cursorDate.
 formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> cursorIso
 formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "EEE", isoTime: false) >> cursorShort
 changeCase(text: "${cursorShort}", case: lowercase) >> lowerWeekday
@@ -224,9 +235,11 @@ setValue(key: "ordinal-${dayKey}", value: "${offset}", dictionary: result) >> re
 result = resultOrdinal
 setValue(key: "short-${dayKey}", value: "${cursorShort}", dictionary: result) >> resultShort
 result = resultShort
+// V3-DATES-COMPLETE CHECK/RECONNECT: Inside active range Repeat after day fields, If left=THIS iteration cursorIso Format Date Text, operator=is, right=CURRENT NAMED endIso Text. Inspect RHS because user found other generated variable-comparison operands blank. Its true branch MUST Set Variable complete to literal Text on. For INov9-15, 2026-11-15 equals endIso on iteration 7. Preserve following complete-is-off Adjust Date guard; no action insertion/deletion.
 if(cursorIso == endIso) {
 complete = "on"
 }
+// V3-DATES-LOOP-TRACE ADD TEMPORARILY: At THIS position inside active Repeat after completion If ends and before complete-is-off branch, Show Alert literal labels Start/Current/End/Complete with actual startIso/cursorIso/endIso/CURRENT NAMED complete tokens; Cancel OFF. Record number of alerts and first/last values. Preserve all If/Format/Adjust/Set connections; remove only this temporary alert afterwards. Expected INov9-15 last current=2026-11-15/end=2026-11-15/complete=on.
 if(complete == "off") {
 adjustDate(operation: Add, duration: 1 day, date: "${cursorDate}") >> nextDate
 cursorDate = nextDate

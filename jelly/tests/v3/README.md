@@ -1,5 +1,7 @@
 # V3 first manual iPad checkpoint — filenames
 
+9 November 2026: current Stage 2B troubleshooting is consolidated in [the error record and separate test plan](stage-2b-error-isolation.md). Start with Date conversion, then native date advancement; tests are specified only, not executed. Stage 2A evidence below is unchanged.
+
 Next source delivery: [Stage 2B dated/grouped/ordered service preview](stage-2b-services.md). Revision 1 crashed in editor loading and at Compile Jelly Text; revision 2's split sources now load correctly by user report. Follow the native setup checklist before integrated runtime. Working filename shortcuts are unchanged; the evidence below remains the Stage 2A record.
 
 Latest Stage 2B report, 8 November: all newly supplied split shortcuts load correctly by user confirmation. Native setup and integrated runtime are not yet reported. Use the [rewritten per-shortcut setup checklist](stage-2b-services.md#what-to-change-now), which supersedes the earlier renderer-only next step. It identifies three total placeholder replacements and the existing settings/connections to inspect. No source/config replacement is needed for this documentation update.
