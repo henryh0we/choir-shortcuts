@@ -1,0 +1,46 @@
+// TEST - V3 Adjust Date Minutes | Purpose/role: Standalone 1440-minute workaround probe | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; fixed extracted Date plus 1440 min; final copyable Text report; no writes | Dependencies: None; no native setup slots | Stage: Source reviewed only; not compiled or executed
+import Shortcuts
+var report = "TEST - V3 Adjust Date Minutes | source revision 1 | Fixed-date 1440-minute test; no loop or mutable Date cursor. Record generated amount/unit and repairs separately."
+text(text: "2026-11-09 12:00") >> sourceText
+getDateFrom(input: sourceText) >> seedDate
+count(type: Items, input: seedDate) >> seedCount
+text(text: "${seedCount}") >> seedCountText
+text(text: """
+${report}
+Source Text=[${sourceText}] extracted Date count=[${seedCountText}] expected=[1]
+""") >> seedReport
+report = seedReport
+// MINUTES-SEED CHECK: Count Items input=Get Dates seedDate output; If left=seedCountText Text, operator=is, RHS=literal Text 1. Keep original native seedDate for Format Date and Adjust Date; never use sourceText or formatted display as the Date input.
+if(seedCountText == "1") {
+// MINUTES-FORMAT CHECK: Both Format Date actions=Custom yyyy-MM-dd HH:mm:ss, Time=None. First input=seedDate; second input=minuteAdjusted. Inspect English UK/Gregorian/Europe London where exposed; seconds reveal accidental second-unit generation.
+formatDate(date: "${seedDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd HH:mm:ss", isoTime: false) >> beforeStamp
+// MINUTES-ADJUST CHECK: Preserve untouched generation first. Intended operation=Add, amount=1440, unit=minutes, Date=original seedDate native Date. Following Count, Get Text and Format Date must consume THIS minuteAdjusted Adjusted Date output. No native unit repair is assumed; record actual fields before editing.
+adjustDate(operation: Add, duration: 1440 min, date: "${seedDate}") >> minuteAdjusted
+count(type: Items, input: minuteAdjusted) >> adjustedCount
+getTextFrom(input: minuteAdjusted) >> adjustedRaw
+formatDate(date: "${minuteAdjusted}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd HH:mm:ss", isoTime: false) >> afterStamp
+text(text: """
+${report}
+Original timestamp=[${beforeStamp}] expected=[2026-11-09 12:00:00]
+Source duration=[1440 min] = 24 hours
+Adjusted count=[${adjustedCount}] expected=[1]
+Adjusted raw display=[${adjustedRaw}]
+Actual adjusted timestamp=[${afterStamp}]
+Expected for this fixed date=[2026-11-10 12:00:00]
+If generated as 1440 seconds instead, timestamp would be=[2026-11-09 12:24:00]
+This tests a 24-hour duration on this date only. Calendar-day behaviour across clock changes is not established.
+Please return this report plus the actual generated Add amount/unit, app versions and any manual repairs.
+""") >> resultReport
+report = resultReport
+}
+if(seedCountText != "1") {
+text(text: """
+${report}
+Adjustment skipped: extraction did not produce exactly one Date.
+""") >> skippedReport
+report = skippedReport
+}
+// MINUTES-REPORT CHECK: Cleanup input=CURRENT NAMED report after branches. Each report assignment uses its own preceding unique Text capture. Quick Look and final Get Text read cleanedReport. Runtime action failure may abort before the final report; preserve the failing action and error separately.
+replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
+quicklook(input: cleanedReport)
+getTextFrom(input: cleanedReport)

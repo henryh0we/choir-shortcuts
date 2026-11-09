@@ -2,6 +2,8 @@
 
 ## V3 installation order (7 November 2026)
 
+Standalone minute workaround diagnostic: **TEST - V3 Adjust Date Minutes**, [source](../tests/v3/t02-adjust-date-minutes.jelly), revision 1/interface 1.0, no dependencies or setup slots. Adds 1440 min to a fixed extracted Date and returns a timestamp report. User-reported matching fixed-date output: 9 November 2026 at 12:00 to 10 November at 12:00, both Date counts 1; no repair reported, native fields/version details unspecified. Production behaviour is unchanged.
+
 Standalone duration diagnostic: **TEST - V3 Adjust Date Unit**, [source](../tests/v3/t02-adjust-date-unit.jelly), revision 1/interface 1.0, no dependencies or native setup slots. Compares independent 1 day and documented 10 min adjustments with seconds visible; see [run instructions](../tests/v3/stage-2b-probes.md#duration-binding-investigation-9-november). Source reviewed only; no compilation or execution recorded.
 
 9 November: eight independent **TEST - V3** Stage 2B probes are listed with exact names, source paths, setup and expected results in the [probe inventory/run sheet](../tests/v3/stage-2b-probes.md). They have no installed helper dependencies and do not change production installation order. Compile/import each separately through Copyover; native fixture slots are documented beside their actions. Source review only; no compilation or execution recorded.
