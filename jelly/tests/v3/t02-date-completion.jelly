@@ -1,5 +1,6 @@
-// TEST - V3 Date Completion | Purpose/role: T02 seven-day completion extension | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; seven iteration traces and final guard; no writes | Dependencies: Passing T02 three-day test; native Date slot | Stage: Source reviewed only; not compiled or executed
+// TEST - V3 Date Completion | Purpose/role: T02 seven-day completion extension | Specification revision: 2; interface 1.1 | Contract: Direct launch; ignores input; seven iteration traces and final guard; no writes; final copyable Text report | Dependencies: Passing T02 three-day test; native Date slot | Stage: Source reviewed only; not compiled or executed
 import Shortcuts
+var report = "TEST - V3 Date Completion | source revision 2 | Observed values below; native types/settings and manual repairs must be recorded separately."
 // T02C-DATE ADD/RECONNECT: Replace ONLY next Nothing with native Date, Specified Date=9 November 2026 12:00 Europe/London; reconnect Set Variable cursorDate to native Date output before deleting Nothing. Preserve initializer outside Repeat.
 nothing() >> nativeDate
 var cursorDate = nativeDate
@@ -12,7 +13,11 @@ formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM
 if(cursorIso == endIso) {
 complete = "on"
 }
-alert(alert: "Iteration ${RepeatIndex}: current=[${cursorIso}] end=[${endIso}] complete=[${complete}]", title: "T02 completion", cancel: false)
+text(text: """
+${report}
+Iteration ${RepeatIndex}: current=[${cursorIso}] end=[${endIso}] complete=[${complete}]
+""") >> nextReport
+report = nextReport
 if(complete == "off") {
 adjustDate(operation: Add, duration: 1 day, date: "${cursorDate}") >> nextDate
 cursorDate = nextDate
@@ -23,4 +28,14 @@ if(complete != "on") {
 alert(alert: "Completion guard failed: complete is not on. Preserve the seven traces.", title: "T02 final guard", cancel: false)
 }
 text(text: "T02 final complete=[${complete}] expected=[on]") >> finalReport
-quicklook(input: finalReport)
+text(text: """
+${report}
+${finalReport}
+Expected current sequence: 2026-11-09 through 2026-11-15; complete off through iteration 6 and on at iteration 7.
+""") >> nextReport
+report = nextReport
+
+// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their preceding nextReport output. Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
+replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
+quicklook(input: cleanedReport)
+getTextFrom(input: cleanedReport)

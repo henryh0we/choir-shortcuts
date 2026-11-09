@@ -1,36 +1,90 @@
-// TEST - V3 If Operands | Purpose/role: T03 variable-to-variable If generation | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; five distinct branch alerts; no writes | Dependencies: None | Stage: Source reviewed only; not compiled or executed
+// TEST - V3 If Operands | Purpose/role: T03 variable-to-variable If generation | Specification revision: 2; interface 1.1 | Contract: Direct launch; ignores input; five branch results in final report; no writes; final copyable Text report | Dependencies: None | Stage: Source reviewed only; not compiled or executed
 import Shortcuts
+var report = "TEST - V3 If Operands | source revision 2 | Observed values below; native types/settings and manual repairs must be recorded separately."
 calculate(input: "11") >> eleven
 calculate(input: "12") >> twelve
 var textA = "A"
 var textB = "B"
 // T03-N1 CHECK: Left=Calculate eleven Number; operator=is less than; RHS=Calculate twelve Number. Inspect untouched operands first, then record any repair; expected TRUE. No literal replacement of variable operands.
 if(eleven < twelve) {
-alert(alert: "N1 TRUE (expected)", title: "T03 N1", cancel: false)
+text(text: """
+${report}
+N1 TRUE (expected)
+""") >> nextReport
+report = nextReport
 } else {
-alert(alert: "N1 FALSE (unexpected)", title: "T03 N1", cancel: false)
+text(text: """
+${report}
+N1 FALSE (unexpected)
+""") >> nextReport
+report = nextReport
 }
 // T03-N2 CHECK: Left=Calculate eleven Number; operator=is less than; RHS=same Calculate eleven Number; expected FALSE.
 if(eleven < eleven) {
-alert(alert: "N2 TRUE (unexpected)", title: "T03 N2", cancel: false)
+text(text: """
+${report}
+N2 TRUE (unexpected)
+""") >> nextReport
+report = nextReport
 } else {
-alert(alert: "N2 FALSE (expected)", title: "T03 N2", cancel: false)
+text(text: """
+${report}
+N2 FALSE (expected)
+""") >> nextReport
+report = nextReport
 }
 // T03-S1 CHECK: Left=named textA Text; operator=is; RHS=named textA Text; expected TRUE. Preserve actual variable tokens, not literal names.
 if(textA == textA) {
-alert(alert: "S1 TRUE (expected)", title: "T03 S1", cancel: false)
+text(text: """
+${report}
+S1 TRUE (expected)
+""") >> nextReport
+report = nextReport
 } else {
-alert(alert: "S1 FALSE (unexpected)", title: "T03 S1", cancel: false)
+text(text: """
+${report}
+S1 FALSE (unexpected)
+""") >> nextReport
+report = nextReport
 }
 // T03-S2 CHECK: Left=named textA Text; operator=is not; RHS=named textB Text; expected TRUE.
 if(textA != textB) {
-alert(alert: "S2 TRUE (expected)", title: "T03 S2", cancel: false)
+text(text: """
+${report}
+S2 TRUE (expected)
+""") >> nextReport
+report = nextReport
 } else {
-alert(alert: "S2 FALSE (unexpected)", title: "T03 S2", cancel: false)
+text(text: """
+${report}
+S2 FALSE (unexpected)
+""") >> nextReport
+report = nextReport
 }
 // T03-S3 CHECK: Left=named textA Text; operator=is not; RHS=named textA Text; expected FALSE.
 if(textA != textA) {
-alert(alert: "S3 TRUE (unexpected)", title: "T03 S3", cancel: false)
+text(text: """
+${report}
+S3 TRUE (unexpected)
+""") >> nextReport
+report = nextReport
 } else {
-alert(alert: "S3 FALSE (expected)", title: "T03 S3", cancel: false)
+text(text: """
+${report}
+S3 FALSE (expected)
+""") >> nextReport
+report = nextReport
 }
+
+text(text: """
+${report}
+Input Number outputs: eleven=[${eleven}], twelve=[${twelve}]. Named Text: textA=[${textA}], textB=[${textB}].
+Expected branches: N1 TRUE, N2 FALSE, S1 TRUE, S2 TRUE, S3 FALSE.
+RHS fields/operators must be inspected manually; branch results alone do not prove their wiring.
+""") >> nextReport
+report = nextReport
+
+// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their preceding nextReport output. Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
+replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
+quicklook(input: cleanedReport)
+getTextFrom(input: cleanedReport)

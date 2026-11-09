@@ -1,19 +1,32 @@
-// TEST - V3 Date Format | Purpose/role: T01 native Date versus named Date formatting | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; previews ISO and weekday for fixed Date; no writes | Dependencies: None; one native Date setup slot | Stage: Source reviewed only; not compiled or executed
+// TEST - V3 Date Format | Purpose/role: T01 native Date versus named Date formatting | Specification revision: 2; interface 1.1 | Contract: Direct launch; ignores input; previews ISO and weekday for fixed Date; no writes; final copyable Text report | Dependencies: None; one native Date setup slot | Stage: Source reviewed only; not compiled or executed
 import Shortcuts
-// T01-DATE ADD/RECONNECT: Replace ONLY next Nothing with native Date, Specified Date=9 November 2026 12:00 Europe/London. Reconnect BOTH direct Format Date inputs, raw Quick Look and Set Variable cursorDate to this native Date output BEFORE deleting Nothing. Preserve Set Variable. Do not insert Text or Current Date. Keep outside branches.
+var report = "TEST - V3 Date Format | source revision 2 | Observed values below; native types/settings and manual repairs must be recorded separately."
+// T01-DATE ADD/RECONNECT: Replace ONLY next Nothing with native Date, Specified Date=9 November 2026 12:00 Europe/London. Reconnect BOTH direct Format Date inputs, raw-display Get Text and Set Variable cursorDate to this native Date output BEFORE deleting Nothing. Preserve Set Variable. Do not insert Text or Current Date. Keep outside branches.
 nothing() >> nativeDate
-alert(alert: "T01 NATIVE DIRECT: next preview is the exact formatter input. Inspect its token type in the editor if formatting fails.", title: "T01 route 1", cancel: false)
-quicklook(input: nativeDate)
+alert(alert: "T01 NATIVE DIRECT: next captured raw display is the exact formatter input. Inspect its token type in the editor if formatting fails.", title: "T01 route 1", cancel: false)
+getTextFrom(input: nativeDate) >> directRaw
 // T01-FORMATS CHECK: Each Format Date below=Custom; yyyy-MM-dd or EEE exactly; Time=None. Inputs must be actual Date tokens, not literal variable names. Inspect English UK/Gregorian/Europe London only where exposed. Record untouched generation before repairing any fields.
 formatDate(date: "${nativeDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> directIso
-quicklook(input: directIso)
 formatDate(date: "${nativeDate}", dStyle: Custom, tStyle: None, custom: "EEE", isoTime: false) >> directDay
-quicklook(input: directDay)
 var cursorDate = nativeDate
-alert(alert: "T01 NATIVE NAMED: next preview uses named cursorDate. Expected formatted results: 2026-11-09 then Mon.", title: "T01 route 2", cancel: false)
-// T01-NAMED CHECK: Quick Look and BOTH following Format Date inputs=current named cursorDate, native Date set from original Date output; preserve initializer. No formatted Text goes into cursorDate.
-quicklook(input: cursorDate)
+alert(alert: "T01 NATIVE NAMED: next captured raw display uses named cursorDate. Expected formatted results: 2026-11-09 then Mon.", title: "T01 route 2", cancel: false)
+// T01-NAMED CHECK: raw-display Get Text and BOTH following Format Date inputs=current named cursorDate, native Date set from original Date output; preserve initializer. No formatted Text goes into cursorDate.
+getTextFrom(input: cursorDate) >> namedRaw
 formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> namedIso
-quicklook(input: namedIso)
 formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "EEE", isoTime: false) >> namedDay
-quicklook(input: namedDay)
+
+text(text: """
+${report}
+Native direct raw display=[${directRaw}]
+Native direct ISO=[${directIso}] expected=[2026-11-09]
+Native direct weekday=[${directDay}] expected=[Mon]
+Named cursorDate raw display=[${namedRaw}]
+Named ISO=[${namedIso}] expected=[2026-11-09]
+Named weekday=[${namedDay}] expected=[Mon]
+""") >> nextReport
+report = nextReport
+
+// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their preceding nextReport output. Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
+replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
+quicklook(input: cleanedReport)
+getTextFrom(input: cleanedReport)

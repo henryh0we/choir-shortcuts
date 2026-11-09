@@ -1,14 +1,25 @@
-// TEST - V3 Folder Picker | Purpose/role: T07 local versus Nextcloud folder access | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; pick one folder; preview name then direct item count; no dates/config/context/writes | Dependencies: One native folder-picker setup slot | Stage: Source reviewed only; not compiled or executed
+// TEST - V3 Folder Picker | Purpose/role: T07 local versus Nextcloud folder access | Specification revision: 2; interface 1.1 | Contract: Direct launch; ignores input; pick one folder; preview name then direct item count; no dates/config/context/writes; final copyable Text report | Dependencies: One native folder-picker setup slot | Stage: Source reviewed only; not compiled or executed
 import Shortcuts
+var report = "TEST - V3 Folder Picker | source revision 2 | Observed values below; native types/settings and manual repairs must be recorded separately."
 alert(alert: "Run first with a small On My iPad folder, then with the same contents in Nextcloud. Record picker completion separately from enumeration.", title: "T07 provider probe", cancel: false)
 // T07-PICKER ADD/RECONNECT: Replace ONLY next Nothing with native Select File, type=Folders, Multiple OFF. Reconnect Name and Folder Contents to native picker output before deleting placeholder. Keep outside branches. Record setup separately from untouched generated actions; do not use a File Text path.
 nothing() >> selectedFolder
 alert(alert: "Picker action returned. Next action reads the selected Folder Name.", title: "T07 picker boundary", cancel: false)
 fileDetail(input: selectedFolder, property: Name) >> folderName
-quicklook(input: folderName)
 alert(alert: "Name read completed. Next action enumerates direct contents, Recursive OFF.", title: "T07 enumeration boundary", cancel: false)
 // T07-CONTENTS CHECK: Folder Contents input=original native selectedFolder; Recursive OFF. Count input=THIS Folder Contents output, not folderName or selectedFolder.
 getFolderContents(folder: selectedFolder, recursive: false) >> children
 count(type: Items, input: children) >> itemCount
-text(text: "T07 selected=[${folderName}] direct item count=[${itemCount}]") >> report
-quicklook(input: report)
+text(text: "T07 selected=[${folderName}] direct item count=[${itemCount}]") >> pickerReport
+text(text: """
+${report}
+${pickerReport}
+Picker returned; Name read completed; direct enumeration completed.
+Provider/location: please add On My iPad or Nextcloud when sending this report.
+""") >> nextReport
+report = nextReport
+
+// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their preceding nextReport output. Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
+replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
+quicklook(input: cleanedReport)
+getTextFrom(input: cleanedReport)

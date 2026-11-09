@@ -1,5 +1,6 @@
-// TEST - V3 Folder Captures | Purpose/role: T04 optional captures and guarded month lookup | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; select normal config once; four fixed names; capture/count/default previews; no dates/context/writes | Dependencies: v3-config.example.json copied to Files | Stage: Source reviewed only; not compiled or executed
+// TEST - V3 Folder Captures | Purpose/role: T04 optional captures and guarded month lookup | Specification revision: 2; interface 1.1 | Contract: Direct launch; ignores input; select normal config once; four fixed names; capture/count/default previews; no dates/context/writes; final copyable Text report | Dependencies: v3-config.example.json copied to Files | Stage: Source reviewed only; not compiled or executed
 import Shortcuts
+var report = "TEST - V3 Folder Captures | source revision 2 | Observed values below; native types/settings and manual repairs must be recorded separately."
 alert(alert: "Select the normal v3-config.json. This test reads it once and does not change it.", title: "T04 config", cancel: false)
 selectFile(type: Files, multiple: false) >> configFile
 getTextFrom(input: configFile) >> configJson
@@ -7,6 +8,13 @@ getDictionaryFrom(input: configJson) >> config
 valueFor(key: "weekFolderDates", dictionary: config) >> settings
 valueFor(key: "pattern", dictionary: settings) >> folderPattern
 valueFor(key: "months", dictionary: settings) >> months
+fileDetail(input: configFile, property: Name) >> configName
+text(text: """
+${report}
+Config File=[${configName}]
+Folder regex=[${folderPattern}]
+""") >> nextReport
+report = nextReport
 list(items: ["HNov8", "INov9-15", "Nov30-Dec6-2026", "Dec28-Jan3-2026"]) >> fixtures
 repeatEach fixtures {
 text(text: "${RepeatItem}") >> folderName
@@ -16,7 +24,11 @@ replaceText(input: "${folderName}", find: "${folderPattern}", replace: "$3", isR
 replaceText(input: "${folderName}", find: "${folderPattern}", replace: "$4", isRegex: true, caseSensitive: false) >> endDayCapture
 replaceText(input: "${folderName}", find: "${folderPattern}", replace: "$5", isRegex: true, caseSensitive: false) >> explicitYear
 text(text: "${folderName}: startMonth=[${startMonthName}] startDay=[${startDay}] endMonth=[${endMonthName}] endDay=[${endDayCapture}] year=[${explicitYear}]") >> rawReport
-quicklook(input: rawReport)
+text(text: """
+${report}
+${rawReport}
+""") >> nextReport
+report = nextReport
 text(text: "year:${explicitYear}") >> yearProbe
 matchText(text: "${yearProbe}", regex: "^year:[0-9]{4}$", caseSensitive: true) >> yearMatches
 count(type: Items, input: yearMatches) >> yearCount
@@ -30,9 +42,16 @@ matchText(text: "${monthProbe}", regex: "^month:[A-Za-z]{3}$", caseSensitive: tr
 count(type: Items, input: monthMatches) >> monthCount
 text(text: "${monthCount}") >> monthCountText
 text(text: "${folderName}: actual Match counts year=[${yearCountText}] day=[${dayCountText}] month=[${monthCountText}]") >> countReport
-quicklook(input: countReport)
+text(text: """
+${report}
+${countReport}
+""") >> nextReport
+report = nextReport
 // T04-YEAR CHECK: If left=actual year Match Count converted to Text, operator=is, RHS=literal Text 0. Keep this separate from end-day/month checks; counts must read their own Match outputs.
+var yearGuard = "not taken"
+var endMonthKey = "not looked up"
 if(yearCountText == "0") {
+yearGuard = "taken: absent explicit year"
 alert(alert: "${folderName}: explicit year absent; no date parsing or fallback in this probe.", title: "T04 year guard", cancel: false)
 }
 changeCase(text: "${startMonthName}", case: lowercase) >> lowerStartMonth
@@ -48,11 +67,29 @@ endDay = endDayCapture
 if(monthCountText == "1") {
 changeCase(text: "${endMonthName}", case: lowercase) >> lowerEndMonth
 alert(alert: "${folderName}: about to lookup actual end-month key=[${lowerEndMonth}]. This must NOT appear for HNov8 or INov9-15.", title: "T04 lookup boundary", cancel: false)
+endMonthKey = lowerEndMonth
 valueFor(key: "${lowerEndMonth}", dictionary: months) >> explicitEndMonth
 endMonth = explicitEndMonth
 endLookup = "executed"
 }
 // T04-RESULT CHECK: Report reads CURRENT NAMED endMonth/endDay/endLookup after branches, not their initializer outputs. Config months are padded Text (11/12/01); no year rollover is attempted here.
 text(text: "${folderName}: start=[${startMonth}/${startDay}] end=[${endMonth}/${endDay}] end-month lookup=[${endLookup}]") >> finalReport
-quicklook(input: finalReport)
+text(text: """
+${report}
+${finalReport}
+Year-absent branch=[${yearGuard}] actual end-month key=[${endMonthKey}]
+--- end fixture ---
+""") >> nextReport
+report = nextReport
 }
+
+text(text: """
+${report}
+Expected year/day/month Match counts: HNov8=0/0/0; INov9-15=0/1/0; Nov30-Dec6-2026=1/1/1; Dec28-Jan3-2026=1/1/1. End-month lookup skipped for first two, keys dec and jan for last two.
+""") >> nextReport
+report = nextReport
+
+// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their preceding nextReport output. Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
+replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
+quicklook(input: cleanedReport)
+getTextFrom(input: cleanedReport)

@@ -1,6 +1,6 @@
 # Stage 2B error record and separate test plan
 
-9 November 2026. Status: **test sources delivered, not compiled or executed**. Ready-to-copy sources and expected results are linked in the [probe run sheet](stage-2b-probes.md). This consolidates the recent iPad reports and replaces the sequence of one-off troubleshooting instructions as the next testing plan. It does not claim a working Stage 2B workflow. No local code, compiler, build or automated tests were run to establish correctness.
+9 November 2026. Status: **test sources delivered, not compiled or executed**. Ready-to-copy revision-2 sources and expected results are linked in the [probe run sheet](stage-2b-probes.md). Each probe now collects its observations into one final copyable Text report on normal completion; native action failures may abort before the report. This consolidates the recent iPad reports and replaces the sequence of one-off troubleshooting instructions as the next testing plan. It does not claim a working Stage 2B workflow. No local code, compiler, build or automated tests were run to establish correctness.
 
 ## Current position
 

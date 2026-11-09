@@ -1,15 +1,28 @@
-// TEST - V3 Context Lookup | Purpose/role: T05 missing entry versus missing Key | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; select supplied empty-context JSON; preview key/schema/missing-entry count; no dates or writes | Dependencies: v3-week-context.empty.json in Files | Stage: Source reviewed only; not compiled or executed
+// TEST - V3 Context Lookup | Purpose/role: T05 missing entry versus missing Key | Specification revision: 2; interface 1.1 | Contract: Direct launch; ignores input; select supplied empty-context JSON; preview key/schema/missing-entry count; no dates or writes; final copyable Text report | Dependencies: v3-week-context.empty.json in Files | Stage: Source reviewed only; not compiled or executed
 import Shortcuts
+var report = "TEST - V3 Context Lookup | source revision 2 | Observed values below; native types/settings and manual repairs must be recorded separately."
 alert(alert: "Select v3-week-context.empty.json, NOT the normal saved context. This test only reads the fixture.", title: "T05 fixture", cancel: false)
 selectFile(type: Files, multiple: false) >> contextFile
 getTextFrom(input: contextFile) >> contextJson
 getDictionaryFrom(input: contextJson) >> contexts
 text(text: "ScannedChoirMusic/INov9-15") >> contextKey
-quicklook(input: contextKey)
 // T05-KEY CHECK: Get Value Key=actual contextKey Text token ScannedChoirMusic/INov9-15; Dictionary=parsed fixture contexts. A missing entry is expected, an empty Key input is not. Keep literal nonempty Text producer; no initializer or typed variable-name substitute.
 valueFor(key: "${contextKey}", dictionary: contexts) >> savedRange
-alert(alert: "Context lookup returned without a missing-Key error. Next count should be 0.", title: "T05 lookup returned", cancel: false)
+alert(alert: "Context lookup returned without a missing-Key error. Final report count should be 0.", title: "T05 lookup returned", cancel: false)
 count(type: Items, input: savedRange) >> savedCount
+fileDetail(input: contextFile, property: Name) >> fixtureName
 valueFor(key: "_schemaVersion", dictionary: contexts) >> schemaVersion
-text(text: "T05 key=[${contextKey}] saved entry count=[${savedCount}] expected=[0]; schema=[${schemaVersion}] expected=[1]") >> report
-quicklook(input: report)
+text(text: "T05 key=[${contextKey}] saved entry count=[${savedCount}] expected=[0]; schema=[${schemaVersion}] expected=[1]") >> contextReport
+text(text: """
+${report}
+Fixture=[${fixtureName}]
+${contextReport}
+Saved entry raw display=[${savedRange}] expected=[empty]
+Lookup returned without missing-Key error.
+""") >> nextReport
+report = nextReport
+
+// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their preceding nextReport output. Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
+replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
+quicklook(input: cleanedReport)
+getTextFrom(input: cleanedReport)

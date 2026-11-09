@@ -1,27 +1,44 @@
-// TEST - V3 Extracted Date Format | Purpose/role: T01 ISO Text extraction versus named extracted Date | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; fixed Text; count and Date previews; no writes | Dependencies: None | Stage: Source reviewed only; not compiled or executed
+// TEST - V3 Extracted Date Format | Purpose/role: T01 ISO Text extraction versus named extracted Date | Specification revision: 2; interface 1.1 | Contract: Direct launch; ignores input; fixed Text; count and Date previews; no writes; final copyable Text report | Dependencies: None | Stage: Source reviewed only; not compiled or executed
 import Shortcuts
+var report = "TEST - V3 Extracted Date Format | source revision 2 | Observed values below; native types/settings and manual repairs must be recorded separately."
 text(text: "2026-11-09 12:00") >> sourceText
-alert(alert: "T01 EXTRACT: next preview is source Text, then Get Dates runs. Expected count=1.", title: "T01 route 3", cancel: false)
-quicklook(input: sourceText)
+alert(alert: "T01 EXTRACT: next captured raw display is source Text, then Get Dates runs. Expected count=1.", title: "T01 route 3", cancel: false)
 getDateFrom(input: sourceText) >> extractedDate
 count(type: Items, input: extractedDate) >> dateCount
 text(text: "T01 extracted Date count=[${dateCount}] expected=[1]") >> countReport
-quicklook(input: countReport)
+text(text: """
+${report}
+Source Text=[${sourceText}]
+${countReport}
+Formatting runs only when actual count Text is 1.
+""") >> nextReport
+report = nextReport
 text(text: "${dateCount}") >> countText
 // T01-EXTRACT-GUARD CHECK: Count input=Get Dates output; If left=countText Text, operator=is, RHS=literal Text 1. Preserve guard; no format actions should run for zero/multiple Dates.
 if(countText == "1") {
-alert(alert: "T01 EXTRACTED DIRECT: next preview is the exact formatter input. Expected ISO=2026-11-09, weekday=Mon.", title: "T01 route 3", cancel: false)
-quicklook(input: extractedDate)
+alert(alert: "T01 EXTRACTED DIRECT: next captured raw display is the exact formatter input. Expected ISO=2026-11-09, weekday=Mon.", title: "T01 route 3", cancel: false)
+getTextFrom(input: extractedDate) >> directRaw
 // T01-EXTRACT-FORMATS CHECK: BOTH direct inputs=Get Dates output, BOTH named inputs=current named cursorDate holding that same Date. All four formats=Custom, Time=None, exact yyyy-MM-dd/EEE. Inspect English UK/Gregorian/Europe London where exposed; record generated settings before repairs.
 formatDate(date: "${extractedDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> directIso
-quicklook(input: directIso)
 formatDate(date: "${extractedDate}", dStyle: Custom, tStyle: None, custom: "EEE", isoTime: false) >> directDay
-quicklook(input: directDay)
 var cursorDate = extractedDate
-alert(alert: "T01 EXTRACTED NAMED: next preview uses named cursorDate, followed by ISO then weekday.", title: "T01 route 4", cancel: false)
-quicklook(input: cursorDate)
+alert(alert: "T01 EXTRACTED NAMED: next captured raw display uses named cursorDate, then ISO and weekday are captured in the final report.", title: "T01 route 4", cancel: false)
+getTextFrom(input: cursorDate) >> namedRaw
 formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> namedIso
-quicklook(input: namedIso)
 formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "EEE", isoTime: false) >> namedDay
-quicklook(input: namedDay)
+text(text: """
+${report}
+Extracted direct raw display=[${directRaw}]
+Extracted direct ISO=[${directIso}] expected=[2026-11-09]
+Extracted direct weekday=[${directDay}] expected=[Mon]
+Named cursorDate raw display=[${namedRaw}]
+Named ISO=[${namedIso}] expected=[2026-11-09]
+Named weekday=[${namedDay}] expected=[Mon]
+""") >> nextReport
+report = nextReport
 }
+
+// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their preceding nextReport output. Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
+replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
+quicklook(input: cleanedReport)
+getTextFrom(input: cleanedReport)
