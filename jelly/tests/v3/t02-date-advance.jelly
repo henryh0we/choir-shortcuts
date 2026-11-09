@@ -1,23 +1,54 @@
-// TEST - V3 Date Advance | Purpose/role: T02 three-day named Date advancement | Specification revision: 3; interface 1.1 | Contract: Direct launch; ignores input; three current/adjusted Date previews; no writes; final copyable Text report | Dependencies: Passing T01 route; native Date setup slot | Stage: Source reviewed only; not compiled or executed
+// TEST - V3 Date Advance | Purpose/role: T02 three-day named Date advancement | Specification revision: 4; interface 1.1 | Contract: Direct launch; ignores input; fixed Text extraction; initial Date and three current/adjusted Date observations; no writes; final copyable Text report | Dependencies: None; uses reported passing T01b extraction route; no native setup slot | Stage: Source reviewed only; revision 4 not compiled or executed
 import Shortcuts
-var report = "TEST - V3 Date Advance | source revision 3 | Observed values below; native types/settings and manual repairs must be recorded separately."
-// T02-DATE ADD/RECONNECT: Replace ONLY next Nothing with native Date, Specified Date=9 November 2026 12:00 Europe/London; reconnect Set Variable cursorDate to Date output before deleting Nothing. Preserve initializer OUTSIDE Repeat. Use passing T01 native input wiring; no Text initializer.
-nothing() >> nativeDate
+var report = "TEST - V3 Date Advance | source revision 4 | Observed values below; native types/settings and manual repairs must be recorded separately."
+// T02-SEED CHECK: No native replacement required in revision 4. Get Dates input=sourceText output; Count input=Get Dates nativeDate output; guard left=seedCountText Text, operator=is, RHS=literal Text 1. Set Variable cursorDate below receives actual Get Dates output, never sourceText or its display. Preserve initializer OUTSIDE Repeat.
+text(text: "2026-11-09 12:00") >> sourceText
+getDateFrom(input: sourceText) >> nativeDate
+count(type: Items, input: nativeDate) >> seedCount
+text(text: "${seedCount}") >> seedCountText
+text(text: """
+${report}
+Source Text=[${sourceText}] extracted Date count=[${seedCountText}] expected=[1]
+""") >> seedReport
+report = seedReport
+if(seedCountText == "1") {
+getTextFrom(input: nativeDate) >> seedRaw
+formatDate(date: "${nativeDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> seedIso
 var cursorDate = nativeDate
+count(type: Items, input: cursorDate) >> initialCursorCount
+getTextFrom(input: cursorDate) >> initialCursorRaw
+formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> initialCursorIso
+text(text: """
+${report}
+Before Repeat: extracted raw=[${seedRaw}] extracted ISO=[${seedIso}] expected=[2026-11-09]
+Before Repeat: named cursor count=[${initialCursorCount}] raw=[${initialCursorRaw}] ISO=[${initialCursorIso}] expected=[1 / 9 Nov 2026 at 12:00 / 2026-11-09]
+""") >> initialCursorReport
+report = initialCursorReport
 repeat(3) {
 alert(alert: "Iteration ${RepeatIndex}: next captured raw display is CURRENT named cursorDate, then its ISO is captured in the final report.", title: "T02 CURRENT", cancel: false)
 // T02-CURSOR CHECK: Raw-display Get Text, Format Date and Adjust Date inputs=CURRENT NAMED cursorDate, never original nativeDate/initializer. Format=Custom yyyy-MM-dd, Time=None. Adjust=Add 1 day. Following Set Variable cursorDate=Adjusted Date output INSIDE Repeat; preserve original initializer outside. Do not store formatted currentIso Text.
+count(type: Items, input: cursorDate) >> currentCount
 getTextFrom(input: cursorDate) >> currentRaw
 formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> currentIso
+// T02-UNIT CHECK/REPAIR: T02a revision 4 was reported generated as Add 1 SECOND despite source 1 day; changing native unit to DAY produced the expected three-day advancement. Inspect this installed action: Add, amount=1, unit=day, input=CURRENT NAMED cursorDate Date. If seconds, record then change ONLY unit to day; keep action INSIDE its existing Repeat/guard. Preserve nextDate Adjusted Date output connections to downstream consumers and Set Variable cursorDate. Do not replace calendar days with seconds arithmetic. This comment-only clarification does not establish generation or runtime for this source.
 adjustDate(operation: Add, duration: 1 day, date: "${cursorDate}") >> nextDate
 alert(alert: "Iteration ${RepeatIndex}: next captured raw display is Adjusted Date BEFORE storage. Expected 10, 11, then 12 November.", title: "T02 ADJUSTED", cancel: false)
+count(type: Items, input: nextDate) >> adjustedCount
 getTextFrom(input: nextDate) >> adjustedRaw
 text(text: """
 ${report}
-Iteration ${RepeatIndex}: current raw display=[${currentRaw}] current ISO=[${currentIso}] adjusted raw display=[${adjustedRaw}]
+Iteration ${RepeatIndex}: current count=[${currentCount}] current raw display=[${currentRaw}] current ISO=[${currentIso}] adjusted count=[${adjustedCount}] adjusted raw display=[${adjustedRaw}]
 """) >> reportPart1
 report = reportPart1
 cursorDate = nextDate
+}
+}
+if(seedCountText != "1") {
+text(text: """
+${report}
+Loop skipped: extraction did not produce exactly one Date. Inspect Get Dates, Count and guard connections.
+""") >> skippedReport
+report = skippedReport
 }
 
 text(text: """

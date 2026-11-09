@@ -19,6 +19,7 @@ Iteration ${RepeatIndex}: current=[${cursorIso}] end=[${endIso}] complete=[${com
 """) >> reportPart1
 report = reportPart1
 if(complete == "off") {
+// T02C-UNIT CHECK/REPAIR: T02a revision 4 was reported generated as Add 1 SECOND despite source 1 day; changing native unit to DAY produced the expected three-day advancement. Inspect this installed action: Add, amount=1, unit=day, input=CURRENT NAMED cursorDate Date. If seconds, record then change ONLY unit to day; keep action INSIDE its existing Repeat/guard. Preserve nextDate Adjusted Date output connections to downstream consumers and Set Variable cursorDate. Do not replace calendar days with seconds arithmetic. This comment-only clarification does not establish generation or runtime for this source.
 adjustDate(operation: Add, duration: 1 day, date: "${cursorDate}") >> nextDate
 cursorDate = nextDate
 }

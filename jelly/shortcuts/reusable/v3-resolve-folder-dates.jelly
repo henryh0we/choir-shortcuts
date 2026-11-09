@@ -241,6 +241,7 @@ complete = "on"
 }
 // V3-DATES-LOOP-TRACE ADD TEMPORARILY: At THIS position inside active Repeat after completion If ends and before complete-is-off branch, Show Alert literal labels Start/Current/End/Complete with actual startIso/cursorIso/endIso/CURRENT NAMED complete tokens; Cancel OFF. Record number of alerts and first/last values. Preserve all If/Format/Adjust/Set connections; remove only this temporary alert afterwards. Expected INov9-15 last current=2026-11-15/end=2026-11-15/complete=on.
 if(complete == "off") {
+// V3-DATES-UNIT CHECK/REPAIR: T02a revision 4 was reported generated as Add 1 SECOND despite source 1 day; changing native unit to DAY produced the expected three-day advancement. Inspect this installed action: Add, amount=1, unit=day, input=CURRENT NAMED cursorDate Date. If seconds, record then change ONLY unit to day; keep action INSIDE its existing Repeat/guard. Preserve nextDate Adjusted Date output connections to downstream consumers and Set Variable cursorDate. Do not replace calendar days with seconds arithmetic. This comment-only clarification does not establish generation or runtime for this source.
 adjustDate(operation: Add, duration: 1 day, date: "${cursorDate}") >> nextDate
 cursorDate = nextDate
 calculate(input: "${offset} + 1") >> nextOffset

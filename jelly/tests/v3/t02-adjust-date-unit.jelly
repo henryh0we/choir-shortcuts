@@ -1,0 +1,54 @@
+// TEST - V3 Adjust Date Unit | Purpose/role: Standalone duration generation probe | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; fixed extracted Date; independent 1 day and documented 10 min adjustments; final copyable Text report; no writes | Dependencies: None; no native setup slots | Stage: Source reviewed only; not compiled or executed
+import Shortcuts
+var report = "TEST - V3 Adjust Date Unit | source revision 1 | No loop or mutable Date cursor. Record actual generated amount/unit and any manual repairs separately."
+text(text: "2026-11-09 12:00") >> sourceText
+getDateFrom(input: sourceText) >> seedDate
+count(type: Items, input: seedDate) >> seedCount
+text(text: "${seedCount}") >> seedCountText
+text(text: """
+${report}
+Source Text=[${sourceText}] extracted Date count=[${seedCountText}] expected=[1]
+""") >> countReport
+report = countReport
+// UNIT-GUARD CHECK: Count Items input=Get Dates seedDate output; If left=seedCountText Text, operator=is, RHS=literal Text 1. Preserve guard; both Adjust Date actions use the original seedDate output independently, never another adjusted result or display Text.
+if(seedCountText == "1") {
+// UNIT-FORMAT CHECK: All three Format Date actions=Custom yyyy-MM-dd HH:mm:ss, Time=None. Each consumes its specified native Date producer. Inspect English UK/Gregorian/Europe London where exposed. Seconds are deliberately visible to distinguish 1 second from 1 day.
+formatDate(date: "${seedDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd HH:mm:ss", isoTime: false) >> beforeStamp
+// UNIT-DAY CHECK: Before repair, record generated operation/amount/unit. Intended Add 1 day to original seedDate Date. Following Count, Get Text and Format Date must use THIS Adjusted Date output dayAdjusted. Source 1 day generated 1 second in T02a; do not repair before preserving the untouched report. This test is independent of cursor storage and Repeat.
+adjustDate(operation: Add, duration: 1 day, date: "${seedDate}") >> dayAdjusted
+count(type: Items, input: dayAdjusted) >> dayCount
+getTextFrom(input: dayAdjusted) >> dayRaw
+formatDate(date: "${dayAdjusted}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd HH:mm:ss", isoTime: false) >> dayStamp
+// UNIT-MINUTE CHECK: Documented control syntax duration 10 min; intended Add 10 minutes to ORIGINAL seedDate Date, not dayAdjusted. Following Count/Get Text/Format Date consume THIS minuteAdjusted Date output. Record untouched native fields; no assumption that control generation passes.
+adjustDate(operation: Add, duration: 10 min, date: "${seedDate}") >> minuteAdjusted
+count(type: Items, input: minuteAdjusted) >> minuteCount
+getTextFrom(input: minuteAdjusted) >> minuteRaw
+formatDate(date: "${minuteAdjusted}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd HH:mm:ss", isoTime: false) >> minuteStamp
+text(text: """
+${report}
+Original Date=[${beforeStamp}] expected=[2026-11-09 12:00:00]
+CASE A source duration=[1 day]
+Adjusted count=[${dayCount}] raw display=[${dayRaw}]
+Actual timestamp=[${dayStamp}]
+Expected calendar-day timestamp=[2026-11-10 12:00:00]
+A one-second adjustment would instead show=[2026-11-09 12:00:01]
+CASE B documented control duration=[10 min], independently applied to original Date
+Adjusted count=[${minuteCount}] raw display=[${minuteRaw}]
+Actual timestamp=[${minuteStamp}]
+Expected minute-control timestamp=[2026-11-09 12:10:00]
+Both adjusted counts should be 1.
+Please add actual generated operation/amount/unit for CASE A and CASE B, app versions and any repairs when returning this report. The report captures results, not native action settings.
+""") >> observationsReport
+report = observationsReport
+}
+if(seedCountText != "1") {
+text(text: """
+${report}
+Adjustments skipped: extraction did not produce exactly one Date.
+""") >> skippedReport
+report = skippedReport
+}
+// UNIT-REPORT CHECK: Cleanup input=CURRENT NAMED report after branches; preserve each unique report capture and its Set Variable update. Quick Look and final Get Text consume cleanedReport. Date formatting must never read report Text. Runtime action errors can abort before this report; record failing action if that occurs.
+replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
+quicklook(input: cleanedReport)
+getTextFrom(input: cleanedReport)
