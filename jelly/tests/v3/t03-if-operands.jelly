@@ -1,6 +1,6 @@
-// TEST - V3 If Operands | Purpose/role: T03 variable-to-variable If generation | Specification revision: 2; interface 1.1 | Contract: Direct launch; ignores input; five branch results in final report; no writes; final copyable Text report | Dependencies: None | Stage: Source reviewed only; not compiled or executed
+// TEST - V3 If Operands | Purpose/role: T03 variable-to-variable If generation | Specification revision: 3; interface 1.1 | Contract: Direct launch; ignores input; five branch results in final report; no writes; final copyable Text report | Dependencies: None | Stage: Source reviewed only; not compiled or executed
 import Shortcuts
-var report = "TEST - V3 If Operands | source revision 2 | Observed values below; native types/settings and manual repairs must be recorded separately."
+var report = "TEST - V3 If Operands | source revision 3 | Observed values below; native types/settings and manual repairs must be recorded separately."
 calculate(input: "11") >> eleven
 calculate(input: "12") >> twelve
 var textA = "A"
@@ -10,70 +10,70 @@ if(eleven < twelve) {
 text(text: """
 ${report}
 N1 TRUE (expected)
-""") >> nextReport
-report = nextReport
+""") >> reportPart1
+report = reportPart1
 } else {
 text(text: """
 ${report}
 N1 FALSE (unexpected)
-""") >> nextReport
-report = nextReport
+""") >> reportPart2
+report = reportPart2
 }
 // T03-N2 CHECK: Left=Calculate eleven Number; operator=is less than; RHS=same Calculate eleven Number; expected FALSE.
 if(eleven < eleven) {
 text(text: """
 ${report}
 N2 TRUE (unexpected)
-""") >> nextReport
-report = nextReport
+""") >> reportPart3
+report = reportPart3
 } else {
 text(text: """
 ${report}
 N2 FALSE (expected)
-""") >> nextReport
-report = nextReport
+""") >> reportPart4
+report = reportPart4
 }
 // T03-S1 CHECK: Left=named textA Text; operator=is; RHS=named textA Text; expected TRUE. Preserve actual variable tokens, not literal names.
 if(textA == textA) {
 text(text: """
 ${report}
 S1 TRUE (expected)
-""") >> nextReport
-report = nextReport
+""") >> reportPart5
+report = reportPart5
 } else {
 text(text: """
 ${report}
 S1 FALSE (unexpected)
-""") >> nextReport
-report = nextReport
+""") >> reportPart6
+report = reportPart6
 }
 // T03-S2 CHECK: Left=named textA Text; operator=is not; RHS=named textB Text; expected TRUE.
 if(textA != textB) {
 text(text: """
 ${report}
 S2 TRUE (expected)
-""") >> nextReport
-report = nextReport
+""") >> reportPart7
+report = reportPart7
 } else {
 text(text: """
 ${report}
 S2 FALSE (unexpected)
-""") >> nextReport
-report = nextReport
+""") >> reportPart8
+report = reportPart8
 }
 // T03-S3 CHECK: Left=named textA Text; operator=is not; RHS=named textA Text; expected FALSE.
 if(textA != textA) {
 text(text: """
 ${report}
 S3 TRUE (unexpected)
-""") >> nextReport
-report = nextReport
+""") >> reportPart9
+report = reportPart9
 } else {
 text(text: """
 ${report}
 S3 FALSE (expected)
-""") >> nextReport
-report = nextReport
+""") >> reportPart10
+report = reportPart10
 }
 
 text(text: """
@@ -81,10 +81,10 @@ ${report}
 Input Number outputs: eleven=[${eleven}], twelve=[${twelve}]. Named Text: textA=[${textA}], textB=[${textB}].
 Expected branches: N1 TRUE, N2 FALSE, S1 TRUE, S2 TRUE, S3 FALSE.
 RHS fields/operators must be inspected manually; branch results alone do not prove their wiring.
-""") >> nextReport
-report = nextReport
+""") >> reportPart11
+report = reportPart11
 
-// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their preceding nextReport output. Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
+// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their own preceding reportPart output (unique magic-variable name per source action). Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
 replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
 quicklook(input: cleanedReport)
 getTextFrom(input: cleanedReport)

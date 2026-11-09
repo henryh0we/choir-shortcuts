@@ -1,6 +1,6 @@
-// TEST - V3 Folder Captures | Purpose/role: T04 optional captures and guarded month lookup | Specification revision: 2; interface 1.1 | Contract: Direct launch; ignores input; select normal config once; four fixed names; capture/count/default previews; no dates/context/writes; final copyable Text report | Dependencies: v3-config.example.json copied to Files | Stage: Source reviewed only; not compiled or executed
+// TEST - V3 Folder Captures | Purpose/role: T04 optional captures and guarded month lookup | Specification revision: 3; interface 1.1 | Contract: Direct launch; ignores input; select normal config once; four fixed names; capture/count/default previews; no dates/context/writes; final copyable Text report | Dependencies: v3-config.example.json copied to Files | Stage: Source reviewed only; not compiled or executed
 import Shortcuts
-var report = "TEST - V3 Folder Captures | source revision 2 | Observed values below; native types/settings and manual repairs must be recorded separately."
+var report = "TEST - V3 Folder Captures | source revision 3 | Observed values below; native types/settings and manual repairs must be recorded separately."
 alert(alert: "Select the normal v3-config.json. This test reads it once and does not change it.", title: "T04 config", cancel: false)
 selectFile(type: Files, multiple: false) >> configFile
 getTextFrom(input: configFile) >> configJson
@@ -13,8 +13,8 @@ text(text: """
 ${report}
 Config File=[${configName}]
 Folder regex=[${folderPattern}]
-""") >> nextReport
-report = nextReport
+""") >> reportPart1
+report = reportPart1
 list(items: ["HNov8", "INov9-15", "Nov30-Dec6-2026", "Dec28-Jan3-2026"]) >> fixtures
 repeatEach fixtures {
 text(text: "${RepeatItem}") >> folderName
@@ -27,8 +27,8 @@ text(text: "${folderName}: startMonth=[${startMonthName}] startDay=[${startDay}]
 text(text: """
 ${report}
 ${rawReport}
-""") >> nextReport
-report = nextReport
+""") >> reportPart2
+report = reportPart2
 text(text: "year:${explicitYear}") >> yearProbe
 matchText(text: "${yearProbe}", regex: "^year:[0-9]{4}$", caseSensitive: true) >> yearMatches
 count(type: Items, input: yearMatches) >> yearCount
@@ -45,8 +45,8 @@ text(text: "${folderName}: actual Match counts year=[${yearCountText}] day=[${da
 text(text: """
 ${report}
 ${countReport}
-""") >> nextReport
-report = nextReport
+""") >> reportPart3
+report = reportPart3
 // T04-YEAR CHECK: If left=actual year Match Count converted to Text, operator=is, RHS=literal Text 0. Keep this separate from end-day/month checks; counts must read their own Match outputs.
 var yearGuard = "not taken"
 var endMonthKey = "not looked up"
@@ -79,17 +79,17 @@ ${report}
 ${finalReport}
 Year-absent branch=[${yearGuard}] actual end-month key=[${endMonthKey}]
 --- end fixture ---
-""") >> nextReport
-report = nextReport
+""") >> reportPart4
+report = reportPart4
 }
 
 text(text: """
 ${report}
 Expected year/day/month Match counts: HNov8=0/0/0; INov9-15=0/1/0; Nov30-Dec6-2026=1/1/1; Dec28-Jan3-2026=1/1/1. End-month lookup skipped for first two, keys dec and jan for last two.
-""") >> nextReport
-report = nextReport
+""") >> reportPart5
+report = reportPart5
 
-// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their preceding nextReport output. Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
+// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their own preceding reportPart output (unique magic-variable name per source action). Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
 replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
 quicklook(input: cleanedReport)
 getTextFrom(input: cleanedReport)

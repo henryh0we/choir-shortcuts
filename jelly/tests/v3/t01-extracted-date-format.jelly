@@ -1,6 +1,6 @@
-// TEST - V3 Extracted Date Format | Purpose/role: T01 ISO Text extraction versus named extracted Date | Specification revision: 2; interface 1.1 | Contract: Direct launch; ignores input; fixed Text; count and Date previews; no writes; final copyable Text report | Dependencies: None | Stage: Source reviewed only; not compiled or executed
+// TEST - V3 Extracted Date Format | Purpose/role: T01 ISO Text extraction versus named extracted Date | Specification revision: 3; interface 1.1 | Contract: Direct launch; ignores input; fixed Text; count and Date previews; no writes; final copyable Text report | Dependencies: None | Stage: Source reviewed only; not compiled or executed
 import Shortcuts
-var report = "TEST - V3 Extracted Date Format | source revision 2 | Observed values below; native types/settings and manual repairs must be recorded separately."
+var report = "TEST - V3 Extracted Date Format | source revision 3 | Observed values below; native types/settings and manual repairs must be recorded separately."
 text(text: "2026-11-09 12:00") >> sourceText
 alert(alert: "T01 EXTRACT: next captured raw display is source Text, then Get Dates runs. Expected count=1.", title: "T01 route 3", cancel: false)
 getDateFrom(input: sourceText) >> extractedDate
@@ -11,8 +11,8 @@ ${report}
 Source Text=[${sourceText}]
 ${countReport}
 Formatting runs only when actual count Text is 1.
-""") >> nextReport
-report = nextReport
+""") >> reportPart1
+report = reportPart1
 text(text: "${dateCount}") >> countText
 // T01-EXTRACT-GUARD CHECK: Count input=Get Dates output; If left=countText Text, operator=is, RHS=literal Text 1. Preserve guard; no format actions should run for zero/multiple Dates.
 if(countText == "1") {
@@ -34,11 +34,11 @@ Extracted direct weekday=[${directDay}] expected=[Mon]
 Named cursorDate raw display=[${namedRaw}]
 Named ISO=[${namedIso}] expected=[2026-11-09]
 Named weekday=[${namedDay}] expected=[Mon]
-""") >> nextReport
-report = nextReport
+""") >> reportPart2
+report = reportPart2
 }
 
-// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their preceding nextReport output. Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
+// REPORT-FINAL CHECK: After all branches/loops, cleanup input=CURRENT NAMED report Text, not its initializer. All report updates must Set Variable report=their own preceding reportPart output (unique magic-variable name per source action). Preserve date/number producers; report Text is display only. Quick Look and final Get Text both read cleanedReport. No Output/Exit binding. Runtime action errors may abort before this report.
 replaceText(input: "${report}", find: "(?m)^ *\"{2} *$", replace: "", isRegex: true, caseSensitive: true) >> cleanedReport
 quicklook(input: cleanedReport)
 getTextFrom(input: cleanedReport)

@@ -4,6 +4,8 @@
 
 ## Current position
 
+Latest isolated results, 9 November: T01a revision 2 returned the expected fixed native Date results through both direct and named routes (`2026-11-09`, `Mon`; raw displays `9 Nov 2026 at 12:00`). T01b revision 2 failed compilation because the report code reused magic-variable name nextReport; no extraction runtime result was obtained. Revision 3 uses distinct report captures in T01b and the other affected probes, awaiting device compilation. See the [probe evidence and retry instructions](stage-2b-probes.md#latest-device-results-and-correction). This does not establish that the production E08 failure is resolved.
+
 The split sources load by user report. Selecting a copied folder under On My iPad gets past the Nextcloud picker failure. The date helper has returned controlled results through its caller. Four generated If comparisons were found with blank right-hand operands and manually reconnected.
 
 The most recent unresolved failure is **Format Date cannot convert Text to Date**, reported after correcting the two loop date formats to Custom. The exact failing Format Date action and its actual input value have not been identified. Before that change, a seven-iteration trace showed:

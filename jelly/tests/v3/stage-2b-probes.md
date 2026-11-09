@@ -1,10 +1,20 @@
 # Stage 2B ready-to-copy probes
 
-Revision 2, 9 November 2026. **Source reviewed only. No local compiler, build or tests run; iPad compilation, generation and execution pending.** These implement the [error-isolation plan](stage-2b-error-isolation.md). Keep the installed production shortcuts and their repairs as evidence.
+Updated 9 November 2026. **T01a revision 2 has a user-reported runtime pass for its displayed results. T01b revision 2 failed compilation with a duplicate magic-variable name. Corrected sources are reviewed only; no local compiler, build or tests run.** These implement the [error-isolation plan](stage-2b-error-isolation.md). Keep the installed production shortcuts and their repairs as evidence.
+
+## Latest device results and correction
+
+T01a, TEST - V3 Date Format, source revision 2: user returned native direct and named cursorDate raw displays `9 Nov 2026 at 12:00`; both ISO outputs were `2026-11-09`, and both weekday outputs were `Mon`. All six displayed values match the expected results. App versions, exact generated settings/types and setup/repair history were not supplied. This establishes the reported fixed native Date routes; it does not establish ISO Text extraction, loop advancement or production resolver correctness. Keep this passing installed probe; no T01a reimport is needed.
+
+T01b, TEST - V3 Extracted Date Format, source revision 2: user reported `Error (Line #29:1): You already have a magic variable named nextReport. You can not have two Magic Variables named the same thing.` No extracted-Date runtime result is established. The source reused `>> nextReport` at two different action sites; report accumulation must use a unique magic-variable capture per source action and then update the mutable named report.
+
+**Revision 3 corrects those duplicate report captures in T01b, T02a, T02b, T03 and T04.** T01a, T05 and T07 remain revision 2 because each has only one report capture. All interfaces remain 1.1. Retry T01b from the complete updated file, then use updated T02a. Date/If logic, exact installed names and native fixture setup slots are unchanged. Compiler acceptance and runtime of revision 3 are pending.
+
+## Run and return reports
 
 Transfer each complete `.jelly` through Copyover. The first comment supplies its exact TEST name. Each shortcut launches directly, ignores incoming input and has no installed helper dependencies or writes. Import only the probe being investigated; no production reimports are needed.
 
-Every revision-2 probe accumulates its observed values into **one final Text report**, displayed in Quick Look, then returned as Text on normal completion. Use Quick Look?s Share menu to copy the report and paste it into this chat. The report includes the installed test name, source revision, expected results and observed results. T02 includes every iteration; T03 includes all five branches; T04 includes all four fixtures. Add app versions, manual repairs and provider/location when sending it. These cannot be inferred from the captured values.
+Every current probe accumulates its observed values into **one final Text report**, displayed in Quick Look, then returned as Text on normal completion. Use Quick Look's Share menu to copy the report and paste it into this chat. The report includes the installed test name, source revision, expected results and observed results. T02 includes every iteration; T03 includes all five branches; T04 includes all four fixtures. Add app versions, manual repairs and provider/location when sending it. These cannot be inferred from the captured values.
 
 Checkpoint alerts remain around risky actions. If an action aborts, the final report cannot be reached; send the exact error and last checkpoint instead. Report display strings are captured separately: the Date tests still feed the original native Date or current named Date into Format/Adjust Date. A raw display string does not establish its producer?s native type. Inspect REPORT-FINAL comments: report accumulation and the final cleanup must read current named report, including after loops and branches. Cleanup reuses the existing V3 multiline quote-artifact filter.
 
@@ -38,4 +48,4 @@ T04 reports raw captures between brackets, actual Match counts, lookup entry and
 
 T06 remains the existing production local integration checkpoint in the [isolation plan](stage-2b-error-isolation.md), after the isolated tests pass. No duplicate integration shortcut or saving test is introduced. T08 remains conditional on a new loading/compilation crash; preserved crash sources are evidence, not baseline probes.
 
-For each actual result, use the [evidence record template](stage-2b-error-isolation.md#record-one-result-per-test). All probes are revision 2/interface 1.1. Record app versions, native-only versus Jelly-generated, untouched generation versus setup/repair, exact source, expected/observed outputs and first failing boundary. If comparing a manually assembled native version, use the same fixed inputs and actions and log it separately. Do not infer compiler acceptance or runtime passes from these source files.
+For each actual result, use the [evidence record template](stage-2b-error-isolation.md#record-one-result-per-test). T01b/T02a/T02b/T03/T04 are revision 3; T01a/T05/T07 are revision 2; all interfaces are 1.1. Record app versions, native-only versus Jelly-generated, untouched generation versus setup/repair, exact source, expected/observed outputs and first failing boundary. If comparing a manually assembled native version, use the same fixed inputs and actions and log it separately. Do not infer compiler acceptance or runtime passes from these source files.
