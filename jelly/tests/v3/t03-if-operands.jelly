@@ -1,0 +1,36 @@
+// TEST - V3 If Operands | Purpose/role: T03 variable-to-variable If generation | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; five distinct branch alerts; no writes | Dependencies: None | Stage: Source reviewed only; not compiled or executed
+import Shortcuts
+calculate(input: "11") >> eleven
+calculate(input: "12") >> twelve
+var textA = "A"
+var textB = "B"
+// T03-N1 CHECK: Left=Calculate eleven Number; operator=is less than; RHS=Calculate twelve Number. Inspect untouched operands first, then record any repair; expected TRUE. No literal replacement of variable operands.
+if(eleven < twelve) {
+alert(alert: "N1 TRUE (expected)", title: "T03 N1", cancel: false)
+} else {
+alert(alert: "N1 FALSE (unexpected)", title: "T03 N1", cancel: false)
+}
+// T03-N2 CHECK: Left=Calculate eleven Number; operator=is less than; RHS=same Calculate eleven Number; expected FALSE.
+if(eleven < eleven) {
+alert(alert: "N2 TRUE (unexpected)", title: "T03 N2", cancel: false)
+} else {
+alert(alert: "N2 FALSE (expected)", title: "T03 N2", cancel: false)
+}
+// T03-S1 CHECK: Left=named textA Text; operator=is; RHS=named textA Text; expected TRUE. Preserve actual variable tokens, not literal names.
+if(textA == textA) {
+alert(alert: "S1 TRUE (expected)", title: "T03 S1", cancel: false)
+} else {
+alert(alert: "S1 FALSE (unexpected)", title: "T03 S1", cancel: false)
+}
+// T03-S2 CHECK: Left=named textA Text; operator=is not; RHS=named textB Text; expected TRUE.
+if(textA != textB) {
+alert(alert: "S2 TRUE (expected)", title: "T03 S2", cancel: false)
+} else {
+alert(alert: "S2 FALSE (unexpected)", title: "T03 S2", cancel: false)
+}
+// T03-S3 CHECK: Left=named textA Text; operator=is not; RHS=named textA Text; expected FALSE.
+if(textA != textA) {
+alert(alert: "S3 TRUE (unexpected)", title: "T03 S3", cancel: false)
+} else {
+alert(alert: "S3 FALSE (expected)", title: "T03 S3", cancel: false)
+}

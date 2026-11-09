@@ -1,0 +1,19 @@
+// TEST - V3 Date Format | Purpose/role: T01 native Date versus named Date formatting | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; previews ISO and weekday for fixed Date; no writes | Dependencies: None; one native Date setup slot | Stage: Source reviewed only; not compiled or executed
+import Shortcuts
+// T01-DATE ADD/RECONNECT: Replace ONLY next Nothing with native Date, Specified Date=9 November 2026 12:00 Europe/London. Reconnect BOTH direct Format Date inputs, raw Quick Look and Set Variable cursorDate to this native Date output BEFORE deleting Nothing. Preserve Set Variable. Do not insert Text or Current Date. Keep outside branches.
+nothing() >> nativeDate
+alert(alert: "T01 NATIVE DIRECT: next preview is the exact formatter input. Inspect its token type in the editor if formatting fails.", title: "T01 route 1", cancel: false)
+quicklook(input: nativeDate)
+// T01-FORMATS CHECK: Each Format Date below=Custom; yyyy-MM-dd or EEE exactly; Time=None. Inputs must be actual Date tokens, not literal variable names. Inspect English UK/Gregorian/Europe London only where exposed. Record untouched generation before repairing any fields.
+formatDate(date: "${nativeDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> directIso
+quicklook(input: directIso)
+formatDate(date: "${nativeDate}", dStyle: Custom, tStyle: None, custom: "EEE", isoTime: false) >> directDay
+quicklook(input: directDay)
+var cursorDate = nativeDate
+alert(alert: "T01 NATIVE NAMED: next preview uses named cursorDate. Expected formatted results: 2026-11-09 then Mon.", title: "T01 route 2", cancel: false)
+// T01-NAMED CHECK: Quick Look and BOTH following Format Date inputs=current named cursorDate, native Date set from original Date output; preserve initializer. No formatted Text goes into cursorDate.
+quicklook(input: cursorDate)
+formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> namedIso
+quicklook(input: namedIso)
+formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "EEE", isoTime: false) >> namedDay
+quicklook(input: namedDay)

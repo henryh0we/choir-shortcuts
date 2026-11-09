@@ -1,0 +1,26 @@
+// TEST - V3 Date Completion | Purpose/role: T02 seven-day completion extension | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; seven iteration traces and final guard; no writes | Dependencies: Passing T02 three-day test; native Date slot | Stage: Source reviewed only; not compiled or executed
+import Shortcuts
+// T02C-DATE ADD/RECONNECT: Replace ONLY next Nothing with native Date, Specified Date=9 November 2026 12:00 Europe/London; reconnect Set Variable cursorDate to native Date output before deleting Nothing. Preserve initializer outside Repeat.
+nothing() >> nativeDate
+var cursorDate = nativeDate
+var endIso = "2026-11-15"
+var complete = "off"
+repeat(7) {
+// T02C-FORMAT CHECK: Format and Adjust inputs=CURRENT NAMED cursorDate, not initializer. Format=Custom yyyy-MM-dd, Time=None; English UK/Gregorian/Europe London where exposed. Store only Adjusted Date back into cursorDate inside Repeat.
+formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> cursorIso
+// T02C-EQUALITY CHECK: If left=THIS iteration cursorIso Text, operator=is, RHS=CURRENT NAMED endIso Text. Record untouched RHS before any repair. True branch sets named complete=literal Text on inside Repeat.
+if(cursorIso == endIso) {
+complete = "on"
+}
+alert(alert: "Iteration ${RepeatIndex}: current=[${cursorIso}] end=[${endIso}] complete=[${complete}]", title: "T02 completion", cancel: false)
+if(complete == "off") {
+adjustDate(operation: Add, duration: 1 day, date: "${cursorDate}") >> nextDate
+cursorDate = nextDate
+}
+}
+// T02C-FINAL CHECK: Final If left=CURRENT NAMED complete after Repeat, operator=is not, RHS=literal Text on; preserve original off initializer. Final Text also reads current complete.
+if(complete != "on") {
+alert(alert: "Completion guard failed: complete is not on. Preserve the seven traces.", title: "T02 final guard", cancel: false)
+}
+text(text: "T02 final complete=[${complete}] expected=[on]") >> finalReport
+quicklook(input: finalReport)

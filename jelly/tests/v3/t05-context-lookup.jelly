@@ -1,0 +1,15 @@
+// TEST - V3 Context Lookup | Purpose/role: T05 missing entry versus missing Key | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; select supplied empty-context JSON; preview key/schema/missing-entry count; no dates or writes | Dependencies: v3-week-context.empty.json in Files | Stage: Source reviewed only; not compiled or executed
+import Shortcuts
+alert(alert: "Select v3-week-context.empty.json, NOT the normal saved context. This test only reads the fixture.", title: "T05 fixture", cancel: false)
+selectFile(type: Files, multiple: false) >> contextFile
+getTextFrom(input: contextFile) >> contextJson
+getDictionaryFrom(input: contextJson) >> contexts
+text(text: "ScannedChoirMusic/INov9-15") >> contextKey
+quicklook(input: contextKey)
+// T05-KEY CHECK: Get Value Key=actual contextKey Text token ScannedChoirMusic/INov9-15; Dictionary=parsed fixture contexts. A missing entry is expected, an empty Key input is not. Keep literal nonempty Text producer; no initializer or typed variable-name substitute.
+valueFor(key: "${contextKey}", dictionary: contexts) >> savedRange
+alert(alert: "Context lookup returned without a missing-Key error. Next count should be 0.", title: "T05 lookup returned", cancel: false)
+count(type: Items, input: savedRange) >> savedCount
+valueFor(key: "_schemaVersion", dictionary: contexts) >> schemaVersion
+text(text: "T05 key=[${contextKey}] saved entry count=[${savedCount}] expected=[0]; schema=[${schemaVersion}] expected=[1]") >> report
+quicklook(input: report)

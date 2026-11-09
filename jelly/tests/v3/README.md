@@ -1,6 +1,6 @@
 # V3 first manual iPad checkpoint — filenames
 
-9 November 2026: current Stage 2B troubleshooting is consolidated in [the error record and separate test plan](stage-2b-error-isolation.md). Start with Date conversion, then native date advancement; tests are specified only, not executed. Stage 2A evidence below is unchanged.
+9 November 2026: current Stage 2B troubleshooting is consolidated in [the error record and separate test plan](stage-2b-error-isolation.md). The [ready-to-copy probe run sheet](stage-2b-probes.md) now links eight independent test sources. Start with Date conversion, then native date advancement; sources are reviewed only, not compiled or executed. Stage 2A evidence below is unchanged.
 
 Next source delivery: [Stage 2B dated/grouped/ordered service preview](stage-2b-services.md). Revision 1 crashed in editor loading and at Compile Jelly Text; revision 2's split sources now load correctly by user report. Follow the native setup checklist before integrated runtime. Working filename shortcuts are unchanged; the evidence below remains the Stage 2A record.
 

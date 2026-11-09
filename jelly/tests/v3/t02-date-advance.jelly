@@ -1,0 +1,16 @@
+// TEST - V3 Date Advance | Purpose/role: T02 three-day named Date advancement | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; three current/adjusted Date previews; no writes | Dependencies: Passing T01 route; native Date setup slot | Stage: Source reviewed only; not compiled or executed
+import Shortcuts
+// T02-DATE ADD/RECONNECT: Replace ONLY next Nothing with native Date, Specified Date=9 November 2026 12:00 Europe/London; reconnect Set Variable cursorDate to Date output before deleting Nothing. Preserve initializer OUTSIDE Repeat. Use passing T01 native input wiring; no Text initializer.
+nothing() >> nativeDate
+var cursorDate = nativeDate
+repeat(3) {
+alert(alert: "Iteration ${RepeatIndex}: next preview is CURRENT named cursorDate, followed by its formatted ISO.", title: "T02 CURRENT", cancel: false)
+// T02-CURSOR CHECK: Raw Quick Look, Format Date and Adjust Date inputs=CURRENT NAMED cursorDate, never original nativeDate/initializer. Format=Custom yyyy-MM-dd, Time=None. Adjust=Add 1 day. Following Set Variable cursorDate=Adjusted Date output INSIDE Repeat; preserve original initializer outside. Do not store formatted currentIso Text.
+quicklook(input: cursorDate)
+formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> currentIso
+quicklook(input: currentIso)
+adjustDate(operation: Add, duration: 1 day, date: "${cursorDate}") >> nextDate
+alert(alert: "Iteration ${RepeatIndex}: next preview is Adjusted Date BEFORE storage. Expected 10, 11, then 12 November.", title: "T02 ADJUSTED", cancel: false)
+quicklook(input: nextDate)
+cursorDate = nextDate
+}

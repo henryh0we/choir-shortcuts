@@ -2,6 +2,8 @@
 
 ## V3 installation order (7 November 2026)
 
+9 November: eight independent **TEST - V3** Stage 2B probes are listed with exact names, source paths, setup and expected results in the [probe inventory/run sheet](../tests/v3/stage-2b-probes.md). They have no installed helper dependencies and do not change production installation order. Compile/import each separately through Copyover; native fixture slots are documented beside their actions. Source review only; no compilation or execution recorded.
+
 V3 is independent of every legacy Shortcut below. Install only:
 
 1. **V3 - Parse Filename**, [source](../shortcuts/reusable/v3-parse-filename.jelly), interface 2.0, no installed dependencies.

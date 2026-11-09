@@ -1,0 +1,27 @@
+// TEST - V3 Extracted Date Format | Purpose/role: T01 ISO Text extraction versus named extracted Date | Specification revision: 1; interface 1.0 | Contract: Direct launch; ignores input; fixed Text; count and Date previews; no writes | Dependencies: None | Stage: Source reviewed only; not compiled or executed
+import Shortcuts
+text(text: "2026-11-09 12:00") >> sourceText
+alert(alert: "T01 EXTRACT: next preview is source Text, then Get Dates runs. Expected count=1.", title: "T01 route 3", cancel: false)
+quicklook(input: sourceText)
+getDateFrom(input: sourceText) >> extractedDate
+count(type: Items, input: extractedDate) >> dateCount
+text(text: "T01 extracted Date count=[${dateCount}] expected=[1]") >> countReport
+quicklook(input: countReport)
+text(text: "${dateCount}") >> countText
+// T01-EXTRACT-GUARD CHECK: Count input=Get Dates output; If left=countText Text, operator=is, RHS=literal Text 1. Preserve guard; no format actions should run for zero/multiple Dates.
+if(countText == "1") {
+alert(alert: "T01 EXTRACTED DIRECT: next preview is the exact formatter input. Expected ISO=2026-11-09, weekday=Mon.", title: "T01 route 3", cancel: false)
+quicklook(input: extractedDate)
+// T01-EXTRACT-FORMATS CHECK: BOTH direct inputs=Get Dates output, BOTH named inputs=current named cursorDate holding that same Date. All four formats=Custom, Time=None, exact yyyy-MM-dd/EEE. Inspect English UK/Gregorian/Europe London where exposed; record generated settings before repairs.
+formatDate(date: "${extractedDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> directIso
+quicklook(input: directIso)
+formatDate(date: "${extractedDate}", dStyle: Custom, tStyle: None, custom: "EEE", isoTime: false) >> directDay
+quicklook(input: directDay)
+var cursorDate = extractedDate
+alert(alert: "T01 EXTRACTED NAMED: next preview uses named cursorDate, followed by ISO then weekday.", title: "T01 route 4", cancel: false)
+quicklook(input: cursorDate)
+formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "yyyy-MM-dd", isoTime: false) >> namedIso
+quicklook(input: namedIso)
+formatDate(date: "${cursorDate}", dStyle: Custom, tStyle: None, custom: "EEE", isoTime: false) >> namedDay
+quicklook(input: namedDay)
+}
