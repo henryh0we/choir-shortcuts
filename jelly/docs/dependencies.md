@@ -1,5 +1,15 @@
 # Shortcut inventory and installation order
 
+## V4 Check or Upload (10 November 2026)
+
+**V4 - Check or Upload**, [source](../shortcuts/reusable/v4-check-or-upload.jelly),
+revision 1/interface 1.0, has no installed shortcut dependencies. It accepts one
+shared PDF or offers Files on direct launch; an optional second Text item `batch`
+suppresses report display. Native forScore lookup/import/metadata/return slots
+must be completed before use. Intended result: native List [Score, report Text].
+Source reviewed only; not compiled or device-tested. See the
+[setup and manual checks](v4-check-or-upload.md). V3 and legacy sources are unchanged.
+
 ## V3 installation order (7 November 2026)
 
 Standalone minute workaround diagnostic: **TEST - V3 Adjust Date Minutes**, [source](../tests/v3/t02-adjust-date-minutes.jelly), revision 1/interface 1.0, no dependencies or setup slots. Adds 1440 min to a fixed extracted Date and returns a timestamp report. User-reported matching fixed-date output: 9 November 2026 at 12:00 to 10 November at 12:00, both Date counts 1; no repair reported, native fields/version details unspecified. Production behaviour is unchanged.

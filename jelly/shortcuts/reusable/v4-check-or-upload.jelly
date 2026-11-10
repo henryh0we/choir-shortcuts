@@ -1,0 +1,138 @@
+// V4 - Check or Upload | Purpose/role: Shared single-PDF lookup/import and metadata review | Specification revision: 1; interface 1.0 | Input: One native PDF File; optional second Text item batch suppresses report display; no input opens Files | Output after native completion: List [native Score, report Text]; invalid/cancelled/setup returns no usable result | Dependencies: None | Target: iPadOS 26.6, Jellycuts 2026.6.4, forScore 15.2.5 | Stage: Source reviewed; forScore slots incomplete; not compiled/device-tested | Setup/tests: ../../docs/v4-check-or-upload.md
+import Shortcuts
+
+// SHARE SHEET SETUP: After importing, enable Show in Share Sheet in Shortcut Details and accept PDFs/Files. Keep shared content as native Files, not filenames or Text. Share exactly one PDF to this helper; future service/rehearsal callers loop over their selected PDFs. No shared input opens the Files picker. All prompts require an interactive run.
+// NATIVE SLOTS: Each FS comment is one native Comment block. Replace the marked placeholder actions with the described native forScore actions in Apple Shortcuts; preserve surrounding If blocks. The supplied template deliberately stops at FS01 until lookup is installed. Never interpolate File/Score/Composer/Genre objects into Text.
+// SETTINGS: Only these recognised weekday/service-position prefixes are removed. Keep unfamiliar prefixes unchanged. Music types below match config/config.example.json; no external config or legacy shortcut is required.
+var prefixPattern = "^(Mon|Tue|Wed|Thu|Thur|Thurs|Fri|Sat|Sun)(am|pm)?[0-9]+-"
+list(items: ["Introits", "Responses", "Hymns", "Psalms", "Canticles", "Anthems", "Kyrie", "Gloria", "SanctusBenedictus", "AgnusDei", "TeDeum", "Jubilate", "Other"]) >> musicTypes
+nothing() >> emptyValue
+var sourceFile = emptyValue
+var existingScore = emptyValue
+var resolvedScore = emptyValue
+var reportMode = "show"
+var resultStatus = "Reused existing forScore score"
+var reportTitle = ""
+var reportComposer = "Existing metadata preserved"
+var reportType = "Existing metadata preserved"
+
+count(type: Items, input: ShortcutInput) >> incomingCount
+text(text: "${incomingCount}") >> incomingCountText
+if(incomingCountText == "0") {
+selectFile(type: Files, multiple: false) >> pickedFile
+sourceFile = pickedFile
+}
+if(incomingCountText != "0") {
+if(incomingCountText != "1") {
+if(incomingCountText != "2") {
+alert(alert: "Share one PDF, or call with a PDF and optional second Text item batch.", title: "One PDF required", cancel: false)
+output("")
+}
+}
+repeatEach(ShortcutInput) {
+if(RepeatIndex == "1") {
+sourceFile = RepeatItem
+}
+if(RepeatIndex == "2") {
+reportMode = RepeatItem
+}
+}
+if(incomingCountText == "2") {
+if(reportMode != "batch") {
+alert(alert: "The optional second input must be Text batch. Share one PDF at a time to Check or Upload.", title: "Invalid input", cancel: false)
+output("")
+}
+}
+}
+if(sourceFile == nil) {
+output("")
+}
+count(type: Items, input: sourceFile) >> pdfCount
+text(text: "${pdfCount}") >> pdfCountText
+if(pdfCountText != "1") {
+alert(alert: "Select one PDF for this helper.", title: "One PDF required", cancel: false)
+output("")
+}
+fileDetail(input: sourceFile, property: File Extension) >> sourceExtension
+changeCase(text: "${sourceExtension}", case: lowercase) >> lowerExtension
+if(lowerExtension != "pdf") {
+alert(alert: "The supplied file must be a PDF.", title: "PDF required", cancel: false)
+output("")
+}
+fileDetail(input: sourceFile, property: Name) >> sourceName
+replaceText(input: "${sourceName}", find: "[.]pdf$", replace: "", isRegex: true, caseSensitive: false) >> sourceStem
+replaceText(input: "${sourceStem}", find: "${prefixPattern}", replace: "", isRegex: true, caseSensitive: false) >> untrimmedName
+replaceText(input: "${untrimmedName}", find: "^\\s+|\\s+$", replace: "", isRegex: true, caseSensitive: false) >> canonicalName
+if(canonicalName == nil) {
+alert(alert: "Filename cleanup produced an empty piece name.", title: "Check filename", cancel: false)
+output("")
+}
+reportTitle = canonicalName
+
+// FS01 - LOOKUP: Replace the next Alert and Stop and Output with Get score named canonicalName (the complete cleaned name without .pdf), Continue if not found ON, in the intended forScore scope. Assign named existingScore to the actual native Score result, or Nothing if genuinely absent. Resolve multiple/ambiguous matches with a chooser or stop; never pick the first silently and never treat ambiguity as absence. If found, also Set Variable resolvedScore to the selected native Score. Keep this before the new-piece If so existing scores skip metadata questions. Check current named-variable tokens rather than their Nothing initializers.
+alert(alert: "Insert the forScore actions at FS01-FS06 before using this template.", title: "forScore setup required", cancel: false)
+output("")
+
+if(existingScore == nil) {
+var suggestedTitle = canonicalName
+var suggestedComposer = "-"
+// SUGGESTIONS ONLY: A simple alphabetic composer-work pattern proposes a split for review. Numbered hymn identifiers and explicitly named Psalm/Psalms payloads do not use generic composer splitting. No full-name expansion, automatic CamelCase rewriting or removal of work qualifiers.
+matchText(text: "${canonicalName}", regex: "^(NEH|AMR|OH)[ -]*[0-9]+|^Psalms?([ -]|$)", caseSensitive: false) >> referenceMatches
+if(referenceMatches == nil) {
+matchText(text: "${canonicalName}", regex: "^([A-Za-z][A-Za-z .']*)-(.+)$", caseSensitive: false) >> composerWorkMatch
+if(composerWorkMatch != nil) {
+replaceText(input: "${canonicalName}", find: "^([A-Za-z][A-Za-z .']*)-(.+)$", replace: "$1", isRegex: true, caseSensitive: false) >> composerProposal
+replaceText(input: "${canonicalName}", find: "^([A-Za-z][A-Za-z .']*)-(.+)$", replace: "$2", isRegex: true, caseSensitive: false) >> titleProposal
+suggestedComposer = composerProposal
+suggestedTitle = titleProposal
+}
+}
+// DEFAULT ANSWER CHECK: Inspect the generated Ask for Input defaults and reconnect actual suggestedTitle/suggestedComposer variable tokens if the app emits literal interpolation text. Unknown composer is a single hyphen so a blank answer need not be required by the editor.
+askForInput(prompt: "New piece: ${canonicalName}. Confirm the title; retain movement and edition details.", type: Text, default: "${suggestedTitle}", allowDecimal: false, allowNegative: false) >> enteredTitle
+replaceText(input: "${enteredTitle}", find: "^\\s+|\\s+$", replace: "", isRegex: true, caseSensitive: false) >> approvedTitle
+if(approvedTitle == nil) {
+output("")
+}
+askForInput(prompt: "Confirm the composer. Correct the filename suggestion if needed. Enter - if unknown or not applicable.", type: Text, default: "${suggestedComposer}", allowDecimal: false, allowNegative: false) >> enteredComposer
+replaceText(input: "${enteredComposer}", find: "^\\s+|\\s+$", replace: "", isRegex: true, caseSensitive: false) >> trimmedComposer
+var approvedComposer = trimmedComposer
+if(trimmedComposer == "-") {
+approvedComposer = ""
+}
+choose(list: musicTypes, prompt: "Choose the music type for ${approvedTitle}.", multiple: false, all: false) >> approvedType
+if(approvedType == nil) {
+output("")
+}
+// Set Name prepares the outgoing File for import; no Rename File or Save File writes to the source location are requested here. Inspect the resulting name to ensure exactly one .pdf extension.
+setName(input: sourceFile, name: "${canonicalName}.pdf", dontIncludeExtension: false) >> importFile
+
+// FS02 - IMPORT: Replace the next Stop and Output with native Import Files, input=importFile, Conflict Handling=Skip. Resolve and assign named resolvedScore to the exact imported native Score; if import yields no usable Score, re-query canonicalName and require one unambiguous intended match. An empty import output or a skipped import is not a receipt. On unresolved/failed import, alert and stop with no result before metadata. Never select the first score in the library.
+output("")
+if(resolvedScore == nil) {
+alert(alert: "No Score was resolved after import. Inspect forScore before retrying.", title: "Import unconfirmed", cancel: false)
+output("")
+}
+
+// FS03 - TITLE: Insert native Rename Scores, Scores=named resolvedScore, Name=approvedTitle. Keep canonicalName as the lookup identity and verify the original cleaned filename still resolves this same Score after its display title changes. Do not rename or replace a reused Score; this slot is inside the new-piece branch.
+// FS04 - COMPOSER: Insert native If approvedComposer has any value. Get composer named approvedComposer with Continue if not found ON; reuse an unambiguous existing Composer, otherwise Create composer named approvedComposer and assign it to resolvedScore. If reusing a Composer, add that native Composer to resolvedScore through Add metadata. Reject ambiguous composer matches; do not choose the first or fabricate authorship. If approvedComposer is empty, leave Composer unassigned. Preserve unrelated metadata.
+// FS05 - GENRE: Get genre named approvedType with Continue if not found ON; reuse an unambiguous existing Genre and assign it to resolvedScore through Add metadata, otherwise Create genre named approvedType and add it to resolvedScore. Verify Title, Composer where supplied, and Genre on this exact Score before reporting success. If a write/readback is unconfirmed, stop with an issue report instead of claiming success. Do not add service-type Tags/Labels. Replace the following setup stop only after FS03-FS05 are installed.
+output("")
+
+resultStatus = "Imported into forScore"
+reportTitle = approvedTitle
+reportComposer = approvedComposer
+if(approvedComposer == nil) {
+reportComposer = "Unknown / not assigned"
+}
+reportType = approvedType
+}
+
+if(resolvedScore == nil) {
+output("")
+}
+text(text: "${resultStatus}\n\nTitle: ${reportTitle}\nComposer: ${reportComposer}\nType: ${reportType}\nLookup name: ${canonicalName}") >> pieceReport
+if(reportMode == "show") {
+quicklook(input: pieceReport)
+}
+// FS06 - NATIVE RESULT: Replace the next Stop and Output with a native List containing exactly two rows: named resolvedScore as a native Score token, then pieceReport as Text. Stop and Output that native List; no-recipient behaviour Do Nothing. Do not return Quick Look output, Shortcut Input, a Score name, JSON, or literal variable names. Caller extracts row 1 as Score and row 2 as report Text. Keep this outside the new-piece If so both reuse and import return through the same path.
+output("")
