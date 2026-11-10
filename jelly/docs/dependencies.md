@@ -3,11 +3,15 @@
 ## V4 Check or Upload (10 November 2026)
 
 **V4 - Check or Upload**, [source](../shortcuts/reusable/v4-check-or-upload.jelly),
-revision 1/interface 1.0, has no installed shortcut dependencies. It accepts one
+revision 2/interface 1.1, has no installed shortcut dependencies. It accepts one
 shared PDF or offers Files on direct launch; an optional second Text item `batch`
 suppresses report display. Native forScore lookup/import/metadata/return slots
-must be completed before use. Intended result: native List [Score, report Text].
-Source reviewed only; not compiled or device-tested. See the
+must be completed before use. Intended success result: native List [Score, report Text];
+controlled early exits return diagnostic Text with a V4-E or V4-SETUP code.
+Source reviewed; user reports the manually completed installed copy runs successfully
+after reselecting Repeat Item and setting sourceFile references to File
+(10 November 2026). Regenerated wiring and the broader acceptance matrix remain
+unverified. See the
 [setup and manual checks](v4-check-or-upload.md). V3 and legacy sources are unchanged.
 
 ## V3 installation order (7 November 2026)
