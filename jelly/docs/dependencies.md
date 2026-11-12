@@ -2,6 +2,15 @@
 
 ## V4 Check or Upload (10 November 2026)
 
+Install **V4 - Create Service**, [source](../shortcuts/main/v4-create-service.jelly),
+revision 2/interface 1.0, after the completed working **V4 - Check or Upload**.
+The creator accepts multiple shared PDFs or opens Files, asks for date/service,
+and reuses or creates an exactly named setlist with additions only. Complete
+DATE01 and SFS01-SFS04 natively. Revision 2 sends [PDF, batch] and appends Scores
+one at a time in received order. Prior installed creator works by user report
+after opening forScore and retrying; revision 2 changes are source reviewed only.
+See [setup, limitations and manual checks](v4-create-service.md).
+
 **V4 - Check or Upload**, [source](../shortcuts/reusable/v4-check-or-upload.jelly),
 revision 2/interface 1.1, has no installed shortcut dependencies. It accepts one
 shared PDF or offers Files on direct launch; an optional second Text item `batch`

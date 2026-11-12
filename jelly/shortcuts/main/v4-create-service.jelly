@@ -1,0 +1,103 @@
+// V4 - Create Service | Purpose/role: Select PDFs and assemble a dated forScore service setlist | Specification revision: 2; interface 1.0 | Input: Native PDF Files from share sheet; no input opens multi-file picker | Output: Completion Text or V4-SERVICE diagnostic Text; native failures/cancellation can abort | Dependency: V4 - Check or Upload, completed native [Score, report Text] return and optional batch input, interface 1.0 or 1.1 | Target: iPadOS 26.6, Jellycuts 2026.6.4, forScore 15.2.5 | Stage: Previous installed version runs by user report; batch input and sequential append changes source reviewed only; native slots require completion | Setup/tests: ../../docs/v4-create-service.md
+import Shortcuts
+
+// SHARE01 CHECK: Enable Show in Share Sheet and accept PDFs/Files after import. Inspect selectedFiles/currentFile references and choose File rather than Text. Reselect the enclosing Repeat Item token if a generated assignment is empty, as required by the repaired V4 helper. Do not regenerate over the working Check or Upload shortcut.
+nothing() >> emptyValue
+var selectedFiles = emptyValue
+var currentFile = emptyValue
+var serviceDateLabel = ""
+var targetSetlist = emptyValue
+var helperScore = emptyValue
+var preparedScores = emptyValue
+
+count(type: Items, input: ShortcutInput) >> incomingCount
+text(text: "${incomingCount}") >> incomingCountText
+if(incomingCountText == "0") {
+selectFile(type: Files, multiple: true) >> pickedFiles
+selectedFiles = pickedFiles
+}
+if(incomingCountText != "0") {
+selectedFiles = ShortcutInput
+}
+if(selectedFiles == nil) {
+output("V4-SERVICE-E01: No files were supplied or selected.")
+}
+count(type: Items, input: selectedFiles) >> selectedCount
+text(text: "${selectedCount}") >> selectedCountText
+// INPUT01 CHECK: Repeat input=named selectedFiles, preserving native Files. The following currentFile assignment must use this Repeat's actual Repeat Item token. Validate every extension before calling the helper; no setlist has been changed here.
+repeatEach(selectedFiles) {
+currentFile = RepeatItem
+fileDetail(input: currentFile, property: File Extension) >> sourceExtension
+changeCase(text: "${sourceExtension}", case: lowercase) >> lowerExtension
+if(lowerExtension != "pdf") {
+output("V4-SERVICE-E02: Every selected item must be a PDF. Item ${RepeatIndex} has extension ${lowerExtension}.")
+}
+}
+
+// DATE01 ADD: Replace the following Nothing with native Ask for Input, Type=Date, prompt=What date is the service?; then Format Date with that actual Date result, Custom=yyyy-MM-dd - EEE, Locale=English (UK), Time Zone=Europe/London where exposed. Set Variable serviceDateLabel to the Formatted Date result (Text), e.g. 2026-11-12 - Thu. Remove only this slot's Nothing; preserve the emptyValue initializer. Reconnect the following If and naming Text to the named serviceDateLabel. Native date wiring follows the recorded working iPad flow rather than a guessed Jelly Date binding.
+nothing()
+if(serviceDateLabel == nil) {
+output("V4-SERVICE-SETUP-DATE01: Insert the native date question, formatting and serviceDateLabel assignment.")
+}
+list(items: ["Evensong", "Eucharist", "Matins", "Other"]) >> serviceTypes
+choose(list: serviceTypes, prompt: "Choose the service type.", multiple: false, all: false) >> chosenServiceType
+if(chosenServiceType == nil) {
+output("V4-SERVICE-E03: No service type was selected.")
+}
+var serviceType = chosenServiceType
+if(chosenServiceType == "Other") {
+askForInput(prompt: "Enter the service type/name.", type: Text) >> enteredServiceType
+replaceText(input: "${enteredServiceType}", find: "^[[:space:]]+|[[:space:]]+$", replace: "", isRegex: true, caseSensitive: false) >> trimmedServiceType
+serviceType = trimmedServiceType
+}
+if(serviceType == nil) {
+output("V4-SERVICE-E04: The service type/name is empty.")
+}
+// NAME01 CHECK: Both fields in the next Text must be actual named-variable tokens, not typed names or literal interpolation expressions. Naming uses the date the user chose, not a date inferred from the PDF filenames.
+text(text: "${serviceDateLabel} - ${serviceType}") >> setlistName
+
+// PREPARE01 CHECK: Preserve the exact received selectedFiles sequence; do not sort or divide existing/new Scores into groups. A provider may return display order rather than tap order; verify the received order on the iPad. Repeat input=named selectedFiles (Files); Run Shortcut target must be the exact working V4 - Check or Upload.
+repeatEach(selectedFiles) {
+currentFile = RepeatItem
+// BATCH01 RECONNECT: The following List must have exactly two rows: actual named currentFile token (File, not Text or its name) then literal Text batch. Inspect/reselect the File token after generation; bare variables have previously become literal Text. Run Shortcut input=this native List, preserving both rows. In the helper, the second row sets named reportMode=batch and only If reportMode is show may display pieceReport. Remove temporary unconditional debug previews separately; retain error messages and new-piece metadata questions.
+list(items: [currentFile, "batch"]) >> helperInput
+runShortcut(name: "V4 - Check or Upload", input: helperInput, show: false) >> helperResult
+count(type: Items, input: helperResult) >> helperCount
+text(text: "${helperCount}") >> helperCountText
+if(helperCountText != "2") {
+// ERROR01 CHECK: Quick Look previews the complete actual Run Shortcut result so V4-E/V4-SETUP diagnostics stay visible. The following stop is inside the failed return-shape If; never add diagnostic Text to preparedScores. Earlier helper calls may already have imported Scores, but this creator has not written a setlist.
+quicklook(input: helperResult)
+output("V4-SERVICE-E05: Check or Upload did not return [Score, report]. Stopped at PDF ${RepeatIndex}; received ${helperCountText} items. No setlist changes were made by this creator.")
+}
+// RETURN01 RECONNECT: Get First Item input=the actual current Run Shortcut result helperResult (native two-item List), output=whole Score, not Name/Title/Text. Set named helperScore from that action's result. This replaces the earlier nested extraction Repeat following the installed troubleshooting guidance; inspect First Item selection and token provenance on device.
+getItemFromList(list: helperResult, type: First Item) >> returnedScore
+helperScore = returnedScore
+if(helperScore == nil) {
+output("V4-SERVICE-E06: Check or Upload returned an empty Score item. Inspect its FS06 List and this caller's RETURN01 assignment.")
+}
+// COL01 CHECK: The next line must generate Add to Variable preparedScores using named helperScore as a native Score, once per selected PDF regardless of whether the helper reused or imported it. Keep the initial preparedScores Nothing assignment. If omitted or coerced to Text, replace this line's generated action with native Add to Variable; do not Set Variable on each pass, which would retain only the last Score. Append here in input order, not inside a new-piece-only branch.
+var preparedScores += helperScore
+}
+count(type: Items, input: preparedScores) >> preparedCount
+text(text: "${preparedCount}") >> preparedCountText
+if(preparedCountText != "${selectedCountText}") {
+output("V4-SERVICE-E07: Score collection count mismatch. Expected ${selectedCountText}; received ${preparedCountText}. Check COL01. No setlist changes were made by this creator.")
+}
+
+// SFS01 LOOKUP: Replace the following Stop and Output with native Get setlist named setlistName, Continue if not found ON. Assign named targetSetlist to the matching native Setlist, or Nothing if genuinely absent. For duplicate-name matches, choose the intended Setlist or stop; never create a new one just to resolve ambiguity. Preserve existing entries/order; no clearing or overwrite actions. Reconnect the following If to the current named targetSetlist.
+output("V4-SERVICE-SETUP-SFS01: Insert native setlist lookup and targetSetlist assignment.")
+if(targetSetlist == nil) {
+// SFS02 CREATE: Replace the following Stop and Output with native Create Setlist, Name=setlistName, desired folder if applicable. Set Variable targetSetlist directly to that action's actual native Setlist result. Keep both actions inside this missing-target If. Do not create inside the score Repeat or use a chooser result for the newly created Setlist.
+output("V4-SERVICE-SETUP-SFS02: Insert native setlist creation and targetSetlist assignment.")
+}
+if(targetSetlist == nil) {
+output("V4-SERVICE-E08: No target Setlist was resolved or created. No Scores were added to a setlist by this creator.")
+}
+// SFS03 ADD: Inside the following Repeat, replace its Stop and Output with native Add Scores to Setlist, Scores=this Repeat's actual Repeat Item (ONE native Score), Setlist=named targetSetlist, Skip if already added=ON. Remove the previous single bulk Add action if editing an installed revision-1 copy. Keep this after all preparation and target resolution. Sequentially append every resolved Score in preparedScores order, regardless of whether its library Score was reused or imported. Existing entries already in the target are skipped and retain their positions; existing library membership alone must NOT cause skipping. Inspect setlist entries in Manual order, not an alphabetical display. Append/readback behaviour requires device verification.
+repeatEach(preparedScores) {
+output("V4-SERVICE-SETUP-SFS03: Insert native Add Scores to Setlist for this Repeat Item, with Skip if already added ON.")
+}
+// SFS04 OPEN: Replace the following Stop and Output with native Open setlist, Setlist=named targetSetlist from lookup/create. Do not create another Setlist or use the last Score result as its input.
+output("V4-SERVICE-SETUP-SFS04: Insert native Open setlist using targetSetlist.")
+text(text: "Completed: ${setlistName}. Processed ${preparedCountText} PDFs. Existing setlist entries were preserved; Scores already present were skipped.") >> completionReport
+output("${completionReport}")
