@@ -160,3 +160,16 @@ Current sources: canonical revision 2, archive revision 5, assembly revision 3, 
 Migration: preserve completed installed helpers, re-export archive 5 and assembly 3, reapply native CFG/FS insertions, repair/check named-variable references if necessary, then remove guards. Names and caller contracts are unchanged. Main and canonical were reviewed without source changes. Matching `.txt` transfer copies are refreshed with source. Continue with the whole-service, repeat/repair and cancellation cases above; optional probes are available only for diagnosing a specific compiler/wiring error.
 
 Static validation for this review: 99 action calls across all four sources matched local documentation parameter-slot sets, with the recorded compiler-backed Output exception. Delimiters balanced outside comments/strings, rejected enum spellings were absent from executable production code, all four `.txt` copies matched source hashes, eight canonical-name regex cases passed using extracted source patterns, and 35 local documentation links resolved. `git diff --check` passed. No `jelly`, `jellycuts`, `jellyc` or Swift executable was found on PATH; no compilation, artifact, import or runtime result was produced.
+
+## Crash and reimport evidence, 17 November 2026
+
+The user reported a crash after the service workflow reached preparation with
+the selected files present. After manually removing composer/type metadata and
+renaming the first set from `[composer]-[title].pdf` to `[title].pdf`, a retry
+asked for the piece inputs again and created duplicates. The new pieces had
+the canonical `[composer]-[title].pdf` names and correct composer/type fields;
+this retry did not crash and the service was created from the new files.
+
+This is evidence of a changed identity/reuse path, not yet a confirmed crash
+cause. Preserve the exact artifacts and use the dated [incident note](ipad-investigation/2026-11-17-crash-reimport-evidence.md)
+for the hypotheses and follow-up boundary checks.
