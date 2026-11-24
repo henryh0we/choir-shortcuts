@@ -41,7 +41,17 @@ Run V4 - Check or Upload to pick one PDF in Files, or share one PDF to it from t
 ```text
 ==== How filenames are matched ====
 
-The shortcut looks up the score using the full filename after removing .pdf, extra spaces at the ends and any recognised service prefix such as Tue1-. For example, Tue1-Walsh-Responses.pdf is looked up as Walsh-Responses. The shortcut keeps unfamiliar prefixes and details such as movements or editions. The music type menu is built in.
+The shortcut removes .pdf from the end of the filename, then checks the very beginning for a service prefix. The standard pattern recognises Mon, Tue, Wed, Thu, Thur, Thurs, Fri, Sat or Sun, optionally followed immediately by am or pm, then one or more digits and a hyphen. Capitalisation does not matter. For example, Tue1-Walsh-Responses.pdf becomes Walsh-Responses, and Sunam12-Hymn.pdf becomes Hymn.
+
+The whole prefix must follow that pattern. For example, Sun-Hymn.pdf has no number and Sun 1-Hymn.pdf has a space, so their prefixes stay in the name. A prefix preceded by a space also stays, because the prefix check happens before spaces are trimmed from the ends. The remaining name, including composer, movement and edition details, is used to look for the score in forScore.
+```
+
+```text
+==== Standard filename prefix pattern ====
+
+If you change the filename prefix pattern and want to restore the standard version, copy the line below into the pattern field. Keep regular expression matching enabled and case-sensitive matching off.
+
+^(Mon|Tue|Wed|Thu|Thur|Thurs|Fri|Sat|Sun)(am|pm)?[0-9]+-
 ```
 
 ## V4 - Upload Multi
