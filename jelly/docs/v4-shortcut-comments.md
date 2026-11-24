@@ -43,7 +43,9 @@ Run V4 - Check or Upload to pick one PDF in Files, or share one PDF to it from t
 
 The shortcut removes .pdf from the end of the filename, then checks the very beginning for a service prefix. The weekday form recognises Mon, Tue, Wed, Thu, Thur, Thurs, Fri, Sat or Sun, optionally followed immediately by am or pm, then one or more digits and a hyphen. Capitalisation does not matter. For example, Tue1-Walsh-Responses.pdf becomes Walsh-Responses, and Sunam12-Hymn.pdf becomes Hymn.
 
-The supplied pattern also matches a prefix of one or more digits followed by a backslash and another character. For example, 12\-Hymn.pdf becomes Hymn. A prefix preceded by a space stays, because the prefix check happens before spaces are trimmed from the ends. The remaining name, including composer, movement and edition details, is used to look for the score in forScore.
+The pattern also removes one or more digits followed immediately by a full stop at the start of the filename. For example, 1.Weelkes-Responses.pdf becomes Weelkes-Responses. It removes one prefix per pass, so Sun5-64.2ndBeforeAdvent.pdf becomes 64.2ndBeforeAdvent.
+
+A prefix preceded by a space stays, because the prefix check happens before spaces are trimmed from the ends. The remaining name, including composer, movement and edition details, is used to look for the score in forScore.
 ```
 
 ```text
