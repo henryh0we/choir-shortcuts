@@ -50,7 +50,9 @@ The supplied pattern also matches a prefix of one or more digits followed by a b
 ==== Standard filename prefix pattern ====
 
 If you change the filename prefix pattern and want to restore the standard version, copy the line below into the pattern field. Keep regular expression matching enabled and case-sensitive matching off.
+```
 
+```text
 ^((Mon|Tue|Wed|Thu|Thur|Thurs|Fri|Sat|Sun)(am|pm)?[0-9]+-|\d+\.)
 ```
 
