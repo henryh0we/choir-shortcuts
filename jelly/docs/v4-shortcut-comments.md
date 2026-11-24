@@ -39,6 +39,12 @@ Run V4 - Check or Upload to pick one PDF in Files, or share one PDF to it from t
 ```
 
 ```text
+==== Music categories ====
+
+The music type choices are an example set. You can edit the list in this shortcut to add as many categories as you need, or change the existing choices to suit your music library. The category you choose for a new piece is used as its Genre in forScore.
+```
+
+```text
 ==== How filenames are matched ====
 
 The shortcut removes .pdf from the end of the filename, then checks the very beginning for a service prefix. The weekday form recognises Mon, Tue, Wed, Thu, Thur, Thurs, Fri, Sat or Sun, optionally followed immediately by am or pm, then one or more digits and a hyphen. Capitalisation does not matter. For example, Tue1-Walsh-Responses.pdf becomes Walsh-Responses, and Sunam12-Hymn.pdf becomes Hymn.
