@@ -1,0 +1,5 @@
+.markdown-body pre,
+body pre {
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere;
+}
