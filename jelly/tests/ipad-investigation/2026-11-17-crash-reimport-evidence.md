@@ -1,5 +1,13 @@
 # Crash and reimport evidence — 17 November 2026
 
+## Follow-up, 24 November 2026
+
+The user reproduced the failure with both individual and grouped files and
+isolated it to psalms and hymns whose composer default was `-`. They report
+consistent success after leaving the default blank. V4 Check or Upload revision
+3 incorporates that repair. The duplicate-score behaviour from the earlier
+reimport has no separate follow-up result. [Composer repair and checks](../../docs/v4-check-or-upload.md#installed-composer-repair-confirmed-24-november-2026)
+
 ## User-reported sequence
 
 The user attempted to create the service for tonight. The workflow asked for

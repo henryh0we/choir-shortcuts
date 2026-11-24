@@ -1,4 +1,4 @@
-// V4 - Check or Upload | Purpose/role: Shared single-PDF lookup/import and metadata review | Specification revision: 2; interface 1.1 | Input: One native PDF File; optional second Text item batch suppresses report display; no input opens Files | Output after native completion: List [native Score, report Text]; controlled early exits return diagnostic Text V4-E or V4-SETUP, never a Score; native cancellation can abort | Dependencies: None | Target: iPadOS 26.6, Jellycuts 2026.6.4, forScore 15.2.5 | Stage: Source reviewed; forScore slots incomplete; not compiled/device-tested | Setup/tests: ../../docs/v4-check-or-upload.md
+// V4 - Check or Upload | Purpose/role: Shared single-PDF lookup/import and metadata review | Specification revision: 3; interface 1.1 | Input: One native PDF File; optional second Text item batch suppresses report display; no input opens Files | Output after native completion: List [native Score, report Text]; controlled early exits return diagnostic Text V4-E or V4-SETUP, never a Score; native cancellation can abort | Dependencies: None | Target: iPadOS 26.6, Jellycuts 2026.6.4, forScore 15.2.5 | Stage: Source reviewed; forScore slots require native completion | Setup/tests: ../../docs/v4-check-or-upload.md
 import Shortcuts
 
 // SHARE SHEET SETUP: After importing, enable Show in Share Sheet in Shortcut Details and accept PDFs/Files. Keep shared content as native Files, not filenames or Text. Share exactly one PDF to this helper; future service/rehearsal callers loop over their selected PDFs. No shared input opens the Files picker. All prompts require an interactive run.
@@ -75,7 +75,7 @@ output("V4-SETUP-FS01: Lookup placeholder reached. Replace this stop with native
 
 if(existingScore == nil) {
 var suggestedTitle = canonicalName
-var suggestedComposer = "-"
+var suggestedComposer = ""
 // SUGGESTIONS ONLY: A simple alphabetic composer-work pattern proposes a split for review. Numbered hymn identifiers and explicitly named Psalm/Psalms payloads do not use generic composer splitting. No full-name expansion, automatic CamelCase rewriting or removal of work qualifiers.
 matchText(text: "${canonicalName}", regex: "^(NEH|AMR|OH)[ -]*[0-9]+|^Psalms?([ -]|$)", caseSensitive: false) >> referenceMatches
 if(referenceMatches == nil) {
@@ -87,13 +87,13 @@ suggestedComposer = composerProposal
 suggestedTitle = titleProposal
 }
 }
-// DEFAULT ANSWER CHECK: Inspect the generated Ask for Input defaults and reconnect actual suggestedTitle/suggestedComposer variable tokens if the app emits literal interpolation text. Unknown composer is a single hyphen so a blank answer need not be required by the editor.
+// DEFAULT ANSWER CHECK: Inside the new-piece If, reconnect the title and composer Ask for Input defaults to the current named suggestedTitle and suggestedComposer tokens if generated as literal interpolation. Remove any literal quotes from the suggestedComposer initializer so it is empty when the filename gives no suggestion.
 askForInput(prompt: "New piece: ${canonicalName}. Confirm the title; retain movement and edition details.", type: Text, default: "${suggestedTitle}", allowDecimal: false, allowNegative: false) >> enteredTitle
 replaceText(input: "${enteredTitle}", find: "^\\s+|\\s+$", replace: "", isRegex: true, caseSensitive: false) >> approvedTitle
 if(approvedTitle == nil) {
 output("V4-E07: approvedTitle is empty after the title question. Piece: ${canonicalName}.")
 }
-askForInput(prompt: "Confirm the composer. Correct the filename suggestion if needed. Enter - if unknown or not applicable.", type: Text, default: "${suggestedComposer}", allowDecimal: false, allowNegative: false) >> enteredComposer
+askForInput(prompt: "Confirm the composer. Correct the filename suggestion if needed. Leave blank if unknown or not applicable.", type: Text, default: "${suggestedComposer}", allowDecimal: false, allowNegative: false) >> enteredComposer
 replaceText(input: "${enteredComposer}", find: "^\\s+|\\s+$", replace: "", isRegex: true, caseSensitive: false) >> trimmedComposer
 var approvedComposer = trimmedComposer
 if(trimmedComposer == "-") {

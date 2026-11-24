@@ -1,6 +1,6 @@
 # V4 - Check or Upload
 
-[Source](../shortcuts/reusable/v4-check-or-upload.jelly) implements the non-forScore parts of shortcut 1 in the [V4 plan](../../nextcloud-forscore-plan-v4.md). Specification revision 2, interface 1.1. No other installed shortcuts or external configuration files are required.
+[Source](../shortcuts/reusable/v4-check-or-upload.jelly) implements the non-forScore parts of shortcut 1 in the [V4 plan](../../nextcloud-forscore-plan-v4.md). Specification revision 3, interface 1.1. No other installed shortcuts or external configuration files are required.
 
 ## Input and share sheet
 
@@ -53,11 +53,15 @@ The incomplete source intentionally stops at FS01. Removing its stop alone does 
 
 The prefix pattern handles recognised weekday names, optional `am`/`pm`, a numeric position and a hyphen. Unrecognised prefixes remain unchanged. Complete piece identity retains composer, movements and edition qualifiers.
 
-Alphabetic `Composer-Work` names produce editable title/composer suggestions, not confirmed authorship. Numbered NEH/AMR/OH references and explicit Psalm/Psalms names bypass that split. Other conventions can be corrected through the prompts. Unknown composer is entered as `-` and left unassigned. Music types use the complete category list from `config/config.example.json`, copied into this standalone source.
+Alphabetic `Composer-Work` names produce editable title and composer suggestions. Numbered NEH/AMR/OH references and explicit Psalm/Psalms names bypass that split. Leave the composer answer blank when unknown or inapplicable. An empty answer leaves Composer unassigned. Music types use the complete category list from `config/config.example.json`, copied into this standalone source.
 
 ## Validation and manual acceptance
 
-Stage: source reviewed; the manually completed and repaired installed shortcut has a user-reported successful run on 10 November 2026. This does not establish that an unchanged export of this source works or that every acceptance case below has passed. No local build or signing is claimed. The target is the reported Jellycuts 2026.6.4 / iPadOS 26.6 / forScore 15.2.5 setup. Existing project instructions retain the on-device build route.
+The target is the reported Jellycuts 2026.6.4 / iPadOS 26.6 / forScore 15.2.5 setup. The installed repairs below are user-reported results. The revision 3 local build stopped before compilation because the WSL service timed out. Revision 3 still needs on-device generation and wiring checks.
+
+### Installed composer repair confirmed, 24 November 2026
+
+The user reproduced the issue with individual and grouped files and isolated it to psalms and hymns with a `-` placeholder in the composer box. They report that those files worked consistently after clearing the default. Revision 3 carries the blank default into the source template and keeps the editable suggestion when the filename supplies one. Both launch routes use this helper for metadata review. Keep the completed native copy with the working blank default.
 
 ### Installed input repair confirmed, 10 November 2026
 
@@ -75,5 +79,5 @@ Unverified on this complete helper: shared native File reception, optional File/
 2. Before filling slots, share one PDF and confirm filename cleanup reaches the FS01 setup message. Direct launch should offer Files; sharing a non-PDF should stop.
 3. Complete FS01-FS06. Share `Tue1-Walsh-Responses.pdf`: check suggestions, choose Responses and verify the exact Score's title, Composer and Genre.
 4. Share that PDF again: verify the same annotated Score is reused without metadata prompts or another import, including after the title change.
-5. Check a hymn reference, an unfamiliar filename, an unknown composer and an ambiguous existing-score match. Cancelling or skipping must return no usable Score.
-6. Call with native [PDF, batch]: confirm prompts for a new piece still appear, completion preview is suppressed, and native [Score, report] reaches the caller.
+5. Share a new numbered hymn and an explicit Psalm PDF individually. Confirm each Composer default is blank and accepting it leaves Composer unassigned. Check an unfamiliar filename and an ambiguous existing-score match. Cancelling or skipping must return no usable Score.
+6. In Create Service, select a group containing a new hymn or psalm without a composer and a new piece with a composer suggestion. Check the two Composer defaults and assignments. Confirm each native [PDF, batch] call still prompts for a new piece, suppresses its completion preview and returns native [Score, report] to the caller.
