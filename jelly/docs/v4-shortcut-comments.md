@@ -43,3 +43,33 @@ Run V4 - Check or Upload to pick one PDF in Files, or share one PDF to it from t
 
 The shortcut looks up the score using the full filename after removing .pdf, extra spaces at the ends and any recognised service prefix such as Tue1-. For example, Tue1-Walsh-Responses.pdf is looked up as Walsh-Responses. The shortcut keeps unfamiliar prefixes and details such as movements or editions. The music type menu is built in.
 ```
+
+## V4 - Upload Multi
+
+```text
+==== What this shortcut does ====
+
+Add several PDFs to your forScore library in one go. V4 - Upload Multi passes each file to V4 - Check or Upload in turn, so existing scores are reused and new pieces are imported. You’ll be asked to confirm the details of each new piece.
+
+This is useful for preparing music for your library when you don’t need a service setlist.
+```
+
+```text
+==== How to start ====
+
+Select your PDFs in Files, tap Share and choose V4 - Upload Multi. Keep V4 - Check or Upload in Apple Shortcuts as well, because Upload Multi uses it to process each file.
+```
+
+## V4 - Open Score
+
+```text
+==== What this shortcut does ====
+
+Open one piece of music in forScore, ready for rehearsal. V4 - Open Score uses V4 - Check or Upload to find the score in your library or import it if it’s new, then opens it in forScore. For a new piece, you’ll be asked to confirm its details first.
+```
+
+```text
+==== How to start ====
+
+Select a PDF in Files, tap Share and choose V4 - Open Score. Keep V4 - Check or Upload in Apple Shortcuts as well, because Open Score uses it to find or import the score.
+```
