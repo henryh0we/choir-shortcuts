@@ -61,7 +61,7 @@ If you change the filename prefix pattern and want to restore the standard versi
 ```
 
 ```text
-^((Mon|Tue|Wed|Thu|Thur|Thurs|Fri|Sat|Sun)(am|pm)?[0-9]+-|\d+\.)
+^((Mon|Tue|Wed|Thu|Thur|Thurs|Fri|Sat|Sun)(?:Remem[0-9]+|(am|pm)?[0-9]+)-|\d+\.)
 ```
 
 ## V4 - Upload Multi
