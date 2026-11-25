@@ -93,3 +93,15 @@ Open one piece of music in forScore, ready for rehearsal. V4 - Open Score uses V
 
 Select a PDF in Files, tap Share and choose V4 - Open Score. Keep V4 - Check or Upload in Apple Shortcuts as well, because Open Score uses it to find or import the score.
 ```
+
+## Credits
+
+```text
+==== Credits ====
+
+Created by Henry Howe, 2026.
+
+https://github.com/henryh0we
+
+Base created with Jellycuts, expanded and corrected directly in Shortcuts
+```
