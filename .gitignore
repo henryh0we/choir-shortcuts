@@ -6,5 +6,5 @@
 /.tools/
 /.cache/
 **/.build/
-/Library.zip
+/Library**.zip
 /Library-clean
